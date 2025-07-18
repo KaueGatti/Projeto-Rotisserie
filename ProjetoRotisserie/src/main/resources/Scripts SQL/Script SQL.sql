@@ -1,43 +1,36 @@
-create database Rotisserie;
+CREATE DATABASE Rotisserie;
 
-use Rotisserie;
+USE Rotisserie;
 
-create table pedidos(
-	id int not null auto_increment primary key,
-	nome_cliente varchar(30) not null,
-	valor_total decimal (7,2) not null,
-	valor_entrega decimal (4,2) not null,
-	tipo varchar(20) not null,
-    data_pedido date not null,
-    horario_pedido time not null
+CREATE TABLE pedidos(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	nome_cliente VARCHAR(30) NOT NULL,
+	valor_total DECIMAL (7,2) NOT NULL,
+	valor_entrega DECIMAL (4,2) NOT NULL,
+	tipo VARCHAR(20) NOT NULL,
+    data_pedido DATE NOT NULL,
+    horario_pedido TIME NOT NULL
 );
 
-create table marmitas_cadastradas(
-	cod int not null auto_increment primary key,
-	descricao varchar(30) not null,
-   	tamanho varchar(10) not null,
-  	valor double not null
+CREATE TABLE marmitas_cadastradas(
+	cod INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	descricao VARCHAR(30) NOT NULL,
+   	tamanho VARCHAR(10) NOT NULL,
+  	valor DOUBLE NOT NULL
 );
 
-create table marmitas_vendidas(
-	id int not null auto_increment primary key,
-	descricao varchar(30) not null,
-   	tamanho varchar(10) not null,
-    mistura_1 varchar(15),
-    mistura_2 varchar(15),
-    mistura_3 varchar(15),
-    guarnicao_1 varchar(15),
-    guarnicao_2 varchar(15),
-    guarnicao_3 varchar(15),
-    salada varchar(15),
-	cod_marmita int not null,
-   	id_pedido int not null,
-	constraint fk_cod_MC foreign key (cod_marmita) references marmitas_cadastradas (cod),
-	constraint fk_id_pedido foreign key (id_pedido) references pedidos (id)
+CREATE TABLE marmitas_vendidas(
+	id_marmita_vendida INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	detalhes VARCHAR(30) NOT NULL,
+    observacao VARCHAR(30),
+	id_marmita INT NOT NULL,
+   	id_pedido INT NOT NULL,
+	CONSTRAINT fk_cod_MC FOREIGN KEY (cod_marmita) REFERENCES marmitas_cadastradas (cod),
+	CONSTRAINT fk_id_pedido FOREIGN KEY (id_pedido) REFERENCES pedidos (id)
 );
 
-create table bairro(
-	id int not null primary key auto_increment,
-  	nome varchar(30) not null,
-   	valor_entrega double not null
+CREATE TABLE bairro(
+	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  	nome VARCHAR(30) NOT NULL,
+   	valor_entrega DOUBLE NOT NULL
 );
