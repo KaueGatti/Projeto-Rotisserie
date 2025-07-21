@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 CREATE DATABASE Rotisseire;
 
 USE Rotisseire;
@@ -250,20 +251,3 @@ BEGIN
     WHERE id = _id;
 END $$
 DELIMITER ;
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
