@@ -16,14 +16,12 @@ public class BairroDAO {
         Connection conn = Conexao.getConnection();
         PreparedStatement stmt = null;
         try {
-            stmt = conn.prepareStatement("INSERT INTO bairro (nome, valor_entrega) VALUES (?, ?)");
+            stmt = conn.prepareStatement("CALL create_bairro(?, ?)");
 
             stmt.setString(1, bairro.getNome());
             stmt.setDouble(2, bairro.getValorEntrega());
             
             stmt.executeUpdate();
-
-            System.out.println("Bairro adicionado");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro ao adicionar bairro: " + e);
         } finally {

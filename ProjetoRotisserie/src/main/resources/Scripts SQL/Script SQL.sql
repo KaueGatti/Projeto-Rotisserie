@@ -1,27 +1,17 @@
-<<<<<<< HEAD
-CREATE DATABASE Rotisseire;
+CREATE DATABASE Rotisserie;
 
-USE Rotisseire;
+#drop database Rotisserie;
+
+USE Rotisserie;
 
 CREATE TABLE IF NOT EXISTS Marmita (
 	id INT AUTO_INCREMENT NOT NULL,
-	tamanho VARCHAR(20) NOT NULL UNIQUE,
+	descricao VARCHAR(20) NOT NULL UNIQUE,
 	max_mistura INT NOT NULL,
 	max_guarnicao INT NOT NULL,
 	valor DECIMAL(10,2) NOT NULL,
     _status VARCHAR(30) NOT NULL DEFAULT 'ATIVO',
 	PRIMARY KEY (id)
-);
-
-CREATE TABLE IF NOT EXISTS Marmita_Vendida (
-	id INT AUTO_INCREMENT NOT NULL,
-	id_marmita INT NOT NULL,
-	id_pedido INT NOT NULL,
-	detalhes VARCHAR(100) NOT NULL,
-	observacao VARCHAR(100),
-	PRIMARY KEY (id),
-    CONSTRAINT fk_marmita FOREIGN KEY (id_marmita) REFERENCES Marmita (id),
-    CONSTRAINT fk_pedido FOREIGN KEY (id_pedido) REFERENCES Pedido (id)
 );
 
 CREATE TABLE IF NOT EXISTS Produto (
@@ -30,17 +20,6 @@ CREATE TABLE IF NOT EXISTS Produto (
 	valor DECIMAL(10,2) NOT NULL,
 	_status VARCHAR(30) NOT NULL DEFAULT 'ATIVO',
 	PRIMARY KEY (id)
-);
-
-CREATE TABLE IF NOT EXISTS Produto_Vendido (
-	id INT AUTO_INCREMENT NOT NULL,
-	id_produto INT NOT NULL,
-	id_pedido INT NOT NULL,
-	quantidade INT NOT NULL,
-	subtotal DECIMAL(10,2) NOT NULL,
-	PRIMARY KEY (id),
-    CONSTRAINT fk_produto FOREIGN KEY (id_produto) REFERENCES Produto (id),
-    CONSTRAINT fk_pedido FOREIGN KEY (id_pedido) REFERENCES Pedido (id)
 );
 
 CREATE TABLE IF NOT EXISTS Bairro (
@@ -68,7 +47,7 @@ CREATE TABLE IF NOT EXISTS Mensalista (
 	endereco VARCHAR(100),
 	_status VARCHAR(30) NOT NULL DEFAULT 'ATIVO',
 	PRIMARY KEY (id),
-    CONSTRAINT fk_bairro FOREIGN KEY (id_bairro) REFERENCES Bairro (id)
+    CONSTRAINT fk_bairro_mensalista FOREIGN KEY (id_bairro) REFERENCES Bairro (id)
 );
 
 CREATE TABLE IF NOT EXISTS Pedido (
@@ -88,15 +67,38 @@ CREATE TABLE IF NOT EXISTS Pedido (
 	_status VARCHAR(30) NOT NULL,
 	PRIMARY KEY (id),
     CONSTRAINT fk_mensalista FOREIGN KEY (id_mensalista) REFERENCES Mensalista (id),
-    CONSTRAINT fk_bairro FOREIGN KEY (id_bairro) REFERENCES Bairro (id),
+    CONSTRAINT fk_bairro_pedido FOREIGN KEY (id_bairro) REFERENCES Bairro (id),
     CONSTRAINT fk_motoboy FOREIGN KEY (id_motoboy) REFERENCES Motoboy (id)
 );
 
+CREATE TABLE IF NOT EXISTS Marmita_Vendida (
+	id INT AUTO_INCREMENT NOT NULL,
+	id_marmita INT,
+	id_pedido INT NOT NULL,
+	detalhes VARCHAR(100) NOT NULL,
+    valor_peso DECIMAL(10,2),
+	observacao VARCHAR(100),
+	PRIMARY KEY (id),
+    CONSTRAINT fk_marmita FOREIGN KEY (id_marmita) REFERENCES Marmita (id),
+    CONSTRAINT fk_pedido_marmita FOREIGN KEY (id_pedido) REFERENCES Pedido (id)
+);
+
+CREATE TABLE IF NOT EXISTS Produto_Vendido (
+	id INT AUTO_INCREMENT NOT NULL,
+	id_produto INT NOT NULL,
+	id_pedido INT NOT NULL,
+	quantidade INT NOT NULL,
+	subtotal DECIMAL(10,2) NOT NULL,
+	PRIMARY KEY (id),
+    CONSTRAINT fk_produto FOREIGN KEY (id_produto) REFERENCES Produto (id),
+    CONSTRAINT fk_pedido_produto FOREIGN KEY (id_pedido) REFERENCES Pedido (id)
+);
+
 DELIMITER $$
-CREATE PROCEDURE create_marmita(_tamanho VARCHAR(20), _max_mistura INT, _max_guarnicao INT, _valor DECIMAL(10,2))
+CREATE PROCEDURE create_marmita(_descricao VARCHAR(20), _max_mistura INT, _max_guarnicao INT, _valor DECIMAL(10,2))
 BEGIN
-	INSERT INTO Marmita (tamanho, max_mistura, max_guarnicao, valor)
-    VALUES (_tamanho, _max_mistura, _max_guarnicao, _valor);
+	INSERT INTO Marmita (descricao, max_mistura, max_guarnicao, valor)
+    VALUES (_descricao, _max_mistura, _max_guarnicao, _valor);
 END $$
 DELIMITER ;
 
@@ -134,29 +136,42 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE create_pedido(_id_mensalista INT, _id_bairro INT, _id_motoboy INT,
-							_nome_cliente VARCHAR(30), _tipo_pagamento VARCHAR(30), _tipo_pedido VARCHAR(30),
-							_observacoes VARCHAR(100), _valor_entrega DECIMAL(10,2), _valor_total DECIMAL(10,2),
-							_endereco VARCHAR(100), _horario DATETIME, __data DATE, __status VARCHAR(30))
+CREATE PROCEDURE create_produto(_descricao VARCHAR(30), _valor DECIMAL(10,2))
 BEGIN
-	INSERT INTO Pedido (id_mensalista, id_bairro, id_motoboy, nome_cliente, tipo_pagamento, tipo_pedido, observacoes, valor_entrega, valor_total, endereco, horario, _data, _status)
-    VALUES (_id_mensalista, _id_bairro, _id_motoboy, _nome_cliente, _tipo_pagamento, _tipo_pedido, _observacoes, _valor_entrega, _valor_total, _endereco, _horario, __data, __status);
+	INSERT INTO Produto (descricao, valor)
+    VALUES (_descricao, _valor);
 END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE update_pedido(_id INT, __status VARCHAR(30))
+CREATE PROCEDURE update_produto(_id INT, _valor DECIMAL(10,2), __status VARCHAR(30))
 BEGIN
-	UPDATE Pedido
-    SET _status = __status
+	UPDATE Produto
+    SET valor = _valor, _status = __status
     WHERE id = _id;
 END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE delete_pedido(_id INT)
+CREATE PROCEDURE delete_produto(_id INT)
 BEGIN
-	DELETE FROM Pedido
+	DELETE FROM Produto
+    WHERE id = _id;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE create_produto_vendido(_id_produto INT, _id_pedido INT, _quantidade INT, _subtotal DECIMAL(10,2))
+BEGIN
+	INSERT INTO Produto_Vendido (id_produto, id_pedido, quantidade, subtotal)
+    VALUES (_id_produto, _id_pedido, _quantidade, _subtotal);
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE delete_produto_vendido(_id INT)
+BEGIN
+	DELETE FROM Produto_Vendido
     WHERE id = _id;
 END $$
 DELIMITER ;
@@ -220,10 +235,10 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE update_marmita(_id INT, _endereco VARCHAR(100), __status VARCHAR(30))
+CREATE PROCEDURE update_mensalista(_id INT, _endereco VARCHAR(100), __status VARCHAR(30))
 BEGIN
 	UPDATE Mensalista
-    SET endereco = _endereco
+    SET endereco = _endereco, _status = __status
     WHERE id = _id;
 END $$
 DELIMITER ;
@@ -235,19 +250,59 @@ BEGIN
     WHERE id = _id;
 END $$
 DELIMITER ;
-    
+
 DELIMITER $$
-CREATE PROCEDURE create_produto_vendido(_id_produto INT, _id_pedido INT, _quantidade INT, _subtotal DECIMAL(10,2))
+CREATE PROCEDURE create_pedido(_id_mensalista INT, _id_bairro INT, _id_motoboy INT,
+							_nome_cliente VARCHAR(30), _tipo_pagamento VARCHAR(30), _tipo_pedido VARCHAR(30),
+							_observacoes VARCHAR(100), _valor_entrega DECIMAL(10,2), _valor_total DECIMAL(10,2),
+							_endereco VARCHAR(100), _horario DATETIME, __data DATE, __status VARCHAR(30))
 BEGIN
-	INSERT INTO Produto_Vendido (id_produto, id_pedido, quantidade, subtotal)
-    VALUES (_id_produto, _id_pedido, _quantidade, _subtotal);
+	INSERT INTO Pedido (id_mensalista, id_bairro, id_motoboy, nome_cliente, tipo_pagamento, tipo_pedido, observacoes, valor_entrega, valor_total, endereco, horario, _data, _status)
+    VALUES (_id_mensalista, _id_bairro, _id_motoboy, _nome_cliente, _tipo_pagamento, _tipo_pedido, _observacoes, _valor_entrega, _valor_total, _endereco, _horario, __data, __status);
 END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE delete_produto_vendido(_id INT)
+CREATE PROCEDURE update_pedido(_id INT, __status VARCHAR(30))
 BEGIN
-	DELETE FROM Produto_Vendido
+	UPDATE Pedido
+    SET _status = __status
     WHERE id = _id;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE delete_pedido(_id INT)
+BEGIN
+	DELETE FROM Pedido
+    WHERE id = _id;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER soma_conta_mensalista
+AFTER INSERT
+ON Pedido
+FOR EACH ROW
+BEGIN
+	IF (NEW.id_mensalista IS NOT NULL AND NEW._status != 'PAGO') THEN
+		UPDATE Mensalista
+        SET conta = conta + NEW.valor_total
+        WHERE id = NEW.id_mensalista;
+	END IF;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER subtrai_conta_mensalista
+AFTER UPDATE
+ON Pedido
+FOR EACH ROW
+BEGIN
+	IF (OLD._status != 'PAGO' AND NEW._status = 'PAGO') THEN
+		UPDATE Mensalista
+        SET conta = conta - NEW.valor_total
+        WHERE id = NEW.id_mensalista;
+	END IF;
 END $$
 DELIMITER ;
