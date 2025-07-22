@@ -7,7 +7,7 @@
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.release>24</maven.compiler.release>
+        <maven.compiler.release>23</maven.compiler.release>
         <exec.mainClass>my.company.projetorotisserie.ProjetoRotisserie</exec.mainClass>
     </properties>
     
@@ -34,6 +34,11 @@
             <artifactId>flatlaf</artifactId>
             <version>3.6</version>
             <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.miglayout</groupId>
+            <artifactId>miglayout-swing</artifactId>
+            <version>11.0</version>
         </dependency>
     </dependencies> 
 </project>
