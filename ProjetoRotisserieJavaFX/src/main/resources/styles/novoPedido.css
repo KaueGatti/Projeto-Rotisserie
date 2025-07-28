@@ -1,0 +1,41 @@
+#tabButtonRight {
+  -fx-border-radius: 0 30 0 0;
+  -fx-background-radius: 0 30 0 0;
+}
+
+#tabButtonLeft {
+  -fx-border-radius: 30 0 0 0;
+  -fx-background-radius: 30 0 0 0;
+}
+
+.tabButton {
+  -fx-background-color: rgba(0, 0, 0, 0.17);
+}
+
+.tabButton:selected {
+  -fx-background-color: rgba(0, 0, 0, 0.25);
+}
+
+.check-box {
+  -fx-background-color: white;
+  -fx-padding: 5;
+  -fx-text-fill: #000000;
+  -fx-border-color: #e8e1db;
+  -fx-border-width: 2;
+  -fx-border-radius: 5;
+  -fx-background-radius: 5;
+}
+
+.check-box .box {
+  -fx-background-color: white;
+  -fx-border-color: black;
+  -fx-border-width: 1;
+  -fx-border-radius: 4;
+  -fx-background-radius: 4;
+  -fx-min-width: 24;
+  -fx-min-height: 24;
+}
+
+#janela {
+    -fx-background-color: rgba(255, 245, 237, 1);
+}
