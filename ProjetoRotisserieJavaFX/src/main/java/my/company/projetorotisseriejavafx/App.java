@@ -28,6 +28,7 @@ public class App extends Application {
             
         } catch (Exception e) {
             System.out.println("Erro start: " + e);
+            e.printStackTrace();
         }
     }
 

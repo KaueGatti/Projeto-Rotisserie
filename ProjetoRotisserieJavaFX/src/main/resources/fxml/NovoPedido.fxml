@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="673.0" prefWidth="1350.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.NovoPedidoController">
+<Pane prefHeight="673.0" prefWidth="1350.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.NovoPedidoController">
    <children>
          <ToggleButton fx:id="tabButtonLeft" layoutX="50.0" layoutY="19.0" mnemonicParsing="false" onAction="#marmitaClicked" prefHeight="58.0" prefWidth="220.0" selected="true" styleClass="tabButton" stylesheets="@../styles/novoPedido.css" text="Marmita">
             <font>
