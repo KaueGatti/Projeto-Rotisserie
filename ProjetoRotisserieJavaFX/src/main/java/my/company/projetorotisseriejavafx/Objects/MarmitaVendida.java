@@ -15,8 +15,17 @@ public class MarmitaVendida {
     private int pedido;
     private String detalhes;
     private double valorPeso;
+
     private String observacao;
 
+    public double getSubtotal() {
+        return marmita.getValor();
+    }
+    
+    public String getDescricao() {
+        return marmita.getDescricao();
+    }
+    
     public int getId() {
         return id;
     }

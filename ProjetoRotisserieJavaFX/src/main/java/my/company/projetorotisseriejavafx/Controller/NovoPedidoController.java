@@ -10,49 +10,69 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 
 import javafx.scene.control.ToggleButton;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import my.company.projetorotisseriejavafx.DAO.BairroDAO;
 import my.company.projetorotisseriejavafx.DAO.MensalistaDAO;
 import my.company.projetorotisseriejavafx.Objects.Bairro;
+import my.company.projetorotisseriejavafx.Objects.MarmitaVendida;
 import my.company.projetorotisseriejavafx.Objects.Mensalista;
+import my.company.projetorotisseriejavafx.Objects.ProdutoVendido;
 
 public class NovoPedidoController implements Initializable {
 
     @FXML
-    private ToggleButton tabButtonLeft;
+    private TableView<MarmitaVendida> tableMarmita;
+    @FXML
+    private TableColumn<MarmitaVendida, String> colDescricaoMarmita;
+    @FXML
+    private TableColumn<MarmitaVendida, Double> colSubtotalMarmita;
 
     @FXML
+    private TableView<ProdutoVendido> tableProduto;
+    @FXML
+    private TableColumn<ProdutoVendido, String> colDescricaoProduto;
+    @FXML
+    private TableColumn<ProdutoVendido, Integer> colQuantidadeProduto;
+    @FXML
+    private TableColumn<ProdutoVendido, Double> colSubtotalProduto;
+
+    @FXML
+    private ToggleButton tabButtonLeft;
+    @FXML
     private ToggleButton tabButtonRight;
+    @FXML
+    private ComboBox comboBoxBairro;
+    @FXML
+    private ComboBox comboBoxMensalista;
+    @FXML
+    private CheckBox checkBoxMensalista;
+    @FXML
+    private RadioButton RBEntrega;
 
     @FXML
     private AnchorPane APMarmitaProduto;
-
-    @FXML
-    private ComboBox comboBoxBairro;
-
-    @FXML
-    private ComboBox comboBoxMensalista;
-
-    @FXML
-    private CheckBox checkBoxMensalista;
-    
-    @FXML
-    private RadioButton RBEntrega;
-    
     @FXML
     private Pane paneEndereco;
-   
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         loadBairro();
         loadMensalista();
         comboBoxMensalista.setDisable(true);
         RBEntrega.setSelected(true);
+        initTableMarmita();
+        initTableProduto();
         try {
-            Pane marmitaPane = FXMLLoader.load(getClass().getResource("/fxml/paneMarmita.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/paneMarmita.fxml"));
+            Pane marmitaPane = loader.load();
+            PaneMarmitaController marmitaController = loader.getController();
+            marmitaController.setController(this);
             APMarmitaProduto.getChildren().add(marmitaPane);
         } catch (IOException e) {
             System.out.println("Erro ao carregar PaneMarmita: " + e);
@@ -72,7 +92,10 @@ public class NovoPedidoController implements Initializable {
     private void marmitaClicked(ActionEvent event) {
         if (tabButtonLeft.isSelected()) {
             try {
-                Pane marmitaPane = FXMLLoader.load(getClass().getResource("/fxml/paneMarmita.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/paneMarmita.fxml"));
+                Pane marmitaPane = loader.load();
+                PaneMarmitaController marmitaController = loader.getController();
+                marmitaController.setController(this);
                 APMarmitaProduto.getChildren().clear();
                 APMarmitaProduto.getChildren().add(marmitaPane);
                 tabButtonRight.setSelected(false);
@@ -88,7 +111,10 @@ public class NovoPedidoController implements Initializable {
     private void produtoClicked(ActionEvent event) {
         if (tabButtonRight.isSelected()) {
             try {
-                Pane produtoPane = FXMLLoader.load(getClass().getResource("/fxml/paneProduto.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/paneProduto.fxml"));
+                Pane produtoPane = loader.load();
+                PaneProdutoController produtoController = loader.getController();
+                produtoController.setController(this);
                 APMarmitaProduto.getChildren().clear();
                 APMarmitaProduto.getChildren().add(produtoPane);
                 tabButtonLeft.setSelected(false);
@@ -99,7 +125,7 @@ public class NovoPedidoController implements Initializable {
             tabButtonRight.setSelected(true);
         }
     }
-    
+
     @FXML
     private void RBGTipo(ActionEvent event) {
         if (RBEntrega.isSelected()) {
@@ -123,5 +149,24 @@ public class NovoPedidoController implements Initializable {
             comboBoxMensalista.getItems().add(mensalista);
         }
         comboBoxMensalista.getSelectionModel().selectFirst();
+    }
+
+    public void adicionarMarmita(MarmitaVendida marmitaVendida) {
+        tableMarmita.getItems().add(marmitaVendida);
+    }
+    
+    public void adicionarProduto(ProdutoVendido produtoVendido) {
+        tableProduto.getItems().add(produtoVendido);
+    }
+
+    private void initTableMarmita() {
+        colDescricaoMarmita.setCellValueFactory(new PropertyValueFactory<>("descricao"));
+        colSubtotalMarmita.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
+    }
+
+    private void initTableProduto() {
+        colDescricaoProduto.setCellValueFactory(new PropertyValueFactory<>("descricao"));
+        colQuantidadeProduto.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
+        colSubtotalProduto.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
     }
 }

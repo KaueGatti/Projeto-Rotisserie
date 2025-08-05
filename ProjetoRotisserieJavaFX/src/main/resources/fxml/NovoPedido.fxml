@@ -31,15 +31,15 @@
       <AnchorPane fx:id="APMarmitaProduto" layoutX="28.0" layoutY="77.0" prefHeight="622.0" prefWidth="460.0" />
       <TableView fx:id="tableMarmita" layoutX="518.0" layoutY="54.0" prefHeight="190.0" prefWidth="500.0" stylesheets="@../styles/novoPedido.css">
         <columns>
-          <TableColumn prefWidth="254.4000244140625" text="Descrição" />
-          <TableColumn minWidth="0.0" prefWidth="245.5999755859375" text="Subtotal" />
+          <TableColumn fx:id="colDescricaoMarmita" prefWidth="254.4000244140625" text="Descrição" />
+          <TableColumn fx:id="colSubtotalMarmita" minWidth="0.0" prefWidth="245.5999755859375" text="Subtotal" />
         </columns>
       </TableView>
       <TableView fx:id="tableProduto" layoutX="519.0" layoutY="299.0" prefHeight="190.0" prefWidth="500.0" stylesheets="@../styles/novoPedido.css">
          <columns>
-            <TableColumn prefWidth="156.79998779296875" text="Descrição" />
-            <TableColumn minWidth="0.0" prefWidth="172.0" text="Quantidade" />
-            <TableColumn minWidth="7.20001220703125" prefWidth="170.4000244140625" text="Subtotal" />
+            <TableColumn fx:id="colDescricaoProduto" prefWidth="156.79998779296875" text="Descrição" />
+            <TableColumn fx:id="colQuantidadeProduto" minWidth="0.0" prefWidth="172.0" text="Quantidade" />
+            <TableColumn fx:id="colSubtotalProduto" minWidth="7.20001220703125" prefWidth="170.4000244140625" text="Subtotal" />
          </columns>
       </TableView>
       <TextArea layoutX="518.0" layoutY="530.0" prefHeight="171.0" prefWidth="500.0" promptText="Observação...">

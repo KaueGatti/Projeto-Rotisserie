@@ -6,7 +6,9 @@ module my.company.projetorotisseriejavafx {
 
     opens my.company.projetorotisseriejavafx to javafx.fxml;
     opens my.company.projetorotisseriejavafx.Controller to javafx.fxml;
+    opens my.company.projetorotisseriejavafx.Objects to javafx.base, javafx.fxml;
     
+    exports my.company.projetorotisseriejavafx.Objects;
     exports my.company.projetorotisseriejavafx;
     
 }
