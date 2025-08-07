@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane id="paneNovoPedido" prefHeight="728.0" prefWidth="1524.0" stylesheets="@../styles/novoPedido.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.NovoPedidoController">
+<Pane id="paneNovoPedido" fx:id="panePrincipal" prefHeight="728.0" prefWidth="1524.0" stylesheets="@../styles/novoPedido.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.NovoPedidoController">
    <children>
          <ToggleButton id="tabMarmita" fx:id="tabButtonLeft" layoutX="28.0" layoutY="19.0" mnemonicParsing="false" onAction="#marmitaClicked" prefHeight="58.0" prefWidth="230.0" selected="true" stylesheets="@../styles/novoPedido.css" text="Marmita">
             <font>
@@ -32,19 +32,21 @@
       <TableView fx:id="tableMarmita" layoutX="518.0" layoutY="54.0" prefHeight="190.0" prefWidth="500.0" stylesheets="@../styles/novoPedido.css">
         <columns>
           <TableColumn fx:id="colDescricaoMarmita" prefWidth="254.4000244140625" text="Descrição" />
-          <TableColumn fx:id="colSubtotalMarmita" minWidth="0.0" prefWidth="245.5999755859375" text="Subtotal" />
+          <TableColumn fx:id="colSubtotalMarmita" minWidth="0.0" prefWidth="174.39996337890625" text="Subtotal" />
+            <TableColumn fx:id="colDelMarmita" editable="false" minWidth="0.0" prefWidth="69.5999755859375" resizable="false" />
         </columns>
       </TableView>
       <TableView fx:id="tableProduto" layoutX="519.0" layoutY="299.0" prefHeight="190.0" prefWidth="500.0" stylesheets="@../styles/novoPedido.css">
          <columns>
-            <TableColumn fx:id="colDescricaoProduto" prefWidth="156.79998779296875" text="Descrição" />
-            <TableColumn fx:id="colQuantidadeProduto" minWidth="0.0" prefWidth="172.0" text="Quantidade" />
-            <TableColumn fx:id="colSubtotalProduto" minWidth="7.20001220703125" prefWidth="170.4000244140625" text="Subtotal" />
+            <TableColumn fx:id="colDescricaoProduto" prefWidth="180.0" text="Descrição" />
+            <TableColumn fx:id="colQuantidadeProduto" minWidth="0.0" prefWidth="118.39996337890625" text="Quantidade" />
+            <TableColumn fx:id="colSubtotalProduto" minWidth="7.20001220703125" prefWidth="131.20001220703125" text="Subtotal" />
+            <TableColumn fx:id="colDelProduto" editable="false" minWidth="7.20001220703125" prefWidth="68.79998779296875" resizable="false" />
          </columns>
       </TableView>
-      <TextArea layoutX="518.0" layoutY="530.0" prefHeight="171.0" prefWidth="500.0" promptText="Observação...">
+      <TextArea fx:id="TAObservacoes" layoutX="518.0" layoutY="530.0" prefHeight="171.0" prefWidth="500.0" promptText="Observação...">
          <font>
-            <Font size="16.0" />
+            <Font size="18.0" />
          </font>
       </TextArea>
       <Label layoutX="518.0" layoutY="494.0" text="Observações do pedido">
@@ -69,28 +71,28 @@
       </Label>
       <Pane id="panePedido" layoutX="1047.0" layoutY="77.0" prefHeight="622.0" prefWidth="440.0" stylesheets="@../styles/novoPedido.css">
          <children>
-            <CheckBox fx:id="checkBoxMensalista" layoutX="22.0" layoutY="7.0" mnemonicParsing="false" onAction="#checkBoxMensalista" prefHeight="38.0" prefWidth="157.0" text="Mensalista">
+            <CheckBox fx:id="checkBoxMensalista" layoutX="22.0" layoutY="-5.0" mnemonicParsing="false" onAction="#checkBoxMensalista" prefHeight="38.0" prefWidth="157.0" text="Mensalista">
                <font>
                   <Font size="20.0" />
                </font>
             </CheckBox>
-            <ComboBox fx:id="comboBoxMensalista" layoutX="22.0" layoutY="52.0" prefHeight="35.0" prefWidth="395.0" style="-fx-pref-width: 395; -fx-pref-height: 30;" stylesheets="@../styles/novoPedido.css" />
-            <TextField layoutX="23.0" layoutY="139.0" prefHeight="36.0" prefWidth="395.0" promptText="Nome do cliente">
+            <ComboBox fx:id="comboBoxMensalista" layoutX="22.0" layoutY="40.0" prefHeight="35.0" prefWidth="395.0" style="-fx-pref-width: 395; -fx-pref-height: 30;" stylesheets="@../styles/novoPedido.css" />
+            <TextField fx:id="TFNomeCliente" layoutX="22.0" layoutY="106.0" prefHeight="36.0" prefWidth="395.0" promptText="Nome do cliente">
                <font>
                   <Font size="18.0" />
                </font>
             </TextField>
-            <Label layoutX="27.0" layoutY="110.0" text="Cliente">
+            <Label fx:id="labelCliente" layoutX="26.0" layoutY="77.0" text="Cliente*">
                <font>
                   <Font name="Segoe UI" size="24.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutY="183.0" prefHeight="29.0" prefWidth="440.0" text="Tipo">
+            <Label alignment="CENTER" layoutY="152.0" prefHeight="29.0" prefWidth="440.0" text="Tipo">
                <font>
                   <Font name="Segoe UI" size="24.0" />
                </font>
             </Label>
-            <RadioButton fx:id="RBEntrega" layoutX="109.0" layoutY="219.0" mnemonicParsing="false" onAction="#RBGTipo" text="Entrega">
+            <RadioButton fx:id="RBEntrega" layoutX="109.0" layoutY="181.0" mnemonicParsing="false" onAction="#RBGTipo" text="Entrega">
                <font>
                   <Font size="20.0" />
                </font>
@@ -98,28 +100,42 @@
                   <ToggleGroup fx:id="tipo" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton layoutX="236.0" layoutY="219.0" mnemonicParsing="false" onAction="#RBGTipo" text="Balcão" toggleGroup="$tipo">
+            <RadioButton layoutX="236.0" layoutY="181.0" mnemonicParsing="false" onAction="#RBGTipo" text="Balcão" toggleGroup="$tipo">
                <font>
                   <Font size="20.0" />
                </font>
             </RadioButton>
-            <Pane fx:id="paneEndereco" layoutX="22.0" layoutY="253.0" prefHeight="241.0" prefWidth="395.0">
+            <Pane fx:id="paneEndereco" layoutX="22.0" layoutY="220.0" prefHeight="241.0" prefWidth="395.0">
                <children>
-                  <ComboBox fx:id="comboBoxBairro" layoutX="16.0" layoutY="178.0" prefHeight="36.0" prefWidth="364.0" stylesheets="@../styles/novoPedido.css" />
-                  <TextArea layoutX="16.0" layoutY="37.0" prefHeight="103.0" prefWidth="364.0" />
-                  <Label alignment="TOP_LEFT" layoutX="21.0" layoutY="8.0" prefHeight="29.0" prefWidth="364.0" text="Endereço">
+                  <ComboBox fx:id="comboBoxBairro" layoutX="16.0" layoutY="191.0" prefHeight="36.0" prefWidth="364.0" stylesheets="@../styles/novoPedido.css" />
+                  <TextArea fx:id="TAEndereco" layoutX="16.0" layoutY="29.0" prefHeight="58.0" prefWidth="364.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font></TextArea>
+                  <Label alignment="TOP_LEFT" layoutX="21.0" prefHeight="29.0" prefWidth="364.0" text="Endereço*">
                      <font>
                         <Font name="Segoe UI" size="20.0" />
                      </font>
                   </Label>
-                  <Label alignment="TOP_LEFT" layoutX="21.0" layoutY="149.0" prefHeight="29.0" prefWidth="364.0" text="Bairro">
+                  <Label alignment="TOP_LEFT" layoutX="21.0" layoutY="162.0" prefHeight="29.0" prefWidth="364.0" text="Bairro">
                      <font>
                         <Font name="Segoe UI" size="20.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="comboBoxMotoboy" layoutX="16.0" layoutY="124.0" prefHeight="36.0" prefWidth="364.0" stylesheets="@../styles/novoPedido.css" />
+                  <Label alignment="TOP_LEFT" layoutX="19.0" layoutY="95.0" prefHeight="29.0" prefWidth="364.0" text="Motoboy">
+                     <font>
+                        <Font name="Segoe UI" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="labelEnderecoInfo" layoutX="120.0" layoutY="5.0" prefHeight="20.0" prefWidth="260.0" textFill="RED">
+                     <font>
+                        <Font name="Segoe UI" size="16.0" />
                      </font>
                   </Label>
                </children>
             </Pane>
-            <Label alignment="TOP_LEFT" layoutX="22.0" layoutY="486.0" prefHeight="29.0" prefWidth="420.0" styleClass="labelValorPedido" text="Entrega R$ 00,00">
+            <Label fx:id="labelValorEntrega" alignment="TOP_LEFT" layoutX="22.0" layoutY="486.0" prefHeight="29.0" prefWidth="420.0" styleClass="labelValorPedido" text="Entrega R$ 00,00">
                <font>
                   <Font name="Segoe UI Bold" size="24.0" />
                </font>
@@ -127,7 +143,7 @@
                   <Insets />
                </opaqueInsets>
             </Label>
-            <Label alignment="TOP_LEFT" layoutX="22.0" layoutY="521.0" prefHeight="29.0" prefWidth="420.0" styleClass="labelValorPedido" text="Total R$ 000,00">
+            <Label fx:id="labelValorTotal" alignment="TOP_LEFT" layoutX="22.0" layoutY="523.0" prefHeight="29.0" prefWidth="420.0" styleClass="labelValorPedido" text="Total R$ 000,00">
                <font>
                   <Font name="Segoe UI Bold" size="24.0" />
                </font>
@@ -135,16 +151,26 @@
                   <Insets />
                </opaqueInsets>
             </Label>
-            <Button layoutX="22.0" layoutY="555.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="190.0" stylesheets="@../styles/novoPedido.css" text="Finalizar">
+            <Button fx:id="btnFinalizar" layoutX="25.0" layoutY="567.0" mnemonicParsing="false" onAction="#Finalizar" prefHeight="49.0" prefWidth="190.0" stylesheets="@../styles/novoPedido.css" text="Finalizar">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button layoutX="232.0" layoutY="555.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="190.0" stylesheets="@../styles/novoPedido.css" text="Cancelar">
+            <Button fx:id="btnCancelar" layoutX="235.0" layoutY="567.0" mnemonicParsing="false" onAction="#Cancelar" prefHeight="49.0" prefWidth="190.0" stylesheets="@../styles/novoPedido.css" text="Cancelar">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
+            <Label fx:id="labelClienteInfo" layoutX="120.0" layoutY="82.0" prefHeight="20.0" prefWidth="300.0" textFill="RED">
+               <font>
+                  <Font name="Segoe UI" size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="labelItensInfo" layoutX="22.0" layoutY="451.0" prefHeight="20.0" prefWidth="395.0" textFill="RED">
+               <font>
+                  <Font name="Segoe UI" size="16.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
    </children>

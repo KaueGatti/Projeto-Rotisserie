@@ -11,61 +11,56 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import my.company.projetorotisseriejavafx.DB.Conexao;
-import my.company.projetorotisseriejavafx.Objects.Mensalista;
+import my.company.projetorotisseriejavafx.Objects.Motoboy;
 
 /**
  *
  * @author kaueg
  */
-public class MensalistaDAO {
+public class MotoboyDAO {
 
-    public static void create(Mensalista mensalista) {
+    public static void create(Motoboy motoboy) {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("CALL create_mensalista(?, ?, ?, ?)");
+            stmt = con.prepareStatement("CALL create_motoboy(?, ?)");
 
-            stmt.setInt(1, mensalista.getBairro().getId());
-            stmt.setString(2, mensalista.getNome());
-            stmt.setString(3, mensalista.getCPF());
-            stmt.setString(3, mensalista.getEndereco());
+            stmt.setString(1, motoboy.getNome());
+            stmt.setDouble(2, motoboy.getValorDiaria());
 
             stmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Falha ao cadastrar mensalista: " + e);
+            System.out.println("Falha ao cadastrar motoboy: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }
     }
 
-    public static List<Mensalista> read() {
+    public static List<Motoboy> read() {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        List<Mensalista> mensalistas = new ArrayList();
+        List<Motoboy> motoboys = new ArrayList();
 
         try {
-            stmt = con.prepareStatement("SELECT * FROM Mensalista");
+            stmt = con.prepareStatement("SELECT * FROM Motoboy");
             rs = stmt.executeQuery();
 
             while (rs.next()) {
-                Mensalista mensalista = new Mensalista();
+                Motoboy motoboy = new Motoboy();
 
-                mensalista.setId(rs.getInt("id"));
-                //mensalista.setBairro(rs.getInt("id_bairro"));
-                mensalista.setNome(rs.getString("nome"));
-                mensalista.setCPF(rs.getString("cpf"));
-                mensalista.setConta(rs.getDouble("conta"));
-                mensalista.setEndereco(rs.getString("endereco"));
-                mensalista.setStatus(rs.getString("_status"));
+                motoboy.setId(rs.getInt("id"));
+                motoboy.setNome(rs.getString("nome"));
+                motoboy.setValorDiaria(rs.getDouble("valor_diaria"));
+                motoboy.setStatus(rs.getString("_status"));
 
-                mensalistas.add(mensalista);
+                motoboys.add(motoboy);
             }
 
-            return mensalistas;
+            return motoboys;
         } catch (SQLException e) {
-            System.out.println("Falha ao buscar mensalistas: " + e);
+            System.out.println("Falha ao buscar motoboys: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }
@@ -144,37 +139,37 @@ public class MensalistaDAO {
         }
         return null;
     }*/
-    public static void update(Mensalista mensalista) {
+    public static void update(Motoboy motoboy) {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("CALL update_mensalista(?, ?, ?)");
+            stmt = con.prepareStatement("CALL update_motoboy(?, ?)");
 
-            stmt.setInt(1, mensalista.getId());
-            stmt.setString(2, mensalista.getEndereco());
-            stmt.setString(3, mensalista.getStatus());
+            stmt.setInt(1, motoboy.getId());
+            stmt.setDouble(2, motoboy.getValorDiaria());
+            stmt.setString(3, motoboy.getStatus());
 
             stmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Falha ao atualizar mensalista: " + e);
+            System.out.println("Falha ao atualizar motoboy: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }
     }
 
-    public static void delete(Mensalista mensalista) {
+    public static void delete(Motoboy motoboy) {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("CALL delete_mensalista(?)");
+            stmt = con.prepareStatement("CALL delete_motoboy(?)");
 
-            stmt.setInt(1, mensalista.getId());
+            stmt.setInt(1, motoboy.getId());
 
             stmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Erro ao excluir mensalista: " + e);
+            System.out.println("Erro ao excluir motoboy: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }

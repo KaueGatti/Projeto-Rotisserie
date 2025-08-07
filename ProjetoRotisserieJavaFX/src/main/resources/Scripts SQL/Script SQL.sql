@@ -62,9 +62,9 @@ CREATE TABLE IF NOT EXISTS Pedido (
 	valor_entrega DECIMAL(10,2),
 	valor_total DECIMAL(10,2) NOT NULL,
 	endereco VARCHAR(100),
-	horario DATETIME NOT NULL,
-	_data DATE NOT NULL,
-	_status VARCHAR(30) NOT NULL,
+	horario TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	_data DATE,
+	_status VARCHAR(30) NOT NULL DEFAULT 'FINALIZADO',
 	PRIMARY KEY (id),
     CONSTRAINT fk_mensalista FOREIGN KEY (id_mensalista) REFERENCES Mensalista (id),
     CONSTRAINT fk_bairro_pedido FOREIGN KEY (id_bairro) REFERENCES Bairro (id),
@@ -255,10 +255,10 @@ DELIMITER $$
 CREATE PROCEDURE create_pedido(_id_mensalista INT, _id_bairro INT, _id_motoboy INT,
 							_nome_cliente VARCHAR(30), _tipo_pagamento VARCHAR(30), _tipo_pedido VARCHAR(30),
 							_observacoes VARCHAR(100), _valor_entrega DECIMAL(10,2), _valor_total DECIMAL(10,2),
-							_endereco VARCHAR(100), _horario DATETIME, __data DATE, __status VARCHAR(30))
+							_endereco VARCHAR(100))
 BEGIN
-	INSERT INTO Pedido (id_mensalista, id_bairro, id_motoboy, nome_cliente, tipo_pagamento, tipo_pedido, observacoes, valor_entrega, valor_total, endereco, horario, _data, _status)
-    VALUES (_id_mensalista, _id_bairro, _id_motoboy, _nome_cliente, _tipo_pagamento, _tipo_pedido, _observacoes, _valor_entrega, _valor_total, _endereco, _horario, __data, __status);
+	INSERT INTO Pedido (id_mensalista, id_bairro, id_motoboy, nome_cliente, tipo_pagamento, tipo_pedido, observacoes, valor_entrega, valor_total, endereco)
+    VALUES (_id_mensalista, _id_bairro, _id_motoboy, _nome_cliente, _tipo_pagamento, _tipo_pedido, _observacoes, _valor_entrega, _valor_total, _endereco);
 END $$
 DELIMITER ;
 

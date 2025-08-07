@@ -4,6 +4,8 @@
  */
 package my.company.projetorotisseriejavafx.Objects;
 
+import java.util.Objects;
+
 /**
  *
  * @author kaueg
@@ -15,17 +17,21 @@ public class MarmitaVendida {
     private int pedido;
     private String detalhes;
     private double valorPeso;
-
+    private String deletar = "-";
     private String observacao;
+
+    public String getDeletar() {
+        return deletar;
+    }
 
     public double getSubtotal() {
         return marmita.getValor();
     }
-    
+
     public String getDescricao() {
         return marmita.getDescricao();
     }
-    
+
     public int getId() {
         return id;
     }
@@ -72,5 +78,24 @@ public class MarmitaVendida {
 
     public void setObservacao(String observacao) {
         this.observacao = observacao;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        MarmitaVendida that = (MarmitaVendida) o;
+        return Double.compare(that.getSubtotal(), getSubtotal()) == 0
+                && Objects.equals(getDescricao(), that.getDescricao());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getDescricao(), getSubtotal());
     }
 }

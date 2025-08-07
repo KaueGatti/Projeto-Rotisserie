@@ -1,19 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package my.company.projetorotisseriejavafx.Objects;
 
-/**
- *
- * @author kaueg
- */
 public class ProdutoVendido {
 
     private int id;
     private Produto produto;
-    //private Pedido pedido;
+    private Pedido pedido;
     private int quantidade;
+    private String deletar = "-";
+
+    public String getDeletar() {
+        return deletar;
+    }
 
     public int getId() {
         return id;

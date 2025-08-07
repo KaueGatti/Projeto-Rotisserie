@@ -46,6 +46,22 @@ INSERT INTO Mensalista (id_bairro, nome, CPF, conta, endereco, _status) VALUES
 (9, 'Lucas Pereira', '901.234.567-88', 60.00, 'Rua São João, 200 - Residencial São João', 'ATIVO'),
 (10, 'Juliana Fernandes', '012.345.678-99', 75.25, 'Av. Santa Rita, 300 - Santa Rita', 'ATIVO');
 
+INSERT INTO Motoboy (nome, valor_diaria, _status) VALUES
+('Carlos Silva', 100.00, 'ATIVO'),
+('Marcos Oliveira', 90.00, 'ATIVO'),
+('João Souza', 110.00, 'ATIVO'),
+('Rafael Lima', 95.00, 'ATIVO'),
+('Bruno Costa', 105.00, 'ATIVO'),
+('Lucas Pereira', 92.50, 'ATIVO'),
+('André Santos', 98.00, 'ATIVO'),
+('Thiago Almeida', 102.00, 'ATIVO'),
+('Felipe Rocha', 97.00, 'ATIVO'),
+('Eduardo Martins', 99.50, 'ATIVO');
+
+select * from Pedido;
+
+
+
 
 
 

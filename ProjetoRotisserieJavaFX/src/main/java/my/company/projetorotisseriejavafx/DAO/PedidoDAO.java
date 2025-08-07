@@ -6,73 +6,111 @@ package my.company.projetorotisseriejavafx.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Types;
 import my.company.projetorotisseriejavafx.DB.Conexao;
-import my.company.projetorotisseriejavafx.Objects.Mensalista;
+import my.company.projetorotisseriejavafx.Objects.Pedido;
 
 /**
  *
  * @author kaueg
  */
-public class MensalistaDAO {
+public class PedidoDAO {
 
-    public static void create(Mensalista mensalista) {
+    public static void create(Pedido pedido) {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("CALL create_mensalista(?, ?, ?, ?)");
+            stmt = con.prepareStatement("CALL create_pedido(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-            stmt.setInt(1, mensalista.getBairro().getId());
-            stmt.setString(2, mensalista.getNome());
-            stmt.setString(3, mensalista.getCPF());
-            stmt.setString(3, mensalista.getEndereco());
+            if (pedido.getMensalista() != null) {
+                stmt.setInt(1, pedido.getMensalista().getId());
+            } else {
+                stmt.setNull(1, Types.NULL);
+            }
 
+            if (pedido.getBairro() != null) {
+                stmt.setInt(2, pedido.getBairro().getId());
+            } else {
+                stmt.setNull(2, Types.NULL);
+            }
+
+            if (pedido.getMotoboy() != null) {
+                stmt.setInt(3, pedido.getMotoboy().getId());
+            } else {
+                stmt.setNull(3, Types.NULL);
+            }
+            
+            if (pedido.getNomeCliente() != null) {
+                stmt.setString(4, pedido.getNomeCliente());
+            } else {
+                stmt.setNull(4, Types.NULL);
+            }
+            
+            stmt.setString(5, "Test");
+            
+            stmt.setString(6, pedido.getTipoPedido());
+            
+            stmt.setString(7, pedido.getObservacoes());
+            
+            stmt.setDouble(8, pedido.getValorEntrega());
+            stmt.setDouble(9, pedido.getValorTotal());
+            
+            if (pedido.getEndereco() != null) {
+                stmt.setString(10, pedido.getEndereco());
+            } else {
+                stmt.setNull(10, Types.NULL);
+            }
+            
             stmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Falha ao cadastrar mensalista: " + e);
+            System.out.println("Falha ao cadastrar pedido: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }
     }
 
-    public static List<Mensalista> read() {
+    /*public static List<Pedido> read() {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        List<Mensalista> mensalistas = new ArrayList();
+        List<Pedido> pedidos = new ArrayList();
 
         try {
-            stmt = con.prepareStatement("SELECT * FROM Mensalista");
+            stmt = con.prepareStatement("SELECT * FROM Pedido");
             rs = stmt.executeQuery();
 
             while (rs.next()) {
-                Mensalista mensalista = new Mensalista();
+                Pedido pedido = new Pedido();
 
-                mensalista.setId(rs.getInt("id"));
-                //mensalista.setBairro(rs.getInt("id_bairro"));
-                mensalista.setNome(rs.getString("nome"));
-                mensalista.setCPF(rs.getString("cpf"));
-                mensalista.setConta(rs.getDouble("conta"));
-                mensalista.setEndereco(rs.getString("endereco"));
-                mensalista.setStatus(rs.getString("_status"));
+                pedido.setId(rs.getInt("id"));
+                pedido.setNome(rs.getString("nome"));
+                pedido.setValorDiaria(rs.getDouble("valor_diaria"));
+                pedido.setStatus(rs.getString("_status"));
+                pedido.setStatus(rs.getString("_status"));
+                pedido.setStatus(rs.getString("_status"));
+                pedido.setStatus(rs.getString("_status"));
+                pedido.setStatus(rs.getString("_status"));
+                pedido.setStatus(rs.getString("_status"));
+                pedido.setStatus(rs.getString("_status"));
+                pedido.setStatus(rs.getString("_status"));
+                pedido.setStatus(rs.getString("_status"));
+                pedido.setStatus(rs.getString("_status"));
 
-                mensalistas.add(mensalista);
+                pedido.add(pedido);
             }
 
-            return mensalistas;
+            return pedidos;
         } catch (SQLException e) {
-            System.out.println("Falha ao buscar mensalistas: " + e);
+            System.out.println("Falha ao buscar pedido: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }
         return null;
-    }
+    }*/
 
-    /*public static List<Remedio> readDinamico(String descricao, Laboratorio l,
+ /*public static List<Remedio> readDinamico(String descricao, Laboratorio l,
             double valorCustoMin, double valorCustoMax,
             double valorVendaMin, double valorVendaMax,
             String status, String orderBy, boolean desc) {
@@ -144,37 +182,36 @@ public class MensalistaDAO {
         }
         return null;
     }*/
-    public static void update(Mensalista mensalista) {
+    public static void update(Pedido pedido) {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("CALL update_mensalista(?, ?, ?)");
+            stmt = con.prepareStatement("CALL update_pedido(?, ?)");
 
-            stmt.setInt(1, mensalista.getId());
-            stmt.setString(2, mensalista.getEndereco());
-            stmt.setString(3, mensalista.getStatus());
+            stmt.setInt(1, pedido.getId());
+            stmt.setString(2, pedido.getStatus());
 
             stmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Falha ao atualizar mensalista: " + e);
+            System.out.println("Falha ao atualizar pedido: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }
     }
 
-    public static void delete(Mensalista mensalista) {
+    public static void delete(Pedido pedido) {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("CALL delete_mensalista(?)");
+            stmt = con.prepareStatement("CALL delete_pedido(?)");
 
-            stmt.setInt(1, mensalista.getId());
+            stmt.setInt(1, pedido.getId());
 
             stmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Erro ao excluir mensalista: " + e);
+            System.out.println("Erro ao excluir pedido: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }

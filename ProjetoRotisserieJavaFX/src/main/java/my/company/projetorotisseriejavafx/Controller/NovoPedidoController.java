@@ -2,6 +2,8 @@ package my.company.projetorotisseriejavafx.Controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,9 +11,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -19,12 +25,22 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import my.company.projetorotisseriejavafx.DAO.BairroDAO;
 import my.company.projetorotisseriejavafx.DAO.MensalistaDAO;
+import my.company.projetorotisseriejavafx.DAO.MotoboyDAO;
+import my.company.projetorotisseriejavafx.DAO.PedidoDAO;
 import my.company.projetorotisseriejavafx.Objects.Bairro;
 import my.company.projetorotisseriejavafx.Objects.MarmitaVendida;
 import my.company.projetorotisseriejavafx.Objects.Mensalista;
+import my.company.projetorotisseriejavafx.Objects.Motoboy;
+import my.company.projetorotisseriejavafx.Objects.Pedido;
 import my.company.projetorotisseriejavafx.Objects.ProdutoVendido;
 
 public class NovoPedidoController implements Initializable {
+
+    private double valorTotal = 0;
+    private double valorEntrega = 0;
+
+    @FXML
+    private Pane panePrincipal;
 
     @FXML
     private TableView<MarmitaVendida> tableMarmita;
@@ -32,6 +48,8 @@ public class NovoPedidoController implements Initializable {
     private TableColumn<MarmitaVendida, String> colDescricaoMarmita;
     @FXML
     private TableColumn<MarmitaVendida, Double> colSubtotalMarmita;
+    @FXML
+    private TableColumn<MarmitaVendida, String> colDelMarmita;
 
     @FXML
     private TableView<ProdutoVendido> tableProduto;
@@ -41,6 +59,8 @@ public class NovoPedidoController implements Initializable {
     private TableColumn<ProdutoVendido, Integer> colQuantidadeProduto;
     @FXML
     private TableColumn<ProdutoVendido, Double> colSubtotalProduto;
+    @FXML
+    private TableColumn<ProdutoVendido, String> colDelProduto;
 
     @FXML
     private ToggleButton tabButtonLeft;
@@ -51,9 +71,29 @@ public class NovoPedidoController implements Initializable {
     @FXML
     private ComboBox comboBoxMensalista;
     @FXML
+    private ComboBox comboBoxMotoboy;
+    @FXML
     private CheckBox checkBoxMensalista;
     @FXML
     private RadioButton RBEntrega;
+    @FXML
+    private Label labelCliente;
+    @FXML
+    private TextField TFNomeCliente;
+    @FXML
+    private TextArea TAEndereco;
+    @FXML
+    private TextArea TAObservacoes;
+    @FXML
+    private Label labelValorEntrega;
+    @FXML
+    private Label labelValorTotal;
+    @FXML
+    private Label labelClienteInfo;
+    @FXML
+    private Label labelEnderecoInfo;
+    @FXML
+    private Label labelItensInfo;
 
     @FXML
     private AnchorPane APMarmitaProduto;
@@ -62,12 +102,13 @@ public class NovoPedidoController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        loadBairro();
-        loadMensalista();
         comboBoxMensalista.setDisable(true);
         RBEntrega.setSelected(true);
         initTableMarmita();
         initTableProduto();
+        loadBairro();
+        loadMensalista();
+        loadMotoboy();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/paneMarmita.fxml"));
             Pane marmitaPane = loader.load();
@@ -80,12 +121,39 @@ public class NovoPedidoController implements Initializable {
     }
 
     @FXML
-    private void checkBoxMensalista(ActionEvent event) {
+    private void Finalizar() {
+        Pedido pedido = new Pedido();
+
         if (checkBoxMensalista.isSelected()) {
-            comboBoxMensalista.setDisable(false);
+            pedido.setMensalista((Mensalista) comboBoxMensalista.getSelectionModel().getSelectedItem());
         } else {
-            comboBoxMensalista.setDisable(true);
+            pedido.setNomeCliente(TFNomeCliente.getText());
         }
+
+        if (RBEntrega.isSelected()) {
+            pedido.setTipoPedido("Entrega");
+            pedido.setMotoboy((Motoboy) comboBoxMotoboy.getSelectionModel().getSelectedItem());
+            pedido.setEndereco(TAEndereco.getText());
+            pedido.setBairro((Bairro) comboBoxBairro.getSelectionModel().getSelectedItem());
+        } else {
+            pedido.setTipoPedido("Balcão");
+        }
+
+        pedido.setObservacoes(TAObservacoes.getText());
+
+        pedido.setValorEntrega(valorEntrega);
+        pedido.setValorTotal(valorTotal);
+
+        if (verificaPedido()) {
+            PedidoDAO.create(pedido);
+            System.out.println("Pedido finalizado");
+        }
+
+    }
+
+    @FXML
+    private void Cancelar() {
+        ((AnchorPane) panePrincipal.getParent()).getChildren().clear();
     }
 
     @FXML
@@ -132,6 +200,7 @@ public class NovoPedidoController implements Initializable {
             paneEndereco.setDisable(false);
         } else {
             paneEndereco.setDisable(true);
+            labelEnderecoInfo.setText("");
         }
     }
 
@@ -140,7 +209,13 @@ public class NovoPedidoController implements Initializable {
         for (Bairro bairro : BairroDAO.read()) {
             comboBoxBairro.getItems().add(bairro);
         }
+        comboBoxBairro.setOnAction(e -> {
+            valorEntrega = ((Bairro) comboBoxBairro.getSelectionModel().getSelectedItem()).getValorEntrega();
+            atualizaValor();
+        });
         comboBoxBairro.getSelectionModel().selectFirst();
+        valorEntrega = ((Bairro) comboBoxBairro.getSelectionModel().getSelectedItem()).getValorEntrega();
+        atualizaValor();
     }
 
     private void loadMensalista() {
@@ -151,22 +226,129 @@ public class NovoPedidoController implements Initializable {
         comboBoxMensalista.getSelectionModel().selectFirst();
     }
 
+    private void loadMotoboy() {
+        comboBoxMotoboy.getItems().clear();
+        for (Motoboy motoboy : MotoboyDAO.read()) {
+            comboBoxMotoboy.getItems().add(motoboy);
+        }
+        comboBoxMotoboy.getSelectionModel().selectFirst();
+    }
+
     public void adicionarMarmita(MarmitaVendida marmitaVendida) {
         tableMarmita.getItems().add(marmitaVendida);
+        valorTotal += marmitaVendida.getMarmita().getValor();
+        atualizaValor();
+        labelItensInfo.setText("");
     }
-    
+
     public void adicionarProduto(ProdutoVendido produtoVendido) {
         tableProduto.getItems().add(produtoVendido);
+        valorTotal += produtoVendido.getProduto().getValor();
+        atualizaValor();
+        labelItensInfo.setText("");
     }
 
     private void initTableMarmita() {
         colDescricaoMarmita.setCellValueFactory(new PropertyValueFactory<>("descricao"));
         colSubtotalMarmita.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
+        colDelMarmita.setCellValueFactory(new PropertyValueFactory<>("deletar"));
+        colDelMarmita.setCellFactory(tc -> {
+            TableCell<MarmitaVendida, String> cell = new TableCell<>() {
+                @Override
+                protected void updateItem(String valor, boolean empty) {
+                    super.updateItem(valor, empty);
+                    setText(empty ? null : valor);
+                }
+            };
+
+            cell.setOnMouseClicked(event -> {
+                if (!cell.isEmpty()) {
+                    MarmitaVendida marmita = cell.getTableRow().getItem();
+                    valorTotal -= marmita.getSubtotal();
+                    tableMarmita.getItems().remove(marmita);
+                    atualizaValor();
+                }
+            });
+
+            return cell;
+        });
     }
 
     private void initTableProduto() {
         colDescricaoProduto.setCellValueFactory(new PropertyValueFactory<>("descricao"));
         colQuantidadeProduto.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
         colSubtotalProduto.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
+        colDelProduto.setCellValueFactory(new PropertyValueFactory<>("deletar"));
+        colDelProduto.setCellFactory(tc -> {
+            TableCell<ProdutoVendido, String> cell = new TableCell<>() {
+                @Override
+                protected void updateItem(String valor, boolean empty) {
+                    super.updateItem(valor, empty);
+                    setText(empty ? null : valor);
+                }
+            };
+
+            cell.setOnMouseClicked(event -> {
+                if (!cell.isEmpty()) {
+                    ProdutoVendido produto = cell.getTableRow().getItem();
+                    valorTotal -= produto.getSubtotal();
+                    tableProduto.getItems().remove(produto);
+                    atualizaValor();
+                }
+            });
+
+            return cell;
+        });
     }
+
+    private void atualizaValor() {
+        NumberFormat formatoMoeda = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+        String valorEntregaFormatado = formatoMoeda.format(valorEntrega);
+        String valorTotalFormatado = formatoMoeda.format(valorTotal + valorEntrega);
+
+        labelValorEntrega.setText("Entrega " + valorEntregaFormatado);
+        labelValorTotal.setText("Total " + (valorTotalFormatado));
+    }
+
+    private boolean verificaPedido() {
+        boolean isValid = true;
+
+        if (!checkBoxMensalista.isSelected() && (TFNomeCliente.getText().equals("") || TFNomeCliente.getText() == null)) {
+            labelClienteInfo.setText("Este campo não pode estar vazio");
+            isValid = false;
+        } else {
+            labelClienteInfo.setText("");
+        }
+
+        if (RBEntrega.isSelected() && (TAEndereco.getText().equals("") || TAEndereco.getText() == null)) {
+            labelEnderecoInfo.setText("Este campo não pode estar vazio");
+            isValid = false;
+        } else {
+            labelEnderecoInfo.setText("");
+        }
+
+        if (tableMarmita.getItems().size() <= 0 && tableProduto.getItems().size() <= 0) {
+            labelItensInfo.setText("Adicione ao menos 1 marmita/produto ao pedido");
+            isValid = false;
+        } else {
+            labelItensInfo.setText("");
+        }
+
+        return isValid;
+    }
+
+    @FXML
+    private void checkBoxMensalista(ActionEvent event) {
+        if (checkBoxMensalista.isSelected()) {
+            comboBoxMensalista.setDisable(false);
+            labelCliente.setDisable(true);
+            TFNomeCliente.setDisable(true);
+            labelClienteInfo.setText("");
+        } else {
+            comboBoxMensalista.setDisable(true);
+            labelCliente.setDisable(false);
+            TFNomeCliente.setDisable(false);
+        }
+    }
+
 }

@@ -12,26 +12,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 
 import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import my.company.projetorotisseriejavafx.DAO.MarmitaDAO;
-import my.company.projetorotisseriejavafx.DAO.ProdutoDAO;
 import my.company.projetorotisseriejavafx.Objects.Marmita;
 import my.company.projetorotisseriejavafx.Objects.MarmitaVendida;
-import my.company.projetorotisseriejavafx.Objects.Produto;
 
-/**
- * FXML Controller class
- *
- * @author kaueg
- */
 public class PaneMarmitaController implements Initializable {
 
     private int misturas;
@@ -126,6 +116,7 @@ public class PaneMarmitaController implements Initializable {
         }
         marmita.setDetalhes(detalhes);
         controller.adicionarMarmita(marmita);
+        
     }
 
     @FXML
