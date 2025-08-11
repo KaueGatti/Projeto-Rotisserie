@@ -4,11 +4,21 @@
  */
 package my.company.projetorotisseriejavafx.DAO;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Types;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import my.company.projetorotisseriejavafx.DB.Conexao;
+import my.company.projetorotisseriejavafx.Objects.Bairro;
+import my.company.projetorotisseriejavafx.Objects.Mensalista;
+import my.company.projetorotisseriejavafx.Objects.Motoboy;
 import my.company.projetorotisseriejavafx.Objects.Pedido;
 
 /**
@@ -17,171 +27,159 @@ import my.company.projetorotisseriejavafx.Objects.Pedido;
  */
 public class PedidoDAO {
 
-    public static void create(Pedido pedido) {
+    public static int create(Pedido pedido) {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
+        ResultSet rs = null;
 
         try {
-            stmt = con.prepareStatement("CALL create_pedido(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            stmt = con.prepareStatement("CALL create_pedido(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 
             if (pedido.getMensalista() != null) {
                 stmt.setInt(1, pedido.getMensalista().getId());
             } else {
-                stmt.setNull(1, Types.NULL);
+                stmt.setNull(1, Types.INTEGER);
             }
 
             if (pedido.getBairro() != null) {
                 stmt.setInt(2, pedido.getBairro().getId());
             } else {
-                stmt.setNull(2, Types.NULL);
+                stmt.setNull(2, Types.INTEGER);
             }
 
             if (pedido.getMotoboy() != null) {
                 stmt.setInt(3, pedido.getMotoboy().getId());
             } else {
-                stmt.setNull(3, Types.NULL);
+                stmt.setNull(3, Types.INTEGER);
             }
-            
+
             if (pedido.getNomeCliente() != null) {
                 stmt.setString(4, pedido.getNomeCliente());
             } else {
-                stmt.setNull(4, Types.NULL);
+                stmt.setNull(4, Types.VARCHAR);
             }
-            
-            stmt.setString(5, "Test");
-            
+
+            stmt.setString(5, pedido.getTipoPagamento());
+
             stmt.setString(6, pedido.getTipoPedido());
-            
+
             stmt.setString(7, pedido.getObservacoes());
-            
+
             stmt.setDouble(8, pedido.getValorEntrega());
             stmt.setDouble(9, pedido.getValorTotal());
-            
+
             if (pedido.getEndereco() != null) {
                 stmt.setString(10, pedido.getEndereco());
             } else {
-                stmt.setNull(10, Types.NULL);
+                stmt.setNull(10, Types.VARCHAR);
             }
-            
-            stmt.executeUpdate();
+
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
         } catch (SQLException e) {
             System.out.println("Falha ao cadastrar pedido: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }
+        return -1;
     }
 
-    /*public static List<Pedido> read() {
+    public static List<Pedido> readDinamico(String nomeCliente,
+            String tipoPedido, LocalDate data, String status,
+            String orderBy, boolean isDesc) {
+
         Connection con = Conexao.getConnection();
-        PreparedStatement stmt = null;
+        CallableStatement cs = null;
         ResultSet rs = null;
-        List<Pedido> pedidos = new ArrayList();
+        List<Pedido> pedidos = new ArrayList<>();
 
         try {
-            stmt = con.prepareStatement("SELECT * FROM Pedido");
-            rs = stmt.executeQuery();
+            cs = con.prepareCall("CALL filterPedidoDinamico(?, ?, ?, ?, ?, ?)");
+
+            if (nomeCliente != null) {
+                cs.setString(1, nomeCliente);
+            } else {
+                cs.setNull(1, Types.VARCHAR);
+            }
+
+            if (tipoPedido != null) {
+                cs.setString(2, tipoPedido);
+            } else {
+                cs.setNull(2, Types.VARCHAR);
+            }
+
+            if (data != null) {
+                cs.setDate(3, Date.valueOf(data));
+            } else {
+                cs.setNull(3, Types.TIMESTAMP);
+            }
+
+            if (status != null) {
+                cs.setString(4, status);
+            } else {
+                cs.setNull(4, Types.VARCHAR);
+            }
+
+            if (orderBy != null) {
+                cs.setString(5, orderBy);
+                cs.setBoolean(6, isDesc);
+            } else {
+                cs.setNull(5, Types.VARCHAR);
+                cs.setBoolean(6, false);
+            }
+
+            rs = cs.executeQuery();
 
             while (rs.next()) {
                 Pedido pedido = new Pedido();
 
                 pedido.setId(rs.getInt("id"));
-                pedido.setNome(rs.getString("nome"));
-                pedido.setValorDiaria(rs.getDouble("valor_diaria"));
-                pedido.setStatus(rs.getString("_status"));
-                pedido.setStatus(rs.getString("_status"));
-                pedido.setStatus(rs.getString("_status"));
-                pedido.setStatus(rs.getString("_status"));
-                pedido.setStatus(rs.getString("_status"));
-                pedido.setStatus(rs.getString("_status"));
-                pedido.setStatus(rs.getString("_status"));
-                pedido.setStatus(rs.getString("_status"));
-                pedido.setStatus(rs.getString("_status"));
+
+                if (rs.getInt("id_mensalista") != Types.NULL) {
+                    for (Mensalista mensalista : MensalistaDAO.read(rs.getInt("id_mensalista"))) {
+                        pedido.setMensalista(mensalista);
+                    }
+                }
+                
+                pedido.setTipoPagamento(rs.getString("tipo_pagamento"));
+                
+                pedido.setTipoPedido(rs.getString("tipo_pedido"));
+
+                if (pedido.getTipoPedido().equals("Entrega")) {
+
+                    for (Bairro bairro : BairroDAO.read(rs.getInt("id_bairro"))) {
+                        pedido.setBairro(bairro);
+                    }
+
+                    for (Motoboy motoboy : MotoboyDAO.read(rs.getInt("id_motoboy"))) {
+                        pedido.setMotoboy(motoboy);
+                    }
+
+                    pedido.setValorEntrega(rs.getInt("valor_entrega"));
+                }
+
+                pedido.setNomeCliente(nomeCliente);
+                pedido.setObservacoes(rs.getString("observacoes"));
+                pedido.setValorTotal(rs.getDouble("valor_total"));
+                pedido.setEndereco(rs.getString("endereco"));
+                pedido.setDateTime(rs.getTimestamp("date_time").toLocalDateTime());
                 pedido.setStatus(rs.getString("_status"));
 
-                pedido.add(pedido);
+                pedidos.add(pedido);
             }
 
             return pedidos;
         } catch (SQLException e) {
-            System.out.println("Falha ao buscar pedido: " + e);
-        } finally {
-            Conexao.closeConnection(con, stmt);
-        }
-        return null;
-    }*/
-
- /*public static List<Remedio> readDinamico(String descricao, Laboratorio l,
-            double valorCustoMin, double valorCustoMax,
-            double valorVendaMin, double valorVendaMax,
-            String status, String orderBy, boolean desc) {
-
-        Connection con = Conexao.getConnection();
-        CallableStatement cs = null;
-        ResultSet rs = null;
-        List<Remedio> remedios = new ArrayList();
-
-        try {
-            cs = con.prepareCall("CALL filterRemedioDinamico(?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
-            cs.setString(1, "%" + descricao + "%");
-            
-            if (l != null) {
-                cs.setInt(2, l.getId());
-            } else {
-                cs.setNull(2, Types.INTEGER);
-            }
-            
-            cs.setDouble(3, valorCustoMin);
-            cs.setDouble(4, valorCustoMax);
-            cs.setDouble(5, valorVendaMin);
-            cs.setDouble(6, valorVendaMax);
-            
-            if (status != null) {
-                cs.setString(7, status);
-            } else {
-                cs.setNull(7, Types.VARCHAR);
-            }
-            
-            if (orderBy != null) {
-                cs.setString(8, orderBy);
-            } else {
-                cs.setNull(8, Types.VARCHAR);
-            }
-            
-            cs.setBoolean(9, desc);
-
-            rs = cs.executeQuery();
-
-            while (rs.next()) {
-                Remedio remedio = new Remedio();
-
-                remedio.setId(rs.getInt("id_remedio"));
-                for (Laboratorio lab : LaboratorioDAO.read()) {
-                    if (lab.getId() == rs.getInt("id_lab")) {
-                        remedio.setLaboratorio(lab);
-                        break;
-                    }
-                }
-                remedio.setDescricao(rs.getString("descricao"));
-                if (rs.getDate("data_ultima_compra") != null) {
-                    remedio.setDataUltimaCompra(rs.getDate("data_ultima_compra").toLocalDate());
-                }
-                remedio.setValorCusto(rs.getDouble("valor_custo"));
-                remedio.setValorVenda(rs.getDouble("valor_venda"));
-                remedio.setQuantidade(rs.getInt("qntd_armazenada"));
-                remedio.setStatus(rs.getString("_status"));
-
-                remedios.add(remedio);
-            }
-
-            return remedios;
-        } catch (SQLException e) {
-            javax.swing.JOptionPane.showMessageDialog(null, "Falha ao buscar remédios dinamicamente: " + e);
+            System.out.println("Falha ao buscar pedidos dinamicamente: " + e);
+            e.printStackTrace();
         } finally {
             Conexao.closeConnection(con, cs);
         }
         return null;
-    }*/
+    }
+
     public static void update(Pedido pedido) {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;

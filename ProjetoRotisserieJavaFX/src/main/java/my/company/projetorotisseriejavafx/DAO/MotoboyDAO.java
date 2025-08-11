@@ -66,6 +66,39 @@ public class MotoboyDAO {
         }
         return null;
     }
+    
+    public static List<Motoboy> read(int id) {
+        Connection con = Conexao.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        List<Motoboy> motoboys = new ArrayList();
+
+        try {
+            stmt = con.prepareStatement("SELECT * FROM Motoboy WHERE id = ?");
+            
+            stmt.setInt(1, id);
+            
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Motoboy motoboy = new Motoboy();
+
+                motoboy.setId(rs.getInt("id"));
+                motoboy.setNome(rs.getString("nome"));
+                motoboy.setValorDiaria(rs.getDouble("valor_diaria"));
+                motoboy.setStatus(rs.getString("_status"));
+
+                motoboys.add(motoboy);
+            }
+
+            return motoboys;
+        } catch (SQLException e) {
+            System.out.println("Falha ao buscar motoboys: " + e);
+        } finally {
+            Conexao.closeConnection(con, stmt);
+        }
+        return null;
+    }
 
     /*public static List<Remedio> readDinamico(String descricao, Laboratorio l,
             double valorCustoMin, double valorCustoMax,

@@ -6,10 +6,13 @@ public class ProdutoVendido {
     private Produto produto;
     private Pedido pedido;
     private int quantidade;
-    private String deletar = "-";
 
-    public String getDeletar() {
-        return deletar;
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
     }
 
     public int getId() {

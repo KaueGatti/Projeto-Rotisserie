@@ -59,6 +59,8 @@ INSERT INTO Motoboy (nome, valor_diaria, _status) VALUES
 ('Eduardo Martins', 99.50, 'ATIVO');
 
 select * from Pedido;
+select * from Marmita_Vendida;
+select * from Produto_Vendido;
 
 
 

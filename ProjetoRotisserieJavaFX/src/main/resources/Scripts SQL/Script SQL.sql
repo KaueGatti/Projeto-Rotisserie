@@ -62,8 +62,7 @@ CREATE TABLE IF NOT EXISTS Pedido (
 	valor_entrega DECIMAL(10,2),
 	valor_total DECIMAL(10,2) NOT NULL,
 	endereco VARCHAR(100),
-	horario TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	_data DATE,
+	date_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	_status VARCHAR(30) NOT NULL DEFAULT 'FINALIZADO',
 	PRIMARY KEY (id),
     CONSTRAINT fk_mensalista FOREIGN KEY (id_mensalista) REFERENCES Mensalista (id),
@@ -77,6 +76,7 @@ CREATE TABLE IF NOT EXISTS Marmita_Vendida (
 	id_pedido INT NOT NULL,
 	detalhes VARCHAR(100) NOT NULL,
     valor_peso DECIMAL(10,2),
+    subtotal DECIMAL(10,2) NOT NULL,
 	observacao VARCHAR(100),
 	PRIMARY KEY (id),
     CONSTRAINT fk_marmita FOREIGN KEY (id_marmita) REFERENCES Marmita (id),
@@ -120,10 +120,10 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE create_marmita_vendida(_id_marmita INT, _id_pedido INT, _detalhes VARCHAR(100), _observacao VARCHAR(100))
+CREATE PROCEDURE create_marmita_vendida(_id_marmita INT, _id_pedido INT, _subtotal DECIMAL(10,2), _detalhes VARCHAR(100), _observacao VARCHAR(100))
 BEGIN
-	INSERT INTO Marmita_Vendida (id_marmita, id_pedido, detalhes, observacao)
-    VALUES (_id_marmita, _id_pedido, _detalhes, _observacao);
+	INSERT INTO Marmita_Vendida (id_marmita, id_pedido, subtotal, detalhes, observacao)
+    VALUES (_id_marmita, _id_pedido, _subtotal, _detalhes, _observacao);
 END $$
 DELIMITER ;
 
@@ -259,6 +259,7 @@ CREATE PROCEDURE create_pedido(_id_mensalista INT, _id_bairro INT, _id_motoboy I
 BEGIN
 	INSERT INTO Pedido (id_mensalista, id_bairro, id_motoboy, nome_cliente, tipo_pagamento, tipo_pedido, observacoes, valor_entrega, valor_total, endereco)
     VALUES (_id_mensalista, _id_bairro, _id_motoboy, _nome_cliente, _tipo_pagamento, _tipo_pedido, _observacoes, _valor_entrega, _valor_total, _endereco);
+    SELECT LAST_INSERT_ID();
 END $$
 DELIMITER ;
 
@@ -276,6 +277,40 @@ CREATE PROCEDURE delete_pedido(_id INT)
 BEGIN
 	DELETE FROM Pedido
     WHERE id = _id;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE filterPedidoDinamico (nome_cliente VARCHAR(100), tipo_pedido VARCHAR(30), date_time TIMESTAMP, _status VARCHAR(30), orderBy VARCHAR(20), isDesc BOOLEAN)
+BEGIN
+	SET @sql = 'SELECT * FROM Pedido WHERE 1=1';
+    
+    IF nome_cliente IS NOT NULL THEN
+		SET @sql = CONCAT(@sql, ' AND Pedido.nome_cliente LIKE \'', nome_cliente, '\'');
+	END IF;
+    
+    IF tipo_pedido IS NOT NULL THEN
+		SET @sql = CONCAT(@sql, ' AND Pedido.tipo_pedido = \'', tipo_pedido, '\'');
+	END IF;
+    
+    IF date_time IS NOT NULL THEN
+		SET @sql = CONCAT(@sql, ' AND Pedido.date_time = \'', date_time, '\'');
+	END IF;
+    
+    IF _status IS NOT NULL THEN
+		SET @sql = CONCAT(@sql, ' AND Pedido._status = \'', _status, '\'');
+    END IF;
+    
+    IF orderBy IS NOT NULL THEN
+		SET @sql = CONCAT(@sql, ' ORDER BY ', orderBy);
+		IF isDesc THEN
+			SET @sql = CONCAT(@sql, ' DESC');
+		END IF;
+	END IF;
+    
+    PREPARE stmt FROM @sql;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
 END $$
 DELIMITER ;
 

@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
@@ -28,12 +29,14 @@ public class modalObservacaoController implements Initializable {
     
     @FXML
     private TextArea TAobservacao;
+    @FXML
+    private AnchorPane root;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
     }
 
-    @FXML
     private void close() {
         Stage stage = (Stage) bttAdicionar.getScene().getWindow();
         stage.close();
@@ -53,6 +56,10 @@ public class modalObservacaoController implements Initializable {
     
     public String getObservacao() {
         return observacao;
+    }
+    
+    public void loadObservacao(String obs) {
+        TAobservacao.setText(obs);
     }
 
 }

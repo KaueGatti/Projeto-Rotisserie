@@ -19,12 +19,12 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutY="144.0" prefHeight="37.0" prefWidth="448.0" text="Misturas">
+      <Label fx:id="labelMistura" alignment="CENTER" layoutY="144.0" prefHeight="37.0" prefWidth="373.0" text="Misturas: 1">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutY="275.0" prefHeight="37.0" prefWidth="448.0" text="Guarnições">
+      <Label fx:id="labelGuarnicao" alignment="CENTER" layoutY="275.0" prefHeight="37.0" prefWidth="373.0" text="Guarnições: 2">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
@@ -39,12 +39,12 @@
             <Font size="20.0" />
          </font>
       </Button>
-      <Button layoutX="232.0" layoutY="471.0" mnemonicParsing="false" onAction="#bttLimpar" prefHeight="57.0" prefWidth="175.0" styleClass="btt" text="- Limpar">
+      <Button fx:id="btnLimpar" layoutX="232.0" layoutY="471.0" mnemonicParsing="false" onAction="#limpar" prefHeight="57.0" prefWidth="175.0" styleClass="btt" text="- Limpar">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
-      <ComboBox fx:id="comboBox" layoutX="14.0" layoutY="33.0" onAction="#comboBox" prefHeight="37.0" prefWidth="420.0" />
+      <ComboBox fx:id="comboBox" layoutX="14.0" layoutY="33.0" prefHeight="37.0" prefWidth="420.0" />
       <CheckBox fx:id="checkBoxArroz" layoutX="60.0" layoutY="101.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="160.0" text="CheckBox">
          <font>
             <Font size="18.0" />
@@ -55,50 +55,65 @@
             <Font size="18.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="checkBoxMistura1" layoutX="59.0" layoutY="172.0" mnemonicParsing="false" onAction="#checkBoxMistura" prefHeight="49.0" prefWidth="160.0" text="CheckBox">
+      <CheckBox fx:id="checkBoxMistura1" layoutX="58.0" layoutY="201.0" mnemonicParsing="false" onAction="#checkBoxMistura" prefHeight="27.0" prefWidth="160.0" text="CheckBox">
          <font>
             <Font size="18.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="checkBoxMistura2" layoutX="244.0" layoutY="172.0" mnemonicParsing="false" onAction="#checkBoxMistura" prefHeight="49.0" prefWidth="160.0" text="CheckBox">
+      <CheckBox fx:id="checkBoxMistura2" layoutX="243.0" layoutY="201.0" mnemonicParsing="false" onAction="#checkBoxMistura" prefHeight="27.0" prefWidth="160.0" text="CheckBox">
          <font>
             <Font size="18.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="checkBoxMistura3" layoutX="59.0" layoutY="226.0" mnemonicParsing="false" onAction="#checkBoxMistura" prefHeight="49.0" prefWidth="160.0" text="CheckBox">
+      <CheckBox fx:id="checkBoxMistura3" layoutX="58.0" layoutY="240.0" mnemonicParsing="false" onAction="#checkBoxMistura" prefHeight="27.0" prefWidth="160.0" text="CheckBox">
          <font>
             <Font size="18.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="checkBoxMistura4" layoutX="244.0" layoutY="226.0" mnemonicParsing="false" onAction="#checkBoxMistura" prefHeight="49.0" prefWidth="160.0" text="CheckBox">
+      <CheckBox fx:id="checkBoxMistura4" layoutX="243.0" layoutY="240.0" mnemonicParsing="false" onAction="#checkBoxMistura" prefHeight="27.0" prefWidth="160.0" text="CheckBox">
          <font>
             <Font size="18.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="checkBoxGuarnicao1" layoutX="60.0" layoutY="308.0" mnemonicParsing="false" onAction="#checkBoxGuarnicoes" prefHeight="49.0" prefWidth="160.0" text="CheckBox">
+      <CheckBox fx:id="checkBoxGuarnicao1" layoutX="58.0" layoutY="333.0" mnemonicParsing="false" onAction="#checkBoxGuarnicoes" prefHeight="25.0" prefWidth="160.0" text="CheckBox">
          <font>
             <Font size="18.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="checkBoxGuarnicao2" layoutX="245.0" layoutY="308.0" mnemonicParsing="false" onAction="#checkBoxGuarnicoes" prefHeight="49.0" prefWidth="160.0" text="CheckBox">
+      <CheckBox fx:id="checkBoxGuarnicao2" layoutX="244.0" layoutY="333.0" mnemonicParsing="false" onAction="#checkBoxGuarnicoes" prefHeight="17.0" prefWidth="160.0" text="CheckBox">
          <font>
             <Font size="18.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="checkBoxGuarnicao3" layoutX="60.0" layoutY="362.0" mnemonicParsing="false" onAction="#checkBoxGuarnicoes" prefHeight="49.0" prefWidth="160.0" text="CheckBox">
+      <CheckBox fx:id="checkBoxGuarnicao3" layoutX="58.0" layoutY="376.0" mnemonicParsing="false" onAction="#checkBoxGuarnicoes" prefHeight="27.0" prefWidth="160.0" text="CheckBox">
          <font>
             <Font size="18.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="checkBoxGuarnicao4" layoutX="245.0" layoutY="362.0" mnemonicParsing="false" onAction="#checkBoxGuarnicoes" prefHeight="49.0" prefWidth="160.0" text="CheckBox">
+      <CheckBox fx:id="checkBoxGuarnicao4" layoutX="244.0" layoutY="376.0" mnemonicParsing="false" onAction="#checkBoxGuarnicoes" prefHeight="27.0" prefWidth="160.0" text="CheckBox">
          <font>
             <Font size="18.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="checkBoxSalada" layoutX="59.0" layoutY="411.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="160.0" text="CheckBox">
+      <CheckBox fx:id="checkBoxSalada" layoutX="57.0" layoutY="418.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="160.0" text="CheckBox">
          <font>
             <Font size="18.0" />
          </font>
       </CheckBox>
+      <Label fx:id="labelInfoMisturaAdc" layoutX="364.0" layoutY="150.0" prefHeight="25.0" prefWidth="68.0" text="+R$0,00">
+         <font>
+            <Font size="16.0" />
+         </font></Label>
+      <Label fx:id="labelInfoGuarnicaoAdc" layoutX="364.0" layoutY="281.0" prefHeight="25.0" prefWidth="68.0" text="+R$0,00">
+         <font>
+            <Font size="16.0" />
+         </font></Label>
+      <Button fx:id="btnAddGuarnicao" layoutX="283.0" layoutY="281.0" mnemonicParsing="false" onAction="#addGuarnicao" prefHeight="25.0" prefWidth="30.0" styleClass="btt" text="+" />
+      <Button fx:id="btnSubGuarnicao" layoutX="325.0" layoutY="281.0" mnemonicParsing="false" onAction="#subGuarnicao" prefHeight="25.0" prefWidth="30.0" styleClass="btt" text="-" />
+      <Button fx:id="btnAddMistura" layoutX="284.0" layoutY="150.0" mnemonicParsing="false" onAction="#addMistura" prefHeight="25.0" prefWidth="30.0" styleClass="btt" text="+" />
+      <Button fx:id="btnSubMistura" layoutX="326.0" layoutY="150.0" mnemonicParsing="false" onAction="#subMistura" prefHeight="25.0" prefWidth="30.0" styleClass="btt" text="-" />
+      <Label fx:id="labelInfoGuarnicao" layoutX="58.0" layoutY="308.0" prefHeight="25.0" prefWidth="335.0" />
+      <Label fx:id="labelInfoMistura" layoutX="53.0" layoutY="175.0" prefHeight="25.0" prefWidth="335.0" />
+      <Label fx:id="labelInfoMarmita" layoutX="50.0" layoutY="452.0" prefHeight="17.0" prefWidth="360.0" />
    </children>
 </Pane>

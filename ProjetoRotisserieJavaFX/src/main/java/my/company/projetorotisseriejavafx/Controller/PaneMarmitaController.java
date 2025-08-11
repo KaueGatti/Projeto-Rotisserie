@@ -6,14 +6,19 @@ package my.company.projetorotisseriejavafx.Controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
 
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -24,24 +29,76 @@ import my.company.projetorotisseriejavafx.Objects.MarmitaVendida;
 
 public class PaneMarmitaController implements Initializable {
 
+    private NumberFormat formatoMoeda = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+
+    private int maxMisturas;
+    private int maxGuarnicoes;
     private int misturas;
     private int guarnicoes;
+
+    private int misturasAdicionais;
+    private int guarnicoesAdicionais;
+
     private NovoPedidoController controller;
+    private String observacao;
 
     @FXML
     private ComboBox comboBox;
-
-    private Marmita tipo;
-
-    private MarmitaVendida marmita = new MarmitaVendida();
-
     @FXML
     private Pane paneMarmita;
+    @FXML
+    private Button bttAdicionar;
+    @FXML
+    private Button btnLimpar;
+    @FXML
+    private CheckBox checkBoxArroz;
+    @FXML
+    private CheckBox checkBoxFeijao;
+    @FXML
+    private CheckBox checkBoxMistura1;
+    @FXML
+    private CheckBox checkBoxMistura2;
+    @FXML
+    private CheckBox checkBoxMistura3;
+    @FXML
+    private CheckBox checkBoxMistura4;
+    @FXML
+    private CheckBox checkBoxGuarnicao1;
+    @FXML
+    private CheckBox checkBoxGuarnicao2;
+    @FXML
+    private CheckBox checkBoxGuarnicao3;
+    @FXML
+    private CheckBox checkBoxGuarnicao4;
+    @FXML
+    private CheckBox checkBoxSalada;
+    @FXML
+    private Label labelInfoMistura;
+    @FXML
+    private Label labelInfoGuarnicao;
+    private Spinner<Integer> spinnerMistura;
+    @FXML
+    private Button btnAddGuarnicao;
+    @FXML
+    private Button btnSubGuarnicao;
+    @FXML
+    private Button btnAddMistura;
+    @FXML
+    private Button btnSubMistura;
+    @FXML
+    private Label labelMistura;
+    @FXML
+    private Label labelGuarnicao;
+    @FXML
+    private Label labelInfoMisturaAdc;
+    @FXML
+    private Label labelInfoGuarnicaoAdc;
+    @FXML
+    private Label labelInfoMarmita;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         loadMarmitas();
-        tipo = (Marmita) comboBox.getSelectionModel().getSelectedItem();
     }
 
     public void loadMarmitas() {
@@ -50,11 +107,18 @@ public class PaneMarmitaController implements Initializable {
             comboBox.getItems().add(marmita);
         }
         comboBox.getSelectionModel().selectFirst();
-    }
+        maxMisturas = ((Marmita) comboBox.getSelectionModel().getSelectedItem()).getMaxMistura();
+        maxGuarnicoes = ((Marmita) comboBox.getSelectionModel().getSelectedItem()).getMaxGuarnicao();
 
-    @FXML
-    private void comboBox() {
-        tipo = (Marmita) comboBox.getSelectionModel().getSelectedItem();
+        comboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
+            maxMisturas = ((Marmita) newVal).getMaxMistura();
+            maxGuarnicoes = ((Marmita) newVal).getMaxGuarnicao();
+            labelMistura.setText("Misturas: " + maxMisturas);
+            labelGuarnicao.setText("Guarnições: " + maxGuarnicoes);
+        });
+
+        labelMistura.setText("Misturas: " + maxMisturas);
+        labelGuarnicao.setText("Guarnições: " + maxGuarnicoes);
     }
 
     @FXML
@@ -69,13 +133,16 @@ public class PaneMarmitaController implements Initializable {
             for (Node node : paneMarmita.getChildren()) {
                 if (node instanceof CheckBox checkBox) {
                     if (checkBox.getId().contains("checkBoxMistura") && !checkBox.isSelected()) {
-                        if (misturas >= tipo.getMaxMistura()) {
+                        if (misturas >= (maxMisturas + misturasAdicionais)) {
                             checkBox.setDisable(true);
                         } else {
                             checkBox.setDisable(false);
                         }
                     }
                 }
+            }
+            if (!cb.isSelected()) {
+                cb.setDisable(false);
             }
         }
     }
@@ -92,7 +159,7 @@ public class PaneMarmitaController implements Initializable {
             for (Node node : paneMarmita.getChildren()) {
                 if (node instanceof CheckBox checkBox) {
                     if (checkBox.getId().contains("checkBoxGuarnicao") && !checkBox.isSelected()) {
-                        if (guarnicoes >= tipo.getMaxGuarnicao()) {
+                        if (guarnicoes >= (maxGuarnicoes + guarnicoesAdicionais)) {
                             checkBox.setDisable(true);
                         } else {
                             checkBox.setDisable(false);
@@ -100,34 +167,59 @@ public class PaneMarmitaController implements Initializable {
                     }
                 }
             }
+            if (!cb.isSelected()) {
+                cb.setDisable(false);
+            }
         }
     }
 
     @FXML
     private void bttAdicionar() {
-        marmita.setMarmita(tipo);
-        String detalhes = "";
-        for (Node node : paneMarmita.getChildren()) {
-            if (node instanceof CheckBox checkBox) {
-                if (checkBox.isSelected()) {
-                    detalhes += checkBox.getText();
+        if (marmitaIsValid()) {
+
+            MarmitaVendida marmita = new MarmitaVendida();
+
+            marmita.setMarmita((Marmita) comboBox.getSelectionModel().getSelectedItem());
+
+            String detalhes = "";
+            for (Node node : paneMarmita.getChildren()) {
+                if (node instanceof CheckBox checkBox) {
+                    if (checkBox.isSelected()) {
+                        detalhes += checkBox.getText();
+                    }
                 }
             }
+
+            marmita.setDetalhes(detalhes);
+            marmita.setObservacao(observacao);
+
+            double valorAdicionais = 2 * (misturasAdicionais + guarnicoesAdicionais);
+
+            marmita.setSubtotal(valorAdicionais + marmita.getMarmita().getValor());
+
+            controller.adicionarMarmita(marmita);
+
+            limpar();
+        } else {
+            labelInfoMarmita.setText("Adicione ao menos um item a marmita");
         }
-        marmita.setDetalhes(detalhes);
-        controller.adicionarMarmita(marmita);
-        
     }
 
     @FXML
-    private void bttLimpar() {
+    private void limpar() {
         for (Node node : paneMarmita.getChildren()) {
             if (node instanceof CheckBox checkBox) {
                 checkBox.setSelected(false);
                 checkBox.setDisable(false);
             }
         }
-        marmita.setObservacao("");
+        observacao = "";
+        labelGuarnicao.setText("Guarnições: " + maxGuarnicoes);
+        labelMistura.setText("Misturas: " + maxMisturas);
+        misturasAdicionais = 0;
+        guarnicoesAdicionais = 0;
+        labelInfoMisturaAdc.setText("+R$0,00");
+        labelInfoGuarnicaoAdc.setText("+R$0,00");
     }
 
     @FXML
@@ -144,6 +236,8 @@ public class PaneMarmitaController implements Initializable {
 
             modalObservacaoController controller = fxmlLoader.getController();
 
+            controller.loadObservacao(observacao);
+
             modal.setOnCloseRequest(event -> {
                 event.consume();
             });
@@ -153,7 +247,9 @@ public class PaneMarmitaController implements Initializable {
             modal.setY(400);
             modal.showAndWait();
 
-            marmita.setObservacao(controller.getObservacao());
+            if (controller.getObservacao() != null) {
+                observacao = controller.getObservacao();
+            }
 
         } catch (IOException e) {
             System.out.println("Erro ao abrir modal observação" + e);
@@ -163,7 +259,105 @@ public class PaneMarmitaController implements Initializable {
 
     public void setController(NovoPedidoController controller) {
         this.controller = controller;
-
     }
 
+    @FXML
+    private void addGuarnicao(ActionEvent event) {
+        if ((guarnicoesAdicionais + maxGuarnicoes) < 4) {
+            guarnicoesAdicionais++;
+
+            for (Node node : paneMarmita.getChildren()) {
+                if (node instanceof CheckBox checkBox) {
+                    if (checkBox.getId().contains("checkBoxGuarnicao")) {
+                        if (guarnicoes >= maxGuarnicoes + guarnicoesAdicionais) {
+                            checkBox.setDisable(true);
+                        } else {
+                            checkBox.setDisable(false);
+                        }
+                    }
+                }
+            }
+
+            labelGuarnicao.setText("Guarnições: " + (maxGuarnicoes + guarnicoesAdicionais));
+            labelInfoGuarnicaoAdc.setText("+" + (formatoMoeda.format(guarnicoesAdicionais * 2)));
+        }
+    }
+
+    @FXML
+    private void addMistura(ActionEvent event) {
+        if ((misturasAdicionais + maxMisturas) < 4) {
+            misturasAdicionais++;
+            for (Node node : paneMarmita.getChildren()) {
+                if (node instanceof CheckBox checkBox) {
+                    if (checkBox.getId().contains("checkBoxMistura")) {
+                        if (misturas >= (maxMisturas + misturasAdicionais)) {
+                            checkBox.setDisable(true);
+                        } else {
+                            checkBox.setDisable(false);
+                        }
+                    }
+                }
+            }
+            labelMistura.setText("Misturas: " + (maxMisturas + misturasAdicionais));
+            labelInfoMisturaAdc.setText("+" + (formatoMoeda.format(misturasAdicionais * 2)));
+        }
+    }
+
+    @FXML
+    private void subGuarnicao(ActionEvent event) {
+        if ((guarnicoesAdicionais + maxGuarnicoes) > maxGuarnicoes) {
+            if (guarnicoes < (guarnicoesAdicionais + maxGuarnicoes)) {
+                guarnicoesAdicionais--;
+                if (!(guarnicoes < (guarnicoesAdicionais + maxGuarnicoes))) {
+                    for (Node node : paneMarmita.getChildren()) {
+                        if (node instanceof CheckBox checkBox) {
+                            if (checkBox.getId().contains("checkBoxGuarnicao") && !checkBox.isSelected()) {
+                                checkBox.setDisable(true);
+                                labelInfoGuarnicao.setText("");
+                            }
+                        }
+                    }
+                }
+                labelGuarnicao.setText("Guarnições: " + (maxGuarnicoes + guarnicoesAdicionais));
+                labelInfoGuarnicaoAdc.setText("+" + (formatoMoeda.format(guarnicoesAdicionais * 2)));
+            } else {
+                labelInfoGuarnicao.setText("Remova um guarnição");
+            }
+
+        }
+    }
+
+    @FXML
+    private void subMistura(ActionEvent event) {
+        if ((misturasAdicionais + maxMisturas) > maxMisturas) {
+            if (misturas < (misturasAdicionais + maxMisturas)) {
+                misturasAdicionais--;
+                if (!(misturas < (misturasAdicionais + maxMisturas))) {
+                    for (Node node : paneMarmita.getChildren()) {
+                        if (node instanceof CheckBox checkBox) {
+                            if (checkBox.getId().contains("checkBoxMistura") && !checkBox.isSelected()) {
+                                checkBox.setDisable(true);
+                                labelInfoMistura.setText("");
+                            }
+                        }
+                    }
+                }
+                labelMistura.setText("Misturas: " + (maxMisturas + misturasAdicionais));
+                labelInfoMisturaAdc.setText("+" + (formatoMoeda.format(misturasAdicionais * 2)));
+            } else {
+                labelInfoMistura.setText("Remova uma mistura");
+            }
+        }
+    }
+
+    private boolean marmitaIsValid() {
+        for (Node node : paneMarmita.getChildren()) {
+            if (node instanceof CheckBox checkBox) {
+                if (checkBox.isSelected()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

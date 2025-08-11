@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -24,6 +25,10 @@ public class PaneProdutoController implements Initializable {
     private ComboBox comboBox;
     @FXML
     private Spinner<Integer> spinner;
+    @FXML
+    private Button bttAdicionar;
+    @FXML
+    private Button bttLimpar;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -54,6 +59,7 @@ public class PaneProdutoController implements Initializable {
         produto.setProduto((Produto) comboBox.getSelectionModel().getSelectedItem());
         produto.setQuantidade(spinner.getValue());
         controller.adicionarProduto(produto);
+        spinner.getValueFactory().setValue(1);
     }
     
     @FXML

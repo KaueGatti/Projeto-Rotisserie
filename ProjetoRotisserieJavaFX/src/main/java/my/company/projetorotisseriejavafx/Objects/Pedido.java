@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * @author kaueg
  */
 public class Pedido {
-    
+
     private int id;
     private Mensalista mensalista;
     private Bairro bairro;
@@ -24,9 +24,16 @@ public class Pedido {
     private double valorEntrega;
     private double valorTotal;
     private String endereco;
-    private LocalDateTime horario;
-    private LocalDate data;
+    private LocalDateTime dateTime;
     private String status;
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
 
     public int getId() {
         return id;
@@ -61,7 +68,11 @@ public class Pedido {
     }
 
     public String getNomeCliente() {
-        return nomeCliente;
+        if (mensalista == null) {
+            return nomeCliente;
+        } else {
+            return mensalista.getNome();
+        }
     }
 
     public void setNomeCliente(String nomeCliente) {
@@ -114,22 +125,6 @@ public class Pedido {
 
     public void setEndereco(String endereco) {
         this.endereco = endereco;
-    }
-
-    public LocalDateTime getHorario() {
-        return horario;
-    }
-
-    public void setHorario(LocalDateTime horario) {
-        this.horario = horario;
-    }
-
-    public LocalDate getData() {
-        return data;
-    }
-
-    public void setData(LocalDate data) {
-        this.data = data;
     }
 
     public String getStatus() {

@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -20,13 +21,18 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import my.company.projetorotisseriejavafx.DAO.BairroDAO;
+import my.company.projetorotisseriejavafx.DAO.MarmitaVendidaDAO;
 import my.company.projetorotisseriejavafx.DAO.MensalistaDAO;
 import my.company.projetorotisseriejavafx.DAO.MotoboyDAO;
 import my.company.projetorotisseriejavafx.DAO.PedidoDAO;
+import my.company.projetorotisseriejavafx.DAO.ProdutoVendidoDAO;
 import my.company.projetorotisseriejavafx.Objects.Bairro;
 import my.company.projetorotisseriejavafx.Objects.MarmitaVendida;
 import my.company.projetorotisseriejavafx.Objects.Mensalista;
@@ -38,6 +44,20 @@ public class NovoPedidoController implements Initializable {
 
     private double valorTotal = 0;
     private double valorEntrega = 0;
+    private double valorAdicional = 0;
+    private double valorDesconto = 0;
+    private String pagamento;
+    @FXML
+    private ToggleGroup tipo;
+    @FXML
+    private Button btnFinalizar;
+    @FXML
+    private Button btnCancelar;
+    @FXML
+    private Button btnDescontos;
+
+    public NovoPedidoController() {
+    }
 
     @FXML
     private Pane panePrincipal;
@@ -49,7 +69,7 @@ public class NovoPedidoController implements Initializable {
     @FXML
     private TableColumn<MarmitaVendida, Double> colSubtotalMarmita;
     @FXML
-    private TableColumn<MarmitaVendida, String> colDelMarmita;
+    private TableColumn<MarmitaVendida, Void> colDelMarmita;
 
     @FXML
     private TableView<ProdutoVendido> tableProduto;
@@ -60,14 +80,14 @@ public class NovoPedidoController implements Initializable {
     @FXML
     private TableColumn<ProdutoVendido, Double> colSubtotalProduto;
     @FXML
-    private TableColumn<ProdutoVendido, String> colDelProduto;
+    private TableColumn<ProdutoVendido, Void> colDelProduto;
 
     @FXML
     private ToggleButton tabButtonLeft;
     @FXML
     private ToggleButton tabButtonRight;
     @FXML
-    private ComboBox comboBoxBairro;
+    private ComboBox<Bairro> comboBoxBairro;
     @FXML
     private ComboBox comboBoxMensalista;
     @FXML
@@ -145,15 +165,41 @@ public class NovoPedidoController implements Initializable {
         pedido.setValorTotal(valorTotal);
 
         if (verificaPedido()) {
-            PedidoDAO.create(pedido);
-            System.out.println("Pedido finalizado");
+
+            abrirModalPagamento();
+
+            if (pagamento != null || !pagamento.equals("")) {
+                
+                pedido.setTipoPagamento(pagamento);
+
+                int idPedido = PedidoDAO.create(pedido);
+
+                pedido.setId(idPedido);
+
+                for (MarmitaVendida marmita : tableMarmita.getItems()) {
+                    marmita.setPedido(pedido);
+                }
+
+                for (ProdutoVendido produto : tableProduto.getItems()) {
+                    produto.setPedido(pedido);
+                }
+
+                System.out.println(pedido.getId());
+
+                MarmitaVendidaDAO.create(tableMarmita.getItems());
+                ProdutoVendidoDAO.create(tableProduto.getItems());
+                
+                close();
+
+            }
+
         }
 
     }
 
     @FXML
     private void Cancelar() {
-        ((AnchorPane) panePrincipal.getParent()).getChildren().clear();
+        close();
     }
 
     @FXML
@@ -198,7 +244,11 @@ public class NovoPedidoController implements Initializable {
     private void RBGTipo(ActionEvent event) {
         if (RBEntrega.isSelected()) {
             paneEndereco.setDisable(false);
+            valorEntrega = comboBoxBairro.getSelectionModel().getSelectedItem().getValorEntrega();
+            atualizaValor();
         } else {
+            valorEntrega = 0;
+            atualizaValor();
             paneEndereco.setDisable(true);
             labelEnderecoInfo.setText("");
         }
@@ -251,63 +301,67 @@ public class NovoPedidoController implements Initializable {
     private void initTableMarmita() {
         colDescricaoMarmita.setCellValueFactory(new PropertyValueFactory<>("descricao"));
         colSubtotalMarmita.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
-        colDelMarmita.setCellValueFactory(new PropertyValueFactory<>("deletar"));
-        colDelMarmita.setCellFactory(tc -> {
-            TableCell<MarmitaVendida, String> cell = new TableCell<>() {
-                @Override
-                protected void updateItem(String valor, boolean empty) {
-                    super.updateItem(valor, empty);
-                    setText(empty ? null : valor);
-                }
-            };
+        colDelMarmita.setCellFactory(param -> new TableCell<>() {
+            private final Button btnExcluir = new Button("Excluir");
 
-            cell.setOnMouseClicked(event -> {
-                if (!cell.isEmpty()) {
-                    MarmitaVendida marmita = cell.getTableRow().getItem();
+            {
+                btnExcluir.setOnAction(event -> {
+                    MarmitaVendida marmita = getTableView().getItems().get(getIndex());
+                    getTableView().getItems().remove(marmita);
                     valorTotal -= marmita.getSubtotal();
-                    tableMarmita.getItems().remove(marmita);
                     atualizaValor();
-                }
-            });
+                });
+            }
 
-            return cell;
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(btnExcluir);
+                }
+            }
         });
+
     }
 
     private void initTableProduto() {
         colDescricaoProduto.setCellValueFactory(new PropertyValueFactory<>("descricao"));
         colQuantidadeProduto.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
         colSubtotalProduto.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
-        colDelProduto.setCellValueFactory(new PropertyValueFactory<>("deletar"));
-        colDelProduto.setCellFactory(tc -> {
-            TableCell<ProdutoVendido, String> cell = new TableCell<>() {
-                @Override
-                protected void updateItem(String valor, boolean empty) {
-                    super.updateItem(valor, empty);
-                    setText(empty ? null : valor);
-                }
-            };
+        colDelProduto.setCellFactory(param -> new TableCell<>() {
+            private final Button btnExcluir = new Button("Excluir");
 
-            cell.setOnMouseClicked(event -> {
-                if (!cell.isEmpty()) {
-                    ProdutoVendido produto = cell.getTableRow().getItem();
+            {
+                btnExcluir.setOnAction(event -> {
+                    ProdutoVendido produto = getTableView().getItems().get(getIndex());
+                    getTableView().getItems().remove(produto);
                     valorTotal -= produto.getSubtotal();
-                    tableProduto.getItems().remove(produto);
                     atualizaValor();
-                }
-            });
+                });
+            }
 
-            return cell;
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(btnExcluir);
+                }
+            }
         });
+
     }
 
     private void atualizaValor() {
         NumberFormat formatoMoeda = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
         String valorEntregaFormatado = formatoMoeda.format(valorEntrega);
-        String valorTotalFormatado = formatoMoeda.format(valorTotal + valorEntrega);
+        String valorTotalFormatado = formatoMoeda.format((valorTotal + valorEntrega + valorAdicional) - valorDesconto);
 
         labelValorEntrega.setText("Entrega " + valorEntregaFormatado);
-        labelValorTotal.setText("Total " + (valorTotalFormatado));
+        labelValorTotal.setText("Total " + valorTotalFormatado);
     }
 
     private boolean verificaPedido() {
@@ -351,4 +405,75 @@ public class NovoPedidoController implements Initializable {
         }
     }
 
+    @FXML
+    private void Descontos() {
+        abrirModalDesconto();
+    }
+
+    public void abrirModalDesconto() {
+        try {
+            Stage modal = new Stage();
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDescontos.fxml"));
+            modal.setScene(fxmlLoader.load());
+
+            modalDescontosController controller = fxmlLoader.getController();
+            
+            controller.loadDescontos(valorDesconto, valorAdicional);
+
+            modal.setOnCloseRequest(event -> {
+                event.consume();
+            });
+            modal.setResizable(false);
+            modal.initStyle(StageStyle.UTILITY);
+            modal.setX(700);
+            modal.setY(400);
+            modal.showAndWait();
+
+            if (controller.getDesconto() != -1) {
+                valorDesconto = controller.getDesconto();
+            }
+
+            if (controller.getAdicional() != -1) {
+                valorAdicional = controller.getAdicional();
+            }
+
+            atualizaValor();
+
+        } catch (IOException e) {
+            System.out.println("Erro ao abrir modal desconto" + e);
+            e.printStackTrace();
+        }
+
+    }
+
+    public void abrirModalPagamento() {
+        try {
+            Stage modal = new Stage();
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalPagamento.fxml"));
+            modal.setScene(fxmlLoader.load());
+
+            ModalPagamentoController controller = fxmlLoader.getController();
+
+            modal.setOnCloseRequest(event -> {
+                event.consume();
+            });
+            modal.setResizable(false);
+            modal.initStyle(StageStyle.UTILITY);
+            modal.showAndWait();
+
+            pagamento = controller.getPagamento();
+
+            atualizaValor();
+
+        } catch (IOException e) {
+            System.out.println("Erro ao abrir modal desconto" + e);
+            e.printStackTrace();
+        }
+    }
+
+    private void close() {
+       ((AnchorPane) panePrincipal.getParent()).getChildren().clear();
+    }
 }

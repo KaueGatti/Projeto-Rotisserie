@@ -4,10 +4,12 @@
  */
 package my.company.projetorotisseriejavafx.DAO;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import my.company.projetorotisseriejavafx.DB.Conexao;
@@ -66,79 +68,95 @@ public class BairroDAO {
         }
         return null;
     }
+    
+    public static List<Bairro> read(int id) {
+        Connection con = Conexao.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        List<Bairro> bairros = new ArrayList();
 
-    /*public static List<Remedio> readDinamico(String descricao, Laboratorio l,
-            double valorCustoMin, double valorCustoMax,
-            double valorVendaMin, double valorVendaMax,
-            String status, String orderBy, boolean desc) {
+        try {
+            stmt = con.prepareStatement("SELECT * FROM Bairro WHERE id = ?");
+            
+            stmt.setInt(1, id);
+            
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Bairro bairro = new Bairro();
+
+                bairro.setId(rs.getInt("id"));
+                bairro.setNome(rs.getString("nome"));
+                bairro.setValorEntrega(rs.getDouble("valor_entrega"));
+                bairro.setStatus(rs.getString("_status"));
+
+                bairros.add(bairro);
+            }
+
+            return bairros;
+        } catch (SQLException e) {
+            System.out.println("Falha ao buscar bairros: " + e);
+        } finally {
+            Conexao.closeConnection(con, stmt);
+        }
+        return null;
+    }
+
+    public static List<Bairro> readDinamico(String nome, double valorEntregaMax, double valorEntregaMin, String status, String orderBy, boolean desc) {
 
         Connection con = Conexao.getConnection();
         CallableStatement cs = null;
         ResultSet rs = null;
-        List<Remedio> remedios = new ArrayList();
+        List<Bairro> bairros = new ArrayList();
 
         try {
-            cs = con.prepareCall("CALL filterRemedioDinamico(?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            cs = con.prepareCall("CALL filterBairroDinamico(?, ?, ?, ?, ?)");
 
-            cs.setString(1, "%" + descricao + "%");
-            
-            if (l != null) {
-                cs.setInt(2, l.getId());
+            if (nome != null) {
+                cs.setString(1, "%" + nome + "%");
             } else {
-                cs.setNull(2, Types.INTEGER);
+                cs.setNull(1, Types.VARCHAR);
             }
-            
-            cs.setDouble(3, valorCustoMin);
-            cs.setDouble(4, valorCustoMax);
-            cs.setDouble(5, valorVendaMin);
-            cs.setDouble(6, valorVendaMax);
-            
+
+            cs.setDouble(2, valorEntregaMax);
+            cs.setDouble(3, valorEntregaMin);
+
             if (status != null) {
-                cs.setString(7, status);
+                cs.setString(4, status);
             } else {
-                cs.setNull(7, Types.VARCHAR);
+                cs.setNull(4, Types.VARCHAR);
             }
-            
+
             if (orderBy != null) {
-                cs.setString(8, orderBy);
+                cs.setString(5, orderBy);
             } else {
-                cs.setNull(8, Types.VARCHAR);
+                cs.setNull(5, Types.VARCHAR);
             }
-            
-            cs.setBoolean(9, desc);
+
+            cs.setBoolean(6, desc);
 
             rs = cs.executeQuery();
 
             while (rs.next()) {
-                Remedio remedio = new Remedio();
+                Bairro bairro = new Bairro();
 
-                remedio.setId(rs.getInt("id_remedio"));
-                for (Laboratorio lab : LaboratorioDAO.read()) {
-                    if (lab.getId() == rs.getInt("id_lab")) {
-                        remedio.setLaboratorio(lab);
-                        break;
-                    }
-                }
-                remedio.setDescricao(rs.getString("descricao"));
-                if (rs.getDate("data_ultima_compra") != null) {
-                    remedio.setDataUltimaCompra(rs.getDate("data_ultima_compra").toLocalDate());
-                }
-                remedio.setValorCusto(rs.getDouble("valor_custo"));
-                remedio.setValorVenda(rs.getDouble("valor_venda"));
-                remedio.setQuantidade(rs.getInt("qntd_armazenada"));
-                remedio.setStatus(rs.getString("_status"));
+                bairro.setId(rs.getInt("id"));
+                bairro.setNome(rs.getString("nome"));
+                bairro.setValorEntrega(rs.getDouble("valor_entrega"));
+                bairro.setStatus(rs.getString("_status"));
 
-                remedios.add(remedio);
+                bairros.add(bairro);
             }
 
-            return remedios;
+            return bairros;
         } catch (SQLException e) {
-            javax.swing.JOptionPane.showMessageDialog(null, "Falha ao buscar remédios dinamicamente: " + e);
+            System.out.println("Falha ao buscar bairros dinamicamente: " + e);
         } finally {
             Conexao.closeConnection(con, cs);
         }
         return null;
-    }*/
+    }
+
     public static void update(Bairro bairro) {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
