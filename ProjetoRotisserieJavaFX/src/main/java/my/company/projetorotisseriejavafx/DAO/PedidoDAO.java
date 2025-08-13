@@ -11,8 +11,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.sql.Types;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import my.company.projetorotisseriejavafx.DB.Conexao;
@@ -87,7 +89,7 @@ public class PedidoDAO {
     }
 
     public static List<Pedido> readDinamico(String nomeCliente,
-            String tipoPedido, LocalDate data, String status,
+            String tipoPedido, LocalDateTime dataInicio, LocalDateTime dataFim, String status,
             String orderBy, boolean isDesc) {
 
         Connection con = Conexao.getConnection();
@@ -96,13 +98,9 @@ public class PedidoDAO {
         List<Pedido> pedidos = new ArrayList<>();
 
         try {
-            cs = con.prepareCall("CALL filterPedidoDinamico(?, ?, ?, ?, ?, ?)");
+            cs = con.prepareCall("CALL filterPedidoDinamico(?, ?, ?, ?, ?, ?, ?)");
 
-            if (nomeCliente != null) {
-                cs.setString(1, nomeCliente);
-            } else {
-                cs.setNull(1, Types.VARCHAR);
-            }
+            cs.setString(1, "%" + nomeCliente + "%");
 
             if (tipoPedido != null) {
                 cs.setString(2, tipoPedido);
@@ -110,24 +108,26 @@ public class PedidoDAO {
                 cs.setNull(2, Types.VARCHAR);
             }
 
-            if (data != null) {
-                cs.setDate(3, Date.valueOf(data));
+            if (dataInicio != null && dataFim != null) {
+                cs.setTimestamp(3, Timestamp.valueOf(dataInicio));
+                cs.setTimestamp(4, Timestamp.valueOf(dataFim));
             } else {
                 cs.setNull(3, Types.TIMESTAMP);
+                cs.setNull(4, Types.TIMESTAMP);
             }
 
             if (status != null) {
-                cs.setString(4, status);
+                cs.setString(5, status);
             } else {
-                cs.setNull(4, Types.VARCHAR);
+                cs.setNull(5, Types.VARCHAR);
             }
 
             if (orderBy != null) {
-                cs.setString(5, orderBy);
-                cs.setBoolean(6, isDesc);
+                cs.setString(6, orderBy);
+                cs.setBoolean(7, isDesc);
             } else {
-                cs.setNull(5, Types.VARCHAR);
-                cs.setBoolean(6, false);
+                cs.setNull(6, Types.VARCHAR);
+                cs.setBoolean(7, false);
             }
 
             rs = cs.executeQuery();
@@ -136,15 +136,17 @@ public class PedidoDAO {
                 Pedido pedido = new Pedido();
 
                 pedido.setId(rs.getInt("id"));
+                
+                rs.getInt("id_mensalista");
 
-                if (rs.getInt("id_mensalista") != Types.NULL) {
+                if (rs.getInt("id_mensalista") != 0) {
                     for (Mensalista mensalista : MensalistaDAO.read(rs.getInt("id_mensalista"))) {
                         pedido.setMensalista(mensalista);
                     }
                 }
-                
+
                 pedido.setTipoPagamento(rs.getString("tipo_pagamento"));
-                
+
                 pedido.setTipoPedido(rs.getString("tipo_pedido"));
 
                 if (pedido.getTipoPedido().equals("Entrega")) {
@@ -160,7 +162,7 @@ public class PedidoDAO {
                     pedido.setValorEntrega(rs.getInt("valor_entrega"));
                 }
 
-                pedido.setNomeCliente(nomeCliente);
+                pedido.setNomeCliente(rs.getString("nome_cliente"));
                 pedido.setObservacoes(rs.getString("observacoes"));
                 pedido.setValorTotal(rs.getDouble("valor_total"));
                 pedido.setEndereco(rs.getString("endereco"));
@@ -177,7 +179,7 @@ public class PedidoDAO {
         } finally {
             Conexao.closeConnection(con, cs);
         }
-        return null;
+        return pedidos;
     }
 
     public static void update(Pedido pedido) {

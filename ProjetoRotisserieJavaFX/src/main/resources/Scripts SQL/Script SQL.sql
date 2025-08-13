@@ -281,24 +281,24 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE filterPedidoDinamico (nome_cliente VARCHAR(100), tipo_pedido VARCHAR(30), date_time TIMESTAMP, _status VARCHAR(30), orderBy VARCHAR(20), isDesc BOOLEAN)
+CREATE PROCEDURE filterPedidoDinamico (nome_cliente VARCHAR(100), tipo_pedido VARCHAR(30), date_time_inicio TIMESTAMP, date_time_fim TIMESTAMP, _status VARCHAR(30), orderBy VARCHAR(20), isDesc BOOLEAN)
 BEGIN
-	SET @sql = 'SELECT * FROM Pedido WHERE 1=1';
-    
-    IF nome_cliente IS NOT NULL THEN
-		SET @sql = CONCAT(@sql, ' AND Pedido.nome_cliente LIKE \'', nome_cliente, '\'');
-	END IF;
+	SET @sql = CONCAT('SELECT * FROM Pedido WHERE nome_cliente LIKE \'', nome_cliente, '\'');
     
     IF tipo_pedido IS NOT NULL THEN
-		SET @sql = CONCAT(@sql, ' AND Pedido.tipo_pedido = \'', tipo_pedido, '\'');
+		SET @sql = CONCAT(@sql, ' AND Pedido.tipo_pedido = ', QUOTE(tipo_pedido));
 	END IF;
     
-    IF date_time IS NOT NULL THEN
-		SET @sql = CONCAT(@sql, ' AND Pedido.date_time = \'', date_time, '\'');
+    IF (date_time_inicio IS NOT NULL OR date_time_fim IS NOT NULL) THEN
+		SET @sql = CONCAT(@sql, ' AND Pedido.date_time BETWEEN \'', date_time_inicio, '\' AND \'',date_time_fim, '\'');
+	ELSEIF date_time_inicio IS NOT NULL THEN
+		SET @sql = CONCAT(@sql, ' AND Pedido.date_time >= \'', date_time_inicio, '\'');
+	ELSEIF date_time_fim IS NOT NULL THEN
+		SET @sql = CONCAT(@sql, ' AND Pedido.date_time <= \'', date_time_fim, '\'');
 	END IF;
     
     IF _status IS NOT NULL THEN
-		SET @sql = CONCAT(@sql, ' AND Pedido._status = \'', _status, '\'');
+		SET @sql = CONCAT(@sql, ' AND Pedido._status = ', QUOTE(_status));
     END IF;
     
     IF orderBy IS NOT NULL THEN
@@ -313,6 +313,10 @@ BEGIN
     DEALLOCATE PREPARE stmt;
 END $$
 DELIMITER ;
+
+call filterPedidoDinamico("%ju%", null, null, null, null, null, false);
+
+drop procedure filterPedidoDinamico;
 
 DELIMITER $$
 CREATE TRIGGER soma_conta_mensalista

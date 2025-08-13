@@ -6,14 +6,15 @@ package my.company.projetorotisseriejavafx.Controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import my.company.projetorotisseriejavafx.Objects.Pedido;
 /**
  * FXML Controller class
  *
@@ -21,43 +22,55 @@ import javafx.scene.control.TextField;
  */
 public class PaneDetalhesEntregaController implements Initializable {
 
-
     @FXML
-    private TextField TFCliente1;
+    private TextField TFCliente;
     @FXML
-    private CheckBox checkBoxDecrescente1;
+    private CheckBox checkBoxMensalista;
     @FXML
-    private TextField TFCliente11;
+    private TextField TFTIpo;
     @FXML
-    private TextField TFCliente111;
+    private TextField TFPagamento;
     @FXML
-    private TextField TFCliente112;
+    private TextArea TAEndereco;
     @FXML
-    private TextField TFCliente1111;
+    private TextField TFMotoboy;
     @FXML
-    private Button btnPesquisar1;
+    private TextField TFBairro;
     @FXML
-    private Button btnPesquisar11;
+    private TextArea TAObservacoes;
     @FXML
-    private TextField TFCliente1121;
+    private Button btnMarmitas;
     @FXML
-    private TextField TFCliente11111;
+    private Button btnProdutos;
     @FXML
-    private TextField TFCliente11211;
+    private TextField TFEntrega;
     @FXML
-    private ComboBox<?> comboBoxStatus1;
+    private TextField TFTotal;
     @FXML
-    private Button btnPesquisar111;
+    private TextField TFDataHora;
+    @FXML
+    private ComboBox<String> comboBoxStatus;
+    @FXML
+    private Button btnSalvar;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
     }    
     
-    @FXML
-    private void pesquisar(ActionEvent event) {
+    public void load(Pedido pedido) {
+        TFCliente.setText(pedido.getNomeCliente());
+        TFTIpo.setText(pedido.getTipoPedido());
+        TFPagamento.setText(pedido.getTipoPagamento());
+        TAEndereco.setText(pedido.getEndereco());
+        TFMotoboy.setText(pedido.getMotoboy().getNome());
+        TFBairro.setText(pedido.getBairro().getNome());
+        TAObservacoes.setText(pedido.getObservacoes());
+        TFTotal.setText(String.valueOf(pedido.getValorTotal()));
+        TFDataHora.setText(pedido.getDateTime().toString());
+        comboBoxStatus.getSelectionModel().select(pedido.getStatus());
     }
-
+    
 }

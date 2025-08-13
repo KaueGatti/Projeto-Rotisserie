@@ -14,13 +14,14 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import my.company.projetorotisseriejavafx.Objects.Pedido;
+
 /**
  * FXML Controller class
  *
  * @author kaueg
  */
 public class PaneDetalhesBalcaoController implements Initializable {
-
 
     @FXML
     private TextField TFCliente;
@@ -43,15 +44,23 @@ public class PaneDetalhesBalcaoController implements Initializable {
     @FXML
     private TextField TFDataHora;
     @FXML
-    private ComboBox<?> comboBoxStatus;
+    private ComboBox<String> comboBoxStatus;
     @FXML
     private Button btnSalvar;
-    /**
-     * Initializes the controller class.
-     */
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
-    
+        
+    }
+
+    public void load(Pedido pedido) {
+        TFCliente.setText(pedido.getNomeCliente());
+        TFTipo.setText(pedido.getTipoPedido());
+        TFPagamento.setText(pedido.getTipoPagamento());
+        TAObservacoes.setText(pedido.getObservacoes());
+        TFTotal.setText(String.valueOf(pedido.getValorTotal()));
+        TFDataHora.setText(pedido.getDateTime().toString());
+        comboBoxStatus.getSelectionModel().select(pedido.getStatus());
+    }
+
 }

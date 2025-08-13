@@ -162,6 +162,7 @@ public class NovoPedidoController implements Initializable {
         pedido.setObservacoes(TAObservacoes.getText());
 
         pedido.setValorEntrega(valorEntrega);
+        
         pedido.setValorTotal(valorTotal);
 
         if (verificaPedido()) {
