@@ -88,6 +88,67 @@ public class PedidoDAO {
         return -1;
     }
 
+    public static List<Pedido> read(int id) {
+        Connection con = Conexao.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        List<Pedido> pedidos = new ArrayList<>();
+
+        try {
+            stmt = con.prepareStatement("SELECT * FROM Pedido WHERE id = ?");
+
+            stmt.setInt(1, id);
+
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Pedido pedido = new Pedido();
+
+                pedido.setId(rs.getInt("id"));
+                
+                rs.getInt("id_mensalista");
+
+                if (rs.getInt("id_mensalista") != 0) {
+                    for (Mensalista mensalista : MensalistaDAO.read(rs.getInt("id_mensalista"))) {
+                        pedido.setMensalista(mensalista);
+                    }
+                }
+
+                pedido.setTipoPagamento(rs.getString("tipo_pagamento"));
+
+                pedido.setTipoPedido(rs.getString("tipo_pedido"));
+
+                if (pedido.getTipoPedido().equals("Entrega")) {
+
+                    for (Bairro bairro : BairroDAO.read(rs.getInt("id_bairro"))) {
+                        pedido.setBairro(bairro);
+                    }
+
+                    for (Motoboy motoboy : MotoboyDAO.read(rs.getInt("id_motoboy"))) {
+                        pedido.setMotoboy(motoboy);
+                    }
+
+                    pedido.setValorEntrega(rs.getInt("valor_entrega"));
+                }
+
+                pedido.setNomeCliente(rs.getString("nome_cliente"));
+                pedido.setObservacoes(rs.getString("observacoes"));
+                pedido.setValorTotal(rs.getDouble("valor_total"));
+                pedido.setEndereco(rs.getString("endereco"));
+                pedido.setDateTime(rs.getTimestamp("date_time").toLocalDateTime());
+                pedido.setStatus(rs.getString("_status"));
+
+                pedidos.add(pedido);
+            }
+            return pedidos;
+        } catch (SQLException e) {
+            System.out.println("Falha ao buscar pedidos pelo id: " + e);
+            e.printStackTrace();
+        } finally {
+            Conexao.closeConnection(con, stmt);
+        }
+        return pedidos;
+    }
     public static List<Pedido> readDinamico(String nomeCliente,
             String tipoPedido, LocalDateTime dataInicio, LocalDateTime dataFim, String status,
             String orderBy, boolean isDesc) {
@@ -111,6 +172,12 @@ public class PedidoDAO {
             if (dataInicio != null && dataFim != null) {
                 cs.setTimestamp(3, Timestamp.valueOf(dataInicio));
                 cs.setTimestamp(4, Timestamp.valueOf(dataFim));
+            } else if (dataInicio != null) {
+                cs.setTimestamp(3, Timestamp.valueOf(dataInicio));
+                cs.setNull(4, Types.TIMESTAMP);
+            } else if (dataFim != null) {
+                cs.setTimestamp(4, Timestamp.valueOf(dataFim));
+                cs.setNull(3, Types.TIMESTAMP);
             } else {
                 cs.setNull(3, Types.TIMESTAMP);
                 cs.setNull(4, Types.TIMESTAMP);
@@ -171,7 +238,6 @@ public class PedidoDAO {
 
                 pedidos.add(pedido);
             }
-
             return pedidos;
         } catch (SQLException e) {
             System.out.println("Falha ao buscar pedidos dinamicamente: " + e);

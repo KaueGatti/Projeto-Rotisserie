@@ -71,6 +71,41 @@ public class MarmitaDAO {
         }
         return null;
     }
+    
+    public static List<Marmita> read(int id) {
+        Connection con = Conexao.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        List<Marmita> marmitas = new ArrayList();
+
+        try {
+            stmt = con.prepareStatement("SELECT * FROM Marmita WHERE id = ?");
+            
+            stmt.setInt(1, id);
+            
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Marmita marmita = new Marmita();
+
+                marmita.setId(rs.getInt("id"));
+                marmita.setDescricao(rs.getString("descricao"));
+                marmita.setMaxMistura(rs.getInt("max_mistura"));
+                marmita.setMaxGuarnicao(rs.getInt("max_guarnicao"));
+                marmita.setValor(rs.getDouble("valor"));
+                marmita.setStatus(rs.getString("_status"));
+
+                marmitas.add(marmita);
+            }
+
+            return marmitas;
+        } catch (SQLException e) {
+            System.out.println("Falha ao buscar Marmitas pelo id: " + e);
+        } finally {
+            Conexao.closeConnection(con, stmt);
+        }
+        return null;
+    }
 
     /*public static List<Remedio> readDinamico(String descricao, Laboratorio l,
             double valorCustoMin, double valorCustoMax,

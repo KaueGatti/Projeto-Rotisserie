@@ -4,8 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import my.company.projetorotisseriejavafx.DB.Conexao;
+import my.company.projetorotisseriejavafx.Objects.Pedido;
+import my.company.projetorotisseriejavafx.Objects.Produto;
 import my.company.projetorotisseriejavafx.Objects.ProdutoVendido;
 
 public class ProdutoVendidoDAO {
@@ -33,5 +36,45 @@ public class ProdutoVendidoDAO {
         } finally {
             Conexao.closeConnection(con, stmt);
         }
+    }
+
+    public static List<ProdutoVendido> read(int idPedido) {
+        Connection con = Conexao.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        List<ProdutoVendido> produtos = new ArrayList<>();
+
+        try {
+            stmt = con.prepareStatement("SELECT * FROM Produto_Vendido WHERE id_pedido = ?");
+
+            stmt.setInt(1, idPedido);
+
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                ProdutoVendido produtoVendido = new ProdutoVendido();
+
+                produtoVendido.setId(rs.getInt("id"));
+
+                for (Produto produto : ProdutoDAO.read(rs.getInt("id_produto"))) {
+                    produtoVendido.setProduto(produto);
+                }
+
+                for (Pedido pedido : PedidoDAO.read(rs.getInt("id_pedido"))) {
+                    produtoVendido.setPedido(pedido);
+                }
+
+                produtoVendido.setQuantidade(rs.getInt("quantidade"));
+
+                produtos.add(produtoVendido);
+            }
+
+            return produtos;
+        } catch (SQLException e) {
+            System.out.println("Falha ao buscar Produtos Vendidos pelo pedido: " + e);
+        } finally {
+            Conexao.closeConnection(con, stmt);
+        }
+        return null;
     }
 }

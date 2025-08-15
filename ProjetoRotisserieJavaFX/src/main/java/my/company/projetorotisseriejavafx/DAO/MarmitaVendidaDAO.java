@@ -4,9 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import my.company.projetorotisseriejavafx.DB.Conexao;
+import my.company.projetorotisseriejavafx.Objects.Marmita;
 import my.company.projetorotisseriejavafx.Objects.MarmitaVendida;
+import my.company.projetorotisseriejavafx.Objects.Pedido;
 
 public class MarmitaVendidaDAO {
 
@@ -36,46 +40,51 @@ public class MarmitaVendidaDAO {
         }
     }
 
-    /*public static List<Pedido> read() {
+    public static List<MarmitaVendida> read(int idPedido) {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        List<Pedido> pedidos = new ArrayList();
+        List<MarmitaVendida> marmitasVendidas = new ArrayList<>();
 
         try {
-            stmt = con.prepareStatement("SELECT * FROM Pedido");
+            stmt = con.prepareStatement("SELECT * FROM Marmita_Vendida WHERE id_pedido = ?");
+            
+            stmt.setInt(1, idPedido);
+            
             rs = stmt.executeQuery();
 
             while (rs.next()) {
-                Pedido pedido = new Pedido();
+                MarmitaVendida marmitaVendida = new MarmitaVendida();
 
-                pedido.setId(rs.getInt("id"));
-                pedido.setNome(rs.getString("nome"));
-                pedido.setValorDiaria(rs.getDouble("valor_diaria"));
-                pedido.setStatus(rs.getString("_status"));
-                pedido.setStatus(rs.getString("_status"));
-                pedido.setStatus(rs.getString("_status"));
-                pedido.setStatus(rs.getString("_status"));
-                pedido.setStatus(rs.getString("_status"));
-                pedido.setStatus(rs.getString("_status"));
-                pedido.setStatus(rs.getString("_status"));
-                pedido.setStatus(rs.getString("_status"));
-                pedido.setStatus(rs.getString("_status"));
-                pedido.setStatus(rs.getString("_status"));
+                marmitaVendida.setId(rs.getInt("id"));
 
-                pedido.add(pedido);
+                for (Marmita marmita : MarmitaDAO.read(rs.getInt("id_marmita"))) {
+                    marmitaVendida.setMarmita(marmita);
+                }
+
+                for (Pedido pedido : PedidoDAO.read(rs.getInt("id_pedido"))) {
+                    marmitaVendida.setPedido(pedido);
+                }
+                
+                marmitaVendida.setDetalhes(rs.getString("detalhes"));
+                
+                marmitaVendida.setValorPeso(rs.getDouble("valor_peso"));
+                marmitaVendida.setSubtotal(rs.getDouble("subtotal"));
+                marmitaVendida.setObservacao(rs.getString("observacao"));
+
+                marmitasVendidas.add(marmitaVendida);
             }
 
-            return pedidos;
+            return marmitasVendidas;
         } catch (SQLException e) {
-            System.out.println("Falha ao buscar pedido: " + e);
+            System.out.println("Falha ao buscar marmitasVendidas pelo pedido: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }
         return null;
-    }*/
+    }
 
- /*public static List<Remedio> readDinamico(String descricao, Laboratorio l,
+    /*public static List<Remedio> readDinamico(String descricao, Laboratorio l,
             double valorCustoMin, double valorCustoMax,
             double valorVendaMin, double valorVendaMax,
             String status, String orderBy, boolean desc) {

@@ -59,6 +59,40 @@ public class ProdutoDAO {
         }
         return null;
     }
+    
+    public static List<Produto> read(int id) {
+        Connection con = Conexao.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        List<Produto> produtos = new ArrayList();
+
+        try {
+            stmt = con.prepareStatement("SELECT * FROM Produto WHERE id = ?");
+            
+            stmt.setInt(1, id);
+            
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Produto produto = new Produto();
+
+            
+                produto.setId(rs.getInt("id"));
+                produto.setDescricao(rs.getString("descricao"));
+                produto.setValor(rs.getDouble("valor"));
+                produto.setStatus(rs.getString("_status"));
+
+                produtos.add(produto);
+            }
+
+            return produtos;
+        } catch (SQLException e) {
+            System.out.println("Falha ao buscar Produtos: " + e);
+        } finally {
+            Conexao.closeConnection(con, stmt);
+        }
+        return null;
+    }
 
     /*public static List<Remedio> readDinamico(String descricao, Laboratorio l,
             double valorCustoMin, double valorCustoMax,

@@ -4,8 +4,8 @@
  */
 package my.company.projetorotisseriejavafx.Objects;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -29,6 +29,10 @@ public class Pedido {
 
     public LocalDateTime getDateTime() {
         return dateTime;
+    }
+    
+    public String getDateTimeFormat() {
+        return DateTimeFormatter.ofPattern("dd/MM/yyyy | HH:mm:ss").format(dateTime);
     }
 
     public void setDateTime(LocalDateTime dateTime) {

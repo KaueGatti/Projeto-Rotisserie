@@ -280,6 +280,8 @@ BEGIN
 END $$
 DELIMITER ;
 
+call filterPedidoDinamico("", null, '2025-08-19 00:00:00', null, null, null, false);
+
 DELIMITER $$
 CREATE PROCEDURE filterPedidoDinamico (nome_cliente VARCHAR(100), tipo_pedido VARCHAR(30), date_time_inicio TIMESTAMP, date_time_fim TIMESTAMP, _status VARCHAR(30), orderBy VARCHAR(20), isDesc BOOLEAN)
 BEGIN
@@ -289,7 +291,7 @@ BEGIN
 		SET @sql = CONCAT(@sql, ' AND Pedido.tipo_pedido = ', QUOTE(tipo_pedido));
 	END IF;
     
-    IF (date_time_inicio IS NOT NULL OR date_time_fim IS NOT NULL) THEN
+    IF (date_time_inicio IS NOT NULL AND date_time_fim IS NOT NULL) THEN
 		SET @sql = CONCAT(@sql, ' AND Pedido.date_time BETWEEN \'', date_time_inicio, '\' AND \'',date_time_fim, '\'');
 	ELSEIF date_time_inicio IS NOT NULL THEN
 		SET @sql = CONCAT(@sql, ' AND Pedido.date_time >= \'', date_time_inicio, '\'');
