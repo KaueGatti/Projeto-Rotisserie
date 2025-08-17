@@ -4,6 +4,8 @@
  */
 package my.company.projetorotisseriejavafx.Objects;
 
+import java.util.List;
+
 /**
  *
  * @author kaueg
@@ -14,9 +16,45 @@ public class MarmitaVendida {
     private Marmita marmita;
     private Pedido pedido;
     private String detalhes;
+    private List<String> principais;
+    private List<String> misturas;
+    private List<String> guarnições;
+    private String salada;
     private double valorPeso;
     private String observacao;
     private double subtotal;
+
+    public String getSalada() {
+        return salada;
+    }
+
+    public void setSalada(String salada) {
+        this.salada = salada;
+    }
+
+    public List<String> getPrincipais() {
+        return principais;
+    }
+
+    public void setPrincipais(List<String> principais) {
+        this.principais = principais;
+    }
+
+    public List<String> getMisturas() {
+        return misturas;
+    }
+
+    public void setMisturas(List<String> misturas) {
+        this.misturas = misturas;
+    }
+
+    public List<String> getGuarnições() {
+        return guarnições;
+    }
+
+    public void setGuarnições(List<String> guarnições) {
+        this.guarnições = guarnições;
+    }
 
     public void setSubtotal(double subtotal) {
         this.subtotal = subtotal;

@@ -20,6 +20,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import my.company.projetorotisseriejavafx.DAO.MarmitaVendidaDAO;
+import my.company.projetorotisseriejavafx.DAO.PedidoDAO;
 import my.company.projetorotisseriejavafx.DAO.ProdutoVendidoDAO;
 import my.company.projetorotisseriejavafx.Objects.Pedido;
 
@@ -57,7 +58,8 @@ public class PaneDetalhesBalcaoController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+        initStatus();
+        btnSalvar.setDisable(true);
     }
 
     public void load(Pedido pedido) {
@@ -89,6 +91,20 @@ public class PaneDetalhesBalcaoController implements Initializable {
 
     @FXML
     private void salvar(ActionEvent event) {
+        pedido.setStatus(comboBoxStatus.getSelectionModel().getSelectedItem());
+        PedidoDAO.update(pedido);
+        btnSalvar.setDisable(true);
+    }
+    
+    public void initStatus() {
+        comboBoxStatus.getItems().addAll("FINALIZADO", "PENDENTE");
+        comboBoxStatus.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.equals(pedido.getStatus())) {
+                btnSalvar.setDisable(false);
+            } else {
+                btnSalvar.setDisable(true);
+            }
+        });
     }
 
 }

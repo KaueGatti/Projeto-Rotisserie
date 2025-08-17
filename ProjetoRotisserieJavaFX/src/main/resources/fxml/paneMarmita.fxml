@@ -45,12 +45,12 @@
          </font>
       </Button>
       <ComboBox fx:id="comboBox" layoutX="14.0" layoutY="33.0" prefHeight="37.0" prefWidth="420.0" />
-      <CheckBox fx:id="checkBoxArroz" layoutX="60.0" layoutY="101.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="160.0" text="CheckBox">
+      <CheckBox fx:id="checkBoxPrincipal1" layoutX="60.0" layoutY="101.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="160.0" text="CheckBox">
          <font>
             <Font size="18.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="checkBoxFeijao" layoutX="245.0" layoutY="101.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="160.0" text="CheckBox">
+      <CheckBox fx:id="checkBoxPrincipal2" layoutX="245.0" layoutY="101.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="160.0" text="CheckBox">
          <font>
             <Font size="18.0" />
          </font>
