@@ -56,13 +56,15 @@ CREATE TABLE IF NOT EXISTS Pedido (
 	id_bairro INT,
 	id_motoboy INT,
 	nome_cliente VARCHAR(30),
-	tipo_pagamento VARCHAR(30) NOT NULL,
+	tipo_pagamento VARCHAR(200) NOT NULL,
 	tipo_pedido VARCHAR(30) NOT NULL,
 	observacoes VARCHAR(100),
 	valor_entrega DECIMAL(10,2),
 	valor_total DECIMAL(10,2) NOT NULL,
+    valor_pago DECIMAL(10,2) NOT NULL,
 	endereco VARCHAR(100),
 	date_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    vencimento DATE NOT NULL,
 	_status VARCHAR(30) NOT NULL DEFAULT 'FINALIZADO',
 	PRIMARY KEY (id),
     CONSTRAINT fk_mensalista FOREIGN KEY (id_mensalista) REFERENCES Mensalista (id),
@@ -70,11 +72,21 @@ CREATE TABLE IF NOT EXISTS Pedido (
     CONSTRAINT fk_motoboy FOREIGN KEY (id_motoboy) REFERENCES Motoboy (id)
 );
 
+CREATE TABLE IF NOT EXISTS Pagamento(
+	id INT NOT NULL AUTO_INCREMENT,
+    id_pedido INT NOT NULL,
+	_data DATE NOT NULL,
+    valor DECIMAL(10,2) NOT NULL,
+    observacao VARCHAR(500),
+    PRIMARY KEY (id),
+    CONSTRAINT fk_pedido_pagamento FOREIGN KEY (id) REFERENCES Pedido (id)
+);
+
 CREATE TABLE IF NOT EXISTS Marmita_Vendida (
 	id INT AUTO_INCREMENT NOT NULL,
 	id_marmita INT,
 	id_pedido INT NOT NULL,
-	detalhes VARCHAR(100) NOT NULL,
+	detalhes VARCHAR(500) NOT NULL,
     valor_peso DECIMAL(10,2),
     subtotal DECIMAL(10,2) NOT NULL,
 	observacao VARCHAR(100),
@@ -280,8 +292,6 @@ BEGIN
 END $$
 DELIMITER ;
 
-call filterPedidoDinamico("", null, '2025-08-19 00:00:00', null, null, null, false);
-
 DELIMITER $$
 CREATE PROCEDURE filterPedidoDinamico (nome_cliente VARCHAR(100), tipo_pedido VARCHAR(30), date_time_inicio TIMESTAMP, date_time_fim TIMESTAMP, _status VARCHAR(30), orderBy VARCHAR(20), isDesc BOOLEAN)
 BEGIN
@@ -315,10 +325,6 @@ BEGIN
     DEALLOCATE PREPARE stmt;
 END $$
 DELIMITER ;
-
-call filterPedidoDinamico("%ju%", null, null, null, null, null, false);
-
-drop procedure filterPedidoDinamico;
 
 DELIMITER $$
 CREATE TRIGGER soma_conta_mensalista

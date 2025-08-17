@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -162,7 +163,7 @@ public class NovoPedidoController implements Initializable {
         pedido.setObservacoes(TAObservacoes.getText());
 
         pedido.setValorEntrega(valorEntrega);
-        
+
         pedido.setValorTotal(valorTotal);
 
         if (verificaPedido()) {
@@ -170,7 +171,7 @@ public class NovoPedidoController implements Initializable {
             abrirModalPagamento();
 
             if (pagamento != null || !pagamento.equals("")) {
-                
+
                 pedido.setTipoPagamento(pagamento);
 
                 int idPedido = PedidoDAO.create(pedido);
@@ -189,7 +190,7 @@ public class NovoPedidoController implements Initializable {
 
                 MarmitaVendidaDAO.create(tableMarmita.getItems());
                 ProdutoVendidoDAO.create(tableProduto.getItems());
-                
+
                 close();
 
             }
@@ -294,7 +295,7 @@ public class NovoPedidoController implements Initializable {
 
     public void adicionarProduto(ProdutoVendido produtoVendido) {
         tableProduto.getItems().add(produtoVendido);
-        valorTotal += produtoVendido.getProduto().getValor();
+        valorTotal += produtoVendido.getSubtotal();
         atualizaValor();
         labelItensInfo.setText("");
     }
@@ -308,8 +309,8 @@ public class NovoPedidoController implements Initializable {
             {
                 btnExcluir.setOnAction(event -> {
                     MarmitaVendida marmita = getTableView().getItems().get(getIndex());
-                    getTableView().getItems().remove(marmita);
                     valorTotal -= marmita.getSubtotal();
+                    getTableView().getItems().remove(marmita);
                     atualizaValor();
                 });
             }
@@ -324,6 +325,36 @@ public class NovoPedidoController implements Initializable {
                 }
             }
         });
+
+        tableMarmita.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {
+                if (tableMarmita.getSelectionModel().getSelectedItem() != null) {
+                    try {
+                        Stage modal = new Stage();
+
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDetalhesMarmita.fxml"));
+
+                        modal.setScene(loader.load());
+
+                        ModalDetalhesMarmitaController controller = loader.getController();
+                        
+                        controller.load(tableMarmita.getSelectionModel().getSelectedItem());
+                        
+                        modal.setOnCloseRequest(eventClose -> {
+                            event.consume();
+                        });
+                        modal.setResizable(false);
+                        modal.initStyle(StageStyle.UTILITY);
+                        modal.showAndWait();
+
+                    } catch (IOException e) {
+                        System.out.println("Erro Modal Detalhes Marmita:");
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        );
 
     }
 
@@ -337,8 +368,8 @@ public class NovoPedidoController implements Initializable {
             {
                 btnExcluir.setOnAction(event -> {
                     ProdutoVendido produto = getTableView().getItems().get(getIndex());
-                    getTableView().getItems().remove(produto);
                     valorTotal -= produto.getSubtotal();
+                    getTableView().getItems().remove(produto);
                     atualizaValor();
                 });
             }
@@ -353,6 +384,37 @@ public class NovoPedidoController implements Initializable {
                 }
             }
         });
+        
+        tableProduto.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {
+                if (tableProduto.getSelectionModel().getSelectedItem() != null) {
+                    try {
+                        Stage modal = new Stage();
+
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDetalhesProduto.fxml"));
+
+                        modal.setScene(loader.load());
+
+                        ModalDetalhesProdutoController controller = loader.getController();
+                        
+                        controller.load(tableProduto.getSelectionModel().getSelectedItem());
+                        
+                        modal.setOnCloseRequest(eventClose -> {
+                            event.consume();
+                        });
+                        
+                        modal.setResizable(false);
+                        modal.initStyle(StageStyle.UTILITY);
+                        modal.showAndWait();
+
+                    } catch (IOException e) {
+                        System.out.println("Erro Modal Detalhes Produto:");
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        );
 
     }
 
@@ -419,7 +481,7 @@ public class NovoPedidoController implements Initializable {
             modal.setScene(fxmlLoader.load());
 
             modalDescontosController controller = fxmlLoader.getController();
-            
+
             controller.loadDescontos(valorDesconto, valorAdicional);
 
             modal.setOnCloseRequest(event -> {
@@ -475,6 +537,33 @@ public class NovoPedidoController implements Initializable {
     }
 
     private void close() {
-       ((AnchorPane) panePrincipal.getParent()).getChildren().clear();
+        ((AnchorPane) panePrincipal.getParent()).getChildren().clear();
+    }
+
+    public void abrirModalProduto() {
+        try {
+            Stage modal = new Stage();
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDetalhesProduto.fxml"));
+            modal.setScene(fxmlLoader.load());
+
+            ModalDetalhesProdutoController controller = fxmlLoader.getController();
+
+            controller.load(tableProduto.getSelectionModel().getSelectedItem());
+
+            modal.setOnCloseRequest(event -> {
+                event.consume();
+            });
+            modal.setResizable(false);
+            modal.initStyle(StageStyle.UTILITY);
+            modal.setX(700);
+            modal.setY(400);
+            modal.showAndWait();
+
+        } catch (IOException e) {
+            System.out.println("Erro ao abrir modal detalhes produto" + e);
+            e.printStackTrace();
+        }
+
     }
 }

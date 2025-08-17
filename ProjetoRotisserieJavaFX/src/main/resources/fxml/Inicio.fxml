@@ -21,17 +21,17 @@
                   <Font size="24.0" />
                </font>
             </Button>
-            <Button fx:id="btnMarmitas" mnemonicParsing="false" prefHeight="80.0" prefWidth="94.0" style="-fx-background-color: none;">
+            <Button fx:id="btnMarmitas" mnemonicParsing="false" onAction="#marmitas" prefHeight="80.0" prefWidth="94.0" style="-fx-background-color: none;">
                <font>
                   <Font size="24.0" />
                </font>
             </Button>
-            <Button fx:id="btnProdutos" mnemonicParsing="false" prefHeight="80.0" prefWidth="94.0" style="-fx-background-color: none;">
+            <Button fx:id="btnProdutos" mnemonicParsing="false" onAction="#produtos" prefHeight="80.0" prefWidth="94.0" style="-fx-background-color: none;">
                <font>
                   <Font size="24.0" />
                </font>
             </Button>
-            <Button fx:id="btnBairros" mnemonicParsing="false" prefHeight="80.0" prefWidth="94.0" style="-fx-background-color: none;">
+            <Button fx:id="btnBairros" mnemonicParsing="false" onAction="#bairros" prefHeight="80.0" prefWidth="94.0" style="-fx-background-color: none;">
                <font>
                   <Font size="24.0" />
                </font>

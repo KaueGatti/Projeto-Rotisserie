@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Scene?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<Scene fx:id="scene" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.ModalEditMarmitaController">
+    <AnchorPane prefHeight="577.0" prefWidth="380.0">
+      <children>
+         <Label alignment="CENTER" prefHeight="80.0" prefWidth="380.0" text="Editar Marmita">
+            <font>
+               <Font size="32.0" />
+            </font>
+         </Label>
+         <Label layoutX="65.0" layoutY="72.0" text="Descrição">
+            <font>
+               <Font size="16.0" />
+            </font>
+         </Label>
+         <TextField fx:id="TFDescricao" layoutX="65.0" layoutY="98.0" prefHeight="37.0" prefWidth="250.0" />
+         <TextField fx:id="TFValor" layoutX="65.0" layoutY="320.0" prefHeight="37.0" prefWidth="250.0" />
+         <ComboBox fx:id="CBMisturas" layoutX="64.0" layoutY="170.0" prefHeight="38.0" prefWidth="250.0" />
+         <ComboBox fx:id="CBGuarnicoes" layoutX="65.0" layoutY="245.0" prefHeight="38.0" prefWidth="250.0" />
+         <ComboBox fx:id="CBStatus" layoutX="65.0" layoutY="394.0" prefHeight="37.0" prefWidth="250.0" />
+         <Label layoutX="65.0" layoutY="144.0" text="Qtd. Misturas">
+            <font>
+               <Font size="16.0" />
+            </font>
+         </Label>
+         <Label layoutX="65.0" layoutY="219.0" text="Qtd. Guarnições">
+            <font>
+               <Font size="16.0" />
+            </font>
+         </Label>
+         <Label layoutX="65.0" layoutY="294.0" text="Valor">
+            <font>
+               <Font size="16.0" />
+            </font>
+         </Label>
+         <Label layoutX="65.0" layoutY="368.0" text="Status">
+            <font>
+               <Font size="16.0" />
+            </font>
+         </Label>
+         <Button fx:id="btnSalvar" layoutX="65.0" layoutY="454.0" mnemonicParsing="false" onAction="#salvar" prefHeight="37.0" prefWidth="250.0" text="Salvar" />
+         <Button fx:id="btnCancelar" layoutX="65.0" layoutY="506.0" mnemonicParsing="false" onAction="#cancelar" prefHeight="37.0" prefWidth="250.0" text="Cancelar" />
+      </children></AnchorPane>
+</Scene>

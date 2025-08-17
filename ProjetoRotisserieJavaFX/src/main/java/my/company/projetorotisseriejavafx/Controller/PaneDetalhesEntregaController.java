@@ -20,6 +20,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import my.company.projetorotisseriejavafx.DAO.MarmitaVendidaDAO;
+import my.company.projetorotisseriejavafx.DAO.PedidoDAO;
 import my.company.projetorotisseriejavafx.DAO.ProdutoVendidoDAO;
 import my.company.projetorotisseriejavafx.Objects.Pedido;
 
@@ -31,7 +32,7 @@ import my.company.projetorotisseriejavafx.Objects.Pedido;
 public class PaneDetalhesEntregaController implements Initializable {
     
     private Pedido pedido;
-
+    
     @FXML
     private TextField TFCliente;
     @FXML
@@ -68,9 +69,10 @@ public class PaneDetalhesEntregaController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        initStatus();
+        btnSalvar.setDisable(true);
     }
-
+    
     public void load(Pedido pedido) {
         this.pedido = pedido;
         TFCliente.setText(pedido.getNomeCliente());
@@ -84,7 +86,7 @@ public class PaneDetalhesEntregaController implements Initializable {
         TFDataHora.setText(pedido.getDateTime().toString());
         comboBoxStatus.getSelectionModel().select(pedido.getStatus());
     }
-
+    
     @FXML
     private void marmitasEProdutos(ActionEvent event) {
         try {
@@ -101,9 +103,23 @@ public class PaneDetalhesEntregaController implements Initializable {
             e.printStackTrace();
         }
     }
-
+    
     @FXML
     private void salvar(ActionEvent event) {
+        pedido.setStatus(comboBoxStatus.getSelectionModel().getSelectedItem());
+        PedidoDAO.update(pedido);
+        btnSalvar.setDisable(true);
     }
-
+    
+    public void initStatus() {
+        comboBoxStatus.getItems().addAll("FINALIZADO", "PENDENTE");
+        comboBoxStatus.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.equals(pedido.getStatus())) {
+                btnSalvar.setDisable(false);
+            } else {
+                btnSalvar.setDisable(true);
+            }
+        });
+    }
+    
 }

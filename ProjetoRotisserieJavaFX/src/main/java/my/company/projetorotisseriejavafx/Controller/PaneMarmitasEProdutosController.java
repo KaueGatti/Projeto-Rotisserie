@@ -4,11 +4,13 @@
  */
 package my.company.projetorotisseriejavafx.Controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 
@@ -18,6 +20,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import my.company.projetorotisseriejavafx.Objects.MarmitaVendida;
 import my.company.projetorotisseriejavafx.Objects.ProdutoVendido;
 
@@ -71,22 +75,84 @@ public class PaneMarmitasEProdutosController implements Initializable {
                 tableMarmita.getItems().add(marmita);
             }
         }
-        
+
         if (produtos != null) {
             for (ProdutoVendido produto : produtos) {
                 tableProduto.getItems().add(produto);
             }
         }
     }
-    
+
     private void initTableMarmita() {
         colDescricaoMarmita.setCellValueFactory(new PropertyValueFactory<>("descricao"));
         colSubtotalMarmita.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
+
+        tableMarmita.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {
+                if (tableMarmita.getSelectionModel().getSelectedItem() != null) {
+                    try {
+                        Stage modal = new Stage();
+
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDetalhesMarmita.fxml"));
+
+                        modal.setScene(loader.load());
+
+                        ModalDetalhesMarmitaController controller = loader.getController();
+
+                        controller.load(tableMarmita.getSelectionModel().getSelectedItem());
+
+                        modal.setOnCloseRequest(eventClose -> {
+                            event.consume();
+                        });
+                        modal.setResizable(false);
+                        modal.initStyle(StageStyle.UTILITY);
+                        modal.showAndWait();
+
+                    } catch (IOException e) {
+                        System.out.println("Erro Modal Detalhes Marmita:");
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        );
+
     }
 
     private void initTableProduto() {
         colDescricaoProduto.setCellValueFactory(new PropertyValueFactory<>("descricao"));
         colQuantidadeProduto.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
         colSubtotalProduto.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
+
+        tableProduto.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {
+                if (tableProduto.getSelectionModel().getSelectedItem() != null) {
+                    try {
+                        Stage modal = new Stage();
+
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDetalhesProduto.fxml"));
+
+                        modal.setScene(loader.load());
+
+                        ModalDetalhesProdutoController controller = loader.getController();
+
+                        controller.load(tableProduto.getSelectionModel().getSelectedItem());
+
+                        modal.setOnCloseRequest(eventClose -> {
+                            event.consume();
+                        });
+
+                        modal.setResizable(false);
+                        modal.initStyle(StageStyle.UTILITY);
+                        modal.showAndWait();
+
+                    } catch (IOException e) {
+                        System.out.println("Erro Modal Detalhes Produto:");
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        );
     }
 }

@@ -7,6 +7,8 @@ package my.company.projetorotisseriejavafx.Controller;
 import java.io.IOException;
 import java.net.URL;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -51,10 +53,6 @@ public class PaneMarmitaController implements Initializable {
     @FXML
     private Button btnLimpar;
     @FXML
-    private CheckBox checkBoxArroz;
-    @FXML
-    private CheckBox checkBoxFeijao;
-    @FXML
     private CheckBox checkBoxMistura1;
     @FXML
     private CheckBox checkBoxMistura2;
@@ -95,6 +93,10 @@ public class PaneMarmitaController implements Initializable {
     private Label labelInfoGuarnicaoAdc;
     @FXML
     private Label labelInfoMarmita;
+    @FXML
+    private CheckBox checkBoxPrincipal1;
+    @FXML
+    private CheckBox checkBoxPrincipal2;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -179,15 +181,66 @@ public class PaneMarmitaController implements Initializable {
 
             MarmitaVendida marmita = new MarmitaVendida();
 
+            List<String> principais = new ArrayList<>();
+            List<String> misturas = new ArrayList<>();
+            List<String> guarnicoes = new ArrayList<>();
+
             marmita.setMarmita((Marmita) comboBox.getSelectionModel().getSelectedItem());
 
-            String detalhes = "";
             for (Node node : paneMarmita.getChildren()) {
                 if (node instanceof CheckBox checkBox) {
                     if (checkBox.isSelected()) {
-                        detalhes += checkBox.getText();
+                        if (checkBox.getId().contains("Principal")) {
+                            principais.add(checkBox.getText());
+                        } else if (checkBox.getId().contains("Mistura")) {
+                            misturas.add(checkBox.getText());
+                        } else if (checkBox.getId().contains("Guarnicao")) {
+                            guarnicoes.add(checkBox.getText());
+                        } else {
+                            marmita.setSalada(checkBox.getText());
+                        }
                     }
                 }
+            }
+
+            marmita.setPrincipais(principais);
+            marmita.setMisturas(misturas);
+            marmita.setGuarnições(guarnicoes);
+
+            String detalhes = "Principais: ";
+
+            for (int i = 0; i < principais.size(); i++) {
+                if (i != (principais.size() - 1)) {
+                    detalhes += principais.get(i) + ", ";
+                } else {
+                    detalhes += principais.get(i);
+                }
+            }
+
+            detalhes += "\n\nMisturas: ";
+
+            for (int i = 0; i < misturas.size(); i++) {
+                if (i != (misturas.size() - 1)) {
+                    detalhes += misturas.get(i) + ", ";
+                } else {
+                    detalhes += misturas.get(i);
+                }
+            }
+
+            detalhes += "\n\nGuarnições: ";
+
+            for (int i = 0; i < guarnicoes.size(); i++) {
+                if (i != (guarnicoes.size() - 1)) {
+                    detalhes += guarnicoes.get(i) + ", ";
+                } else {
+                    detalhes += guarnicoes.get(i);
+                }
+            }
+
+            if (marmita.getSalada() != null) {
+                detalhes += "\n\nSalada: " + marmita.getSalada();
+            } else {
+                detalhes += "\n\nSalada: Não";
             }
 
             marmita.setDetalhes(detalhes);

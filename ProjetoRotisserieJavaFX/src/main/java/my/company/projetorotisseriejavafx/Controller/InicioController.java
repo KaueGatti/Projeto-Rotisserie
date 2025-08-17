@@ -7,6 +7,7 @@ package my.company.projetorotisseriejavafx.Controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -55,7 +56,7 @@ public class InicioController implements Initializable {
             System.out.println("Erro bttNovoPedido " + e);
         }
     }
-    
+
     @FXML
     private void pedido() {
         APPrincipal.getChildren().clear();
@@ -63,6 +64,39 @@ public class InicioController implements Initializable {
             APPrincipal.getChildren().add(FXMLLoader.load(getClass().getResource("/fxml/Pedidos.fxml")));
         } catch (IOException e) {
             System.out.println("Erro ao abrir janela de pedidos " + e);
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void marmitas() {
+        APPrincipal.getChildren().clear();
+        try {
+            APPrincipal.getChildren().add(FXMLLoader.load(getClass().getResource("/fxml/Marmitas.fxml")));
+        } catch (IOException e) {
+            System.out.println("Erro ao carregar tela de marmitas");
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void produtos() {
+        APPrincipal.getChildren().clear();
+        try {
+            APPrincipal.getChildren().add(FXMLLoader.load(getClass().getResource("/fxml/Produtos.fxml")));
+        } catch (IOException e) {
+            System.out.println("Erro ao carregar tela de Produtos");
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void bairros() {
+        APPrincipal.getChildren().clear();
+        try {
+            APPrincipal.getChildren().add(FXMLLoader.load(getClass().getResource("/fxml/Bairros.fxml")));
+        } catch (IOException e) {
+            System.out.println("Erro ao carregar tela de Bairros");
             e.printStackTrace();
         }
     }
