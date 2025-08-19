@@ -29,7 +29,7 @@
          <Label layoutX="65.0" layoutY="144.0" text="Qtd. Misturas">
             <font>
                <Font size="16.0" />
-            </font>
+            </font>  
          </Label>
          <Label layoutX="65.0" layoutY="219.0" text="Qtd. Guarnições">
             <font>
