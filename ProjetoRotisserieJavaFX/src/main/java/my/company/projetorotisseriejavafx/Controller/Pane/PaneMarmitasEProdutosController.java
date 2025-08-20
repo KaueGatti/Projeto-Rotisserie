@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
  */
-package my.company.projetorotisseriejavafx.Controller;
+package my.company.projetorotisseriejavafx.Controller.Pane;
 
 import java.io.IOException;
 import java.net.URL;
@@ -15,13 +15,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 
 import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import my.company.projetorotisseriejavafx.Controller.Modal.ModalDetalhesMarmitaController;
+import my.company.projetorotisseriejavafx.Controller.Modal.ModalDetalhesProdutoController;
 import my.company.projetorotisseriejavafx.Objects.MarmitaVendida;
 import my.company.projetorotisseriejavafx.Objects.ProdutoVendido;
 

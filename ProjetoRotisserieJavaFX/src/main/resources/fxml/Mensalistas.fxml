@@ -9,16 +9,16 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="691.0" prefWidth="1513.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.ProdutosController">
+<Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="691.0" prefWidth="1513.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.MensalistasController">
    <children>
       <Pane layoutX="464.0" layoutY="31.0" prefHeight="629.0" prefWidth="586.0">
          <children>
-            <Label alignment="CENTER" prefHeight="73.0" prefWidth="586.0" text="Produtos">
+            <Label alignment="CENTER" prefHeight="73.0" prefWidth="586.0" text="Mensalistas">
                <font>
                   <Font size="50.0" />
                </font>
             </Label>
-            <Button fx:id="btnPesquisar" layoutX="353.0" layoutY="137.0" mnemonicParsing="false" onAction="#pesquisar" prefHeight="32.0" prefWidth="46.0" text="P">
+            <Button fx:id="btnPesquisar" layoutX="359.0" layoutY="137.0" mnemonicParsing="false" onAction="#pesquisar" prefHeight="32.0" prefWidth="46.0" text="P">
                <font>
                   <Font size="18.0" />
                </font>
@@ -28,9 +28,9 @@
                   <Font size="18.0" />
                </font>
             </Button>
-            <TextField fx:id="TFDescricao" layoutX="28.0" layoutY="144.0" />
+            <TextField fx:id="TFNome" layoutX="28.0" layoutY="144.0" />
             <ComboBox fx:id="CBStatus" layoutX="193.0" layoutY="144.0" prefHeight="25.0" prefWidth="149.0" />
-            <Label layoutX="28.0" layoutY="114.0" prefHeight="33.0" prefWidth="149.0" text="Descrição">
+            <Label layoutX="28.0" layoutY="114.0" prefHeight="33.0" prefWidth="149.0" text="Nome">
                <font>
                   <Font size="16.0" />
                </font>
@@ -40,11 +40,12 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <TableView fx:id="tableProdutos" layoutX="28.0" layoutY="197.0" prefHeight="414.0" prefWidth="530.0">
+            <TableView fx:id="tableMensalistas" layoutX="28.0" layoutY="197.0" prefHeight="414.0" prefWidth="530.0">
               <columns>
-                <TableColumn fx:id="colDescricao" prefWidth="288.8000183105469" text="Descrição" />
-                <TableColumn fx:id="colStatus" prefWidth="141.59991455078125" text="Status" />
-                  <TableColumn fx:id="colEditar" prefWidth="99.2000732421875" />
+                <TableColumn fx:id="colNome" prefWidth="245.60000610351562" text="Nome" />
+                <TableColumn fx:id="colStatus" prefWidth="131.199951171875" text="Status" />
+                  <TableColumn fx:id="colEditar" prefWidth="71.20001220703125" />
+                  <TableColumn fx:id="colPedidos" prefWidth="80.79998779296875" />
               </columns>
             </TableView>
          </children>

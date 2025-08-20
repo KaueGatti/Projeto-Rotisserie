@@ -1,4 +1,4 @@
-package my.company.projetorotisseriejavafx.Controller;
+package my.company.projetorotisseriejavafx.Controller.Modal;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -48,7 +48,7 @@ public class ModalEditMarmitaController {
         CBGuarnicoes.getItems().addAll(1, 2, 3, 4);
         CBGuarnicoes.getSelectionModel().select(marmita.getMaxGuarnicao());
 
-        CBStatus.getItems().addAll("ATIVO, INATIVO");
+        CBStatus.getItems().addAll("ATIVO", "INATIVO");
         CBStatus.getSelectionModel().select(marmita.getStatus());
     }
 

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<Scene fx:id="scene" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.ModalDetalhesMarmitaController">
+<Scene fx:id="scene" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.Modal.ModalDetalhesMarmitaController">
     <AnchorPane prefHeight="300.0" prefWidth="480.0">
       <children>
          <Label alignment="CENTER" prefHeight="70.0" prefWidth="480.0" text="Detalhes da Marmita">

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
  */
-package my.company.projetorotisseriejavafx.Controller;
+package my.company.projetorotisseriejavafx.Controller.Pane;
 
 import java.io.IOException;
 import java.net.URL;
@@ -25,6 +25,8 @@ import javafx.scene.control.Spinner;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import my.company.projetorotisseriejavafx.Controller.NovoPedidoController;
+import my.company.projetorotisseriejavafx.Controller.Modal.ModalObservacaoController;
 import my.company.projetorotisseriejavafx.DAO.MarmitaDAO;
 import my.company.projetorotisseriejavafx.Objects.Marmita;
 import my.company.projetorotisseriejavafx.Objects.MarmitaVendida;
@@ -287,7 +289,7 @@ public class PaneMarmitaController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalObservacao.fxml"));
             modal.setScene(fxmlLoader.load());
 
-            modalObservacaoController controller = fxmlLoader.getController();
+            ModalObservacaoController controller = fxmlLoader.getController();
 
             controller.loadObservacao(observacao);
 

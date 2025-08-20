@@ -23,9 +23,31 @@ public class Pedido {
     private String observacoes;
     private double valorEntrega;
     private double valorTotal;
+    private double valorPago;
     private String endereco;
     private LocalDateTime dateTime;
+    private LocalDateTime vencimento;
     private String status;
+
+    public Double getValorAPagar() {
+        return valorTotal - valorPago;
+    }
+
+    public LocalDateTime getVencimento() {
+        return vencimento;
+    }
+
+    public void setVencimento(LocalDateTime vencimento) {
+        this.vencimento = vencimento;
+    }
+
+    public double getValorPago() {
+        return valorPago;
+    }
+
+    public void setValorPago(double valorPago) {
+        this.valorPago = valorPago;
+    }
 
     public LocalDateTime getDateTime() {
         return dateTime;

@@ -2,13 +2,16 @@ package my.company.projetorotisseriejavafx.Controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import my.company.projetorotisseriejavafx.DAO.MarmitaDAO;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import my.company.projetorotisseriejavafx.Controller.Modal.ModalEditProdutoController;
 import my.company.projetorotisseriejavafx.DAO.ProdutoDAO;
-import my.company.projetorotisseriejavafx.Objects.Marmita;
 import my.company.projetorotisseriejavafx.Objects.Produto;
 
+import java.io.IOException;
 import java.util.List;
 
 public class ProdutosController {
@@ -56,6 +59,28 @@ public class ProdutosController {
             {
                 btnEditar.setOnAction(event -> {
                     Produto produto = getTableView().getItems().get(getIndex());
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalEditProduto.fxml"));
+                        Stage modal = new Stage();
+
+                        modal.setScene(loader.load());
+
+                        ModalEditProdutoController controller = loader.getController();
+
+                        controller.setProduto(produto);
+
+                        modal.setOnCloseRequest(windowEvent -> {
+                            windowEvent.consume();
+                        });
+
+                        modal.setResizable(false);
+                        modal.initStyle(StageStyle.UTILITY);
+                        modal.showAndWait();
+
+                    } catch (IOException e) {
+                        System.out.println("Erro ao abrir Editar Produto");
+                        e.printStackTrace();
+                    }
                 });
             }
 

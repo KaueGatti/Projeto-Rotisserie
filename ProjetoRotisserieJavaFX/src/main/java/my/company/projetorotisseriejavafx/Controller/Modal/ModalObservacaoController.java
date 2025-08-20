@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package my.company.projetorotisseriejavafx.Controller;
+package my.company.projetorotisseriejavafx.Controller.Modal;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,7 +17,7 @@ import javafx.stage.Stage;
  *
  * @author kaueg
  */
-public class modalObservacaoController implements Initializable {
+public class ModalObservacaoController implements Initializable {
     
     String observacao;
 

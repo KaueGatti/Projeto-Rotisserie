@@ -2,13 +2,16 @@ package my.company.projetorotisseriejavafx.Controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import my.company.projetorotisseriejavafx.Controller.Modal.ModalEditBairroController;
 import my.company.projetorotisseriejavafx.DAO.BairroDAO;
-import my.company.projetorotisseriejavafx.DAO.MarmitaDAO;
 import my.company.projetorotisseriejavafx.Objects.Bairro;
-import my.company.projetorotisseriejavafx.Objects.Marmita;
 
+import java.io.IOException;
 import java.util.List;
 
 public class BairrosController {
@@ -56,6 +59,29 @@ public class BairrosController {
             {
                 btnEditar.setOnAction(event -> {
                     Bairro bairro = getTableView().getItems().get(getIndex());
+
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalEditBairro.fxml"));
+                        Stage modal = new Stage();
+
+                        modal.setScene(loader.load());
+
+                        ModalEditBairroController controller = loader.getController();
+
+                        controller.setBairro(bairro);
+
+                        modal.setOnCloseRequest(windowEvent -> {
+                            windowEvent.consume();
+                        });
+
+                        modal.setResizable(false);
+                        modal.initStyle(StageStyle.UTILITY);
+                        modal.showAndWait();
+
+                    } catch (IOException e) {
+                        System.out.println("Erro em Editar Bairro:");
+                        e.printStackTrace();
+                    }
                 });
             }
 

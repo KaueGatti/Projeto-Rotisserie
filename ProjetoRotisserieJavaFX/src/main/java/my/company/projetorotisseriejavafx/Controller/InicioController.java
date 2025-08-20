@@ -101,6 +101,17 @@ public class InicioController implements Initializable {
         }
     }
 
+    @FXML
+    private void mensalistas() {
+        APPrincipal.getChildren().clear();
+        try {
+            APPrincipal.getChildren().add(FXMLLoader.load(getClass().getResource("/fxml/Mensalistas.fxml")));
+        } catch (IOException e) {
+            System.out.println("Erro ao carregar tela de Mensalistas");
+            e.printStackTrace();
+        }
+    }
+
     private void loadIcons() {
         Image pngNovoPedido = new Image(getClass().getResourceAsStream("/Images/NovoPedido.png"));
         ImageView ivNovoPedido = new ImageView(pngNovoPedido);

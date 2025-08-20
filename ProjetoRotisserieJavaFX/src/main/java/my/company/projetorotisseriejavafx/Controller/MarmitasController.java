@@ -7,9 +7,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import my.company.projetorotisseriejavafx.Controller.Modal.ModalEditMarmitaController;
 import my.company.projetorotisseriejavafx.DAO.MarmitaDAO;
 import my.company.projetorotisseriejavafx.Objects.Marmita;
-import my.company.projetorotisseriejavafx.Objects.MarmitaVendida;
 
 import java.io.IOException;
 import java.util.List;

@@ -1,4 +1,4 @@
-package my.company.projetorotisseriejavafx.Controller;
+package my.company.projetorotisseriejavafx.Controller.Pane;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -10,6 +10,7 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 
 import javafx.scene.layout.Pane;
+import my.company.projetorotisseriejavafx.Controller.NovoPedidoController;
 import my.company.projetorotisseriejavafx.DAO.ProdutoDAO;
 import my.company.projetorotisseriejavafx.Objects.Produto;
 import my.company.projetorotisseriejavafx.Objects.ProdutoVendido;

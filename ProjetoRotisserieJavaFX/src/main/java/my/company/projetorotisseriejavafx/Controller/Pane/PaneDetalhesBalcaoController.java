@@ -2,25 +2,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
  */
-package my.company.projetorotisseriejavafx.Controller;
+package my.company.projetorotisseriejavafx.Controller.Pane;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import my.company.projetorotisseriejavafx.DAO.MarmitaVendidaDAO;
-import my.company.projetorotisseriejavafx.DAO.PedidoDAO;
 import my.company.projetorotisseriejavafx.DAO.ProdutoVendidoDAO;
 import my.company.projetorotisseriejavafx.Objects.Pedido;
 
@@ -29,73 +26,85 @@ import my.company.projetorotisseriejavafx.Objects.Pedido;
  *
  * @author kaueg
  */
-public class PaneDetalhesEntregaController implements Initializable {
-    
+public class PaneDetalhesBalcaoController implements Initializable {
+
     private Pedido pedido;
-    
-    @FXML
-    private TextField TFCliente;
-    @FXML
-    private TextField TFTIpo;
-    @FXML
-    private TextField TFPagamento;
-    @FXML
-    private TextArea TAEndereco;
-    @FXML
-    private TextField TFMotoboy;
-    @FXML
-    private TextField TFBairro;
+
     @FXML
     private TextArea TAObservacoes;
+
     @FXML
-    private TextField TFTotal;
+    private TextField TFCliente;
+
     @FXML
     private TextField TFDataHora;
+
     @FXML
-    private ComboBox<String> comboBoxStatus;
+    private TextField TFPagamento;
+
     @FXML
-    private CheckBox checkBoxMensalista;
+    private TextField TFStatus;
+
     @FXML
-    private TextField TFEntrega;
+    private TextField TFTipo;
+
     @FXML
-    private Button btnSalvar;
+    private TextField TFTotal;
+
     @FXML
-    private Pane pane;
+    private TextField TFValorAPagar;
+
+    @FXML
+    private TextField TFValorPago;
+
+    @FXML
+    private TextField TFVencimento;
+
     @FXML
     private Button btnMarmitasEProdutos;
 
-    /**
-     * Initializes the controller class.
-     */
+    @FXML
+    private Button btnReallizarPagamento;
+
+    @FXML
+    private Pane pane;
+
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        initStatus();
-        btnSalvar.setDisable(true);
     }
-    
+
+    @FXML
+    void realizarPagamento(ActionEvent event) {
+
+    }
+
     public void load(Pedido pedido) {
         this.pedido = pedido;
         TFCliente.setText(pedido.getNomeCliente());
-        TFTIpo.setText(pedido.getTipoPedido());
+        TFTipo.setText(pedido.getTipoPedido());
         TFPagamento.setText(pedido.getTipoPagamento());
-        TAEndereco.setText(pedido.getEndereco());
-        TFMotoboy.setText(pedido.getMotoboy().getNome());
-        TFBairro.setText(pedido.getBairro().getNome());
         TAObservacoes.setText(pedido.getObservacoes());
         TFTotal.setText(String.valueOf(pedido.getValorTotal()));
+        TFValorPago.setText(String.valueOf(pedido.getValorPago()));
+        TFValorAPagar.setText(String.valueOf(pedido.getValorAPagar()));
         TFDataHora.setText(pedido.getDateTime().toString());
-        comboBoxStatus.getSelectionModel().select(pedido.getStatus());
+        TFVencimento.setText(pedido.getVencimento().toString());
+        TFStatus.setText(pedido.getStatus());
+        if (pedido.getMensalista() != null) {
+            btnReallizarPagamento.setVisible(false);
+            btnReallizarPagamento.setDisable(true);
+        }
     }
-    
+
     @FXML
     private void marmitasEProdutos(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/paneMarmitasEProdutos.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Pane/paneMarmitasEProdutos.fxml"));
             Pane paneMarmitasEProdutos = loader.load();
             PaneMarmitasEProdutosController controller = loader.getController();
-            
+
             controller.loadMarmitasEProdutos(MarmitaVendidaDAO.read(pedido.getId()), ProdutoVendidoDAO.read(pedido.getId()));
-            
             pane.setOpacity(0);
             ((Pane) pane.getParent()).getChildren().add(paneMarmitasEProdutos);
         } catch (IOException e) {
@@ -103,23 +112,4 @@ public class PaneDetalhesEntregaController implements Initializable {
             e.printStackTrace();
         }
     }
-    
-    @FXML
-    private void salvar(ActionEvent event) {
-        pedido.setStatus(comboBoxStatus.getSelectionModel().getSelectedItem());
-        PedidoDAO.update(pedido);
-        btnSalvar.setDisable(true);
-    }
-    
-    public void initStatus() {
-        comboBoxStatus.getItems().addAll("FINALIZADO", "PENDENTE");
-        comboBoxStatus.valueProperty().addListener((obs, oldVal, newVal) -> {
-            if (!newVal.equals(pedido.getStatus())) {
-                btnSalvar.setDisable(false);
-            } else {
-                btnSalvar.setDisable(true);
-            }
-        });
-    }
-    
 }

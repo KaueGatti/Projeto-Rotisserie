@@ -22,6 +22,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import my.company.projetorotisseriejavafx.Controller.Pane.PaneDetalhesBalcaoController;
+import my.company.projetorotisseriejavafx.Controller.Pane.PaneDetalhesEntregaController;
 import my.company.projetorotisseriejavafx.DAO.PedidoDAO;
 import my.company.projetorotisseriejavafx.Objects.Pedido;
 
@@ -176,7 +178,7 @@ public class PedidosController implements Initializable {
                 if (tablePedidos.getSelectionModel().getSelectedItem().getTipoPedido().equals("Balcão")) {
                     paneDetalhes.getChildren().clear();
                     try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/paneDetalhesBalcao.fxml"));
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Pane/paneDetalhesBalcao.fxml"));
                         Pane balcaoPane = loader.load();
                         PaneDetalhesBalcaoController balcaoController = loader.getController();
                         balcaoController.load(tablePedidos.getSelectionModel().getSelectedItem());
@@ -186,7 +188,7 @@ public class PedidosController implements Initializable {
                     }
                 } else {
                     try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/paneDetalhesEntrega.fxml"));
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Pane/paneDetalhesEntrega.fxml"));
                         Pane entregaPane = loader.load();
                         PaneDetalhesEntregaController entregaController = loader.getController();
                         entregaController.load(tablePedidos.getSelectionModel().getSelectedItem());

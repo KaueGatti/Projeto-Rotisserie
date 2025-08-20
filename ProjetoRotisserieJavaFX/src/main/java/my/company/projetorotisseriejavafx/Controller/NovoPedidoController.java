@@ -9,7 +9,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -28,6 +27,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import my.company.projetorotisseriejavafx.Controller.Modal.ModalDescontosController;
+import my.company.projetorotisseriejavafx.Controller.Modal.ModalDetalhesMarmitaController;
+import my.company.projetorotisseriejavafx.Controller.Modal.ModalDetalhesProdutoController;
+import my.company.projetorotisseriejavafx.Controller.Modal.ModalPagamentoController;
+import my.company.projetorotisseriejavafx.Controller.Pane.PaneMarmitaController;
+import my.company.projetorotisseriejavafx.Controller.Pane.PaneProdutoController;
 import my.company.projetorotisseriejavafx.DAO.BairroDAO;
 import my.company.projetorotisseriejavafx.DAO.MarmitaVendidaDAO;
 import my.company.projetorotisseriejavafx.DAO.MensalistaDAO;
@@ -131,7 +136,7 @@ public class NovoPedidoController implements Initializable {
         loadMensalista();
         loadMotoboy();
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/paneMarmita.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Pane/paneMarmita.fxml"));
             Pane marmitaPane = loader.load();
             PaneMarmitaController marmitaController = loader.getController();
             marmitaController.setController(this);
@@ -208,7 +213,7 @@ public class NovoPedidoController implements Initializable {
     private void marmitaClicked(ActionEvent event) {
         if (tabButtonLeft.isSelected()) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/paneMarmita.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Pane/paneMarmita.fxml"));
                 Pane marmitaPane = loader.load();
                 PaneMarmitaController marmitaController = loader.getController();
                 marmitaController.setController(this);
@@ -227,7 +232,7 @@ public class NovoPedidoController implements Initializable {
     private void produtoClicked(ActionEvent event) {
         if (tabButtonRight.isSelected()) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/paneProduto.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Pane/paneProduto.fxml"));
                 Pane produtoPane = loader.load();
                 PaneProdutoController produtoController = loader.getController();
                 produtoController.setController(this);
@@ -480,7 +485,7 @@ public class NovoPedidoController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDescontos.fxml"));
             modal.setScene(fxmlLoader.load());
 
-            modalDescontosController controller = fxmlLoader.getController();
+            ModalDescontosController controller = fxmlLoader.getController();
 
             controller.loadDescontos(valorDesconto, valorAdicional);
 
