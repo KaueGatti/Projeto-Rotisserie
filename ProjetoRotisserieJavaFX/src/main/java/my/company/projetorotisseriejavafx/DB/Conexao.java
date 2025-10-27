@@ -9,9 +9,9 @@ import java.sql.SQLException;
 public class Conexao {
 
     private static final String DRIVE = "com.mysql.cj.jdbc.Driver";
-    private static final String URL = "jdbc:mysql://127.0.0.1:3306/Rotisserie?autoReconnect=true&useSSL=true";
+    private static final String URL = "jdbc:mysql://localhost/Rotisserie?autoReconnect=true&useSSL=true";
     private static final String USER = "root";
-    private static final String PASSWORD = "0000";
+    private static final String PASSWORD = "tiger";
 
     public static Connection getConnection() {
         try {

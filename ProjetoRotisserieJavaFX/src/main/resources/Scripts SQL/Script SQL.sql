@@ -1,7 +1,5 @@
 CREATE DATABASE Rotisserie;
 
-#drop database Rotisserie;
-
 USE Rotisserie;
 
 CREATE TABLE IF NOT EXISTS Marmita (
