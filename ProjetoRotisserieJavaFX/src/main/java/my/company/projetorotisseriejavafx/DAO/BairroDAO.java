@@ -43,7 +43,7 @@ public class BairroDAO {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        List<Bairro> bairros = new ArrayList();
+        List<Bairro> bairros = new ArrayList<>();
 
         try {
             stmt = con.prepareStatement("SELECT * FROM Bairro");
@@ -66,7 +66,7 @@ public class BairroDAO {
         } finally {
             Conexao.closeConnection(con, stmt);
         }
-        return null;
+        return new ArrayList<>();
     }
     
     public static List<Bairro> read(int id) {

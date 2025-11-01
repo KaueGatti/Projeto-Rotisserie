@@ -47,7 +47,7 @@ public class PaneMarmitaController implements Initializable {
     private String observacao;
 
     @FXML
-    private ComboBox comboBox;
+    private ComboBox<Marmita> comboBox;
     @FXML
     private Pane paneMarmita;
     @FXML
@@ -107,16 +107,19 @@ public class PaneMarmitaController implements Initializable {
 
     public void loadMarmitas() {
         comboBox.getItems().clear();
+
+        List<Marmita> marmitas = MarmitaDAO.read();
+
         for (Marmita marmita : MarmitaDAO.read()) {
             comboBox.getItems().add(marmita);
         }
         comboBox.getSelectionModel().selectFirst();
-        maxMisturas = ((Marmita) comboBox.getSelectionModel().getSelectedItem()).getMaxMistura();
-        maxGuarnicoes = ((Marmita) comboBox.getSelectionModel().getSelectedItem()).getMaxGuarnicao();
+        maxMisturas =  comboBox.getSelectionModel().getSelectedItem().getMaxMistura();
+        maxGuarnicoes =  comboBox.getSelectionModel().getSelectedItem().getMaxGuarnicao();
 
         comboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
-            maxMisturas = ((Marmita) newVal).getMaxMistura();
-            maxGuarnicoes = ((Marmita) newVal).getMaxGuarnicao();
+            maxMisturas =  newVal.getMaxMistura();
+            maxGuarnicoes = newVal.getMaxGuarnicao();
             labelMistura.setText("Misturas: " + maxMisturas);
             labelGuarnicao.setText("Guarnições: " + maxGuarnicoes);
         });

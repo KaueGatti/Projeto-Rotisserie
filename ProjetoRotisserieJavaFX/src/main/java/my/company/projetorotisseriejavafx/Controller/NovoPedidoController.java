@@ -3,8 +3,10 @@ package my.company.projetorotisseriejavafx.Controller;
 import java.io.IOException;
 import java.net.URL;
 import java.text.NumberFormat;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -263,24 +265,33 @@ public class NovoPedidoController implements Initializable {
 
     private void loadBairro() {
         comboBoxBairro.getItems().clear();
-        for (Bairro bairro : BairroDAO.read()) {
-            comboBoxBairro.getItems().add(bairro);
+
+        List<Bairro> bairros = BairroDAO.read();
+        if (!bairros.isEmpty()) {
+            System.out.println(bairros);
+            for (Bairro bairro : bairros) {
+                comboBoxBairro.getItems().add(bairro);
+            }
+            comboBoxBairro.getSelectionModel().selectFirst();
+            valorEntrega = comboBoxBairro.getSelectionModel().getSelectedItem().getValorEntrega();
+            atualizaValor();
         }
         comboBoxBairro.setOnAction(e -> {
-            valorEntrega = ((Bairro) comboBoxBairro.getSelectionModel().getSelectedItem()).getValorEntrega();
+            valorEntrega = comboBoxBairro.getSelectionModel().getSelectedItem().getValorEntrega();
             atualizaValor();
         });
-        comboBoxBairro.getSelectionModel().selectFirst();
-        valorEntrega = ((Bairro) comboBoxBairro.getSelectionModel().getSelectedItem()).getValorEntrega();
-        atualizaValor();
     }
 
     private void loadMensalista() {
         comboBoxMensalista.getItems().clear();
-        for (Mensalista mensalista : MensalistaDAO.read()) {
-            comboBoxMensalista.getItems().add(mensalista);
+        List<Mensalista> mensalistas = MensalistaDAO.read();
+        if (mensalistas != null) {
+            for (Mensalista mensalista : mensalistas) {
+                comboBoxMensalista.getItems().add(mensalista);
+            }
+            comboBoxMensalista.getSelectionModel().selectFirst();
         }
-        comboBoxMensalista.getSelectionModel().selectFirst();
+
     }
 
     private void loadMotoboy() {
@@ -332,33 +343,33 @@ public class NovoPedidoController implements Initializable {
         });
 
         tableMarmita.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 2) {
-                if (tableMarmita.getSelectionModel().getSelectedItem() != null) {
-                    try {
-                        Stage modal = new Stage();
+                    if (event.getClickCount() == 2) {
+                        if (tableMarmita.getSelectionModel().getSelectedItem() != null) {
+                            try {
+                                Stage modal = new Stage();
 
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDetalhesMarmita.fxml"));
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDetalhesMarmita.fxml"));
 
-                        modal.setScene(loader.load());
+                                modal.setScene(loader.load());
 
-                        ModalDetalhesMarmitaController controller = loader.getController();
-                        
-                        controller.load(tableMarmita.getSelectionModel().getSelectedItem());
-                        
-                        modal.setOnCloseRequest(eventClose -> {
-                            event.consume();
-                        });
-                        modal.setResizable(false);
-                        modal.initStyle(StageStyle.UTILITY);
-                        modal.showAndWait();
+                                ModalDetalhesMarmitaController controller = loader.getController();
 
-                    } catch (IOException e) {
-                        System.out.println("Erro Modal Detalhes Marmita:");
-                        e.printStackTrace();
+                                controller.load(tableMarmita.getSelectionModel().getSelectedItem());
+
+                                modal.setOnCloseRequest(eventClose -> {
+                                    event.consume();
+                                });
+                                modal.setResizable(false);
+                                modal.initStyle(StageStyle.UTILITY);
+                                modal.showAndWait();
+
+                            } catch (IOException e) {
+                                System.out.println("Erro Modal Detalhes Marmita:");
+                                e.printStackTrace();
+                            }
+                        }
                     }
                 }
-            }
-        }
         );
 
     }
@@ -389,36 +400,36 @@ public class NovoPedidoController implements Initializable {
                 }
             }
         });
-        
+
         tableProduto.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 2) {
-                if (tableProduto.getSelectionModel().getSelectedItem() != null) {
-                    try {
-                        Stage modal = new Stage();
+                    if (event.getClickCount() == 2) {
+                        if (tableProduto.getSelectionModel().getSelectedItem() != null) {
+                            try {
+                                Stage modal = new Stage();
 
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDetalhesProduto.fxml"));
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDetalhesProduto.fxml"));
 
-                        modal.setScene(loader.load());
+                                modal.setScene(loader.load());
 
-                        ModalDetalhesProdutoController controller = loader.getController();
-                        
-                        controller.load(tableProduto.getSelectionModel().getSelectedItem());
-                        
-                        modal.setOnCloseRequest(eventClose -> {
-                            event.consume();
-                        });
-                        
-                        modal.setResizable(false);
-                        modal.initStyle(StageStyle.UTILITY);
-                        modal.showAndWait();
+                                ModalDetalhesProdutoController controller = loader.getController();
 
-                    } catch (IOException e) {
-                        System.out.println("Erro Modal Detalhes Produto:");
-                        e.printStackTrace();
+                                controller.load(tableProduto.getSelectionModel().getSelectedItem());
+
+                                modal.setOnCloseRequest(eventClose -> {
+                                    event.consume();
+                                });
+
+                                modal.setResizable(false);
+                                modal.initStyle(StageStyle.UTILITY);
+                                modal.showAndWait();
+
+                            } catch (IOException e) {
+                                System.out.println("Erro Modal Detalhes Produto:");
+                                e.printStackTrace();
+                            }
+                        }
                     }
                 }
-            }
-        }
         );
 
     }

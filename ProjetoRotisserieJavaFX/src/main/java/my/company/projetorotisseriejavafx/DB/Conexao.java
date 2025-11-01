@@ -11,7 +11,7 @@ public class Conexao {
     private static final String DRIVE = "com.mysql.cj.jdbc.Driver";
     private static final String URL = "jdbc:mysql://localhost/Rotisserie?autoReconnect=true&useSSL=true";
     private static final String USER = "root";
-    private static final String PASSWORD = "tiger";
+    private static final String PASSWORD = "KaueLamp123";
 
     public static Connection getConnection() {
         try {
