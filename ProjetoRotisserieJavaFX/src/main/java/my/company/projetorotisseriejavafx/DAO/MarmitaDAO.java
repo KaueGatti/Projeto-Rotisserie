@@ -46,7 +46,7 @@ public class MarmitaDAO {
         List<Marmita> marmitas = new ArrayList<>();
 
         try {
-            stmt = con.prepareStatement("SELECT * FROM Marmita");
+            stmt = con.prepareStatement("CALL READ_ALL_MARMITAS()");
             rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -68,7 +68,7 @@ public class MarmitaDAO {
         } finally {
             Conexao.closeConnection(con, stmt);
         }
-        return new ArrayList<>();
+        return marmitas;
     }
     
     public static List<Marmita> read(int id) {

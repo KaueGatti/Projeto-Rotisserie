@@ -4,10 +4,6 @@
  */
 package my.company.projetorotisseriejavafx.Objects;
 
-/**
- *
- * @author kaueg
- */
 public class Marmita {
     
     private int id;

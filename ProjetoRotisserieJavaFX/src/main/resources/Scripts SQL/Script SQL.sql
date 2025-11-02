@@ -133,6 +133,13 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
+CREATE PROCEDURE READ_ALL_MARMITAS()
+BEGIN
+	SELECT * FROM Marmita;
+END $$
+DELIMITER ;
+
+DELIMITER $$
 CREATE PROCEDURE CREATE_MARMITA_VENDIDA(_id_marmita INT, _id_pedido INT, _subtotal DECIMAL(10,2), _detalhes VARCHAR(100), _observacao VARCHAR(100))
 BEGIN
 	INSERT INTO Marmita_Vendida (id_marmita, id_pedido, subtotal, detalhes, observacao)

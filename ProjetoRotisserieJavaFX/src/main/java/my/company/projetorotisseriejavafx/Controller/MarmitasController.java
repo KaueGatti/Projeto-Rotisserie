@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import my.company.projetorotisseriejavafx.Controller.Modal.ModalCadastrarMarmitaController;
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalEditMarmitaController;
 import my.company.projetorotisseriejavafx.DAO.MarmitaDAO;
 import my.company.projetorotisseriejavafx.Objects.Marmita;
@@ -35,11 +36,11 @@ public class MarmitasController {
 
     @FXML
     void cadastrar(ActionEvent event) {
-
+        abrirModalCadastrar();
     }
 
     private void initTableMarmita() {
-        colDescricao.setCellValueFactory(new PropertyValueFactory<>("descricao"));
+        colDescricao.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         colEditar.setCellFactory(param -> new TableCell<>() {
             private final Button btnEditar = new Button("Editar");
@@ -89,6 +90,25 @@ public class MarmitasController {
             for (Marmita marmita : marmitas) {
                 tableMarmitas.getItems().add(marmita);
             }
+        }
+    }
+
+    public void abrirModalCadastrar() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalCadastarMarmita.fxml"));
+
+            Stage modal = new Stage();
+            modal.setScene(loader.load());
+
+            ModalCadastrarMarmitaController controller = loader.getController();
+
+            modal.initStyle(StageStyle.TRANSPARENT);
+            modal.setResizable(false);
+            modal.showAndWait();
+
+        } catch (IOException e) {
+            System.out.println("Erro ao abrir modal Editar Marmita");
+            e.printStackTrace();
         }
     }
 
