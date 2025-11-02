@@ -102,61 +102,6 @@ public class BairroDAO {
         return null;
     }
 
-    public static List<Bairro> readDinamico(String nome, double valorEntregaMax, double valorEntregaMin, String status, String orderBy, boolean desc) {
-
-        Connection con = Conexao.getConnection();
-        CallableStatement cs = null;
-        ResultSet rs = null;
-        List<Bairro> bairros = new ArrayList();
-
-        try {
-            cs = con.prepareCall("CALL filterBairroDinamico(?, ?, ?, ?, ?)");
-
-            if (nome != null) {
-                cs.setString(1, "%" + nome + "%");
-            } else {
-                cs.setNull(1, Types.VARCHAR);
-            }
-
-            cs.setDouble(2, valorEntregaMax);
-            cs.setDouble(3, valorEntregaMin);
-
-            if (status != null) {
-                cs.setString(4, status);
-            } else {
-                cs.setNull(4, Types.VARCHAR);
-            }
-
-            if (orderBy != null) {
-                cs.setString(5, orderBy);
-            } else {
-                cs.setNull(5, Types.VARCHAR);
-            }
-
-            cs.setBoolean(6, desc);
-
-            rs = cs.executeQuery();
-
-            while (rs.next()) {
-                Bairro bairro = new Bairro();
-
-                bairro.setId(rs.getInt("id"));
-                bairro.setNome(rs.getString("nome"));
-                bairro.setValorEntrega(rs.getDouble("valor_entrega"));
-                bairro.setStatus(rs.getString("_status"));
-
-                bairros.add(bairro);
-            }
-
-            return bairros;
-        } catch (SQLException e) {
-            System.out.println("Falha ao buscar bairros dinamicamente: " + e);
-        } finally {
-            Conexao.closeConnection(con, cs);
-        }
-        return null;
-    }
-
     public static void update(Bairro bairro) {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;

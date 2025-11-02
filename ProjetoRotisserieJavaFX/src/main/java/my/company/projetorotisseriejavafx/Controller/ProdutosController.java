@@ -17,13 +17,7 @@ import java.util.List;
 public class ProdutosController {
 
     @FXML
-    private ComboBox<String> CBStatus;
-    @FXML
-    private TextField TFDescricao;
-    @FXML
     private Button btnCadastrar;
-    @FXML
-    private Button btnPesquisar;
 
     @FXML
     private TableView<Produto> tableProdutos;
@@ -37,16 +31,10 @@ public class ProdutosController {
     @FXML
     private void initialize() {
         initTableProduto();
-        loadStatus();
     }
 
     @FXML
     void cadastrar(ActionEvent event) {
-
-    }
-
-    @FXML
-    void pesquisar(ActionEvent event) {
 
     }
 
@@ -102,10 +90,5 @@ public class ProdutosController {
                 tableProdutos.getItems().add(produto);
             }
         }
-    }
-
-    private void loadStatus() {
-        CBStatus.getItems().addAll("Todos", "ATIVO", "INATIVO");
-        CBStatus.getSelectionModel().selectFirst();
     }
 }

@@ -19,17 +19,7 @@ import java.util.List;
 public class MensalistasController {
 
     @FXML
-    private ComboBox<String> CBStatus;
-
-    @FXML
-    private TextField TFNome;
-
-    @FXML
     private Button btnCadastrar;
-
-
-    @FXML
-    private Button btnPesquisar;
 
     @FXML
     private TableView<Mensalista> tableMensalistas;
@@ -46,7 +36,6 @@ public class MensalistasController {
     @FXML
     private void initialize() {
         initTableMensalistas();
-        loadStatus();
     }
 
     @FXML
@@ -54,96 +43,9 @@ public class MensalistasController {
 
     }
 
-    @FXML
-    void pesquisar(ActionEvent event) {
-
-    }
-
     private void initTableMensalistas() {
         colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
-        /*colEditar.setCellFactory(param -> new TableCell<>() {
-            private final Button btnEditar = new Button("Editar");
-
-            {
-                btnEditar.setOnAction(event -> {
-                    Mensalista mensalista = getTableView().getItems().get(getIndex());
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalEditMensalista.fxml"));
-                        Stage modal = new Stage();
-
-                        modal.setScene(loader.load());
-
-                        //ModalEditProdutoController controller = loader.getController();
-
-                        //controller.setProduto(mensalista);
-
-                        modal.setOnCloseRequest(windowEvent -> {
-                            windowEvent.consume();
-                        });
-
-                        modal.setResizable(false);
-                        modal.initStyle(StageStyle.UTILITY);
-                        modal.showAndWait();
-
-                    } catch (IOException e) {
-                        System.out.println("Erro ao abrir Editar Mensalista:");
-                        e.printStackTrace();
-                    }
-                });
-            }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(btnEditar);
-                }
-            }
-        });*/
-        /*colPedidos.setCellFactory(param -> new TableCell<>() {
-            private final Button btnPedidos = new Button("Pedidos");
-
-            {
-                btnPedidos.setOnAction(event -> {
-                    Mensalista mensalista = getTableView().getItems().get(getIndex());
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MensalistaPedidos.fxml"));
-                        Stage modal = new Stage();
-
-                        modal.setScene(loader.load());
-
-                        //ModalEditProdutoController controller = loader.getController();
-
-                        //controller.setProduto(mensalista);
-
-                        modal.setOnCloseRequest(windowEvent -> {
-                            windowEvent.consume();
-                        });
-
-                        modal.setResizable(false);
-                        modal.initStyle(StageStyle.UTILITY);
-                        modal.showAndWait();
-
-                    } catch (IOException e) {
-                        System.out.println("Erro ao abrir Mensalista Pedidos:");
-                        e.printStackTrace();
-                    }
-                });
-            }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(btnPedidos);
-                }
-            }
-        });*/
 
         List<Mensalista> mensalistas = MensalistaDAO.read();
 
@@ -152,10 +54,5 @@ public class MensalistasController {
                 tableMensalistas.getItems().add(mensalista);
             }
         }
-    }
-
-    private void loadStatus() {
-        CBStatus.getItems().addAll("Todos", "ATIVO", "INATIVO");
-        CBStatus.getSelectionModel().selectFirst();
     }
 }

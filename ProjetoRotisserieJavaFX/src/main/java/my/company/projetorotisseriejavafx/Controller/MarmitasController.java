@@ -17,13 +17,7 @@ import java.util.List;
 public class MarmitasController {
 
     @FXML
-    private ComboBox<String> CBStatus;
-    @FXML
-    private TextField TFDescricao;
-    @FXML
     private Button btnCadastrar;
-    @FXML
-    private Button btnPesquisar;
 
     @FXML
     private TableView<Marmita> tableMarmitas;
@@ -37,16 +31,10 @@ public class MarmitasController {
     @FXML
     private void initialize() {
         initTableMarmita();
-        loadStatus();
     }
 
     @FXML
     void cadastrar(ActionEvent event) {
-
-    }
-
-    @FXML
-    void pesquisar(ActionEvent event) {
 
     }
 
@@ -104,8 +92,4 @@ public class MarmitasController {
         }
     }
 
-    private void loadStatus() {
-        CBStatus.getItems().addAll("Todos", "ATIVO", "INATIVO");
-        CBStatus.getSelectionModel().selectFirst();
-    }
 }

@@ -17,13 +17,7 @@ import java.util.List;
 public class BairrosController {
 
     @FXML
-    private ComboBox<String> CBStatus;
-    @FXML
-    private TextField TFNome;
-    @FXML
     private Button btnCadastrar;
-    @FXML
-    private Button btnPesquisar;
 
     @FXML
     private TableView<Bairro> tableBairros;
@@ -37,16 +31,10 @@ public class BairrosController {
     @FXML
     private void initialize() {
         initTableBairro();
-        loadStatus();
     }
 
     @FXML
     void cadastrar(ActionEvent event) {
-
-    }
-
-    @FXML
-    void pesquisar(ActionEvent event) {
 
     }
 
@@ -103,10 +91,5 @@ public class BairrosController {
                 tableBairros.getItems().add(bairro);
             }
         }
-    }
-
-    private void loadStatus() {
-        CBStatus.getItems().addAll("Todos", "ATIVO", "INATIVO");
-        CBStatus.getSelectionModel().selectFirst();
     }
 }
