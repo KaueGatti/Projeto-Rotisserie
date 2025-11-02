@@ -65,7 +65,7 @@ public class MarmitaVendida {
     }
 
     public String getDescricao() {
-        return marmita.getDescricao();
+        return marmita.getNome();
     }
 
     public int getId() {

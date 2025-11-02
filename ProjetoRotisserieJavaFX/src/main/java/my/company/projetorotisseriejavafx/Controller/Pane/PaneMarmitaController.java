@@ -110,6 +110,10 @@ public class PaneMarmitaController implements Initializable {
 
         List<Marmita> marmitas = MarmitaDAO.read();
 
+        if (marmitas.isEmpty()) {
+            return;
+        }
+
         for (Marmita marmita : MarmitaDAO.read()) {
             comboBox.getItems().add(marmita);
         }

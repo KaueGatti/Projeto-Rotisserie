@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import my.company.projetorotisseriejavafx.DB.Conexao;
 import my.company.projetorotisseriejavafx.Objects.Marmita;
-import my.company.projetorotisseriejavafx.Objects.Produto;
 
 /**
  *
@@ -25,9 +24,9 @@ public class MarmitaDAO {
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("CALL create_marmita(?, ?, ?, ?)");
+            stmt = con.prepareStatement("CALL CREATE_MARMITA(?, ?, ?, ?)");
 
-            stmt.setString(1, marmita.getDescricao());
+            stmt.setString(1, marmita.getNome());
             stmt.setInt(2, marmita.getMaxMistura());
             stmt.setInt(3, marmita.getMaxGuarnicao());
             stmt.setDouble(4, marmita.getValor());
@@ -54,7 +53,7 @@ public class MarmitaDAO {
                 Marmita marmita = new Marmita();
 
                 marmita.setId(rs.getInt("id"));
-                marmita.setDescricao(rs.getString("descricao"));
+                marmita.setNome(rs.getString("nome"));
                 marmita.setMaxMistura(rs.getInt("max_mistura"));
                 marmita.setMaxGuarnicao(rs.getInt("max_guarnicao"));
                 marmita.setValor(rs.getDouble("valor"));
@@ -89,7 +88,7 @@ public class MarmitaDAO {
                 Marmita marmita = new Marmita();
 
                 marmita.setId(rs.getInt("id"));
-                marmita.setDescricao(rs.getString("descricao"));
+                marmita.setNome(rs.getString("nome"));
                 marmita.setMaxMistura(rs.getInt("max_mistura"));
                 marmita.setMaxGuarnicao(rs.getInt("max_guarnicao"));
                 marmita.setValor(rs.getDouble("valor"));
@@ -107,7 +106,7 @@ public class MarmitaDAO {
         return null;
     }
 
-    /*public static List<Remedio> readDinamico(String descricao, Laboratorio l,
+    /*public static List<Remedio> readDinamico(String nome, Laboratorio l,
             double valorCustoMin, double valorCustoMax,
             double valorVendaMin, double valorVendaMax,
             String status, String orderBy, boolean desc) {
@@ -120,7 +119,7 @@ public class MarmitaDAO {
         try {
             cs = con.prepareCall("CALL filterRemedioDinamico(?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-            cs.setString(1, "%" + descricao + "%");
+            cs.setString(1, "%" + nome + "%");
             
             if (l != null) {
                 cs.setInt(2, l.getId());
@@ -159,7 +158,7 @@ public class MarmitaDAO {
                         break;
                     }
                 }
-                remedio.setDescricao(rs.getString("descricao"));
+                remedio.setNome(rs.getString("nome"));
                 if (rs.getDate("data_ultima_compra") != null) {
                     remedio.setDataUltimaCompra(rs.getDate("data_ultima_compra").toLocalDate());
                 }

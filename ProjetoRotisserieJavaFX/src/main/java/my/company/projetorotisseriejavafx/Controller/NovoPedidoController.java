@@ -145,6 +145,7 @@ public class NovoPedidoController implements Initializable {
             APMarmitaProduto.getChildren().add(marmitaPane);
         } catch (IOException e) {
             System.out.println("Erro ao carregar PaneMarmita: " + e);
+            e.printStackTrace();
         }
     }
 
@@ -224,6 +225,7 @@ public class NovoPedidoController implements Initializable {
                 tabButtonRight.setSelected(false);
             } catch (Exception e) {
                 System.out.println("Erro marmitaClicked: " + e);
+                e.printStackTrace();
             }
         } else {
             tabButtonLeft.setSelected(true);
@@ -243,6 +245,7 @@ public class NovoPedidoController implements Initializable {
                 tabButtonLeft.setSelected(false);
             } catch (Exception e) {
                 System.out.println("Erro produtoClicked: " + e);
+                e.printStackTrace();
             }
         } else {
             tabButtonRight.setSelected(true);
@@ -285,21 +288,24 @@ public class NovoPedidoController implements Initializable {
     private void loadMensalista() {
         comboBoxMensalista.getItems().clear();
         List<Mensalista> mensalistas = MensalistaDAO.read();
-        if (mensalistas != null) {
+        if (!mensalistas.isEmpty()) {
             for (Mensalista mensalista : mensalistas) {
                 comboBoxMensalista.getItems().add(mensalista);
             }
             comboBoxMensalista.getSelectionModel().selectFirst();
         }
-
     }
 
     private void loadMotoboy() {
         comboBoxMotoboy.getItems().clear();
-        for (Motoboy motoboy : MotoboyDAO.read()) {
-            comboBoxMotoboy.getItems().add(motoboy);
+
+        List<Motoboy> motoboys = MotoboyDAO.read();
+        if (!motoboys.isEmpty()) {
+            for (Motoboy motoboy : motoboys) {
+                comboBoxMotoboy.getItems().add(motoboy);
+            }
+            comboBoxMotoboy.getSelectionModel().selectFirst();
         }
-        comboBoxMotoboy.getSelectionModel().selectFirst();
     }
 
     public void adicionarMarmita(MarmitaVendida marmitaVendida) {

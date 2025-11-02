@@ -53,7 +53,7 @@ public class ModalEditMarmitaController {
     }
 
     private void loadTextFields() {
-        TFDescricao.setText(marmita.getDescricao());
+        TFDescricao.setText(marmita.getNome());
 
         TFValor.setText(String.valueOf(marmita.getValor()));
     }

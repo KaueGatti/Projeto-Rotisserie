@@ -11,7 +11,7 @@ package my.company.projetorotisseriejavafx.Objects;
 public class Marmita {
     
     private int id;
-    private String descricao;
+    private String nome;
     private int maxMistura;
     private int maxGuarnicao;
     private double valor;
@@ -25,12 +25,12 @@ public class Marmita {
         this.id = id;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getNome() {
+        return nome;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public int getMaxMistura() {
@@ -67,7 +67,7 @@ public class Marmita {
 
     @Override
     public String toString() {
-        return descricao;
+        return nome;
     }
     
 }

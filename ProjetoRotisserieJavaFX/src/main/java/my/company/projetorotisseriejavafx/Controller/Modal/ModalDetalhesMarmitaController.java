@@ -51,7 +51,7 @@ public class ModalDetalhesMarmitaController implements Initializable {
     }
     
     public void load(MarmitaVendida marmita) {
-        TFMarmita.setText(marmita.getMarmita().getDescricao());
+        TFMarmita.setText(marmita.getMarmita().getNome());
         TADetalhes.setText(marmita.getDetalhes());
         TAObservacoes.setText(marmita.getDetalhes());
         TFSubtotal.setText(String.valueOf(marmita.getSubtotal()));
