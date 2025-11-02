@@ -294,36 +294,9 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE FILTER_PEDIDO_DINAMICO (nome_cliente VARCHAR(100), tipo_pedido VARCHAR(30), date_time_inicio TIMESTAMP, date_time_fim TIMESTAMP, _status VARCHAR(30), orderBy VARCHAR(20), isDesc BOOLEAN)
+CREATE PROCEDURE READ_ALL_PEDIDOS()
 BEGIN
-	SET @sql = CONCAT('SELECT * FROM Pedido WHERE nome_cliente LIKE \'', nome_cliente, '\'');
-    
-    IF tipo_pedido IS NOT NULL THEN
-		SET @sql = CONCAT(@sql, ' AND Pedido.tipo_pedido = ', QUOTE(tipo_pedido));
-	END IF;
-    
-    IF (date_time_inicio IS NOT NULL AND date_time_fim IS NOT NULL) THEN
-		SET @sql = CONCAT(@sql, ' AND Pedido.date_time BETWEEN \'', date_time_inicio, '\' AND \'',date_time_fim, '\'');
-	ELSEIF date_time_inicio IS NOT NULL THEN
-		SET @sql = CONCAT(@sql, ' AND Pedido.date_time >= \'', date_time_inicio, '\'');
-	ELSEIF date_time_fim IS NOT NULL THEN
-		SET @sql = CONCAT(@sql, ' AND Pedido.date_time <= \'', date_time_fim, '\'');
-	END IF;
-    
-    IF _status IS NOT NULL THEN
-		SET @sql = CONCAT(@sql, ' AND Pedido._status = ', QUOTE(_status));
-    END IF;
-    
-    IF orderBy IS NOT NULL THEN
-		SET @sql = CONCAT(@sql, ' ORDER BY ', orderBy);
-		IF isDesc THEN
-			SET @sql = CONCAT(@sql, ' DESC');
-		END IF;
-	END IF;
-    
-    PREPARE stmt FROM @sql;
-    EXECUTE stmt;
-    DEALLOCATE PREPARE stmt;
+	SELECT * FROM Pedido;
 END $$
 DELIMITER ;
 

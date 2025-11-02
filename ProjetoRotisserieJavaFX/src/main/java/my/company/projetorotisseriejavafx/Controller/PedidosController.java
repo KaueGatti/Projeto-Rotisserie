@@ -29,9 +29,6 @@ import my.company.projetorotisseriejavafx.Objects.Pedido;
 
 public class PedidosController implements Initializable {
 
-    LocalDate inicio;
-    LocalDate fim;
-
     @FXML
     private AnchorPane APPedidos;
     @FXML
@@ -47,114 +44,11 @@ public class PedidosController implements Initializable {
     @FXML
     private TableColumn<Pedido, String> colStatus;
     @FXML
-    private TextField TFCliente;
-    @FXML
-    private ComboBox<String> comboBoxTipo;
-    private TextField TFData;
-    @FXML
-    private ComboBox<String> comboBoxStatus;
-    @FXML
-    private ComboBox<String> comboBoxOrdenar;
-    @FXML
-    private CheckBox checkBoxDecrescente;
-    @FXML
-    private Button btnPesquisar;
-    @FXML
     private Pane paneDetalhes;
-    @FXML
-    private DatePicker DPFim;
-    @FXML
-    private DatePicker DPInicio;
-    @FXML
-    private Label labelInfoData;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initTablePedidos();
-        initDatePicker();
-        loadCBTipo();
-        loadCBStatus();
-        loadCBOrdenar();
-    }
-
-    @FXML
-    private void pesquisar(ActionEvent event) {
-        tablePedidos.getItems().clear();
-
-        String nomeCliente = TFCliente.getText();
-
-        boolean intervaloData = false;
-
-        LocalDateTime dataInicio = null;
-        LocalDateTime dataFim = null;
-
-        if (DPInicio.getValue() != null && DPFim.getValue() != null) {
-            dataInicio = LocalDateTime.of(DPInicio.getValue(), LocalTime.of(00, 00, 00));
-            dataFim = LocalDateTime.of(DPFim.getValue(), LocalTime.of(23, 59, 59));
-            if (dataInicio.isAfter(dataFim)) {
-                labelInfoData.setText("Defina um intervalo de datas válido");
-            } else {
-                intervaloData = true;
-            }
-        } else if (DPInicio.getValue() != null) {
-            dataInicio = LocalDateTime.of(DPInicio.getValue(), LocalTime.of(00, 00, 00));
-            intervaloData = true;
-        } else if (DPFim.getValue() != null) {
-            dataFim = LocalDateTime.of(DPFim.getValue(), LocalTime.of(23, 59, 59));
-            intervaloData = true;
-        } else {
-            intervaloData = true;
-        }
-
-        String tipoPedido;
-
-        if (comboBoxTipo.getSelectionModel().getSelectedItem().equals("Todos")) {
-            tipoPedido = null;
-        } else {
-            tipoPedido = comboBoxTipo.getSelectionModel().getSelectedItem();
-        }
-
-        String status;
-
-        if (comboBoxStatus.getSelectionModel().getSelectedItem().equals("Todos")) {
-            status = null;
-        } else {
-            status = comboBoxStatus.getSelectionModel().getSelectedItem();
-        }
-
-        String orderBy;
-
-        if (comboBoxOrdenar.getSelectionModel().getSelectedItem().equals("Nenhum")) {
-            orderBy = null;
-        } else {
-            switch (comboBoxOrdenar.getSelectionModel().getSelectedIndex()) {
-                case 1:
-                    orderBy = "nome_cliente";
-                    break;
-                case 2:
-                    orderBy = "tipo_pedido";
-                    break;
-                case 3:
-                    orderBy = "date_time";
-                    break;
-                case 4:
-                    orderBy = "valor_total";
-                    break;
-                case 5:
-                    orderBy = "_status";
-                    break;
-                default:
-                    orderBy = null;
-            }
-        }
-
-        boolean isDesc = checkBoxDecrescente.isSelected();
-
-        if (intervaloData) {
-            List<Pedido> pedidos = PedidoDAO.readDinamico(nomeCliente, tipoPedido, dataInicio, dataFim, status, orderBy, isDesc);
-            tablePedidos.getItems().addAll(pedidos);
-        }
-
     }
 
     private void initTablePedidos() {
@@ -166,9 +60,9 @@ public class PedidosController implements Initializable {
 
         tablePedidos.getItems().clear();
 
-        List<Pedido> pedidos = PedidoDAO.readDinamico("", null, null, null, null, null, false);
+        List<Pedido> pedidos = PedidoDAO.read();
 
-        if (pedidos != null) {
+        if (!pedidos.isEmpty()) {
             tablePedidos.getItems().addAll(pedidos);
         }
 
@@ -185,6 +79,7 @@ public class PedidosController implements Initializable {
                         paneDetalhes.getChildren().add(balcaoPane);
                     } catch (IOException e) {
                         System.out.println("Erro ao carregar PaneDetalhesBalcao: " + e);
+                        e.printStackTrace();
                     }
                 } else {
                     try {
@@ -198,37 +93,6 @@ public class PedidosController implements Initializable {
                         e.printStackTrace();
                     }
                 }
-            }
-        });
-    }
-
-    private void initDatePicker() {
-        DPInicio.getEditor().setDisable(true);
-        DPFim.getEditor().setDisable(true);
-    }
-
-    private void loadCBTipo() {
-        comboBoxTipo.getItems().clear();
-        comboBoxTipo.getItems().addAll("Todos", "Entrega", "Balcão");
-        comboBoxTipo.getSelectionModel().selectFirst();
-    }
-
-    private void loadCBStatus() {
-        comboBoxStatus.getItems().clear();
-        comboBoxStatus.getItems().addAll("Todos", "Finalizado");
-        comboBoxStatus.getSelectionModel().selectFirst();
-    }
-
-    private void loadCBOrdenar() {
-        comboBoxOrdenar.getItems().clear();
-        comboBoxOrdenar.getItems().addAll("Nenhum", "Cliente", "Tipo", "Data e Horário", "Valor total", "Status");
-        comboBoxOrdenar.getSelectionModel().selectFirst();
-        checkBoxDecrescente.setDisable(true);
-        comboBoxOrdenar.valueProperty().addListener((obs, oldVal, newVal) -> {
-            if (!newVal.equals("Nenhum")) {
-                checkBoxDecrescente.setDisable(false);
-            } else {
-                checkBoxDecrescente.setDisable(true);
             }
         });
     }
