@@ -12,5 +12,7 @@ module my.company.projetorotisseriejavafx {
     exports my.company.projetorotisseriejavafx;
     opens my.company.projetorotisseriejavafx.Controller.Pane to javafx.fxml;
     opens my.company.projetorotisseriejavafx.Controller.Modal to javafx.fxml;
+    exports my.company.projetorotisseriejavafx.Util;
+    opens my.company.projetorotisseriejavafx.Util to javafx.base, javafx.fxml;
 
 }

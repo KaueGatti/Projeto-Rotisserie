@@ -19,7 +19,7 @@ import my.company.projetorotisseriejavafx.Objects.Marmita;
  */
 public class MarmitaDAO {
 
-    public static void create(Marmita marmita) {
+    public static void create(Marmita marmita) throws SQLException {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
 
@@ -32,8 +32,6 @@ public class MarmitaDAO {
             stmt.setDouble(4, marmita.getValor());
 
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Falha ao cadastrar marmita: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }
@@ -106,7 +104,7 @@ public class MarmitaDAO {
         return null;
     }
 
-    public static void update(Marmita marmita) {
+    public static void update(Marmita marmita) throws  SQLException {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
 
@@ -118,14 +116,12 @@ public class MarmitaDAO {
             stmt.setString(3, marmita.getStatus());
 
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Falha ao atualizar marmita: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }
     }
 
-    public static void delete(Marmita marmita) {
+    public static void delete(Marmita marmita) throws  SQLException {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
 
@@ -135,8 +131,6 @@ public class MarmitaDAO {
             stmt.setInt(1, marmita.getId());
 
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Erro ao excluir marmita: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }
