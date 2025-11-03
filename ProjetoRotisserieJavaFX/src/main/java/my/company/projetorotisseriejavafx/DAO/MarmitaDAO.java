@@ -104,12 +104,12 @@ public class MarmitaDAO {
         return null;
     }
 
-    public static void update(Marmita marmita) throws  SQLException {
+    public static void update(Marmita marmita) throws SQLException {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("CALL update_marmita(?, ?, ?)");
+            stmt = con.prepareStatement("CALL UPDATE_MARMITA(?, ?, ?)");
 
             stmt.setInt(1, marmita.getId());
             stmt.setDouble(2, marmita.getValor());

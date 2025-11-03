@@ -49,28 +49,7 @@ public class MarmitasController {
             {
                 btnEditar.setOnAction(event -> {
                     Marmita marmita = getTableView().getItems().get(getIndex());
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalEditMarmita.fxml"));
-
-                        Stage modal = new Stage();
-                        modal.setScene(loader.load());
-
-                        ModalEditMarmitaController controller = loader.getController();
-
-                        controller.setMarmita(marmita);
-
-                        modal.setOnCloseRequest(windowEvent -> {
-                            windowEvent.consume();
-                        });
-
-                        modal.initStyle(StageStyle.TRANSPARENT);
-                        modal.setResizable(false);
-                        modal.showAndWait();
-
-                    } catch (IOException e) {
-                        System.out.println("Erro ao abrir modal Editar Marmita");
-                        e.printStackTrace();
-                    }
+                    abrirModalEditar(marmita);
                 });
             }
 
@@ -104,6 +83,29 @@ public class MarmitasController {
             ModalCadastrarMarmitaController controller = loader.getController();
 
             controller.initialize();
+
+            modal.initStyle(StageStyle.UTILITY);
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.setResizable(false);
+            modal.showAndWait();
+            updateTableMarmitas();
+
+        } catch (IOException e) {
+            System.out.println("Erro ao abrir modal Editar Marmita");
+            e.printStackTrace();
+        }
+    }
+
+    public void abrirModalEditar(Marmita marmita) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalEditMarmita.fxml"));
+
+            Stage modal = new Stage();
+            modal.setScene(loader.load());
+
+            ModalEditMarmitaController controller = loader.getController();
+
+            controller.setMarmita(marmita);
 
             modal.initStyle(StageStyle.UTILITY);
             modal.initModality(Modality.APPLICATION_MODAL);
