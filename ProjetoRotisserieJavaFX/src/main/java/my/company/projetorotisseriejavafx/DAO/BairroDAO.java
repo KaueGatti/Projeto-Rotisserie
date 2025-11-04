@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+
 import my.company.projetorotisseriejavafx.DB.Conexao;
 import my.company.projetorotisseriejavafx.Objects.Bairro;
 
@@ -21,32 +22,30 @@ import my.company.projetorotisseriejavafx.Objects.Bairro;
  */
 public class BairroDAO {
 
-    public static void create(Bairro bairro) {
+    public static void create(Bairro bairro) throws SQLException {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("CALL create_bairro(?, ?)");
+            stmt = con.prepareStatement("CALL CREATE_BAIRRO(?, ?)");
 
             stmt.setString(1, bairro.getNome());
             stmt.setDouble(2, bairro.getValorEntrega());
 
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Falha ao cadastrar bairro: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }
     }
 
-    public static List<Bairro> read() {
+    public static List<Bairro> read() throws SQLException {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
         List<Bairro> bairros = new ArrayList<>();
 
         try {
-            stmt = con.prepareStatement("SELECT * FROM Bairro");
+            stmt = con.prepareStatement("CALL READ_ALL_BAIRROS()");
             rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -61,14 +60,11 @@ public class BairroDAO {
             }
 
             return bairros;
-        } catch (SQLException e) {
-            System.out.println("Falha ao buscar bairros: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }
-        return new ArrayList<>();
     }
-    
+
     public static List<Bairro> read(int id) {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
@@ -77,9 +73,9 @@ public class BairroDAO {
 
         try {
             stmt = con.prepareStatement("SELECT * FROM Bairro WHERE id = ?");
-            
+
             stmt.setInt(1, id);
-            
+
             rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -102,20 +98,18 @@ public class BairroDAO {
         return null;
     }
 
-    public static void update(Bairro bairro) {
+    public static void update(Bairro bairro) throws SQLException {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("CALL update_bairro(?, ?, ?)");
+            stmt = con.prepareStatement("CALL UPDATE_BAIRRO(?, ?, ?)");
 
             stmt.setInt(1, bairro.getId());
             stmt.setDouble(2, bairro.getValorEntrega());
             stmt.setString(3, bairro.getStatus());
 
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Falha ao atualizar bairro: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }

@@ -9,65 +9,59 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import my.company.projetorotisseriejavafx.DAO.BairroDAO;
+import my.company.projetorotisseriejavafx.DAO.MarmitaDAO;
 import my.company.projetorotisseriejavafx.Objects.Bairro;
-import my.company.projetorotisseriejavafx.Objects.Produto;
+import my.company.projetorotisseriejavafx.Objects.Marmita;
 import my.company.projetorotisseriejavafx.Util.CurrencyFieldUtil;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 
-import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-public class ModalEditBairroController {
+public class ModalCadastrarBairroController {
 
-    private Bairro bairro;
-
+    @FXML
+    private Scene modal;
     @FXML
     private TextField TFNome;
-
     @FXML
-    private TextField TFValorEntrega;
-
-    @FXML
-    private ComboBox<String> CBStatus;
-
+    private TextField TFValor;
     @FXML
     private Label LInfo;
-
     @FXML
-    private Button btnSalvar;
+    private Button btnCadastrar;
 
-    @FXML
-    private Scene scene;
-
-    @FXML
-    public void initialize(Bairro bairro) {
-        loadCBStatus();
-
-        this.bairro = bairro;
-        TFNome.setText(bairro.getNome());
-        TFValorEntrega.setText(String.valueOf(bairro.getValorEntrega()));
-        CBStatus.getSelectionModel().select(bairro.getStatus());
+    public void initialize() {
+        initCampos();
     }
 
     @FXML
-    void salvar(ActionEvent event) {
+    void cadastrar(ActionEvent event) {
+        Bairro bairro = new Bairro();
 
         if (!validaCampos()) return;
 
-        bairro.setValorEntrega(CurrencyFieldUtil.getValue(TFValorEntrega));
-        bairro.setStatus(CBStatus.getValue());
+        bairro.setNome(TFNome.getText());
+        bairro.setValorEntrega(CurrencyFieldUtil.getValue(TFValor));
 
         if (!validaBairro(bairro)) return;
 
         try {
-            BairroDAO.update(bairro);
-            LInfo.setText("Bairro atualizado com sucesso!");
+            BairroDAO.create(bairro);
+            LInfo.setText("Bairro Cadastrado com sucesso!");
             fecharModal();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             DatabaseExceptionHandler.handleException(e, "bairro");
         }
+
     }
 
     private boolean validaBairro(Bairro bairro) {
+        if (bairro.getNome() == null || bairro.getNome().isEmpty()) {
+            LInfo.setText("Nome inválido");
+            return false;
+        }
 
         if (bairro.getValorEntrega() <= 0D) {
             LInfo.setText("Defina um valor maior que R$0,00");
@@ -78,8 +72,12 @@ public class ModalEditBairroController {
     }
 
     private boolean validaCampos() {
+        if (TFNome.getText().trim().isEmpty()) {
+            LInfo.setText("Nome não pode estar vazio");
+            return false;
+        }
 
-        if (TFValorEntrega.getText().trim().isEmpty()) {
+        if (TFValor.getText().trim().isEmpty()) {
             LInfo.setText("Valor não pode estar vazio");
             return false;
         }
@@ -88,17 +86,11 @@ public class ModalEditBairroController {
     }
 
     public void fecharModal() {
-        Stage window = (Stage) scene.getWindow();
+        Stage window = (Stage) modal.getWindow();
         window.close();
     }
 
     private void initCampos() {
-        CurrencyFieldUtil.configureField(TFValorEntrega, false, false, false);
+        CurrencyFieldUtil.configureField(TFValor, false, false, false);
     }
-
-    public void loadCBStatus() {
-        CBStatus.getItems().clear();
-        CBStatus.getItems().addAll("ATIVO", "INATIVO");
-    }
-
 }

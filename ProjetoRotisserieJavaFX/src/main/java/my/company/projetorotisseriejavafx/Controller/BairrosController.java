@@ -5,13 +5,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import my.company.projetorotisseriejavafx.Controller.Modal.ModalCadastrarBairroController;
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalEditBairroController;
 import my.company.projetorotisseriejavafx.DAO.BairroDAO;
 import my.company.projetorotisseriejavafx.Objects.Bairro;
+import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 public class BairrosController {
@@ -35,7 +39,7 @@ public class BairrosController {
 
     @FXML
     void cadastrar(ActionEvent event) {
-
+        abrirModalCadastrar();
     }
 
     private void initTableBairro() {
@@ -47,29 +51,7 @@ public class BairrosController {
             {
                 btnEditar.setOnAction(event -> {
                     Bairro bairro = getTableView().getItems().get(getIndex());
-
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalEditBairro.fxml"));
-                        Stage modal = new Stage();
-
-                        modal.setScene(loader.load());
-
-                        ModalEditBairroController controller = loader.getController();
-
-                        controller.setBairro(bairro);
-
-                        modal.setOnCloseRequest(windowEvent -> {
-                            windowEvent.consume();
-                        });
-
-                        modal.setResizable(false);
-                        modal.initStyle(StageStyle.UTILITY);
-                        modal.showAndWait();
-
-                    } catch (IOException e) {
-                        System.out.println("Erro em Editar Bairro:");
-                        e.printStackTrace();
-                    }
+                    abrirModalEditar(bairro);
                 });
             }
 
@@ -84,12 +66,67 @@ public class BairrosController {
             }
         });
 
-        List<Bairro> bairros = BairroDAO.read();
+        updateTableBairro();
 
-        if (!bairros.isEmpty()) {
-            for (Bairro bairro : bairros) {
-                tableBairros.getItems().add(bairro);
+    }
+
+    public void abrirModalCadastrar() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalCadastrarBairro.fxml"));
+            Stage modal = new Stage();
+
+            modal.setScene(loader.load());
+
+            ModalCadastrarBairroController controller = loader.getController();
+
+            controller.initialize();
+
+            modal.setResizable(false);
+            modal.initStyle(StageStyle.UTILITY);
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.showAndWait();
+            updateTableBairro();
+
+        } catch (IOException e) {
+            System.out.println("Erro em Cadastrar Bairro:");
+            e.printStackTrace();
+        }
+    }
+
+    public void abrirModalEditar(Bairro bairro) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalEditBairro.fxml"));
+            Stage modal = new Stage();
+
+            modal.setScene(loader.load());
+
+            ModalEditBairroController controller = loader.getController();
+
+            controller.initialize(bairro);
+
+            modal.setResizable(false);
+            modal.initStyle(StageStyle.UTILITY);
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.showAndWait();
+            updateTableBairro();
+
+        } catch (IOException e) {
+            System.out.println("Erro em Editar Bairro:");
+            e.printStackTrace();
+        }
+    }
+
+    public void updateTableBairro() {
+        tableBairros.getItems().clear();
+
+        try {
+            List<Bairro> bairros = BairroDAO.read();
+
+            if (!bairros.isEmpty()) {
+                tableBairros.getItems().addAll(bairros);
             }
+        } catch (SQLException e) {
+            DatabaseExceptionHandler.handleException(e, "bairro");
         }
     }
 }

@@ -113,8 +113,6 @@ BEGIN
 END $$
 DELIMITER ;
 
-#drop procedure update_marmita;
-
 DELIMITER $$
 CREATE PROCEDURE UPDATE_MARMITA(_id INT, _max_mistura INT, _max_guarnicao INT, _valor DECIMAL(10,2), __status VARCHAR(30))
 BEGIN
@@ -156,10 +154,10 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE CREATE_PRODUTO(_descricao VARCHAR(30), _valor DECIMAL(10,2))
+CREATE PROCEDURE CREATE_PRODUTO(_nome VARCHAR(30), _valor DECIMAL(10,2))
 BEGIN
-	INSERT INTO Produto (descricao, valor)
-    VALUES (_descricao, _valor);
+	INSERT INTO Produto (nome, valor)
+    VALUES (_nome, _valor);
 END $$
 DELIMITER ;
 
@@ -169,6 +167,13 @@ BEGIN
 	UPDATE Produto
     SET valor = _valor, _status = __status
     WHERE id = _id;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE READ_ALL_PRODUTOS()
+BEGIN
+	SELECT * FROM Produto;
 END $$
 DELIMITER ;
 
@@ -243,6 +248,13 @@ CREATE PROCEDURE DELETE_BAIRRO(_id INT)
 BEGIN
 	DELETE FROM Bairro
     WHERE id = _id;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE READ_ALL_BAIRROS(_id INT)
+BEGIN
+	SELECT * FROM Bairro;
 END $$
 DELIMITER ;
     

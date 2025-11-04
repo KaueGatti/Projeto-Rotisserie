@@ -2,6 +2,7 @@ package my.company.projetorotisseriejavafx.Controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
@@ -47,6 +48,7 @@ import my.company.projetorotisseriejavafx.Objects.Mensalista;
 import my.company.projetorotisseriejavafx.Objects.Motoboy;
 import my.company.projetorotisseriejavafx.Objects.Pedido;
 import my.company.projetorotisseriejavafx.Objects.ProdutoVendido;
+import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 
 public class NovoPedidoController implements Initializable {
 
@@ -269,20 +271,27 @@ public class NovoPedidoController implements Initializable {
     private void loadBairro() {
         comboBoxBairro.getItems().clear();
 
-        List<Bairro> bairros = BairroDAO.read();
-        if (!bairros.isEmpty()) {
-            System.out.println(bairros);
-            for (Bairro bairro : bairros) {
-                comboBoxBairro.getItems().add(bairro);
+        try {
+            List<Bairro> bairros = BairroDAO.read();
+
+            if (!bairros.isEmpty()) {
+                comboBoxBairro.getItems().addAll(bairros);
+
+                comboBoxBairro.getSelectionModel().selectFirst();
+                valorEntrega = comboBoxBairro.getSelectionModel().getSelectedItem().getValorEntrega();
+                atualizaValor();
+
+                comboBoxBairro.setOnAction(e -> {
+                    valorEntrega = comboBoxBairro.getSelectionModel().getSelectedItem().getValorEntrega();
+                    atualizaValor();
+                });
             }
-            comboBoxBairro.getSelectionModel().selectFirst();
-            valorEntrega = comboBoxBairro.getSelectionModel().getSelectedItem().getValorEntrega();
-            atualizaValor();
+
+        } catch (SQLException e) {
+            DatabaseExceptionHandler.handleException(e, "bairro");
         }
-        comboBoxBairro.setOnAction(e -> {
-            valorEntrega = comboBoxBairro.getSelectionModel().getSelectedItem().getValorEntrega();
-            atualizaValor();
-        });
+
+
     }
 
     private void loadMensalista() {
