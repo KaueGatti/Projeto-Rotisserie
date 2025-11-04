@@ -113,13 +113,13 @@ BEGIN
 END $$
 DELIMITER ;
 
-CALL CREATE_MARMITA('Teste', 2, 3, 20.00);
+#drop procedure update_marmita;
 
 DELIMITER $$
-CREATE PROCEDURE UPDATE_MARMITA(_id INT, _valor DECIMAL(10,2), __status VARCHAR(30))
+CREATE PROCEDURE UPDATE_MARMITA(_id INT, _max_mistura INT, _max_guarnicao INT, _valor DECIMAL(10,2), __status VARCHAR(30))
 BEGIN
 	UPDATE Marmita
-    SET valor = _valor, _status = __status
+    SET max_mistura = _max_mistura, max_guarnicao = _max_guarnicao, valor = _valor, _status = __status
     WHERE id = _id;
 END $$
 DELIMITER ;

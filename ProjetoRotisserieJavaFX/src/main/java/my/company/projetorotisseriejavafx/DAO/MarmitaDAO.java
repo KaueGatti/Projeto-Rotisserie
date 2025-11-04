@@ -109,11 +109,13 @@ public class MarmitaDAO {
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("CALL UPDATE_MARMITA(?, ?, ?)");
+            stmt = con.prepareStatement("CALL UPDATE_MARMITA(?, ?, ?, ?, ?)");
 
             stmt.setInt(1, marmita.getId());
-            stmt.setDouble(2, marmita.getValor());
-            stmt.setString(3, marmita.getStatus());
+            stmt.setInt(2, marmita.getMaxMistura());
+            stmt.setInt(3, marmita.getMaxGuarnicao());
+            stmt.setDouble(4, marmita.getValor());
+            stmt.setString(5, marmita.getStatus());
 
             stmt.executeUpdate();
         } finally {

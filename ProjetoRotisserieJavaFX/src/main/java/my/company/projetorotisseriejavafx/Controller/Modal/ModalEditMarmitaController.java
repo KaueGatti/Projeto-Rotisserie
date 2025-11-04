@@ -40,6 +40,8 @@ public class ModalEditMarmitaController {
     void salvar(ActionEvent event) {
         if (!validaCampos()) return;
 
+        marmita.setMaxMistura(CBMisturas.getValue());
+        marmita.setMaxGuarnicao(CBGuarnicoes.getValue());
         marmita.setValor(CurrencyFieldUtil.getValue(TFValor));
         marmita.setStatus(CBStatus.getValue());
 
