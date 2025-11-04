@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import my.company.projetorotisseriejavafx.DB.Conexao;
 import my.company.projetorotisseriejavafx.Objects.Motoboy;
@@ -35,6 +37,37 @@ public class MotoboyDAO {
 
         try {
             stmt = con.prepareStatement("CALL READ_ALL_MOTOBOYS()");
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Motoboy motoboy = new Motoboy();
+
+                motoboy.setId(rs.getInt("id"));
+                motoboy.setNome(rs.getString("nome"));
+                motoboy.setValorDiaria(rs.getDouble("valor_diaria"));
+                motoboy.setStatus(rs.getString("_status"));
+
+                motoboys.add(motoboy);
+            }
+
+            return motoboys;
+        } finally {
+            Conexao.closeConnection(con, stmt);
+        }
+    }
+
+    public static List<Motoboy> readDiaria(Integer id_motoboy, LocalDate data) throws SQLException {
+        Connection con = Conexao.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        List<Motoboy> motoboys = new ArrayList();
+
+        try {
+            stmt = con.prepareStatement("CALL READ_DIARIA(?, ?)");
+
+            stmt.setInt(1, id_motoboy);
+            stmt.setDate(2, java.sql.Date.valueOf(data));
+
             rs = stmt.executeQuery();
 
             while (rs.next()) {

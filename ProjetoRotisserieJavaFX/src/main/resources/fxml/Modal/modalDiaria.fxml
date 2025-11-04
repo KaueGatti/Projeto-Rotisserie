@@ -7,22 +7,53 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<Scene xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.Modal.ModalDiariaController">
-    <AnchorPane prefHeight="162.0" prefWidth="301.0">
+<Scene fx:id="scene" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.Modal.ModalDiariaController">
+    <AnchorPane prefHeight="590.0" prefWidth="375.0">
       <children>
-         <Button fx:id="btnSalvar" layoutX="23.0" layoutY="108.0" mnemonicParsing="false" onAction="#Salvar" prefHeight="34.0" prefWidth="120.0" text="Salvar" />
-         <Label layoutX="37.0" layoutY="22.0" text="Descontos">
+         <Button fx:id="btnImprimir" layoutX="35.0" layoutY="526.0" mnemonicParsing="false" onAction="#imprimir" prefHeight="38.0" prefWidth="306.0" text="Imprimir">
             <font>
-               <Font size="20.0" />
+               <Font size="16.0" />
+            </font></Button>
+         <Label layoutX="157.0" layoutY="14.0" prefHeight="36.0" prefWidth="61.0" text="Diária">
+            <font>
+               <Font size="24.0" />
             </font>
          </Label>
-         <Label layoutX="38.0" layoutY="58.0" text="Adicionais">
+         <TextField fx:id="TFMotoboy" disable="true" layoutX="34.0" layoutY="82.0" opacity="0.8" prefHeight="34.0" prefWidth="308.0" />
+         <Label disable="true" layoutX="34.0" layoutY="56.0" opacity="0.8" text="Motoboy">
             <font>
-               <Font size="20.0" />
+               <Font size="16.0" />
             </font>
          </Label>
-         <TextField fx:id="TFDesconto" layoutX="150.0" layoutY="24.0" prefHeight="26.0" prefWidth="100.0" />
-         <TextField fx:id="TFAdicional" layoutX="150.0" layoutY="60.0" prefHeight="26.0" prefWidth="100.0" />
-         <Button fx:id="btnCancelar" layoutX="159.0" layoutY="108.0" mnemonicParsing="false" onAction="#Cancelar" prefHeight="34.0" prefWidth="120.0" text="Cancelar" />
+         <TextField fx:id="TFData" disable="true" layoutX="34.0" layoutY="154.0" opacity="0.8" prefHeight="34.0" prefWidth="308.0" />
+         <Label disable="true" layoutX="34.0" layoutY="128.0" opacity="0.8" text="Data">
+            <font>
+               <Font size="16.0" />
+            </font>
+         </Label>
+         <TextField fx:id="TFEntregas" disable="true" layoutX="33.0" layoutY="229.0" opacity="0.8" prefHeight="34.0" prefWidth="308.0" />
+         <Label disable="true" layoutX="33.0" layoutY="203.0" opacity="0.8" text="Total de entregas">
+            <font>
+               <Font size="16.0" />
+            </font>
+         </Label>
+         <TextField fx:id="TFValorEntregas" disable="true" layoutX="34.0" layoutY="305.0" opacity="0.8" prefHeight="34.0" prefWidth="308.0" />
+         <Label disable="true" layoutX="34.0" layoutY="279.0" opacity="0.8" text="Valor total das entregas">
+            <font>
+               <Font size="16.0" />
+            </font>
+         </Label>
+         <TextField fx:id="TFValorDiaria" disable="true" layoutX="34.0" layoutY="384.0" opacity="0.8" prefHeight="34.0" prefWidth="308.0" />
+         <Label disable="true" layoutX="34.0" layoutY="358.0" opacity="0.8" text="Valor da diária">
+            <font>
+               <Font size="16.0" />
+            </font>
+         </Label>
+         <TextField fx:id="TFValorTotalDiaria" disable="true" layoutX="34.0" layoutY="466.0" opacity="0.8" prefHeight="34.0" prefWidth="308.0" />
+         <Label disable="true" layoutX="34.0" layoutY="440.0" opacity="0.8" text="Valor total da diária">
+            <font>
+               <Font size="16.0" />
+            </font>
+         </Label>
       </children></AnchorPane>
 </Scene>

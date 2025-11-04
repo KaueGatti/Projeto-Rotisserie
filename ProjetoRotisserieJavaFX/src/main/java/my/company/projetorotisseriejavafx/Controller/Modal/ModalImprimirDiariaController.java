@@ -17,6 +17,7 @@ import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -38,17 +39,19 @@ public class ModalImprimirDiariaController {
     private Scene scene;
 
     @FXML
-    public void initialize() {
+    public void initialize(Motoboy motoboy) {
         initDPData();
-        loadCBMotoboy();
+        loadCBMotoboy(motoboy);
     }
 
     @FXML
     void imprimir(ActionEvent event) {
-        abrirModalDiaria();
+        if (DPData.getValue() != null && CBMotoboy.getValue() != null) {
+            abrirModalDiaria(CBMotoboy.getValue(), DPData.getValue());
+        }
     }
 
-    public void loadCBMotoboy() {
+    public void loadCBMotoboy(Motoboy motoboy) {
         try {
             CBMotoboy.getItems().clear();
 
@@ -56,6 +59,11 @@ public class ModalImprimirDiariaController {
 
             if (!motoboys.isEmpty()) {
                 CBMotoboy.getItems().addAll(motoboys);
+                if (motoboy != null) {
+                    CBMotoboy.getSelectionModel().select(motoboy);
+                } else {
+                    CBMotoboy.getSelectionModel().selectFirst();
+                }
             }
         } catch (SQLException e) {
             DatabaseExceptionHandler.handleException(e, "motoboy");
@@ -66,13 +74,17 @@ public class ModalImprimirDiariaController {
         DPData.setEditable(false);
     }
 
-    public void abrirModalDiaria(Motoboy motoboy, Date data) {
+    public void abrirModalDiaria(Motoboy motoboy, LocalDate data) {
         try {
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDiaria.fxml"));
 
             Stage modal = new Stage();
             modal.setScene(loader.load());
+
+            ModalDiariaController controller = loader.getController();
+
+            controller.initialize(motoboy, data);
 
             modal.initModality(Modality.APPLICATION_MODAL);
             modal.initStyle(StageStyle.UTILITY);

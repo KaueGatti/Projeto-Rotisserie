@@ -107,7 +107,11 @@ public class MotoboysController {
 
             ModalImprimirDiariaController controller = loader.getController();
 
-            controller.initialize();
+            if (tableMotoboys.getSelectionModel().getSelectedIndex() != -1) {
+                controller.initialize(tableMotoboys.getSelectionModel().getSelectedItem());
+            } else {
+                controller.initialize(null);
+            }
 
             modal.initModality(Modality.APPLICATION_MODAL);
             modal.initStyle(StageStyle.UTILITY);

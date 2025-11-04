@@ -23,7 +23,7 @@
             </Button>
             <TableView fx:id="tableProdutos" layoutX="28.0" layoutY="127.0" prefHeight="480.0" prefWidth="530.0">
               <columns>
-                <TableColumn fx:id="colDescricao" prefWidth="288.8000183105469" text="Descrição" />
+                <TableColumn fx:id="colNome" prefWidth="288.8000183105469" text="Nome" />
                 <TableColumn fx:id="colStatus" prefWidth="141.59991455078125" text="Status" />
                   <TableColumn fx:id="colEditar" prefWidth="99.2000732421875" />
               </columns>
