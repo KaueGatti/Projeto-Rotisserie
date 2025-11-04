@@ -78,7 +78,7 @@ public class ModalCadastrarMarmitaController {
     }
 
     private boolean validaMarmita(Marmita marmita) {
-        if (marmita.getNome() == null || marmita.getNome().isEmpty()) {
+        if (marmita.getNome() == null || marmita.getNome().trim().isEmpty()) {
             LInfo.setText("Nome inválido");
             return false;
         }

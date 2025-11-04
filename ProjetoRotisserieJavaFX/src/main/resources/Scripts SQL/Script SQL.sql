@@ -266,10 +266,10 @@ END $$
 DELIMITER ;
     
 DELIMITER $$
-CREATE PROCEDURE CREATE_MENSALISTA(_id_bairro INT, _nome VARCHAR(30), _CPF VARCHAR(14), _endereco VARCHAR(100))
+CREATE PROCEDURE CREATE_MENSALISTA(_nome VARCHAR(30))
 BEGIN
-	INSERT INTO Mensalista (id_bairro, nome, CPF, endereco)
-    VALUES (_id_bairro, _nome, _CPF, _endereco);
+	INSERT INTO Mensalista (nome)
+    VALUES (_nome);
 END $$
 DELIMITER ;
 

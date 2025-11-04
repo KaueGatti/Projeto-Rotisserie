@@ -296,12 +296,15 @@ public class NovoPedidoController implements Initializable {
 
     private void loadMensalista() {
         comboBoxMensalista.getItems().clear();
-        List<Mensalista> mensalistas = MensalistaDAO.read();
-        if (!mensalistas.isEmpty()) {
-            for (Mensalista mensalista : mensalistas) {
-                comboBoxMensalista.getItems().add(mensalista);
+
+        try {
+            List<Mensalista> mensalistas = MensalistaDAO.read();
+            if (!mensalistas.isEmpty()) {
+                comboBoxMensalista.getItems().addAll(mensalistas);
+                comboBoxMensalista.getSelectionModel().selectFirst();
             }
-            comboBoxMensalista.getSelectionModel().selectFirst();
+        } catch (SQLException e) {
+            DatabaseExceptionHandler.handleException(e, "mensalista");
         }
     }
 

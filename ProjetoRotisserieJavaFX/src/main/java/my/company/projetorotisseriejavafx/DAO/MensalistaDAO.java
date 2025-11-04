@@ -13,57 +13,46 @@ import my.company.projetorotisseriejavafx.Objects.Mensalista;
 
 public class MensalistaDAO {
 
-    public static void create(Mensalista mensalista) {
+    public static void create(Mensalista mensalista) throws SQLException {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("CALL create_mensalista(?, ?, ?, ?)");
+            stmt = con.prepareStatement("CALL CREATE_MENSALISTA(?)");
 
-            stmt.setInt(1, mensalista.getBairro().getId());
-            stmt.setString(2, mensalista.getNome());
-            stmt.setString(3, mensalista.getCPF());
-            stmt.setString(3, mensalista.getEndereco());
+            stmt.setString(1, mensalista.getNome());
 
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Falha ao cadastrar mensalista: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }
     }
 
-    public static List<Mensalista> read() {
+    public static List<Mensalista> read() throws SQLException {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
         List<Mensalista> mensalistas = new ArrayList();
 
         try {
-            stmt = con.prepareStatement("SELECT * FROM Mensalista");
+            stmt = con.prepareStatement("CALL READ_ALL_MENSALISTAS()");
             rs = stmt.executeQuery();
 
             while (rs.next()) {
                 Mensalista mensalista = new Mensalista();
 
                 mensalista.setId(rs.getInt("id"));
-                //mensalista.setBairro(rs.getInt("id_bairro"));
                 mensalista.setNome(rs.getString("nome"));
-                mensalista.setCPF(rs.getString("cpf"));
                 mensalista.setConta(rs.getDouble("conta"));
-                mensalista.setEndereco(rs.getString("endereco"));
                 mensalista.setStatus(rs.getString("_status"));
 
                 mensalistas.add(mensalista);
             }
 
             return mensalistas;
-        } catch (SQLException e) {
-            System.out.println("Falha ao buscar mensalistas: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }
-        return null;
     }
     
     public static List<Mensalista> read(int id) {
