@@ -89,21 +89,18 @@ public class ProdutoDAO {
         return null;
     }
 
-    public static void update(Produto produto) {
+    public static void update(Produto produto) throws SQLException {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("CALL update_produto(?, ?)");
+            stmt = con.prepareStatement("CALL UPDATE_PRODUTO(?, ?, ?)");
 
             stmt.setInt(1, produto.getId());
-            stmt.setString(3, produto.getNome());
-            stmt.setDouble(4, produto.getValor());
-            stmt.setString(6, produto.getStatus());
+            stmt.setDouble(2, produto.getValor());
+            stmt.setString(3, produto.getStatus());
 
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Falha ao atualizar produto: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }

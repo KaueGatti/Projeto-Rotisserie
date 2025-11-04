@@ -78,12 +78,13 @@ public class ProdutosController {
 
             ModalEditProdutoController controller = loader.getController();
 
-            controller.setProduto(produto);
+            controller.initialize(produto);
 
             modal.initStyle(StageStyle.UTILITY);
             modal.initModality(Modality.APPLICATION_MODAL);
             modal.setResizable(false);
             modal.showAndWait();
+            updateTableProduto();
 
         } catch (IOException e) {
             System.out.println("Erro ao abrir Editar Produto");
