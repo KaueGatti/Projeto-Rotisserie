@@ -7,9 +7,9 @@ import javafx.scene.control.Alert.AlertType;
 
 public class DatabaseExceptionHandler {
 
-    public static void handleException(Exception e) {
+    public static void handleException(Exception e, String objeto) {
         if (e instanceof SQLIntegrityConstraintViolationException) {
-            handleIntegrityViolation((SQLIntegrityConstraintViolationException) e);
+            handleIntegrityViolation((SQLIntegrityConstraintViolationException) e, objeto);
         } else if (e instanceof SQLException) {
             handleSQLException((SQLException) e);
         } else {
@@ -17,13 +17,13 @@ public class DatabaseExceptionHandler {
         }
     }
 
-    private static void handleIntegrityViolation(SQLIntegrityConstraintViolationException e) {
+    private static void handleIntegrityViolation(SQLIntegrityConstraintViolationException e, String objeto) {
         String message = e.getMessage().toLowerCase();
         String userMessage;
 
         if (message.contains("duplicate entry")) {
             if (message.contains("nome") || message.contains("uk_nome")) {
-                userMessage = "Já existe uma marmita com este nome!";
+                userMessage = "Já existe um(a) " + objeto + " com este nome!";
             } else {
                 userMessage = "Este registro já existe no sistema!";
             }

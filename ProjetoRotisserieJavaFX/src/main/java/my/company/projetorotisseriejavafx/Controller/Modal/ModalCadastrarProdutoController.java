@@ -9,7 +9,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import my.company.projetorotisseriejavafx.DAO.MarmitaDAO;
+import my.company.projetorotisseriejavafx.DAO.ProdutoDAO;
 import my.company.projetorotisseriejavafx.Objects.Marmita;
+import my.company.projetorotisseriejavafx.Objects.Produto;
 import my.company.projetorotisseriejavafx.Util.CurrencyFieldUtil;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 
@@ -17,16 +19,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ModalCadastrarMarmitaController {
+public class ModalCadastrarProdutoController {
 
     @FXML
     private Scene modal;
     @FXML
     private TextField TFNome;
-    @FXML
-    private ComboBox<Integer> CBMisturas;
-    @FXML
-    private ComboBox<Integer> CBGuarnicoes;
     @FXML
     private TextField TFValor;
     @FXML
@@ -36,54 +34,36 @@ public class ModalCadastrarMarmitaController {
 
     public void initialize() {
         initCampos();
-        loadCBMisturas();
-        loadCBGuarnicoes();
     }
 
     @FXML
     void cadastrar(ActionEvent event) {
-        Marmita marmita = new Marmita();
+        Produto produto = new Produto();
 
         if (!validaCampos()) return;
 
-        marmita.setNome(TFNome.getText());
-        marmita.setMaxMistura(CBMisturas.getValue());
-        marmita.setMaxGuarnicao(CBGuarnicoes.getValue());
-        marmita.setValor(CurrencyFieldUtil.getValue(TFValor));
+        produto.setNome(TFNome.getText());
+        produto.setValor(CurrencyFieldUtil.getValue(TFValor));
 
-        if (!validaMarmita(marmita)) return;
+        if (!validaProduto(produto)) return;
 
         try {
-            MarmitaDAO.create(marmita);
-            LInfo.setText("Marmita Cadastrada com sucesso!");
+            ProdutoDAO.create(produto);
+            LInfo.setText("Produto Cadastrado com sucesso!");
             fecharModal();
         } catch (Exception e) {
-            DatabaseExceptionHandler.handleException(e, "marmita");
+            DatabaseExceptionHandler.handleException(e, "produto");
         }
 
     }
 
-    public void loadCBMisturas() {
-        List<Integer> values = new ArrayList<>(Arrays.asList(1, 2, 3, 4));
-        CBMisturas.getItems().clear();
-        CBMisturas.getItems().addAll(values);
-        CBMisturas.getSelectionModel().selectFirst();
-    }
-
-    public void loadCBGuarnicoes() {
-        List<Integer> values = new ArrayList<>(Arrays.asList(1, 2, 3, 4));
-        CBGuarnicoes.getItems().clear();
-        CBGuarnicoes.getItems().addAll(values);
-        CBGuarnicoes.getSelectionModel().selectFirst();
-    }
-
-    private boolean validaMarmita(Marmita marmita) {
-        if (marmita.getNome() == null || marmita.getNome().isEmpty()) {
+    private boolean validaProduto(Produto produto) {
+        if (produto.getNome() == null || produto.getNome().isEmpty()) {
             LInfo.setText("Nome inválido");
             return false;
         }
 
-        if (marmita.getValor() <= 0D) {
+        if (produto.getValor() <= 0D) {
             LInfo.setText("Defina um valor maior que R$0,00");
             return false;
         }

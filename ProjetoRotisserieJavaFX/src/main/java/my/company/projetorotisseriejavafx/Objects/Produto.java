@@ -11,7 +11,7 @@ package my.company.projetorotisseriejavafx.Objects;
 public class Produto {
     
     private int id;
-    private String descricao;
+    private String nome;
     private double valor;
     private String status;
 
@@ -23,12 +23,12 @@ public class Produto {
         this.id = id;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getNome() {
+        return nome;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public double getValor() {
@@ -49,6 +49,6 @@ public class Produto {
 
     @Override
     public String toString() {
-        return descricao;
+        return nome;
     }
 }

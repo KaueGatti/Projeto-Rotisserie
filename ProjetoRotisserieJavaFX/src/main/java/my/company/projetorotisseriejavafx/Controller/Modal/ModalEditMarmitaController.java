@@ -51,7 +51,7 @@ public class ModalEditMarmitaController {
             MarmitaDAO.update(marmita);
             LInfo.setText("Marmita atualizada com sucesso");
         } catch (SQLException e) {
-            DatabaseExceptionHandler.handleException(e);
+            DatabaseExceptionHandler.handleException(e, "marmita");
         }
     }
 

@@ -48,7 +48,7 @@ public class ModalEditProdutoController {
 
     public void setProduto(Produto produto) {
         this.produto = produto;
-        TFDescricao.setText(produto.getDescricao());
+        TFDescricao.setText(produto.getNome());
         TFValor.setText(String.valueOf(produto.getValor()));
         CBStatus.getSelectionModel().select(produto.getStatus());
     }

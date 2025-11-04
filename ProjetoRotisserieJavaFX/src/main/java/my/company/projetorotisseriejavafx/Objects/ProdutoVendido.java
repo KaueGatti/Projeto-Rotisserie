@@ -44,6 +44,6 @@ public class ProdutoVendido {
     }
     
     public String getDescricao() {
-        return produto.getDescricao();
+        return produto.getNome();
     }
 }

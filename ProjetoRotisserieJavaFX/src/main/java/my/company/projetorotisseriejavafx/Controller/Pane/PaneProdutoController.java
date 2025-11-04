@@ -1,7 +1,11 @@
 package my.company.projetorotisseriejavafx.Controller.Pane;
 
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -14,14 +18,15 @@ import my.company.projetorotisseriejavafx.Controller.NovoPedidoController;
 import my.company.projetorotisseriejavafx.DAO.ProdutoDAO;
 import my.company.projetorotisseriejavafx.Objects.Produto;
 import my.company.projetorotisseriejavafx.Objects.ProdutoVendido;
+import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 
 public class PaneProdutoController implements Initializable {
-    
+
     private NovoPedidoController controller;
 
     @FXML
     private Pane paneMarmita1;
-    
+
     @FXML
     private ComboBox comboBox;
     @FXML
@@ -36,7 +41,7 @@ public class PaneProdutoController implements Initializable {
         loadProdutos();
         initSpinner();
     }
-    
+
     private void initSpinner() {
         SpinnerValueFactory<Integer> svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 1);
         spinner.setValueFactory(svf);
@@ -44,16 +49,24 @@ public class PaneProdutoController implements Initializable {
 
     public void loadProdutos() {
         comboBox.getItems().clear();
-        for (Produto produto : ProdutoDAO.read()) {
-            comboBox.getItems().add(produto);
+        List<Produto> produtos = new ArrayList<>();
+
+        try {
+            produtos = ProdutoDAO.read();
+        } catch (SQLException e) {
+            DatabaseExceptionHandler.handleException(e, "produto");
         }
-        comboBox.getSelectionModel().selectFirst();
+
+        if (!produtos.isEmpty()) {
+            comboBox.getItems().addAll(produtos);
+            comboBox.getSelectionModel().selectFirst();
+        }
     }
-    
+
     public void setController(NovoPedidoController controller) {
         this.controller = controller;
     }
-    
+
     @FXML
     public void Adicionar() {
         ProdutoVendido produto = new ProdutoVendido();
@@ -62,7 +75,7 @@ public class PaneProdutoController implements Initializable {
         controller.adicionarProduto(produto);
         spinner.getValueFactory().setValue(1);
     }
-    
+
     @FXML
     public void Limpar() {
         spinner.getValueFactory().setValue(1);
