@@ -26,7 +26,7 @@ public class ProdutosController {
     @FXML
     private TableView<Produto> tableProdutos;
     @FXML
-    private TableColumn<Produto, String> colDescricao;
+    private TableColumn<Produto, String> colNome;
     @FXML
     private TableColumn<Produto, String> colStatus;
     @FXML
@@ -43,7 +43,7 @@ public class ProdutosController {
     }
 
     private void initTableProduto() {
-        colDescricao.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         colEditar.setCellFactory(param -> new TableCell<>() {
             private final Button btnEditar = new Button("Editar");

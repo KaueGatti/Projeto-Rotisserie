@@ -11,32 +11,30 @@ import my.company.projetorotisseriejavafx.Objects.Motoboy;
 
 public class MotoboyDAO {
 
-    public static void create(Motoboy motoboy) {
+    public static void create(Motoboy motoboy) throws SQLException {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("CALL create_motoboy(?, ?)");
+            stmt = con.prepareStatement("CALL CREATE_MOTOBOY(?, ?)");
 
             stmt.setString(1, motoboy.getNome());
             stmt.setDouble(2, motoboy.getValorDiaria());
 
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Falha ao cadastrar motoboy: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }
     }
 
-    public static List<Motoboy> read() {
+    public static List<Motoboy> read() throws SQLException {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
         List<Motoboy> motoboys = new ArrayList();
 
         try {
-            stmt = con.prepareStatement("SELECT * FROM Motoboy");
+            stmt = con.prepareStatement("CALL READ_ALL_MOTOBOYS()");
             rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -51,12 +49,9 @@ public class MotoboyDAO {
             }
 
             return motoboys;
-        } catch (SQLException e) {
-            System.out.println("Falha ao buscar motoboys: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }
-        return null;
     }
     
     public static List<Motoboy> read(int id) {
@@ -92,20 +87,18 @@ public class MotoboyDAO {
         return null;
     }
 
-    public static void update(Motoboy motoboy) {
+    public static void update(Motoboy motoboy) throws SQLException {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("CALL update_motoboy(?, ?)");
+            stmt = con.prepareStatement("CALL UPDATE_MOTOBOY(?, ?, ?)");
 
             stmt.setInt(1, motoboy.getId());
             stmt.setDouble(2, motoboy.getValorDiaria());
             stmt.setString(3, motoboy.getStatus());
 
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Falha ao atualizar motoboy: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }

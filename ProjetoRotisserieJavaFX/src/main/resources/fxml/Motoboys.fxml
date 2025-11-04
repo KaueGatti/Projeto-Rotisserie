@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="691.0" prefWidth="1513.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.BairrosController">
+<Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="691.0" prefWidth="1513.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.MotoboysController">
    <children>
       <Pane layoutX="464.0" layoutY="31.0" prefHeight="629.0" prefWidth="586.0">
          <children>
@@ -21,13 +21,18 @@
                   <Font size="18.0" />
                </font>
             </Button>
-            <TableView fx:id="tableMotoboys" layoutX="28.0" layoutY="141.0" prefHeight="470.0" prefWidth="530.0">
+            <TableView fx:id="tableMotoboys" layoutX="28.0" layoutY="141.0" prefHeight="478.0" prefWidth="530.0">
               <columns>
                 <TableColumn fx:id="colNome" prefWidth="288.8000183105469" text="Nome" />
                 <TableColumn fx:id="colStatus" prefWidth="141.59991455078125" text="Status" />
                   <TableColumn fx:id="colEditar" prefWidth="99.2000732421875" />
               </columns>
             </TableView>
+            <Button fx:id="btnImprimirDiaria" layoutX="28.0" layoutY="74.0" mnemonicParsing="false" onAction="#imprimirDiaria" prefHeight="40.0" prefWidth="194.0" text="Imprimir diária">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
    </children>

@@ -306,14 +306,16 @@ public class NovoPedidoController implements Initializable {
     }
 
     private void loadMotoboy() {
-        comboBoxMotoboy.getItems().clear();
+        try {
+            comboBoxMotoboy.getItems().clear();
 
-        List<Motoboy> motoboys = MotoboyDAO.read();
-        if (!motoboys.isEmpty()) {
-            for (Motoboy motoboy : motoboys) {
-                comboBoxMotoboy.getItems().add(motoboy);
+            List<Motoboy> motoboys = MotoboyDAO.read();
+            if (!motoboys.isEmpty()) {
+                comboBoxMotoboy.getItems().addAll(motoboys);
+                comboBoxMotoboy.getSelectionModel().selectFirst();
             }
-            comboBoxMotoboy.getSelectionModel().selectFirst();
+        } catch (SQLException e) {
+            DatabaseExceptionHandler.handleException(e, "motoboy");
         }
     }
 
