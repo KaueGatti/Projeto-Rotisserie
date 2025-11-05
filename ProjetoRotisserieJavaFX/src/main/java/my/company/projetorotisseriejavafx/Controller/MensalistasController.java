@@ -8,6 +8,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import my.company.projetorotisseriejavafx.Controller.Modal.ModalEditMensalistaController;
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalEditProdutoController;
 import my.company.projetorotisseriejavafx.DAO.MensalistaDAO;
 import my.company.projetorotisseriejavafx.DAO.ProdutoDAO;
@@ -23,7 +24,6 @@ public class MensalistasController {
 
     @FXML
     private Button btnCadastrar;
-
     @FXML
     private TableView<Mensalista> tableMensalistas;
     @FXML
@@ -95,6 +95,10 @@ public class MensalistasController {
 
             Stage modal = new Stage();
             modal.setScene(loader.load());
+
+            ModalEditMensalistaController controller = loader.getController();
+
+            controller.initialize(mensalista);
 
             modal.initModality(Modality.APPLICATION_MODAL);
             modal.initStyle(StageStyle.UTILITY);

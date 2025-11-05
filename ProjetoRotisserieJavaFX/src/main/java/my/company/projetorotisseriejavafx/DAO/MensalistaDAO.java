@@ -55,11 +55,11 @@ public class MensalistaDAO {
         }
     }
     
-    public static List<Mensalista> read(int id) {
+    public static List<Mensalista> read(int id) throws SQLException {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        List<Mensalista> mensalistas = new ArrayList();
+        List<Mensalista> mensalistas = new ArrayList<>();
 
         try {
             stmt = con.prepareStatement("SELECT * FROM Mensalista WHERE id = ?");
@@ -72,45 +72,30 @@ public class MensalistaDAO {
                 Mensalista mensalista = new Mensalista();
 
                 mensalista.setId(rs.getInt("id"));
-                
-                if (rs.getInt("id_bairro") != Types.NULL) {
-                    for (Bairro bairro : BairroDAO.read(rs.getInt("id_bairro"))) {
-                        mensalista.setBairro(bairro);
-                    }
-                }
-                
                 mensalista.setNome(rs.getString("nome"));
-                mensalista.setCPF(rs.getString("cpf"));
                 mensalista.setConta(rs.getDouble("conta"));
-                mensalista.setEndereco(rs.getString("endereco"));
                 mensalista.setStatus(rs.getString("_status"));
 
                 mensalistas.add(mensalista);
             }
 
             return mensalistas;
-        } catch (SQLException e) {
-            System.out.println("Falha ao buscar mensalistas: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }
-        return null;
     }
 
-    public static void update(Mensalista mensalista) {
+    public static void update(Mensalista mensalista) throws SQLException {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("CALL update_mensalista(?, ?, ?)");
+            stmt = con.prepareStatement("CALL UPDATE_MENSALISTA(?, ?)");
 
             stmt.setInt(1, mensalista.getId());
-            stmt.setString(2, mensalista.getEndereco());
-            stmt.setString(3, mensalista.getStatus());
+            stmt.setString(2, mensalista.getStatus());
 
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Falha ao atualizar mensalista: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }

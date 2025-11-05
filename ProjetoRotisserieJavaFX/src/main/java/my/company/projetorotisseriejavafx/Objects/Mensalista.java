@@ -3,11 +3,8 @@ package my.company.projetorotisseriejavafx.Objects;
 public class Mensalista {
        
     private int id;
-    private Bairro bairro;
     private String nome;
-    private String CPF;
     private double conta;
-    private String endereco;
     private String status;
 
     public int getId() {
@@ -18,14 +15,6 @@ public class Mensalista {
         this.id = id;
     }
 
-    public Bairro getBairro() {
-        return bairro;
-    }
-
-    public void setBairro(Bairro bairro) {
-        this.bairro = bairro;
-    }
-
     public String getNome() {
         return nome;
     }
@@ -34,28 +23,12 @@ public class Mensalista {
         this.nome = nome;
     }
 
-    public String getCPF() {
-        return CPF;
-    }
-
-    public void setCPF(String CPF) {
-        this.CPF = CPF;
-    }
-
-    public double getConta() {
-        return conta;
-    }
-
     public void setConta(double conta) {
         this.conta = conta;
     }
 
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
+    public double getConta() {
+        return conta;
     }
 
     public String getStatus() {

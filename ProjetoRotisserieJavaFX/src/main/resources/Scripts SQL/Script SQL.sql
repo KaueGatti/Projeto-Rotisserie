@@ -40,13 +40,11 @@ CREATE TABLE IF NOT EXISTS Motoboy (
 
 CREATE TABLE IF NOT EXISTS Mensalista (
 	id INT AUTO_INCREMENT NOT NULL,
-	id_bairro INT,
-	nome VARCHAR(30) NOT NULL,
+	nome VARCHAR(150) NOT NULL,
 	conta DECIMAL(10,2) NOT NULL DEFAULT '0',
-	endereco VARCHAR(100),
 	_status VARCHAR(30) NOT NULL DEFAULT 'ATIVO',
 	PRIMARY KEY (id),
-    CONSTRAINT fk_bairro_mensalista FOREIGN KEY (id_bairro) REFERENCES Bairro (id)
+    UNIQUE (nome)
 );
 
 CREATE TABLE IF NOT EXISTS Pedido (
@@ -274,10 +272,10 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE UPDATE_MENSALISTA(_id INT, _endereco VARCHAR(100), __status VARCHAR(30))
+CREATE PROCEDURE UPDATE_MENSALISTA(_id INT, __status VARCHAR(30))
 BEGIN
 	UPDATE Mensalista
-    SET endereco = _endereco, _status = __status
+    SET _status = __status
     WHERE id = _id;
 END $$
 DELIMITER ;
@@ -287,6 +285,13 @@ CREATE PROCEDURE DELETE_MENSALISTA(_id INT)
 BEGIN
 	DELETE FROM Mensalista
     WHERE id = _id;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE READ_ALL_MENSALISTAS()
+BEGIN
+	SELECT * FROM Mensalista;
 END $$
 DELIMITER ;
 
