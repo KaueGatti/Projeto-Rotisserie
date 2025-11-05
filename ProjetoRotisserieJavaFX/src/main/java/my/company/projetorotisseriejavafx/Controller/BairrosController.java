@@ -28,6 +28,8 @@ public class BairrosController {
     @FXML
     private TableColumn<Bairro, String> colNome;
     @FXML
+    private TableColumn<Bairro, String> colEntrega;
+    @FXML
     private TableColumn<Bairro, String> colStatus;
     @FXML
     private TableColumn<Bairro, Void> colEditar;
@@ -44,6 +46,7 @@ public class BairrosController {
 
     private void initTableBairro() {
         colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        colEntrega.setCellValueFactory(new PropertyValueFactory<>("formattedValorEntrega"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         colEditar.setCellFactory(param -> new TableCell<>() {
             private final Button btnEditar = new Button("Editar");

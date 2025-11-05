@@ -24,7 +24,9 @@ public class MarmitasController {
     @FXML
     private TableView<Marmita> tableMarmitas;
     @FXML
-    private TableColumn<Marmita, String> colDescricao;
+    private TableColumn<Marmita, String> colNome;
+    @FXML
+    private TableColumn<Marmita, String> colValor;
     @FXML
     private TableColumn<Marmita, String> colStatus;
     @FXML
@@ -41,7 +43,8 @@ public class MarmitasController {
     }
 
     private void initTableMarmita() {
-        colDescricao.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        colValor.setCellValueFactory(new PropertyValueFactory<>("formattedValor"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         colEditar.setCellFactory(param -> new TableCell<>() {
             private final Button btnEditar = new Button("Editar");

@@ -39,6 +39,10 @@ public class Mensalista {
         this.status = status;
     }
 
+    public String getFormattedConta() {
+        return "R$ " + String.valueOf(conta).replace(".", ",");
+    }
+
     @Override
     public String toString() {
         return nome;

@@ -61,6 +61,10 @@ public class Marmita {
         this.status = status;
     }
 
+    public String getFormattedValor() {
+        return "R$ " + String.valueOf(valor).replace(".", ",");
+    }
+
     @Override
     public String toString() {
         return nome;

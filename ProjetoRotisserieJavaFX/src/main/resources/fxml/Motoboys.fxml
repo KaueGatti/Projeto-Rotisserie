@@ -23,9 +23,10 @@
             </Button>
             <TableView fx:id="tableMotoboys" layoutX="28.0" layoutY="141.0" prefHeight="478.0" prefWidth="530.0">
               <columns>
-                <TableColumn fx:id="colNome" prefWidth="288.8000183105469" text="Nome" />
-                <TableColumn fx:id="colStatus" prefWidth="141.59991455078125" text="Status" />
-                  <TableColumn fx:id="colEditar" prefWidth="99.2000732421875" />
+                <TableColumn fx:id="colNome" prefWidth="252.79998779296875" text="Nome" />
+                  <TableColumn fx:id="colDiaria" prefWidth="112.0" text="Diária" />
+                <TableColumn fx:id="colStatus" prefWidth="95.20001220703125" text="Status" />
+                  <TableColumn fx:id="colEditar" prefWidth="71.20001220703125" />
               </columns>
             </TableView>
             <Button fx:id="btnImprimirDiaria" layoutX="28.0" layoutY="74.0" mnemonicParsing="false" onAction="#imprimirDiaria" prefHeight="40.0" prefWidth="194.0" text="Imprimir diária">

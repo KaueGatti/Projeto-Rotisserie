@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+
 import my.company.projetorotisseriejavafx.DB.Conexao;
 import my.company.projetorotisseriejavafx.Objects.Bairro;
 import my.company.projetorotisseriejavafx.Objects.Mensalista;
@@ -75,7 +76,7 @@ public class PedidoDAO {
         return -1;
     }
 
-    public static List<Pedido> read() {
+    public static List<Pedido> read() throws SQLException {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -125,14 +126,11 @@ public class PedidoDAO {
 
                 pedidos.add(pedido);
             }
+
             return pedidos;
-        } catch (SQLException e) {
-            System.out.println("Falha ao buscar pedidos: " + e);
-            e.printStackTrace();
         } finally {
             Conexao.closeConnection(con, stmt);
         }
-        return pedidos;
     }
 
     public static List<Pedido> read(int id) {
@@ -152,7 +150,7 @@ public class PedidoDAO {
                 Pedido pedido = new Pedido();
 
                 pedido.setId(rs.getInt("id"));
-                
+
                 rs.getInt("id_mensalista");
 
                 if (rs.getInt("id_mensalista") != 0) {

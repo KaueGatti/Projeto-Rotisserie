@@ -23,9 +23,10 @@
             </Button>
             <TableView fx:id="tableBairros" layoutX="28.0" layoutY="151.0" prefHeight="457.0" prefWidth="530.0">
               <columns>
-                <TableColumn fx:id="colNome" prefWidth="288.8000183105469" text="Nome" />
-                <TableColumn fx:id="colStatus" prefWidth="141.59991455078125" text="Status" />
-                  <TableColumn fx:id="colEditar" prefWidth="99.2000732421875" />
+                <TableColumn fx:id="colNome" prefWidth="252.0" text="Nome" />
+                  <TableColumn fx:id="colEntrega" prefWidth="113.5999755859375" text="Entrega" />
+                <TableColumn fx:id="colStatus" prefWidth="94.4000244140625" text="Status" />
+                  <TableColumn fx:id="colEditar" prefWidth="68.4000244140625" />
               </columns>
             </TableView>
          </children>

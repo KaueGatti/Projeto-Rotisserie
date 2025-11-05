@@ -152,4 +152,20 @@ public class Pedido {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public String getFormattedValorTotal() {
+        return "R$ " + String.valueOf(valorTotal).replace(".", ",");
+    }
+
+    public String getFormattedValorEntrega() {
+        return "R$ " + String.valueOf(valorEntrega).replace(".", ",");
+    }
+
+    public String getFormattedValorPago() {
+        return "R$ " + String.valueOf(valorPago).replace(".", ",");
+    }
+
+    public String getFormattedValorAPagar() {
+        return "R$ " + String.valueOf(getValorAPagar()).replace(".", ",");
+    }
 }

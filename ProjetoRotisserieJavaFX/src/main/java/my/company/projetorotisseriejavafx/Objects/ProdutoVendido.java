@@ -42,6 +42,10 @@ public class ProdutoVendido {
     public double getSubtotal() {
         return produto.getValor() * quantidade;
     }
+
+    public String getFormattedSubtotal() {
+        return "R$ " + String.valueOf(getSubtotal()).replace(".", ",");
+    }
     
     public String getDescricao() {
         return produto.getNome();

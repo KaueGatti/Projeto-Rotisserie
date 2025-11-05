@@ -27,6 +27,10 @@ public class Motoboy {
         return valorDiaria;
     }
 
+    public String getFormattedValorDiaria() {
+        return "R$ " + String.valueOf(valorDiaria).replace(".", ",");
+    }
+
     public void setValorDiaria(double valorDiaria) {
         this.valorDiaria = valorDiaria;
     }

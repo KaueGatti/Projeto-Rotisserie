@@ -50,6 +50,7 @@ public class ModalEditMarmitaController {
         try {
             MarmitaDAO.update(marmita);
             LInfo.setText("Marmita atualizada com sucesso");
+            fecharModal();
         } catch (SQLException e) {
             DatabaseExceptionHandler.handleException(e, "marmita");
         }
@@ -102,4 +103,8 @@ public class ModalEditMarmitaController {
         CurrencyFieldUtil.configureField(TFValor, false, false, false);
     }
 
+    public void fecharModal() {
+        Stage modal = (Stage) scene.getWindow();
+        modal.close();
+    }
 }

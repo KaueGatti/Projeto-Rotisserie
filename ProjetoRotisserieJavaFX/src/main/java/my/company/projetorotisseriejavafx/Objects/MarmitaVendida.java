@@ -64,6 +64,10 @@ public class MarmitaVendida {
         return subtotal;
     }
 
+    public String getFormattedSubtotal() {
+        return "R$ " + String.valueOf(subtotal).replace(".", ",");
+    }
+
     public String getDescricao() {
         return marmita.getNome();
     }

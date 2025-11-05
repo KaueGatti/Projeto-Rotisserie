@@ -29,9 +29,9 @@ public class MensalistasController {
     @FXML
     private TableColumn<Mensalista, String> colNome;
     @FXML
-    private TableColumn<Mensalista, String> colStatus;
+    private TableColumn<Mensalista, Double> colConta;
     @FXML
-    private TableColumn<Mensalista, Void> colPedidos;
+    private TableColumn<Mensalista, String> colStatus;
     @FXML
     private TableColumn<Mensalista, Void> colEditar;
 
@@ -47,6 +47,7 @@ public class MensalistasController {
 
     private void initTableMensalistas() {
         colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        colConta.setCellValueFactory(new PropertyValueFactory<>("formattedConta"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         colEditar.setCellFactory(param -> new TableCell<>() {
             private final Button btnEditar = new Button("Editar");

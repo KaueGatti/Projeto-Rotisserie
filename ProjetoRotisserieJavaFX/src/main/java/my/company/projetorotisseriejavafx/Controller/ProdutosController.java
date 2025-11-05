@@ -28,6 +28,8 @@ public class ProdutosController {
     @FXML
     private TableColumn<Produto, String> colNome;
     @FXML
+    private TableColumn<Produto, String> colValor;
+    @FXML
     private TableColumn<Produto, String> colStatus;
     @FXML
     private TableColumn<Produto, Void> colEditar;
@@ -44,6 +46,7 @@ public class ProdutosController {
 
     private void initTableProduto() {
         colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        colValor.setCellValueFactory(new PropertyValueFactory<>("formattedValor"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         colEditar.setCellFactory(param -> new TableCell<>() {
             private final Button btnEditar = new Button("Editar");
@@ -122,9 +125,7 @@ public class ProdutosController {
             List<Produto> produtos = ProdutoDAO.read();
 
             if (!produtos.isEmpty()) {
-                for (Produto produto : produtos) {
-                    tableProdutos.getItems().add(produto);
-                }
+                tableProdutos.getItems().addAll(produtos);
             }
         } catch (SQLException e) {
             DatabaseExceptionHandler.handleException(e, "produto");

@@ -35,6 +35,10 @@ public class Produto {
         return valor;
     }
 
+    public String getFormattedValor() {
+        return "R$ " + String.valueOf(valor).replace(".", ",");
+    }
+
     public void setValor(double valor) {
         this.valor = valor;
     }

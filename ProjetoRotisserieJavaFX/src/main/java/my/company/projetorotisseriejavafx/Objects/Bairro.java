@@ -47,6 +47,10 @@ public class Bairro {
         this.status = status;
     }
 
+    public String getFormattedValorEntrega() {
+        return "R$ " + String.valueOf(valorEntrega).replace(".", ",");
+    }
+
     @Override
     public String toString() {
         return nome;

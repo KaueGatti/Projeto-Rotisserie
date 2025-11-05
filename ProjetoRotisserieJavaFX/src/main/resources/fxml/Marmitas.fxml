@@ -23,9 +23,10 @@
             </Button>
             <TableView fx:id="tableMarmitas" layoutX="28.0" layoutY="141.0" prefHeight="467.0" prefWidth="530.0">
               <columns>
-                <TableColumn fx:id="colDescricao" prefWidth="288.8000183105469" text="Descrição" />
-                <TableColumn fx:id="colStatus" prefWidth="141.59991455078125" text="Status" />
-                  <TableColumn fx:id="colEditar" prefWidth="99.2000732421875" />
+                <TableColumn fx:id="colNome" prefWidth="260.00006103515625" text="Nome" />
+                  <TableColumn fx:id="colValor" prefWidth="105.5999755859375" text="Valor" />
+                <TableColumn fx:id="colStatus" prefWidth="96.79998779296875" text="Status" />
+                  <TableColumn fx:id="colEditar" prefWidth="67.20001220703125" />
               </columns>
             </TableView>
          </children>

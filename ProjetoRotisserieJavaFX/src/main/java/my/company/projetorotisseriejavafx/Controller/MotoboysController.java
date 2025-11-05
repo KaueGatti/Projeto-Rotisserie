@@ -27,16 +27,15 @@ public class MotoboysController {
 
     @FXML
     private Button btnCadastrar;
-
     @FXML
     private Button btnImprimirDiaria;
 
     @FXML
     private TableColumn<Motoboy, Void> colEditar;
-
     @FXML
     private TableColumn<Motoboy, String> colNome;
-
+    @FXML
+    private TableColumn<Motoboy, String> colDiaria;
     @FXML
     private TableColumn<Motoboy, String> colStatus;
 
@@ -138,6 +137,7 @@ public class MotoboysController {
 
     public void initTableMotoboy() {
         colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        colDiaria.setCellValueFactory(new PropertyValueFactory<>("formattedValorDiaria"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         colEditar.setCellFactory(param -> new TableCell<>() {
             private final Button btnEditar = new Button("Editar");
