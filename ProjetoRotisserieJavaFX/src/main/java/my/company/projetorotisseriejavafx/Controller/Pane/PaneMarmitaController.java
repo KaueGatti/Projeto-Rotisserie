@@ -6,11 +6,13 @@ package my.company.projetorotisseriejavafx.Controller.Pane;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +25,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import my.company.projetorotisseriejavafx.Controller.NovoPedidoController;
@@ -30,6 +33,7 @@ import my.company.projetorotisseriejavafx.Controller.Modal.ModalObservacaoContro
 import my.company.projetorotisseriejavafx.DAO.MarmitaDAO;
 import my.company.projetorotisseriejavafx.Objects.Marmita;
 import my.company.projetorotisseriejavafx.Objects.MarmitaVendida;
+import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 
 public class PaneMarmitaController implements Initializable {
 
@@ -47,7 +51,7 @@ public class PaneMarmitaController implements Initializable {
     private String observacao;
 
     @FXML
-    private ComboBox<Marmita> comboBox;
+    private ComboBox<Marmita> comboBoxMarmita;
     @FXML
     private Pane paneMarmita;
     @FXML
@@ -106,30 +110,33 @@ public class PaneMarmitaController implements Initializable {
     }
 
     public void loadMarmitas() {
-        comboBox.getItems().clear();
+        comboBoxMarmita.getItems().clear();
 
-        List<Marmita> marmitas = MarmitaDAO.read();
+        try {
+            List<Marmita> marmitas = MarmitaDAO.read();
 
-        if (marmitas.isEmpty()) {
-            return;
-        }
+            if (marmitas.isEmpty()) {
+                return;
+            }
 
-        for (Marmita marmita : MarmitaDAO.read()) {
-            comboBox.getItems().add(marmita);
-        }
-        comboBox.getSelectionModel().selectFirst();
-        maxMisturas =  comboBox.getSelectionModel().getSelectedItem().getMaxMistura();
-        maxGuarnicoes =  comboBox.getSelectionModel().getSelectedItem().getMaxGuarnicao();
+            comboBoxMarmita.getItems().addAll(marmitas);
+            comboBoxMarmita.getSelectionModel().selectFirst();
+            maxMisturas = comboBoxMarmita.getSelectionModel().getSelectedItem().getMaxMistura();
+            maxGuarnicoes = comboBoxMarmita.getSelectionModel().getSelectedItem().getMaxGuarnicao();
 
-        comboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
-            maxMisturas =  newVal.getMaxMistura();
-            maxGuarnicoes = newVal.getMaxGuarnicao();
+            comboBoxMarmita.valueProperty().addListener((obs, oldVal, newVal) -> {
+                maxMisturas = newVal.getMaxMistura();
+                maxGuarnicoes = newVal.getMaxGuarnicao();
+                labelMistura.setText("Misturas: " + maxMisturas);
+                labelGuarnicao.setText("Guarnições: " + maxGuarnicoes);
+            });
+
             labelMistura.setText("Misturas: " + maxMisturas);
             labelGuarnicao.setText("Guarnições: " + maxGuarnicoes);
-        });
 
-        labelMistura.setText("Misturas: " + maxMisturas);
-        labelGuarnicao.setText("Guarnições: " + maxGuarnicoes);
+        } catch (SQLException e) {
+            DatabaseExceptionHandler.handleException(e, "marmita");
+        }
     }
 
     @FXML
@@ -194,7 +201,8 @@ public class PaneMarmitaController implements Initializable {
             List<String> misturas = new ArrayList<>();
             List<String> guarnicoes = new ArrayList<>();
 
-            marmita.setMarmita((Marmita) comboBox.getSelectionModel().getSelectedItem());
+            marmita.setIdMarmita(comboBoxMarmita.getValue().getId());
+            marmita.setNome(comboBoxMarmita.getValue().getNome());
 
             for (Node node : paneMarmita.getChildren()) {
                 if (node instanceof CheckBox checkBox) {
@@ -214,50 +222,13 @@ public class PaneMarmitaController implements Initializable {
 
             marmita.setPrincipais(principais);
             marmita.setMisturas(misturas);
-            marmita.setGuarnições(guarnicoes);
+            marmita.setGuarnicoes(guarnicoes);
 
-            String detalhes = "Principais: ";
-
-            for (int i = 0; i < principais.size(); i++) {
-                if (i != (principais.size() - 1)) {
-                    detalhes += principais.get(i) + ", ";
-                } else {
-                    detalhes += principais.get(i);
-                }
-            }
-
-            detalhes += "\n\nMisturas: ";
-
-            for (int i = 0; i < misturas.size(); i++) {
-                if (i != (misturas.size() - 1)) {
-                    detalhes += misturas.get(i) + ", ";
-                } else {
-                    detalhes += misturas.get(i);
-                }
-            }
-
-            detalhes += "\n\nGuarnições: ";
-
-            for (int i = 0; i < guarnicoes.size(); i++) {
-                if (i != (guarnicoes.size() - 1)) {
-                    detalhes += guarnicoes.get(i) + ", ";
-                } else {
-                    detalhes += guarnicoes.get(i);
-                }
-            }
-
-            if (marmita.getSalada() != null) {
-                detalhes += "\n\nSalada: " + marmita.getSalada();
-            } else {
-                detalhes += "\n\nSalada: Não";
-            }
-
-            marmita.setDetalhes(detalhes);
             marmita.setObservacao(observacao);
 
             double valorAdicionais = 2 * (misturasAdicionais + guarnicoesAdicionais);
 
-            marmita.setSubtotal(valorAdicionais + marmita.getMarmita().getValor());
+            marmita.setSubtotal(valorAdicionais + comboBoxMarmita.getValue().getValor());
 
             controller.adicionarMarmita(marmita);
 
@@ -298,13 +269,11 @@ public class PaneMarmitaController implements Initializable {
 
             ModalObservacaoController controller = fxmlLoader.getController();
 
-            controller.loadObservacao(observacao);
+            controller.initialize(observacao);
 
-            modal.setOnCloseRequest(event -> {
-                event.consume();
-            });
             modal.setResizable(false);
             modal.initStyle(StageStyle.UTILITY);
+            modal.initModality(Modality.APPLICATION_MODAL);
             modal.setX(55);
             modal.setY(400);
             modal.showAndWait();

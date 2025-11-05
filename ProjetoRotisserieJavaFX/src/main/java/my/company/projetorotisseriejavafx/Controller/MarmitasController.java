@@ -12,8 +12,10 @@ import my.company.projetorotisseriejavafx.Controller.Modal.ModalCadastrarMarmita
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalEditMarmitaController;
 import my.company.projetorotisseriejavafx.DAO.MarmitaDAO;
 import my.company.projetorotisseriejavafx.Objects.Marmita;
+import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 public class MarmitasController {
@@ -67,13 +69,7 @@ public class MarmitasController {
             }
         });
 
-        List<Marmita> marmitas = MarmitaDAO.read();
-
-        if (!marmitas.isEmpty()) {
-            for (Marmita marmita : marmitas) {
-                tableMarmitas.getItems().add(marmita);
-            }
-        }
+        refreshTableMarmita();
     }
 
     public void abrirModalCadastrar() {
@@ -91,7 +87,7 @@ public class MarmitasController {
             modal.initModality(Modality.APPLICATION_MODAL);
             modal.setResizable(false);
             modal.showAndWait();
-            updateTableMarmitas();
+            refreshTableMarmita();
 
         } catch (IOException e) {
             System.out.println("Erro ao abrir modal Editar Marmita");
@@ -114,7 +110,7 @@ public class MarmitasController {
             modal.initModality(Modality.APPLICATION_MODAL);
             modal.setResizable(false);
             modal.showAndWait();
-            updateTableMarmitas();
+            refreshTableMarmita();
 
         } catch (IOException e) {
             System.out.println("Erro ao abrir modal Editar Marmita");
@@ -122,16 +118,19 @@ public class MarmitasController {
         }
     }
 
-    private void updateTableMarmitas() {
+    private void refreshTableMarmita() {
         tableMarmitas.getItems().clear();
 
-        List<Marmita> marmitas = MarmitaDAO.read();
+        try {
+            List<Marmita> marmitas = MarmitaDAO.read();
 
-        if (!marmitas.isEmpty()) {
-            for (Marmita marmita : marmitas) {
-                tableMarmitas.getItems().add(marmita);
+            if (!marmitas.isEmpty()) {
+                tableMarmitas.getItems().addAll(marmitas);
             }
+        } catch (SQLException e) {
+            DatabaseExceptionHandler.handleException(e, "marmita");
         }
+
     }
 
 }

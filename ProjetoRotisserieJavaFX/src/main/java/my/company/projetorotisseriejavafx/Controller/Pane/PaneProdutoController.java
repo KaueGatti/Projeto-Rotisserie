@@ -8,10 +8,7 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.*;
 
 import javafx.scene.layout.Pane;
 import my.company.projetorotisseriejavafx.Controller.NovoPedidoController;
@@ -28,9 +25,11 @@ public class PaneProdutoController implements Initializable {
     private Pane paneMarmita1;
 
     @FXML
-    private ComboBox comboBox;
+    private ComboBox<Produto> comboBoxProduto;
     @FXML
     private Spinner<Integer> spinner;
+    @FXML
+    private Label LInfo;
     @FXML
     private Button bttAdicionar;
     @FXML
@@ -48,7 +47,7 @@ public class PaneProdutoController implements Initializable {
     }
 
     public void loadProdutos() {
-        comboBox.getItems().clear();
+        comboBoxProduto.getItems().clear();
         List<Produto> produtos = new ArrayList<>();
 
         try {
@@ -58,8 +57,8 @@ public class PaneProdutoController implements Initializable {
         }
 
         if (!produtos.isEmpty()) {
-            comboBox.getItems().addAll(produtos);
-            comboBox.getSelectionModel().selectFirst();
+            comboBoxProduto.getItems().addAll(produtos);
+            comboBoxProduto.getSelectionModel().selectFirst();
         }
     }
 
@@ -70,8 +69,10 @@ public class PaneProdutoController implements Initializable {
     @FXML
     public void Adicionar() {
         ProdutoVendido produto = new ProdutoVendido();
-        produto.setProduto((Produto) comboBox.getSelectionModel().getSelectedItem());
+        produto.setIdProduto(comboBoxProduto.getValue().getId());
+        produto.setNome(comboBoxProduto.getValue().getNome());
         produto.setQuantidade(spinner.getValue());
+        produto.setSubtotal(produto.getQuantidade() * comboBoxProduto.getValue().getValor());
         controller.adicionarProduto(produto);
         spinner.getValueFactory().setValue(1);
     }

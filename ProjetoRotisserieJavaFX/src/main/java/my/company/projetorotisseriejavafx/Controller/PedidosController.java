@@ -3,7 +3,7 @@ package my.company.projetorotisseriejavafx.Controller;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -18,18 +18,23 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import my.company.projetorotisseriejavafx.Controller.Modal.ModalEditProdutoController;
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalEnderecoPedidoController;
+import my.company.projetorotisseriejavafx.Controller.Modal.ModalMarmitasEProdutosController;
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalObservacoesPedidoController;
-import my.company.projetorotisseriejavafx.Controller.Pane.PaneDetalhesBalcaoController;
-import my.company.projetorotisseriejavafx.Controller.Pane.PaneDetalhesEntregaController;
+import my.company.projetorotisseriejavafx.DAO.MarmitaVendidaDAO;
 import my.company.projetorotisseriejavafx.DAO.PedidoDAO;
+import my.company.projetorotisseriejavafx.DAO.ProdutoVendidoDAO;
+import my.company.projetorotisseriejavafx.Objects.MarmitaVendida;
 import my.company.projetorotisseriejavafx.Objects.Pedido;
+import my.company.projetorotisseriejavafx.Objects.ProdutoVendido;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 
 public class PedidosController implements Initializable {
 
-    Pedido selectedPedido = null;
+    Pedido selectedPedido = new Pedido();
+
+    List<MarmitaVendida> marmitas = new ArrayList<>();
+    List<ProdutoVendido> produtos = new ArrayList<>();
 
     @FXML
     private AnchorPane APPedidos;
@@ -108,7 +113,7 @@ public class PedidosController implements Initializable {
 
     @FXML
     private Button btnPagamentos;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initTablePedidos();
@@ -176,6 +181,14 @@ public class PedidosController implements Initializable {
         btnMarmitasEProdutos.setDisable(false);
         btnDescontosEAdicionais.setDisable(false);
         btnPagamentos.setDisable(false);
+
+        try {
+            marmitas = MarmitaVendidaDAO.read(pedido.getId());
+            produtos = ProdutoVendidoDAO.read(pedido.getId());
+        } catch (SQLException e) {
+            DatabaseExceptionHandler.handleException(e, "marmitas e produtos vendidos");
+        }
+
     }
 
     @FXML
@@ -194,7 +207,7 @@ public class PedidosController implements Initializable {
 
     @FXML
     void marmitasEProdutos(ActionEvent event) {
-
+        abrirModalMarmitasEProdutos(marmitas, produtos);
     }
 
     @FXML
@@ -227,7 +240,9 @@ public class PedidosController implements Initializable {
             System.out.println("Erro ao abrir Observaçoes");
             e.printStackTrace();
         }
-    };
+    }
+
+    ;
 
     public void abrirModalEndereco(String endereco) {
         try {
@@ -249,5 +264,31 @@ public class PedidosController implements Initializable {
             System.out.println("Erro ao abrir Endereco");
             e.printStackTrace();
         }
-    };
+    }
+
+    ;
+
+    public void abrirModalMarmitasEProdutos(List<MarmitaVendida> marmitas, List<ProdutoVendido> produtos) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalMarmitasEProdutos.fxml"));
+            Stage modal = new Stage();
+
+            modal.setScene(loader.load());
+
+            ModalMarmitasEProdutosController controller = loader.getController();
+
+            controller.initialize(marmitas, produtos);
+
+            modal.initStyle(StageStyle.UTILITY);
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.setResizable(false);
+            modal.showAndWait();
+
+        } catch (IOException e) {
+            System.out.println("Erro ao abrir Marmitas e Produtos");
+            e.printStackTrace();
+        }
+    }
+
+    ;
 }

@@ -1,28 +1,40 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package my.company.projetorotisseriejavafx.Objects;
 
 import java.util.List;
 
-/**
- *
- * @author kaueg
- */
 public class MarmitaVendida {
 
     private int id;
-    private Marmita marmita;
-    private Pedido pedido;
+    private int idMarmita;
+    private String nome;
     private String detalhes;
     private List<String> principais;
     private List<String> misturas;
-    private List<String> guarnições;
+    private List<String> guarnicoes;
     private String salada;
-    private double valorPeso;
     private String observacao;
     private double subtotal;
+
+    public int getIdMarmita() {
+        return idMarmita;
+    }
+
+    public void setIdMarmita(int idMarmita) {
+        this.idMarmita = idMarmita;
+    }
+
+
+    public void setDetalhes(String detalhes) {
+        this.detalhes = detalhes;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
     public String getSalada() {
         return salada;
@@ -48,12 +60,12 @@ public class MarmitaVendida {
         this.misturas = misturas;
     }
 
-    public List<String> getGuarnições() {
-        return guarnições;
+    public List<String> getGuarnicoes() {
+        return guarnicoes;
     }
 
-    public void setGuarnições(List<String> guarnições) {
-        this.guarnições = guarnições;
+    public void setGuarnicoes(List<String> guarnicoes) {
+        this.guarnicoes = guarnicoes;
     }
 
     public void setSubtotal(double subtotal) {
@@ -68,10 +80,6 @@ public class MarmitaVendida {
         return "R$ " + String.valueOf(subtotal).replace(".", ",");
     }
 
-    public String getDescricao() {
-        return marmita.getNome();
-    }
-
     public int getId() {
         return id;
     }
@@ -80,36 +88,31 @@ public class MarmitaVendida {
         this.id = id;
     }
 
-    public Marmita getMarmita() {
-        return marmita;
-    }
-
-    public void setMarmita(Marmita marmita) {
-        this.marmita = marmita;
-    }
-
-    public Pedido getPedido() {
-        return pedido;
-    }
-
-    public void setPedido(Pedido pedido) {
-        this.pedido = pedido;
-    }
-
     public String getDetalhes() {
-        return detalhes;
-    }
+        StringBuilder detalhes = new StringBuilder("Principais:\n");
+        for (String p : principais) {
+            detalhes.append(p).append("\n");
+        }
 
-    public void setDetalhes(String detalhes) {
-        this.detalhes = detalhes;
-    }
+        detalhes.append("Misturas:\n");
 
-    public double getValorPeso() {
-        return valorPeso;
-    }
+        for (String m : misturas) {
+            detalhes.append(m).append("\n");
+        }
 
-    public void setValorPeso(double valorPeso) {
-        this.valorPeso = valorPeso;
+        detalhes.append("Guarnições:\n");
+
+        for (String g : guarnicoes) {
+            detalhes.append(g).append("\n");
+        }
+
+        detalhes.append("Salada:\n");
+
+        detalhes.append(salada);
+
+        this.detalhes = detalhes.toString();
+
+        return this.detalhes;
     }
 
     public String getObservacao() {

@@ -13,17 +13,17 @@ import my.company.projetorotisseriejavafx.Objects.ProdutoVendido;
 
 public class ProdutoVendidoDAO {
 
-    public static void create(List<ProdutoVendido> produtos) {
+    public static void create(List<ProdutoVendido> produtos, int idPedido) {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
-            stmt = con.prepareStatement("CALL create_produto_vendido(?, ?, ?, ?)");
+            stmt = con.prepareStatement("CALL CREATE_PRODUTO_VENDIDO(?, ?, ?, ?)");
 
             for (ProdutoVendido produto : produtos) {
-                stmt.setInt(1, produto.getProduto().getId());
-                stmt.setInt(2, produto.getPedido().getId());
+                stmt.setInt(1, idPedido);
+                stmt.setInt(2, produto.getIdProduto());
                 stmt.setInt(3, produto.getQuantidade());
                 stmt.setDouble(4, produto.getSubtotal());
                 stmt.addBatch();
@@ -45,7 +45,7 @@ public class ProdutoVendidoDAO {
         List<ProdutoVendido> produtos = new ArrayList<>();
 
         try {
-            stmt = con.prepareStatement("SELECT * FROM Produto_Vendido WHERE id_pedido = ?");
+            stmt = con.prepareStatement("READ_ALL_PRODUTOS_PEDIDO(?)");
 
             stmt.setInt(1, idPedido);
 
@@ -55,16 +55,8 @@ public class ProdutoVendidoDAO {
                 ProdutoVendido produtoVendido = new ProdutoVendido();
 
                 produtoVendido.setId(rs.getInt("id"));
-
-                for (Produto produto : ProdutoDAO.read(rs.getInt("id_produto"))) {
-                    produtoVendido.setProduto(produto);
-                }
-
-                for (Pedido pedido : PedidoDAO.read(rs.getInt("id_pedido"))) {
-                    produtoVendido.setPedido(pedido);
-                }
-
                 produtoVendido.setQuantidade(rs.getInt("quantidade"));
+                produtoVendido.setSubtotal(rs.getDouble("subtotal"));
 
                 produtos.add(produtoVendido);
             }

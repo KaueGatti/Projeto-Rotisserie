@@ -1,65 +1,38 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package my.company.projetorotisseriejavafx.Controller.Modal;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-/**
- *
- * @author kaueg
- */
-public class ModalObservacaoController implements Initializable {
+public class ModalObservacaoController {
     
     String observacao;
 
     @FXML
-    private Button bttAdicionar;
-
-    @FXML
-    private Button bttCancelar;
-    
-    @FXML
-    private TextArea TAobservacao;
+    private TextArea TAObservacao;
     @FXML
     private AnchorPane root;
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        
-    }
-
-    private void close() {
-        Stage stage = (Stage) bttAdicionar.getScene().getWindow();
-        stage.close();
-    }
-    
     @FXML
-    private void Adicionar() {
-        observacao = TAobservacao.getText();
-        close();
+    private Scene scene;
+
+    public void initialize(String observacao) {
+        TAObservacao.setText(observacao);
     }
-    
-    @FXML
-    private void Cancelar() {
-        observacao = null;
-        close();
-    }
-    
+
     public String getObservacao() {
         return observacao;
     }
-    
-    public void loadObservacao(String obs) {
-        TAobservacao.setText(obs);
+
+    public void onClose() {
+        Stage modal = (Stage) scene.getWindow();
+        modal.setOnCloseRequest(Event -> {
+            System.out.println(2);
+        });
     }
+
 
 }

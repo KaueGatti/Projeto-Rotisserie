@@ -40,7 +40,7 @@ public class ModalDetalhesProdutoController implements Initializable {
     }
     
     public void load(ProdutoVendido produto) {
-        TFProduto.setText(produto.getProduto().getNome());
+        TFProduto.setText(produto.getNome());
         TFQuantidade.setText(String.valueOf(produto.getQuantidade()));
         TFSubtotal.setText(String.valueOf(produto.getSubtotal()));
     }

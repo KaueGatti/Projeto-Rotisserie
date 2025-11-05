@@ -75,7 +75,7 @@ public class NovoPedidoController implements Initializable {
     @FXML
     private TableView<MarmitaVendida> tableMarmita;
     @FXML
-    private TableColumn<MarmitaVendida, String> colDescricaoMarmita;
+    private TableColumn<MarmitaVendida, String> colNomeMarmita;
     @FXML
     private TableColumn<MarmitaVendida, Double> colSubtotalMarmita;
     @FXML
@@ -84,7 +84,7 @@ public class NovoPedidoController implements Initializable {
     @FXML
     private TableView<ProdutoVendido> tableProduto;
     @FXML
-    private TableColumn<ProdutoVendido, String> colDescricaoProduto;
+    private TableColumn<ProdutoVendido, String> colNomeProduto;
     @FXML
     private TableColumn<ProdutoVendido, Integer> colQuantidadeProduto;
     @FXML
@@ -99,9 +99,9 @@ public class NovoPedidoController implements Initializable {
     @FXML
     private ComboBox<Bairro> comboBoxBairro;
     @FXML
-    private ComboBox comboBoxMensalista;
+    private ComboBox<Mensalista> comboBoxMensalista;
     @FXML
-    private ComboBox comboBoxMotoboy;
+    private ComboBox<Motoboy> comboBoxMotoboy;
     @FXML
     private CheckBox checkBoxMensalista;
     @FXML
@@ -156,16 +156,16 @@ public class NovoPedidoController implements Initializable {
         Pedido pedido = new Pedido();
 
         if (checkBoxMensalista.isSelected()) {
-            pedido.setMensalista((Mensalista) comboBoxMensalista.getSelectionModel().getSelectedItem());
+            pedido.setMensalista(comboBoxMensalista.getValue());
         } else {
             pedido.setNomeCliente(TFNomeCliente.getText());
         }
 
         if (RBEntrega.isSelected()) {
             pedido.setTipoPedido("Entrega");
-            pedido.setMotoboy((Motoboy) comboBoxMotoboy.getSelectionModel().getSelectedItem());
+            pedido.setMotoboy(comboBoxMotoboy.getValue());
             pedido.setEndereco(TAEndereco.getText());
-            pedido.setBairro((Bairro) comboBoxBairro.getSelectionModel().getSelectedItem());
+            pedido.setBairro(comboBoxBairro.getValue());
         } else {
             pedido.setTipoPedido("Balcão");
         }
@@ -188,18 +188,10 @@ public class NovoPedidoController implements Initializable {
 
                 pedido.setId(idPedido);
 
-                for (MarmitaVendida marmita : tableMarmita.getItems()) {
-                    marmita.setPedido(pedido);
-                }
-
-                for (ProdutoVendido produto : tableProduto.getItems()) {
-                    produto.setPedido(pedido);
-                }
-
                 System.out.println(pedido.getId());
 
-                MarmitaVendidaDAO.create(tableMarmita.getItems());
-                ProdutoVendidoDAO.create(tableProduto.getItems());
+                MarmitaVendidaDAO.create(tableMarmita.getItems(), pedido.getId());
+                ProdutoVendidoDAO.create(tableProduto.getItems(), pedido.getId());
 
                 close();
 
@@ -324,7 +316,7 @@ public class NovoPedidoController implements Initializable {
 
     public void adicionarMarmita(MarmitaVendida marmitaVendida) {
         tableMarmita.getItems().add(marmitaVendida);
-        valorTotal += marmitaVendida.getMarmita().getValor();
+        valorTotal += marmitaVendida.getSubtotal();
         atualizaValor();
         labelItensInfo.setText("");
     }
@@ -337,8 +329,8 @@ public class NovoPedidoController implements Initializable {
     }
 
     private void initTableMarmita() {
-        colDescricaoMarmita.setCellValueFactory(new PropertyValueFactory<>("descricao"));
-        colSubtotalMarmita.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
+        colNomeMarmita.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        colSubtotalMarmita.setCellValueFactory(new PropertyValueFactory<>("formattedSubtotal"));
         colDelMarmita.setCellFactory(param -> new TableCell<>() {
             private final Button btnExcluir = new Button("Excluir");
 
@@ -395,9 +387,9 @@ public class NovoPedidoController implements Initializable {
     }
 
     private void initTableProduto() {
-        colDescricaoProduto.setCellValueFactory(new PropertyValueFactory<>("descricao"));
+        colNomeProduto.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colQuantidadeProduto.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
-        colSubtotalProduto.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
+        colSubtotalProduto.setCellValueFactory(new PropertyValueFactory<>("formattedSubtotal"));
         colDelProduto.setCellFactory(param -> new TableCell<>() {
             private final Button btnExcluir = new Button("Excluir");
 

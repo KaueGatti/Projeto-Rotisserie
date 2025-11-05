@@ -3,16 +3,34 @@ package my.company.projetorotisseriejavafx.Objects;
 public class ProdutoVendido {
 
     private int id;
-    private Produto produto;
-    private Pedido pedido;
-    private int quantidade;
+    private int idProduto;
 
-    public Pedido getPedido() {
-        return pedido;
+    public int getIdProduto() {
+        return idProduto;
     }
 
-    public void setPedido(Pedido pedido) {
-        this.pedido = pedido;
+    public void setIdProduto(int idProduto) {
+        this.idProduto = idProduto;
+    }
+
+    private String nome;
+    private int quantidade;
+    private double subtotal;
+
+    public double getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public int getId() {
@@ -23,14 +41,6 @@ public class ProdutoVendido {
         this.id = id;
     }
 
-    public Produto getProduto() {
-        return produto;
-    }
-
-    public void setProduto(Produto produto) {
-        this.produto = produto;
-    }
-
     public int getQuantidade() {
         return quantidade;
     }
@@ -39,15 +49,8 @@ public class ProdutoVendido {
         this.quantidade = quantidade;
     }
 
-    public double getSubtotal() {
-        return produto.getValor() * quantidade;
-    }
-
     public String getFormattedSubtotal() {
         return "R$ " + String.valueOf(getSubtotal()).replace(".", ",");
     }
-    
-    public String getDescricao() {
-        return produto.getNome();
-    }
+
 }

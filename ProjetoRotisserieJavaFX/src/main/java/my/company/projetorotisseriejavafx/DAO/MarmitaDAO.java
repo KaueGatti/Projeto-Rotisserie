@@ -37,7 +37,7 @@ public class MarmitaDAO {
         }
     }
 
-    public static List<Marmita> read() {
+    public static List<Marmita> read() throws  SQLException {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -61,12 +61,9 @@ public class MarmitaDAO {
             }
 
             return marmitas;
-        } catch (SQLException e) {
-            System.out.println("Falha ao buscar Marmitas: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }
-        return marmitas;
     }
     
     public static List<Marmita> read(int id) {

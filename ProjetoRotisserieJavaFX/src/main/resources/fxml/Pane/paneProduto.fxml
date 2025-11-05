@@ -7,29 +7,34 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="paneMarmita1" prefHeight="580.0" prefWidth="440.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.Pane.PaneProdutoController">
+<Pane fx:id="paneMarmita1" prefHeight="580.0" prefWidth="440.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.Pane.PaneProdutoController">
    <children>
-      <Label layoutX="19.0" layoutY="6.0" prefHeight="37.0" prefWidth="421.0" text="Produto">
+      <Label layoutX="20.0" layoutY="27.0" prefHeight="12.0" prefWidth="73.0" text="Produto">
          <font>
             <Font name="Arial Bold" size="18.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="101.0" layoutY="97.0" prefHeight="37.0" prefWidth="135.0" text="Quantidade">
+      <Label alignment="CENTER" layoutX="24.0" layoutY="110.0" prefHeight="37.0" prefWidth="133.0" text="Quantidade">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Spinner fx:id="spinner" editable="true" layoutX="256.0" layoutY="97.0" prefHeight="37.0" prefWidth="83.0" />
-      <Button fx:id="bttAdicionar" layoutX="39.0" layoutY="161.0" mnemonicParsing="false" onAction="#Adicionar" prefHeight="54.0" prefWidth="180.0" text="+ Adicionar">
+      <Spinner fx:id="spinner" editable="true" layoutX="179.0" layoutY="110.0" prefHeight="37.0" prefWidth="237.0" />
+      <Button fx:id="bttAdicionar" layoutX="17.0" layoutY="191.0" mnemonicParsing="false" onAction="#Adicionar" prefHeight="40.0" prefWidth="198.0" text="+ Adicionar">
          <font>
-            <Font size="24.0" />
+            <Font name="System Bold" size="16.0" />
          </font>
       </Button>
-      <Button fx:id="bttLimpar" layoutX="236.0" layoutY="161.0" mnemonicParsing="false" onAction="#Limpar" prefHeight="54.0" prefWidth="180.0" text="- Limpar">
+      <Button fx:id="bttLimpar" layoutX="226.0" layoutY="191.0" mnemonicParsing="false" onAction="#Limpar" prefHeight="40.0" prefWidth="198.0" text="- Limpar">
          <font>
-            <Font size="24.0" />
+            <Font name="System Bold" size="16.0" />
          </font>
       </Button>
-      <ComboBox fx:id="comboBox" layoutX="19.0" layoutY="36.0" prefHeight="40.0" prefWidth="400.0" />
+      <ComboBox fx:id="comboBoxProduto" layoutX="20.0" layoutY="54.0" prefHeight="40.0" prefWidth="400.0" />
+      <Label fx:id="LInfo" layoutX="17.0" layoutY="157.0" prefHeight="21.0" prefWidth="407.0">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
    </children>
 </Pane>

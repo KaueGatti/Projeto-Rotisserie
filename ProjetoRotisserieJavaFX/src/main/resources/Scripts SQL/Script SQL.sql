@@ -81,26 +81,26 @@ CREATE TABLE IF NOT EXISTS Pagamento(
 
 CREATE TABLE IF NOT EXISTS Marmita_Vendida (
 	id INT AUTO_INCREMENT NOT NULL,
-	id_marmita INT,
-	id_pedido INT NOT NULL,
+    id_pedido INT NOT NULL,
+	id_marmita INT NOT NULL,
 	detalhes VARCHAR(500) NOT NULL,
     valor_peso DECIMAL(10,2),
     subtotal DECIMAL(10,2) NOT NULL,
 	observacao VARCHAR(100),
 	PRIMARY KEY (id),
-    CONSTRAINT fk_marmita FOREIGN KEY (id_marmita) REFERENCES Marmita (id),
-    CONSTRAINT fk_pedido_marmita FOREIGN KEY (id_pedido) REFERENCES Pedido (id)
+    CONSTRAINT fk_pedido_marmita FOREIGN KEY (id_pedido) REFERENCES Pedido (id),
+    CONSTRAINT fk_marmita FOREIGN KEY (id_marmita) REFERENCES Marmita (id)
 );
 
 CREATE TABLE IF NOT EXISTS Produto_Vendido (
 	id INT AUTO_INCREMENT NOT NULL,
+    id_pedido INT NOT NULL,
 	id_produto INT NOT NULL,
-	id_pedido INT NOT NULL,
 	quantidade INT NOT NULL,
 	subtotal DECIMAL(10,2) NOT NULL,
 	PRIMARY KEY (id),
-    CONSTRAINT fk_produto FOREIGN KEY (id_produto) REFERENCES Produto (id),
-    CONSTRAINT fk_pedido_produto FOREIGN KEY (id_pedido) REFERENCES Pedido (id)
+    CONSTRAINT fk_pedido_produto FOREIGN KEY (id_pedido) REFERENCES Pedido (id),
+    CONSTRAINT fk_produto FOREIGN KEY (id_produto) REFERENCES Produto (id)
 );
 
 DELIMITER $$
@@ -136,10 +136,10 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE CREATE_MARMITA_VENDIDA(_id_marmita INT, _id_pedido INT, _subtotal DECIMAL(10,2), _detalhes VARCHAR(100), _observacao VARCHAR(100))
+CREATE PROCEDURE CREATE_MARMITA_VENDIDA(_id_pedido INT, _id_marmita INT, _subtotal DECIMAL(10,2), _detalhes VARCHAR(100), _observacao VARCHAR(100))
 BEGIN
-	INSERT INTO Marmita_Vendida (id_marmita, id_pedido, subtotal, detalhes, observacao)
-    VALUES (_id_marmita, _id_pedido, _subtotal, _detalhes, _observacao);
+	INSERT INTO Marmita_Vendida (id_pedido, id_marmita, subtotal, detalhes, observacao)
+    VALUES (_id_pedido, _id_marmita, _subtotal, _detalhes, _observacao);
 END $$
 DELIMITER ;
 
@@ -184,10 +184,10 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE CREATE_PRODUTO_VENDIDO(_id_produto INT, _id_pedido INT, _quantidade INT, _subtotal DECIMAL(10,2))
+CREATE PROCEDURE CREATE_PRODUTO_VENDIDO(_id_pedido INT, _id_produto INT, _quantidade INT, _subtotal DECIMAL(10,2))
 BEGIN
-	INSERT INTO Produto_Vendido (id_produto, id_pedido, quantidade, subtotal)
-    VALUES (_id_produto, _id_pedido, _quantidade, _subtotal);
+	INSERT INTO Produto_Vendido (id_pedido, id_produto, quantidade, subtotal)
+    VALUES (_id_pedido, _id_produto, _quantidade, _subtotal);
 END $$
 DELIMITER ;
 
