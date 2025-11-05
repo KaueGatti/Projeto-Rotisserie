@@ -15,6 +15,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import my.company.projetorotisseriejavafx.Controller.Modal.ModalEditProdutoController;
+import my.company.projetorotisseriejavafx.Controller.Modal.ModalEnderecoPedidoController;
+import my.company.projetorotisseriejavafx.Controller.Modal.ModalObservacoesPedidoController;
 import my.company.projetorotisseriejavafx.Controller.Pane.PaneDetalhesBalcaoController;
 import my.company.projetorotisseriejavafx.Controller.Pane.PaneDetalhesEntregaController;
 import my.company.projetorotisseriejavafx.DAO.PedidoDAO;
@@ -23,56 +29,10 @@ import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 
 public class PedidosController implements Initializable {
 
+    Pedido selectedPedido = null;
+
     @FXML
     private AnchorPane APPedidos;
-
-    @FXML
-    private TextArea TAEndereco;
-
-    @FXML
-    private TextArea TAObservacoes;
-
-    @FXML
-    private TextField TFBairro;
-
-    @FXML
-    private TextField TFCliente;
-
-    @FXML
-    private TextField TFDataHora;
-
-    @FXML
-    private TextField TFEntrega;
-
-    @FXML
-    private TextField TFMotoboy;
-
-    @FXML
-    private TextField TFPagamento;
-
-    @FXML
-    private TextField TFStatus;
-
-    @FXML
-    private TextField TFTipo;
-
-    @FXML
-    private TextField TFValorAPagar;
-
-    @FXML
-    private TextField TFValorPago;
-
-    @FXML
-    private TextField TFValorTotal;
-
-    @FXML
-    private TextField TFVencimento;
-
-    @FXML
-    private Button btnMarmitasEProdutos;
-
-    @FXML
-    private Button btnPagamentos;
 
     @FXML
     private TableColumn<Pedido, String> colCliente;
@@ -95,7 +55,60 @@ public class PedidosController implements Initializable {
     @FXML
     private TableView<Pedido> tablePedidos;
 
+    @FXML
+    private Label LBairro;
 
+    @FXML
+    private Label LCliente;
+
+    @FXML
+    private Label LDataHora;
+
+    @FXML
+    private Label LEntrega;
+
+    @FXML
+    private Label LMotoboy;
+
+    @FXML
+    private Label LPagamento;
+
+    @FXML
+    private Label LStatus;
+
+    @FXML
+    private Label LTipo;
+
+    @FXML
+    private Label LValorAPagar;
+
+    @FXML
+    private Label LValorPago;
+
+    @FXML
+    private Label LValorTotal;
+
+    @FXML
+    private Label LVencimento;
+
+    @FXML
+    private Button btnDescontosEAdicionais;
+
+    @FXML
+    private Button btnEndereco;
+
+    @FXML
+    private Button btnImprimir;
+
+    @FXML
+    private Button btnObservacoes;
+
+    @FXML
+    private Button btnMarmitasEProdutos;
+
+    @FXML
+    private Button btnPagamentos;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initTablePedidos();
@@ -108,24 +121,14 @@ public class PedidosController implements Initializable {
         colTotal.setCellValueFactory(new PropertyValueFactory<>("formattedValorTotal"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-
         tablePedidos.setOnMouseClicked(event -> {
             if (event.getClickCount() == 1 && !tablePedidos.getSelectionModel().isEmpty()) {
-                loadDetalhes(tablePedidos.getSelectionModel().getSelectedItem());
+                selectedPedido = tablePedidos.getSelectionModel().getSelectedItem();
+                loadDetalhes(selectedPedido);
             }
         });
 
         refreshTablePedido();
-    }
-
-    @FXML
-    void marmitasEProdutos(ActionEvent event) {
-
-    }
-
-    @FXML
-    void pagamentos(ActionEvent event) {
-
     }
 
     public void refreshTablePedido() {
@@ -144,23 +147,107 @@ public class PedidosController implements Initializable {
     }
 
     public void loadDetalhes(Pedido pedido) {
-        TFCliente.setText(pedido.getNomeCliente());
-        TFTipo.setText(pedido.getTipoPedido());
-        TFPagamento.setText(pedido.getTipoPagamento());
-        TAObservacoes.setText(pedido.getObservacoes());
+
+        LCliente.setText(pedido.getNomeCliente());
+        LTipo.setText(pedido.getTipoPedido());
+        LPagamento.setText(pedido.getTipoPagamento());
         if (pedido.getTipoPedido().equals("Entrega")) {
-            TFMotoboy.setText(pedido.getMotoboy().getNome());
-            TFBairro.setText(pedido.getBairro().getNome());
-            TFEntrega.setText(pedido.getFormattedValorEntrega());
+            LMotoboy.setText(pedido.getMotoboy().getNome());
+            LBairro.setText(pedido.getBairro().getNome());
+            LEntrega.setText(pedido.getFormattedValorEntrega());
+            btnEndereco.setDisable(false);
+        } else {
+            btnEndereco.setDisable(true);
+            LMotoboy.setText("-");
+            LBairro.setText("-");
         }
 
-        TFValorTotal.setText(pedido.getFormattedValorTotal());
-        TFValorPago.setText(pedido.getFormattedValorPago());
-        TFValorAPagar.setText(pedido.getFormattedValorAPagar());
+        LValorTotal.setText(pedido.getFormattedValorTotal());
+        LValorPago.setText(pedido.getFormattedValorPago());
+        LValorAPagar.setText(pedido.getFormattedValorAPagar());
 
-        TFDataHora.setText(pedido.getDateTimeFormat());
-        TFVencimento.setText("0");
+        LDataHora.setText(pedido.getDateTimeFormat());
+        LVencimento.setText("20/02/2020");
 
-        TFStatus.setText(pedido.getStatus());
+        LStatus.setText(pedido.getStatus());
+
+        btnImprimir.setDisable(false);
+        btnObservacoes.setDisable(false);
+        btnMarmitasEProdutos.setDisable(false);
+        btnDescontosEAdicionais.setDisable(false);
+        btnPagamentos.setDisable(false);
     }
+
+    @FXML
+    void descontosEAdicionais(ActionEvent event) {
+    }
+
+    @FXML
+    void endereco(ActionEvent event) {
+        abrirModalEndereco(selectedPedido.getEndereco());
+    }
+
+    @FXML
+    void imprimir(ActionEvent event) {
+
+    }
+
+    @FXML
+    void marmitasEProdutos(ActionEvent event) {
+
+    }
+
+    @FXML
+    void observacoes(ActionEvent event) {
+        abrirModalObservacoes(selectedPedido.getObservacoes());
+    }
+
+    @FXML
+    void pagamentos(ActionEvent event) {
+
+    }
+
+    public void abrirModalObservacoes(String observacoes) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalObservacoesPedido.fxml"));
+            Stage modal = new Stage();
+
+            modal.setScene(loader.load());
+
+            ModalObservacoesPedidoController controller = loader.getController();
+
+            controller.initialize(observacoes);
+
+            modal.initStyle(StageStyle.UTILITY);
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.setResizable(false);
+            modal.showAndWait();
+
+        } catch (IOException e) {
+            System.out.println("Erro ao abrir Observaçoes");
+            e.printStackTrace();
+        }
+    };
+
+    public void abrirModalEndereco(String endereco) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalEnderecoPedido.fxml"));
+            Stage modal = new Stage();
+
+            modal.setScene(loader.load());
+
+            ModalEnderecoPedidoController controller = loader.getController();
+
+            controller.initialize(endereco);
+
+            modal.initStyle(StageStyle.UTILITY);
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.setResizable(false);
+            modal.showAndWait();
+
+        } catch (IOException e) {
+            System.out.println("Erro ao abrir Endereco");
+            e.printStackTrace();
+        }
+    };
 }

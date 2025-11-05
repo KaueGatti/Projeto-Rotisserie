@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="APPedidos" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="716.0" prefWidth="1349.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.PedidosController">
+<AnchorPane id="AnchorPane" fx:id="APPedidos" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="727.0" prefWidth="1537.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.PedidosController">
    <children>
-      <TableView fx:id="tablePedidos" layoutX="36.0" layoutY="97.0" prefHeight="605.0" prefWidth="826.0">
+      <TableView fx:id="tablePedidos" layoutX="36.0" layoutY="97.0" prefHeight="614.0" prefWidth="830.0">
         <columns>
           <TableColumn fx:id="colCliente" prefWidth="317.6000785827637" text="Cliente" />
           <TableColumn fx:id="colTipo" prefWidth="131.199951171875" text="Tipo" />
             <TableColumn fx:id="colData" minWidth="0.0" prefWidth="152.0" text="Data e Horário" />
             <TableColumn fx:id="colTotal" prefWidth="104.79998779296875" text="Total" />
-            <TableColumn fx:id="colStatus" minWidth="3.200042724609375" prefWidth="125.60003662109375" text="Status" />
+            <TableColumn fx:id="colStatus" minWidth="3.200042724609375" prefWidth="121.5999755859375" text="Status" />
         </columns>
       </TableView>
       <Label layoutX="39.0" layoutY="15.0" text="Pedidos">
@@ -23,15 +25,171 @@
             <Font size="48.0" />
          </font>
       </Label>
-      <Pane fx:id="paneDetalhes" layoutX="894.0" layoutY="1.0" prefHeight="716.0" prefWidth="638.0">
+      <Pane fx:id="paneDetalhes" layoutX="879.0" layoutY="1.0" prefHeight="718.0" prefWidth="658.0">
          <children>
-            <Label alignment="CENTER" layoutY="346.0" prefHeight="25.0" prefWidth="638.0" text="Nenhum pedido selecionado">
+            <Label layoutX="14.0" layoutY="10.0" text="Detalhes do Pedido">
                <font>
-                  <Font size="24.0" />
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="LDataHora" layoutX="16.0" layoutY="40.0" opacity="0.9" text="-">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Button fx:id="btnImprimir" disable="true" layoutX="413.0" layoutY="21.0" mnemonicParsing="false" onAction="#imprimir" prefHeight="39.0" prefWidth="220.0" text="Imprimir" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Button>
+            <Label layoutX="38.0" layoutY="87.0" text="Cliente">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="38.0" layoutY="126.0" text="Tipo">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="38.0" layoutY="166.0" text="Pagamento">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="LTipo" layoutX="100.0" layoutY="126.0" opacity="0.6" text="-">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="LPagamento" layoutX="156.0" layoutY="166.0" opacity="0.6" text="-">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="LCliente" layoutX="115.0" layoutY="87.0" opacity="0.6" text="-">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Button fx:id="btnObservacoes" disable="true" layoutX="36.0" layoutY="208.0" mnemonicParsing="false" onAction="#observacoes" prefHeight="39.0" prefWidth="220.0" text="Observações" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Button>
+            <Label layoutX="39.0" layoutY="306.0" text="Motoboy">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="39.0" layoutY="346.0" text="Bairro">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="LMotoboy" layoutX="138.0" layoutY="306.0" opacity="0.6" text="-">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="LBairro" layoutX="106.0" layoutY="346.0" opacity="0.6" text="-">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Button fx:id="btnEndereco" disable="true" layoutX="36.0" layoutY="387.0" mnemonicParsing="false" onAction="#endereco" prefHeight="39.0" prefWidth="220.0" text="Endereço" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Button>
+            <Label layoutX="14.0" layoutY="268.0" text="Entrega">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Line endX="558.4000244140625" layoutX="100.0" layoutY="260.0" opacity="0.3" startX="-100.0" />
+            <Line endX="558.4000244140625" layoutX="100.0" layoutY="442.0" opacity="0.3" startX="-100.0" />
+            <Label layoutX="37.0" layoutY="491.0" text="Entrega">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="36.0" layoutY="521.0" text="Valor Total">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="LEntrega" layoutX="117.0" layoutY="491.0" opacity="0.6" text="-">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="LValorTotal" layoutX="148.0" layoutY="521.0" opacity="0.6" text="-">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="15.0" layoutY="452.0" text="Valores">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="36.0" layoutY="551.0" text="Valor Pago">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="LValorPago" layoutX="148.0" layoutY="551.0" opacity="0.6" text="-">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="36.0" layoutY="581.0" text="Valor a Pagar">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="LValorAPagar" layoutX="166.0" layoutY="581.0" opacity="0.6" text="-">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Button fx:id="btnMarmitasEProdutos" disable="true" layoutX="413.0" layoutY="467.0" mnemonicParsing="false" onAction="#marmitasEProdutos" prefHeight="39.0" prefWidth="220.0" text="Marmitas e Produtos" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnDescontosEAdicionais" disable="true" layoutX="413.0" layoutY="518.0" mnemonicParsing="false" onAction="#descontosEAdicionais" prefHeight="39.0" prefWidth="220.0" text="Descontos e Adicionais" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnPagamentos" disable="true" layoutX="414.0" layoutY="657.0" mnemonicParsing="false" onAction="#pagamentos" prefHeight="39.0" prefWidth="220.0" text="Pagamentos" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Button>
+            <Label layoutX="39.0" layoutY="642.0" text="Status">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="LStatus" layoutX="107.0" layoutY="642.0" opacity="0.6" text="-">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="39.0" layoutY="672.0" text="Vencimento">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="LVencimento" layoutX="158.0" layoutY="672.0" opacity="0.6" text="-">
+               <font>
+                  <Font size="20.0" />
                </font>
             </Label>
          </children>
       </Pane>
-      <Label fx:id="labelInfoData" layoutX="479.0" layoutY="183.0" prefHeight="18.0" prefWidth="184.0" />
    </children>
 </AnchorPane>

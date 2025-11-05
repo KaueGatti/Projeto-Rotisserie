@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Scene?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<Scene fx:id="scene" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.Modal.ModalObservacoesPedidoController">
+   <root>
+      <AnchorPane fx:id="root" prefHeight="215.0" prefWidth="361.0">
+         <children>
+            <Label layoutX="14.0" layoutY="8.0" text="Observações">
+               <font>
+                  <Font size="24.0" />
+               </font></Label>
+            <TextArea fx:id="TAobservacao" disable="true" editable="false" layoutX="13.0" layoutY="50.0" prefHeight="151.0" prefWidth="335.0" text="Sem observações" />
+         </children>
+      </AnchorPane>
+   </root>
+</Scene>
