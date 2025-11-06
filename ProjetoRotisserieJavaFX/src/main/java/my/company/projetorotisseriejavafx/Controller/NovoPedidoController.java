@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,11 +31,11 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import my.company.projetorotisseriejavafx.Controller.Modal.ModalDescontosController;
+import my.company.projetorotisseriejavafx.Controller.Modal.ModalDescontosEAdicionaisController;
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalDetalhesMarmitaController;
-import my.company.projetorotisseriejavafx.Controller.Modal.ModalDetalhesProdutoController;
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalPagamentoController;
 import my.company.projetorotisseriejavafx.Controller.Pane.PaneMarmitaController;
 import my.company.projetorotisseriejavafx.Controller.Pane.PaneProdutoController;
@@ -42,20 +45,14 @@ import my.company.projetorotisseriejavafx.DAO.MensalistaDAO;
 import my.company.projetorotisseriejavafx.DAO.MotoboyDAO;
 import my.company.projetorotisseriejavafx.DAO.PedidoDAO;
 import my.company.projetorotisseriejavafx.DAO.ProdutoVendidoDAO;
-import my.company.projetorotisseriejavafx.Objects.Bairro;
-import my.company.projetorotisseriejavafx.Objects.MarmitaVendida;
-import my.company.projetorotisseriejavafx.Objects.Mensalista;
-import my.company.projetorotisseriejavafx.Objects.Motoboy;
-import my.company.projetorotisseriejavafx.Objects.Pedido;
-import my.company.projetorotisseriejavafx.Objects.ProdutoVendido;
+import my.company.projetorotisseriejavafx.Objects.*;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 
 public class NovoPedidoController implements Initializable {
 
     private double valorTotal = 0;
     private double valorEntrega = 0;
-    private double valorAdicional = 0;
-    private double valorDesconto = 0;
+    private ObservableList<DescontoAdicional> descontosEAdicionais = FXCollections.observableArrayList();
     private String pagamento;
     @FXML
     private ToggleGroup tipo;
@@ -64,7 +61,7 @@ public class NovoPedidoController implements Initializable {
     @FXML
     private Button btnCancelar;
     @FXML
-    private Button btnDescontos;
+    private Button btnDescontosEAdicionais;
 
     public NovoPedidoController() {
     }
@@ -134,6 +131,7 @@ public class NovoPedidoController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         comboBoxMensalista.setDisable(true);
         RBEntrega.setSelected(true);
+        initDescontosEAdicionais();
         initTableMarmita();
         initTableProduto();
         loadBairro();
@@ -152,7 +150,7 @@ public class NovoPedidoController implements Initializable {
     }
 
     @FXML
-    private void Finalizar() {
+    private void finalizar() {
         Pedido pedido = new Pedido();
 
         if (checkBoxMensalista.isSelected()) {
@@ -202,7 +200,7 @@ public class NovoPedidoController implements Initializable {
     }
 
     @FXML
-    private void Cancelar() {
+    private void cancelar() {
         close();
     }
 
@@ -412,43 +410,19 @@ public class NovoPedidoController implements Initializable {
                 }
             }
         });
-
-        tableProduto.setOnMouseClicked(event -> {
-                    if (event.getClickCount() == 2) {
-                        if (tableProduto.getSelectionModel().getSelectedItem() != null) {
-                            try {
-                                Stage modal = new Stage();
-
-                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDetalhesProduto.fxml"));
-
-                                modal.setScene(loader.load());
-
-                                ModalDetalhesProdutoController controller = loader.getController();
-
-                                controller.load(tableProduto.getSelectionModel().getSelectedItem());
-
-                                modal.setOnCloseRequest(eventClose -> {
-                                    event.consume();
-                                });
-
-                                modal.setResizable(false);
-                                modal.initStyle(StageStyle.UTILITY);
-                                modal.showAndWait();
-
-                            } catch (IOException e) {
-                                System.out.println("Erro Modal Detalhes Produto:");
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-        );
-
     }
 
     private void atualizaValor() {
         NumberFormat formatoMoeda = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
         String valorEntregaFormatado = formatoMoeda.format(valorEntrega);
+        double valorDesconto = descontosEAdicionais.stream()
+                .filter(desconto -> desconto.getTipo().equals("Desconto"))
+                .mapToDouble(DescontoAdicional::getValor).sum();
+
+        double valorAdicional = descontosEAdicionais.stream()
+                .filter(adicional -> adicional.getTipo().equals("Adicional"))
+                .mapToDouble(DescontoAdicional::getValor).sum();
+
         String valorTotalFormatado = formatoMoeda.format((valorTotal + valorEntrega + valorAdicional) - valorDesconto);
 
         labelValorEntrega.setText("Entrega " + valorEntregaFormatado);
@@ -497,42 +471,30 @@ public class NovoPedidoController implements Initializable {
     }
 
     @FXML
-    private void Descontos() {
-        abrirModalDesconto();
+    private void descontosEAdicionais() {
+        abrirModalDescontosEAdicionais();
     }
 
-    public void abrirModalDesconto() {
+    public void abrirModalDescontosEAdicionais() {
         try {
             Stage modal = new Stage();
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDescontos.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDescontosEAdicionais.fxml"));
             modal.setScene(fxmlLoader.load());
 
-            ModalDescontosController controller = fxmlLoader.getController();
+            ModalDescontosEAdicionaisController controller = fxmlLoader.getController();
 
-            controller.loadDescontos(valorDesconto, valorAdicional);
+            controller.initialize(this, descontosEAdicionais);
 
-            modal.setOnCloseRequest(event -> {
-                event.consume();
-            });
             modal.setResizable(false);
             modal.initStyle(StageStyle.UTILITY);
-            modal.setX(700);
-            modal.setY(400);
+            modal.initModality(Modality.APPLICATION_MODAL);
             modal.showAndWait();
-
-            if (controller.getDesconto() != -1) {
-                valorDesconto = controller.getDesconto();
-            }
-
-            if (controller.getAdicional() != -1) {
-                valorAdicional = controller.getAdicional();
-            }
 
             atualizaValor();
 
         } catch (IOException e) {
-            System.out.println("Erro ao abrir modal desconto" + e);
+            System.out.println("Erro ao abrir modal descontos e adicionais" + e);
             e.printStackTrace();
         }
 
@@ -568,30 +530,19 @@ public class NovoPedidoController implements Initializable {
         ((AnchorPane) panePrincipal.getParent()).getChildren().clear();
     }
 
-    public void abrirModalProduto() {
-        try {
-            Stage modal = new Stage();
+    public ObservableList<DescontoAdicional> getDescontosEAdicionais() {
+        return descontosEAdicionais;
+    }
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDetalhesProduto.fxml"));
-            modal.setScene(fxmlLoader.load());
+    public void initDescontosEAdicionais() {
+        descontosEAdicionais.addListener((ListChangeListener<DescontoAdicional>)change -> {
+            while (change.next()) {
+                atualizaValor();
+            }
+        });
+    }
 
-            ModalDetalhesProdutoController controller = fxmlLoader.getController();
-
-            controller.load(tableProduto.getSelectionModel().getSelectedItem());
-
-            modal.setOnCloseRequest(event -> {
-                event.consume();
-            });
-            modal.setResizable(false);
-            modal.initStyle(StageStyle.UTILITY);
-            modal.setX(700);
-            modal.setY(400);
-            modal.showAndWait();
-
-        } catch (IOException e) {
-            System.out.println("Erro ao abrir modal detalhes produto" + e);
-            e.printStackTrace();
-        }
-
+    public void setDescontosEAdicionais(ObservableList<DescontoAdicional> descontosEAdicionais) {
+        this.descontosEAdicionais = descontosEAdicionais;
     }
 }
