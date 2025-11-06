@@ -69,7 +69,7 @@
             <Font name="Segoe UI Bold" size="24.0" />
          </font>
       </Label>
-      <Pane id="panePedido" layoutX="1047.0" layoutY="58.0" prefHeight="641.0" prefWidth="440.0" stylesheets="@../styles/novoPedido.css">
+      <Pane id="panePedido" layoutX="1035.0" layoutY="58.0" prefHeight="641.0" prefWidth="467.0" stylesheets="@../styles/novoPedido.css">
          <children>
             <CheckBox fx:id="checkBoxMensalista" layoutX="23.0" layoutY="82.0" mnemonicParsing="false" onAction="#checkBoxMensalista" prefHeight="38.0" prefWidth="157.0" text="Mensalista">
                <font>
@@ -117,7 +117,7 @@
                   </Label>
                </children>
             </Pane>
-            <Label fx:id="labelValorEntrega" alignment="TOP_LEFT" layoutX="27.0" layoutY="511.0" prefHeight="29.0" prefWidth="420.0" styleClass="labelValorPedido" text="Entrega R$ 00,00">
+            <Label fx:id="labelValorEntrega" alignment="TOP_LEFT" layoutX="15.0" layoutY="521.0" prefHeight="29.0" prefWidth="204.0" styleClass="labelValorPedido" text="Entrega R$ 00,00">
                <font>
                   <Font name="Segoe UI Bold" size="24.0" />
                </font>
@@ -125,7 +125,7 @@
                   <Insets />
                </opaqueInsets>
             </Label>
-            <Label fx:id="labelValorTotal" alignment="TOP_LEFT" layoutX="27.0" layoutY="548.0" prefHeight="29.0" prefWidth="420.0" styleClass="labelValorPedido" text="Total R$ 000,00">
+            <Label fx:id="labelValorTotal" alignment="TOP_LEFT" layoutX="15.0" layoutY="558.0" prefHeight="29.0" prefWidth="180.0" styleClass="labelValorPedido" text="Total R$ 00,00">
                <font>
                   <Font name="Segoe UI Bold" size="24.0" />
                </font>
@@ -133,27 +133,17 @@
                   <Insets />
                </opaqueInsets>
             </Label>
-            <Button fx:id="btnFinalizar" layoutX="27.0" layoutY="594.0" mnemonicParsing="false" onAction="#finalizar" prefHeight="40.0" prefWidth="190.0" stylesheets="@../styles/novoPedido.css" text="Finalizar">
+            <Button fx:id="btnFinalizar" layoutX="15.0" layoutY="601.0" mnemonicParsing="false" onAction="#finalizar" prefHeight="40.0" prefWidth="204.0" stylesheets="@../styles/novoPedido.css" text="Finalizar">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
             </Button>
-            <Button fx:id="btnCancelar" layoutX="237.0" layoutY="594.0" mnemonicParsing="false" onAction="#cancelar" prefHeight="40.0" prefWidth="190.0" stylesheets="@../styles/novoPedido.css" text="Cancelar">
+            <Button fx:id="btnCancelar" layoutX="237.0" layoutY="601.0" mnemonicParsing="false" onAction="#cancelar" prefHeight="40.0" prefWidth="204.0" stylesheets="@../styles/novoPedido.css" text="Cancelar">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
             </Button>
-            <Label fx:id="labelClienteInfo" layoutX="120.0" layoutY="82.0" prefHeight="20.0" prefWidth="300.0" textFill="RED">
-               <font>
-                  <Font name="Segoe UI" size="16.0" />
-               </font>
-            </Label>
-            <Label fx:id="labelItensInfo" layoutX="22.0" layoutY="451.0" prefHeight="20.0" prefWidth="395.0" textFill="RED">
-               <font>
-                  <Font name="Segoe UI" size="16.0" />
-               </font>
-            </Label>
-            <Button fx:id="btnDescontosEAdicionais" layoutX="237.0" layoutY="540.0" mnemonicParsing="false" onAction="#descontosEAdicionais" prefHeight="40.0" prefWidth="190.0" stylesheets="@../styles/novoPedido.css" text="Descontos e Adicionais">
+            <Button fx:id="btnDescontosEAdicionais" layoutX="237.0" layoutY="547.0" mnemonicParsing="false" onAction="#descontosEAdicionais" prefHeight="40.0" prefWidth="204.0" stylesheets="@../styles/novoPedido.css" text="Descontos e Adicionais">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -176,6 +166,11 @@
                   <Font size="20.0" />
                </font>
             </RadioButton>
+            <Label fx:id="LInfoPedido" layoutX="14.0" layoutY="485.0" prefHeight="29.0" prefWidth="429.0">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
    </children>

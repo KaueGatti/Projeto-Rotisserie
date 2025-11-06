@@ -1,5 +1,6 @@
 package my.company.projetorotisseriejavafx.Objects;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -18,19 +19,19 @@ public class Pedido {
     private double valorPago;
     private String endereco;
     private LocalDateTime dateTime;
-    private LocalDateTime vencimento;
+    private LocalDate vencimento;
     private String status;
 
-    public Double getValorAPagar() {
-        return valorTotal - valorPago;
-    }
-
-    public LocalDateTime getVencimento() {
+    public LocalDate getVencimento() {
         return vencimento;
     }
 
-    public void setVencimento(LocalDateTime vencimento) {
+    public void setVencimento(LocalDate vencimento) {
         this.vencimento = vencimento;
+    }
+
+    public Double getValorAPagar() {
+        return valorTotal - valorPago;
     }
 
     public double getValorPago() {

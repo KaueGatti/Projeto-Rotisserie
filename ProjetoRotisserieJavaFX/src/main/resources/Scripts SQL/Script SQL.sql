@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS Marmita (
 	max_mistura INT NOT NULL,
 	max_guarnicao INT NOT NULL,
 	valor DECIMAL(10,2) NOT NULL,
-    _status VARCHAR(30) NOT NULL DEFAULT 'ATIVO',
+    status VARCHAR(30) NOT NULL DEFAULT 'ATIVO',
 	PRIMARY KEY (id),
     UNIQUE (nome)
 );
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS Produto (
 	id INT AUTO_INCREMENT NOT NULL,
 	nome VARCHAR(30) NOT NULL,
 	valor DECIMAL(10,2) NOT NULL,
-	_status VARCHAR(30) NOT NULL DEFAULT 'ATIVO',
+	status VARCHAR(30) NOT NULL DEFAULT 'ATIVO',
 	PRIMARY KEY (id),
     UNIQUE (nome)
 );
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS Bairro (
 	id INT AUTO_INCREMENT NOT NULL,
 	nome VARCHAR(30) NOT NULL,
 	valor_entrega DECIMAL(10,2) NOT NULL,
-	_status VARCHAR(30) NOT NULL DEFAULT 'ATIVO',
+	status VARCHAR(30) NOT NULL DEFAULT 'ATIVO',
 	PRIMARY KEY (id)
 );
 
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS Motoboy (
 	id INT AUTO_INCREMENT NOT NULL,
 	nome VARCHAR(30) NOT NULL,
 	valor_diaria DECIMAL(10,2) NOT NULL,
-	_status VARCHAR(30) NOT NULL DEFAULT 'ATIVO',
+	status VARCHAR(30) NOT NULL DEFAULT 'ATIVO',
 	PRIMARY KEY (id)
 );
 
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS Mensalista (
 	id INT AUTO_INCREMENT NOT NULL,
 	nome VARCHAR(150) NOT NULL,
 	conta DECIMAL(10,2) NOT NULL DEFAULT '0',
-	_status VARCHAR(30) NOT NULL DEFAULT 'ATIVO',
+	status VARCHAR(30) NOT NULL DEFAULT 'ATIVO',
 	PRIMARY KEY (id),
     UNIQUE (nome)
 );
@@ -57,12 +57,12 @@ CREATE TABLE IF NOT EXISTS Pedido (
 	tipo_pedido VARCHAR(30) NOT NULL,
 	observacoes VARCHAR(100),
 	valor_entrega DECIMAL(10,2),
+    endereco VARCHAR(100),
 	valor_total DECIMAL(10,2) NOT NULL,
     valor_pago DECIMAL(10,2) NOT NULL DEFAULT 0,
-	endereco VARCHAR(100),
 	date_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     vencimento DATE NOT NULL DEFAULT (CURRENT_DATE),
-	_status VARCHAR(30) NOT NULL DEFAULT 'FINALIZADO',
+	status VARCHAR(30) NOT NULL DEFAULT 'FINALIZADO',
 	PRIMARY KEY (id),
     CONSTRAINT fk_mensalista FOREIGN KEY (id_mensalista) REFERENCES Mensalista (id),
     CONSTRAINT fk_bairro_pedido FOREIGN KEY (id_bairro) REFERENCES Bairro (id),
@@ -103,6 +103,16 @@ CREATE TABLE IF NOT EXISTS Produto_Vendido (
     CONSTRAINT fk_produto FOREIGN KEY (id_produto) REFERENCES Produto (id)
 );
 
+CREATE TABLE IF NOT EXISTS Desconto_Adicional (
+	id INT AUTO_INCREMENT NOT NULL,
+    id_pedido INT NOT NULL,
+	tipo VARCHAR(15) NOT NULL,
+	valor DECIMAL(10,2) NOT NULL,
+    observacao VARCHAR(255),
+	PRIMARY KEY (id),
+    CONSTRAINT fk_pedido_DescontoAdicional FOREIGN KEY (id_pedido) REFERENCES Pedido (id)
+);
+
 DELIMITER $$
 CREATE PROCEDURE CREATE_MARMITA(_nome VARCHAR(20), _max_mistura INT, _max_guarnicao INT, _valor DECIMAL(10,2))
 BEGIN
@@ -112,10 +122,10 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE UPDATE_MARMITA(_id INT, _max_mistura INT, _max_guarnicao INT, _valor DECIMAL(10,2), __status VARCHAR(30))
+CREATE PROCEDURE UPDATE_MARMITA(_id INT, _max_mistura INT, _max_guarnicao INT, _valor DECIMAL(10,2), _status VARCHAR(30))
 BEGIN
 	UPDATE Marmita
-    SET max_mistura = _max_mistura, max_guarnicao = _max_guarnicao, valor = _valor, _status = __status
+    SET max_mistura = _max_mistura, max_guarnicao = _max_guarnicao, valor = _valor, status = _status
     WHERE id = _id;
 END $$
 DELIMITER ;
@@ -160,10 +170,10 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE UPDATE_PRODUTO(_id INT, _valor DECIMAL(10,2), __status VARCHAR(30))
+CREATE PROCEDURE UPDATE_PRODUTO(_id INT, _valor DECIMAL(10,2), _status VARCHAR(30))
 BEGIN
 	UPDATE Produto
-    SET valor = _valor, _status = __status
+    SET valor = _valor, status = _status
     WHERE id = _id;
 END $$
 DELIMITER ;
@@ -208,10 +218,10 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE UPDATE_MOTOBOY(_id INT, _valor_diaria DECIMAL(10,2), __status VARCHAR(30))
+CREATE PROCEDURE UPDATE_MOTOBOY(_id INT, _valor_diaria DECIMAL(10,2), _status VARCHAR(30))
 BEGIN
 	UPDATE Motoboy
-    SET valor_diaria = _valor_diaria, _status = __status
+    SET valor_diaria = _valor_diaria, status = _status
     WHERE id = _id;
 END $$
 DELIMITER ;
@@ -240,10 +250,10 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE UPDATE_BAIRRO(_id INT, _valor_entrega DECIMAL(10,2), __status VARCHAR(30))
+CREATE PROCEDURE UPDATE_BAIRRO(_id INT, _valor_entrega DECIMAL(10,2), _status VARCHAR(30))
 BEGIN
 	UPDATE Bairro
-    SET valor_entrega = _valor_entrega, _status = __status
+    SET valor_entrega = _valor_entrega, status = _status
     WHERE id = _id;
 END $$
 DELIMITER ;
@@ -272,10 +282,10 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE UPDATE_MENSALISTA(_id INT, __status VARCHAR(30))
+CREATE PROCEDURE UPDATE_MENSALISTA(_id INT, _status VARCHAR(30))
 BEGIN
 	UPDATE Mensalista
-    SET _status = __status
+    SET status = _status
     WHERE id = _id;
 END $$
 DELIMITER ;
@@ -298,12 +308,25 @@ DELIMITER ;
 DELIMITER $$
 CREATE PROCEDURE CREATE_PEDIDO(_id_mensalista INT, _id_bairro INT, _id_motoboy INT,
 							_nome_cliente VARCHAR(30), _tipo_pagamento VARCHAR(30), _tipo_pedido VARCHAR(30),
-							_observacoes VARCHAR(100), _valor_entrega DECIMAL(10,2), _valor_total DECIMAL(10,2),
-							_endereco VARCHAR(100))
+							_observacoes VARCHAR(100), _valor_entrega DECIMAL(10,2), _endereco VARCHAR(100), _valor_total DECIMAL(10,2),
+                            _vencimento DATE)
 BEGIN
-	INSERT INTO Pedido (id_mensalista, id_bairro, id_motoboy, nome_cliente, tipo_pagamento, tipo_pedido, observacoes, valor_entrega, valor_total, endereco)
-    VALUES (_id_mensalista, _id_bairro, _id_motoboy, _nome_cliente, _tipo_pagamento, _tipo_pedido, _observacoes, _valor_entrega, _valor_total, _endereco);
+
+	DECLARE _status VARCHAR(30);
+	
+    IF _tipo_pagamento = 'Pagar depois' THEN
+		SET _status = "A PAGAR";
+	ELSE
+		SET _status = "FINALIZADO";
+        SET _vencimento = (CURRENT_DATE);
+	END IF;
+
+	INSERT INTO Pedido (id_mensalista, id_bairro, id_motoboy, nome_cliente, tipo_pagamento, tipo_pedido,
+    observacoes, valor_entrega, endereco, valor_total, vencimento, status)
+    VALUES (_id_mensalista, _id_bairro, _id_motoboy, _nome_cliente, _tipo_pagamento, _tipo_pedido,
+    _observacoes, _valor_entrega, _endereco, _valor_total, _vencimento, _status);
     SELECT LAST_INSERT_ID();
+
 END $$
 DELIMITER ;
 
@@ -311,7 +334,7 @@ DELIMITER $$
 CREATE PROCEDURE UPDATE_PEDIDO(_id INT, __status VARCHAR(30))
 BEGIN
 	UPDATE Pedido
-    SET _status = __status
+    SET status = _status
     WHERE id = _id;
 END $$
 DELIMITER ;
@@ -332,6 +355,22 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
+CREATE PROCEDURE CREATE_DESCONTO_ADICIONAL(_id_pedido INT, _tipo VARCHAR(15), _valor DECIMAL(10,2), _observacao VARCHAR(255))
+BEGIN
+	INSERT INTO DESCONTO_ADICIONAL (id_pedido, tipo, valor, observacao)
+    VALUES (_id_pedido, _tipo, _valor, _observacao);
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE READ_ALL_DESCONTOS_ADICIONAIS_PEDIDO(_id_pedido INT)
+BEGIN
+	SELECT * FROM Desconto_Adicional
+    WHERE id_pedido = _id_pedido;
+END $$
+DELIMITER ;
+
+DELIMITER $$
 CREATE PROCEDURE READ_DIARIA(_id_motoboy INT, _data DATE)
 BEGIN
 	SELECT COUNT(*) AS entregas, SUM(valor_total) as valorEntregas FROM Pedido
@@ -345,7 +384,7 @@ AFTER INSERT
 ON Pedido
 FOR EACH ROW
 BEGIN
-	IF (NEW.id_mensalista IS NOT NULL AND NEW._status != 'PAGO') THEN
+	IF (NEW.id_mensalista IS NOT NULL AND NEW.status != 'FINALIZADO') THEN
 		UPDATE Mensalista
         SET conta = conta + NEW.valor_total
         WHERE id = NEW.id_mensalista;
@@ -359,7 +398,7 @@ AFTER UPDATE
 ON Pedido
 FOR EACH ROW
 BEGIN
-	IF (OLD._status != 'PAGO' AND NEW._status = 'PAGO') THEN
+	IF (OLD.status != 'FINALIZADO' AND NEW.status = 'FINALIZADO') THEN
 		UPDATE Mensalista
         SET conta = conta - NEW.valor_total
         WHERE id = NEW.id_mensalista;

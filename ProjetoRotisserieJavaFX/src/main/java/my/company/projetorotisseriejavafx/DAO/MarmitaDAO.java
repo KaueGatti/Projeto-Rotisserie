@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package my.company.projetorotisseriejavafx.DAO;
 
 import java.sql.Connection;
@@ -13,10 +9,6 @@ import java.util.List;
 import my.company.projetorotisseriejavafx.DB.Conexao;
 import my.company.projetorotisseriejavafx.Objects.Marmita;
 
-/**
- *
- * @author kaueg
- */
 public class MarmitaDAO {
 
     public static void create(Marmita marmita) throws SQLException {
@@ -55,7 +47,7 @@ public class MarmitaDAO {
                 marmita.setMaxMistura(rs.getInt("max_mistura"));
                 marmita.setMaxGuarnicao(rs.getInt("max_guarnicao"));
                 marmita.setValor(rs.getDouble("valor"));
-                marmita.setStatus(rs.getString("_status"));
+                marmita.setStatus(rs.getString("status"));
 
                 marmitas.add(marmita);
             }

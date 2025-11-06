@@ -54,7 +54,7 @@ public class BairroDAO {
                 bairro.setId(rs.getInt("id"));
                 bairro.setNome(rs.getString("nome"));
                 bairro.setValorEntrega(rs.getDouble("valor_entrega"));
-                bairro.setStatus(rs.getString("_status"));
+                bairro.setStatus(rs.getString("status"));
 
                 bairros.add(bairro);
             }

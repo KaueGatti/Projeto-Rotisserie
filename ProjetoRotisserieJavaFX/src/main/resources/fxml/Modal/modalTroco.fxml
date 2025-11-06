@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Scene?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<Scene fx:id="scene" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.Modal.ModalTrocoController">
+    <AnchorPane prefHeight="191.0" prefWidth="343.0">
+      <children>
+         <Label alignment="CENTER" layoutX="8.0" layoutY="23.0" prefHeight="18.0" prefWidth="328.0" text="Troco a devolver">
+            <font>
+               <Font size="30.0" />
+            </font>
+         </Label>
+         <Label fx:id="LTroco" alignment="CENTER" layoutX="1.0" layoutY="83.0" prefHeight="38.0" prefWidth="342.0" text="R$ 00,00" textAlignment="CENTER">
+            <font>
+               <Font name="System Bold" size="26.0" />
+            </font>
+         </Label>
+         <Label fx:id="LInfo" layoutX="46.0" layoutY="135.0" text="Devolva este valor ao cliente">
+            <font>
+               <Font size="20.0" />
+            </font>
+         </Label>
+      </children></AnchorPane>
+</Scene>

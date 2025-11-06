@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.NumberFormat;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -37,23 +38,23 @@ import javafx.stage.StageStyle;
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalDescontosEAdicionaisController;
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalDetalhesMarmitaController;
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalPagamentoController;
+import my.company.projetorotisseriejavafx.Controller.Modal.ModalTrocoController;
 import my.company.projetorotisseriejavafx.Controller.Pane.PaneMarmitaController;
 import my.company.projetorotisseriejavafx.Controller.Pane.PaneProdutoController;
-import my.company.projetorotisseriejavafx.DAO.BairroDAO;
-import my.company.projetorotisseriejavafx.DAO.MarmitaVendidaDAO;
-import my.company.projetorotisseriejavafx.DAO.MensalistaDAO;
-import my.company.projetorotisseriejavafx.DAO.MotoboyDAO;
-import my.company.projetorotisseriejavafx.DAO.PedidoDAO;
-import my.company.projetorotisseriejavafx.DAO.ProdutoVendidoDAO;
+import my.company.projetorotisseriejavafx.DAO.*;
 import my.company.projetorotisseriejavafx.Objects.*;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 
 public class NovoPedidoController implements Initializable {
 
+    private double valorPedido = 0;
     private double valorTotal = 0;
     private double valorEntrega = 0;
     private ObservableList<DescontoAdicional> descontosEAdicionais = FXCollections.observableArrayList();
+
     private String pagamento;
+    private LocalDate vencimento;
+
     @FXML
     private ToggleGroup tipo;
     @FXML
@@ -116,12 +117,7 @@ public class NovoPedidoController implements Initializable {
     @FXML
     private Label labelValorTotal;
     @FXML
-    private Label labelClienteInfo;
-    @FXML
-    private Label labelEnderecoInfo;
-    @FXML
-    private Label labelItensInfo;
-
+    private Label LInfoPedido;
     @FXML
     private AnchorPane APMarmitaProduto;
     @FXML
@@ -151,52 +147,7 @@ public class NovoPedidoController implements Initializable {
 
     @FXML
     private void finalizar() {
-        Pedido pedido = new Pedido();
-
-        if (checkBoxMensalista.isSelected()) {
-            pedido.setMensalista(comboBoxMensalista.getValue());
-        } else {
-            pedido.setNomeCliente(TFNomeCliente.getText());
-        }
-
-        if (RBEntrega.isSelected()) {
-            pedido.setTipoPedido("Entrega");
-            pedido.setMotoboy(comboBoxMotoboy.getValue());
-            pedido.setEndereco(TAEndereco.getText());
-            pedido.setBairro(comboBoxBairro.getValue());
-        } else {
-            pedido.setTipoPedido("Balcão");
-        }
-
-        pedido.setObservacoes(TAObservacoes.getText());
-
-        pedido.setValorEntrega(valorEntrega);
-
-        pedido.setValorTotal(valorTotal);
-
-        if (verificaPedido()) {
-
-            abrirModalPagamento();
-
-            if (pagamento != null || !pagamento.equals("")) {
-
-                pedido.setTipoPagamento(pagamento);
-
-                int idPedido = PedidoDAO.create(pedido);
-
-                pedido.setId(idPedido);
-
-                System.out.println(pedido.getId());
-
-                MarmitaVendidaDAO.create(tableMarmita.getItems(), pedido.getId());
-                ProdutoVendidoDAO.create(tableProduto.getItems(), pedido.getId());
-
-                close();
-
-            }
-
-        }
-
+        finalizarPedido();
     }
 
     @FXML
@@ -254,7 +205,6 @@ public class NovoPedidoController implements Initializable {
             valorEntrega = 0;
             atualizaValor();
             paneEndereco.setDisable(true);
-            labelEnderecoInfo.setText("");
         }
     }
 
@@ -316,14 +266,12 @@ public class NovoPedidoController implements Initializable {
         tableMarmita.getItems().add(marmitaVendida);
         valorTotal += marmitaVendida.getSubtotal();
         atualizaValor();
-        labelItensInfo.setText("");
     }
 
     public void adicionarProduto(ProdutoVendido produtoVendido) {
         tableProduto.getItems().add(produtoVendido);
         valorTotal += produtoVendido.getSubtotal();
         atualizaValor();
-        labelItensInfo.setText("");
     }
 
     private void initTableMarmita() {
@@ -424,36 +372,26 @@ public class NovoPedidoController implements Initializable {
                 .mapToDouble(DescontoAdicional::getValor).sum();
 
         String valorTotalFormatado = formatoMoeda.format((valorTotal + valorEntrega + valorAdicional) - valorDesconto);
-
+        valorPedido = (valorTotal + valorEntrega + valorAdicional) - valorDesconto;
         labelValorEntrega.setText("Entrega " + valorEntregaFormatado);
         labelValorTotal.setText("Total " + valorTotalFormatado);
     }
 
-    private boolean verificaPedido() {
-        boolean isValid = true;
-
-        if (!checkBoxMensalista.isSelected() && (TFNomeCliente.getText().equals("") || TFNomeCliente.getText() == null)) {
-            labelClienteInfo.setText("Este campo não pode estar vazio");
-            isValid = false;
-        } else {
-            labelClienteInfo.setText("");
+    private boolean validaPedido(Pedido pedido) {
+        if (tableMarmita.getItems().isEmpty() && tableProduto.getItems().isEmpty()) {
+            LInfoPedido.setText("Adicione pelo menos uma marmita/produto");
+            return false;
         }
 
-        if (RBEntrega.isSelected() && (TAEndereco.getText().equals("") || TAEndereco.getText() == null)) {
-            labelEnderecoInfo.setText("Este campo não pode estar vazio");
-            isValid = false;
-        } else {
-            labelEnderecoInfo.setText("");
+        if (pedido.getTipoPedido().equals("Entrega")) {
+            if (pedido.getEndereco().trim().isEmpty()) {
+                LInfoPedido.setText("Endereço não pode estar vazio");
+                return false;
+            }
         }
 
-        if (tableMarmita.getItems().size() <= 0 && tableProduto.getItems().size() <= 0) {
-            labelItensInfo.setText("Adicione ao menos 1 marmita/produto ao pedido");
-            isValid = false;
-        } else {
-            labelItensInfo.setText("");
-        }
-
-        return isValid;
+        LInfoPedido.setText("");
+        return true;
     }
 
     @FXML
@@ -462,7 +400,6 @@ public class NovoPedidoController implements Initializable {
             comboBoxMensalista.setDisable(false);
             labelCliente.setDisable(true);
             TFNomeCliente.setDisable(true);
-            labelClienteInfo.setText("");
         } else {
             comboBoxMensalista.setDisable(true);
             labelCliente.setDisable(false);
@@ -500,7 +437,7 @@ public class NovoPedidoController implements Initializable {
 
     }
 
-    public void abrirModalPagamento() {
+    public void abrirModalPagamento(double valorPedido) {
         try {
             Stage modal = new Stage();
 
@@ -509,19 +446,18 @@ public class NovoPedidoController implements Initializable {
 
             ModalPagamentoController controller = fxmlLoader.getController();
 
-            modal.setOnCloseRequest(event -> {
-                event.consume();
-            });
+            controller.initialize(valorPedido);
+
             modal.setResizable(false);
+            modal.initModality(Modality.APPLICATION_MODAL);
             modal.initStyle(StageStyle.UTILITY);
             modal.showAndWait();
 
             pagamento = controller.getPagamento();
-
-            atualizaValor();
+            vencimento = controller.getVencimento();
 
         } catch (IOException e) {
-            System.out.println("Erro ao abrir modal desconto" + e);
+            System.out.println("Erro ao abrir modal pagamento" + e);
             e.printStackTrace();
         }
     }
@@ -535,7 +471,7 @@ public class NovoPedidoController implements Initializable {
     }
 
     public void initDescontosEAdicionais() {
-        descontosEAdicionais.addListener((ListChangeListener<DescontoAdicional>)change -> {
+        descontosEAdicionais.addListener((ListChangeListener<DescontoAdicional>) change -> {
             while (change.next()) {
                 atualizaValor();
             }
@@ -544,5 +480,46 @@ public class NovoPedidoController implements Initializable {
 
     public void setDescontosEAdicionais(ObservableList<DescontoAdicional> descontosEAdicionais) {
         this.descontosEAdicionais = descontosEAdicionais;
+    }
+
+    public void finalizarPedido() {
+        Pedido pedido = new Pedido();
+
+        if (checkBoxMensalista.isSelected()) {
+            pedido.setMensalista(comboBoxMensalista.getValue());
+        } else {
+            pedido.setNomeCliente(TFNomeCliente.getText());
+        }
+
+        if (RBEntrega.isSelected()) {
+            pedido.setTipoPedido("Entrega");
+            pedido.setMotoboy(comboBoxMotoboy.getValue());
+            pedido.setEndereco(TAEndereco.getText());
+            pedido.setBairro(comboBoxBairro.getValue());
+        } else {
+            pedido.setTipoPedido("Balcao");
+        }
+
+        pedido.setObservacoes(TAObservacoes.getText());
+        pedido.setValorEntrega(valorEntrega);
+        pedido.setValorTotal(valorTotal);
+
+        if (validaPedido(pedido)) {
+            abrirModalPagamento(valorPedido);
+
+            pedido.setTipoPagamento(pagamento);
+            pedido.setVencimento(vencimento);
+
+            int idPedido = PedidoDAO.create(pedido);
+
+            pedido.setId(idPedido);
+
+            MarmitaVendidaDAO.create(tableMarmita.getItems(), pedido.getId());
+            ProdutoVendidoDAO.create(tableProduto.getItems(), pedido.getId());
+
+            DescontoAdicionalDAO.create(descontosEAdicionais, pedido.getId());
+
+            close();
+        }
     }
 }

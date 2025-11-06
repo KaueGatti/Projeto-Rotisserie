@@ -44,7 +44,7 @@ public class MensalistaDAO {
                 mensalista.setId(rs.getInt("id"));
                 mensalista.setNome(rs.getString("nome"));
                 mensalista.setConta(rs.getDouble("conta"));
-                mensalista.setStatus(rs.getString("_status"));
+                mensalista.setStatus(rs.getString("status"));
 
                 mensalistas.add(mensalista);
             }
@@ -74,7 +74,7 @@ public class MensalistaDAO {
                 mensalista.setId(rs.getInt("id"));
                 mensalista.setNome(rs.getString("nome"));
                 mensalista.setConta(rs.getDouble("conta"));
-                mensalista.setStatus(rs.getString("_status"));
+                mensalista.setStatus(rs.getString("status"));
 
                 mensalistas.add(mensalista);
             }
