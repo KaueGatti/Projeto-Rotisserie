@@ -412,56 +412,6 @@ public class NovoPedidoController implements Initializable {
         abrirModalDescontosEAdicionais();
     }
 
-    public void abrirModalDescontosEAdicionais() {
-        try {
-            Stage modal = new Stage();
-
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDescontosEAdicionais.fxml"));
-            modal.setScene(fxmlLoader.load());
-
-            ModalDescontosEAdicionaisController controller = fxmlLoader.getController();
-
-            controller.initialize(this, descontosEAdicionais);
-
-            modal.setResizable(false);
-            modal.initStyle(StageStyle.UTILITY);
-            modal.initModality(Modality.APPLICATION_MODAL);
-            modal.showAndWait();
-
-            atualizaValor();
-
-        } catch (IOException e) {
-            System.out.println("Erro ao abrir modal descontos e adicionais" + e);
-            e.printStackTrace();
-        }
-
-    }
-
-    public void abrirModalPagamento(double valorPedido) {
-        try {
-            Stage modal = new Stage();
-
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalPagamento.fxml"));
-            modal.setScene(fxmlLoader.load());
-
-            ModalPagamentoController controller = fxmlLoader.getController();
-
-            controller.initialize(valorPedido);
-
-            modal.setResizable(false);
-            modal.initModality(Modality.APPLICATION_MODAL);
-            modal.initStyle(StageStyle.UTILITY);
-            modal.showAndWait();
-
-            pagamento = controller.getPagamento();
-            vencimento = controller.getVencimento();
-
-        } catch (IOException e) {
-            System.out.println("Erro ao abrir modal pagamento" + e);
-            e.printStackTrace();
-        }
-    }
-
     private void close() {
         ((AnchorPane) panePrincipal.getParent()).getChildren().clear();
     }
@@ -520,6 +470,56 @@ public class NovoPedidoController implements Initializable {
             DescontoAdicionalDAO.create(descontosEAdicionais, pedido.getId());
 
             close();
+        }
+    }
+
+    public void abrirModalDescontosEAdicionais() {
+        try {
+            Stage modal = new Stage();
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDescontosEAdicionais.fxml"));
+            modal.setScene(fxmlLoader.load());
+
+            ModalDescontosEAdicionaisController controller = fxmlLoader.getController();
+
+            controller.initialize(this, descontosEAdicionais);
+
+            modal.setResizable(false);
+            modal.initStyle(StageStyle.UTILITY);
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.showAndWait();
+
+            atualizaValor();
+
+        } catch (IOException e) {
+            System.out.println("Erro ao abrir modal descontos e adicionais" + e);
+            e.printStackTrace();
+        }
+
+    }
+
+    public void abrirModalPagamento(double valorPedido) {
+        try {
+            Stage modal = new Stage();
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalPagamento.fxml"));
+            modal.setScene(fxmlLoader.load());
+
+            ModalPagamentoController controller = fxmlLoader.getController();
+
+            controller.initialize(valorPedido);
+
+            modal.setResizable(false);
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.initStyle(StageStyle.UTILITY);
+            modal.showAndWait();
+
+            pagamento = controller.getPagamento();
+            vencimento = controller.getVencimento();
+
+        } catch (IOException e) {
+            System.out.println("Erro ao abrir modal pagamento" + e);
+            e.printStackTrace();
         }
     }
 }
