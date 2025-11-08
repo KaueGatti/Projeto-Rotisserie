@@ -16,7 +16,7 @@ import java.time.LocalDate;
 
 public class ModalPagamentoController {
 
-    private String pagamento;
+    private String pagamento = null;
 
     private LocalDate vencimento = null;
 
@@ -43,16 +43,23 @@ public class ModalPagamentoController {
 
     @FXML
     void finalizar(ActionEvent event) {
-        if (CBPagamento.getValue().equals("Pagar depois")) {
-            vencimento = DPVencimento.getValue();
-        }
-        pagamento = CBPagamento.getValue();
+        if (CBPagamento.getValue().equals("Dinheiro")) {
+            if (!validaValorPago()) return;
 
-        if (validaValorPago()) {
             double valorTroco = CurrencyFieldUtil.getValue(TFValorPago) - valorTotal;
             abrirModalTroco(valorTroco);
-            fecharModal();
+
         }
+
+        if (CBPagamento.getValue().equals("Pagar depois")) {
+            if (!validaVencimento()) return;
+
+            vencimento = DPVencimento.getValue();
+        }
+
+        pagamento = CBPagamento.getValue();
+
+        fecharModal();
     }
 
 
@@ -122,6 +129,20 @@ public class ModalPagamentoController {
         }
 
         LInfo.setText("");
+        return true;
+    }
+
+    public boolean validaVencimento() {
+        if (DPVencimento.getValue() == null) {
+            LInfo.setText("Vencimento não pode ser vázio");
+            return false;
+        }
+
+        if (DPVencimento.getValue().isBefore(LocalDate.now())) {
+            LInfo.setText("A data de vencimento não pode ser anterior a data atual");
+            return false;
+        }
+
         return true;
     }
 
