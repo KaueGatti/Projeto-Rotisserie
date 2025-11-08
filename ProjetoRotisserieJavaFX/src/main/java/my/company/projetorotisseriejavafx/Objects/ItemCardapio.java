@@ -1,8 +1,10 @@
 package my.company.projetorotisseriejavafx.Objects;
 
 public class ItemCardapio {
+    private int id;
     private String nome;
-    private boolean disponivel;
+    private String categoria;
+    private boolean disponivel = true;
 
     public String getNome() {
         return nome;
@@ -23,5 +25,21 @@ public class ItemCardapio {
     @Override
     public String toString() {
         return nome;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

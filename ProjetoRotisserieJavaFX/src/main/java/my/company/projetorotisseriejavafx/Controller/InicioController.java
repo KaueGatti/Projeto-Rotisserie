@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package my.company.projetorotisseriejavafx.Controller;
 
 import java.io.IOException;
@@ -16,11 +12,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
-/**
- * FXML Controller class
- *
- * @author kaueg
- */
 public class InicioController implements Initializable {
 
     @FXML
@@ -119,6 +110,17 @@ public class InicioController implements Initializable {
             APPrincipal.getChildren().add(FXMLLoader.load(getClass().getResource("/fxml/Motoboys.fxml")));
         } catch (IOException e) {
             System.out.println("Erro ao carregar tela de Motoboys");
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void cardapio() {
+        APPrincipal.getChildren().clear();
+        try {
+            APPrincipal.getChildren().add(FXMLLoader.load(getClass().getResource("/fxml/Cardapio.fxml")));
+        } catch (IOException e) {
+            System.out.println("Erro ao carregar tela de Cardapio");
             e.printStackTrace();
         }
     }

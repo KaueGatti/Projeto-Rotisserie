@@ -113,6 +113,14 @@ CREATE TABLE IF NOT EXISTS Desconto_Adicional (
     CONSTRAINT fk_pedido_DescontoAdicional FOREIGN KEY (id_pedido) REFERENCES Pedido (id)
 );
 
+CREATE TABLE IF NOT EXISTS Item_Cardapio (
+	id INT AUTO_INCREMENT NOT NULL,
+    nome VARCHAR(150) NOT NULL,
+	categoria VARCHAR(30) NOT NULL,
+	PRIMARY KEY (id),
+    UNIQUE (nome, categoria)
+);
+
 DELIMITER $$
 CREATE PROCEDURE CREATE_MARMITA(_nome VARCHAR(20), _max_mistura INT, _max_guarnicao INT, _valor DECIMAL(10,2))
 BEGIN
@@ -369,6 +377,38 @@ BEGIN
     WHERE id_pedido = _id_pedido;
 END $$
 DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE CREATE_ITEM_CARDAPIO(_nome VARCHAR(150), _categoria VARCHAR(30))
+BEGIN
+	INSERT INTO Item_Cardapio (nome, categoria)
+    VALUES (_nome, _categoria);
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE DELETE_ITEM_CARDAPIO(_id INT)
+BEGIN
+	DELETE FROM Item_Cardapio
+    WHERE id = _id;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE READ_ALL_ITENS_CARDAPIO()
+BEGIN
+	SELECT * FROM Item_Cardapio;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE READ_ITENS_CARDAPIO_BY_CATEGORIA(_categoria VARCHAR(30))
+BEGIN
+	SELECT * FROM Item_Cardapio
+    WHERE categoria = _categoria;
+END $$
+DELIMITER ;
+
 
 DELIMITER $$
 CREATE PROCEDURE READ_DIARIA(_id_motoboy INT, _data DATE)

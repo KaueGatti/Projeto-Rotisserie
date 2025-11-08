@@ -46,7 +46,7 @@
                   <Font size="24.0" />
                </font>
             </Button>
-            <Button fx:id="btnCardapio" layoutX="418.0" layoutY="10.0" mnemonicParsing="false" prefHeight="80.0" prefWidth="94.0" style="-fx-background-color: none;">
+            <Button fx:id="btnCardapio" layoutX="418.0" layoutY="10.0" mnemonicParsing="false" onAction="#cardapio" prefHeight="80.0" prefWidth="94.0" style="-fx-background-color: none;">
                <font>
                   <Font size="24.0" />
                </font>
