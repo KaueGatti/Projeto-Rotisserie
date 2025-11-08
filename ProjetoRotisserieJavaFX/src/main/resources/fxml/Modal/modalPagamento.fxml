@@ -10,36 +10,36 @@
 <?import javafx.scene.text.Font?>
 
 <Scene fx:id="scene" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.Modal.ModalPagamentoController">
-    <AnchorPane prefHeight="363.0" prefWidth="343.0">
+    <AnchorPane prefHeight="363.0" prefWidth="421.0">
       <children>
-         <Label alignment="CENTER" layoutX="8.0" layoutY="14.0" prefHeight="18.0" prefWidth="328.0" text="Finalizar Pedido">
+         <Label alignment="CENTER" layoutX="49.0" layoutY="14.0" prefHeight="18.0" prefWidth="328.0" text="Finalizar Pedido">
             <font>
                <Font size="24.0" />
             </font>
          </Label>
-         <Button fx:id="btnFinalizar" layoutX="17.0" layoutY="302.0" mnemonicParsing="false" onAction="#finalizar" prefHeight="46.0" prefWidth="306.0" text="Finalizar">
+         <Button fx:id="btnFinalizar" layoutX="50.0" layoutY="302.0" mnemonicParsing="false" onAction="#finalizar" prefHeight="46.0" prefWidth="325.0" text="Finalizar">
             <font>
                <Font name="System Bold" size="16.0" />
             </font></Button>
-         <ComboBox fx:id="CBPagamento" layoutX="20.0" layoutY="85.0" prefHeight="30.0" prefWidth="301.0" />
-         <Label layoutX="20.0" layoutY="59.0" text="Forma de pagamento">
+         <ComboBox fx:id="CBPagamento" layoutX="48.0" layoutY="85.0" prefHeight="34.0" prefWidth="328.0" />
+         <Label layoutX="48.0" layoutY="59.0" text="Forma de pagamento">
             <font>
                <Font size="16.0" />
             </font>
          </Label>
-         <Label layoutX="20.0" layoutY="127.0" text="Valor pago">
+         <Label layoutX="48.0" layoutY="127.0" text="Valor pago">
             <font>
                <Font size="16.0" />
             </font>
          </Label>
-         <TextField fx:id="TFValorPago" layoutX="22.0" layoutY="153.0" prefHeight="30.0" prefWidth="300.0" />
-         <DatePicker fx:id="DPVencimento" disable="true" layoutX="22.0" layoutY="221.0" prefHeight="30.0" prefWidth="300.0" />
-         <Label layoutX="20.0" layoutY="195.0" text="Data de vencimento">
+         <TextField fx:id="TFValorPago" layoutX="50.0" layoutY="153.0" prefHeight="34.0" prefWidth="325.0" />
+         <DatePicker fx:id="DPVencimento" disable="true" layoutX="50.0" layoutY="221.0" prefHeight="34.0" prefWidth="325.0" />
+         <Label layoutX="48.0" layoutY="195.0" text="Data de vencimento">
             <font>
                <Font size="16.0" />
             </font>
          </Label>
-         <Label fx:id="LInfo" layoutX="20.0" layoutY="262.0" prefHeight="26.0" prefWidth="302.0">
+         <Label fx:id="LInfo" alignment="CENTER" layoutX="16.0" layoutY="266.0" prefHeight="26.0" prefWidth="389.0">
             <font>
                <Font name="System Bold" size="14.0" />
             </font>

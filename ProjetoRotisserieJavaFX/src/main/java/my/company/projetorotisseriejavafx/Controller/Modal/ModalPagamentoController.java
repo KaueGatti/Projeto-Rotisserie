@@ -62,7 +62,6 @@ public class ModalPagamentoController {
         fecharModal();
     }
 
-
     private void fecharModal() {
         Stage modal = (Stage) scene.getWindow();
         modal.close();

@@ -121,6 +121,24 @@ CREATE TABLE IF NOT EXISTS Item_Cardapio (
     UNIQUE (nome, categoria)
 );
 
+CREATE TABLE IF NOT EXISTS Cardapio (
+	id INT AUTO_INCREMENT NOT NULL,
+    principal_1 VARCHAR(150),
+    principal_2 VARCHAR(150),
+    mistura_1 VARCHAR(150),
+    mistura_2 VARCHAR(150),
+    mistura_3 VARCHAR(150),
+    mistura_4 VARCHAR(150),
+    guarnicao_1 VARCHAR(150),
+    guarnicao_2 VARCHAR(150),
+    guarnicao_3 VARCHAR(150),
+    guarnicao_4 VARCHAR(150),
+    salada_1 VARCHAR(150),
+    salada_2 VARCHAR(150),
+    data_hora DATETIME,
+	PRIMARY KEY (id)
+);
+
 DELIMITER $$
 CREATE PROCEDURE CREATE_MARMITA(_nome VARCHAR(20), _max_mistura INT, _max_guarnicao INT, _valor DECIMAL(10,2))
 BEGIN
@@ -383,6 +401,8 @@ CREATE PROCEDURE CREATE_ITEM_CARDAPIO(_nome VARCHAR(150), _categoria VARCHAR(30)
 BEGIN
 	INSERT INTO Item_Cardapio (nome, categoria)
     VALUES (_nome, _categoria);
+    
+    SELECT LAST_INSERT_ID() as id;
 END $$
 DELIMITER ;
 
@@ -409,6 +429,29 @@ BEGIN
 END $$
 DELIMITER ;
 
+DELIMITER $$
+CREATE PROCEDURE CREATE_CARDAPIO(_principal_1 VARCHAR(150), _principal_2 VARCHAR(150),
+    _mistura_1 VARCHAR(150), _mistura_2 VARCHAR(150), _mistura_3 VARCHAR(150), _mistura_4 VARCHAR(150),
+    _guarnicao_1 VARCHAR(150), _guarnicao_2 VARCHAR(150), _guarnicao_3 VARCHAR(150), _guarnicao_4 VARCHAR(150),
+    _salada_1 VARCHAR(150), _salada_2 VARCHAR(150))
+BEGIN
+	INSERT INTO Cardapio (principal_1, principal_2, mistura_1, mistura_2, mistura_3, mistura_4,
+    guarnicao_1, guarnicao_2, guarnicao_3, guarnicao_4, salada_1, salada_2, data_hora)
+    
+    VALUES (_principal_1, _principal_2, _mistura_1, _mistura_2, _mistura_3, _mistura_4,
+    _guarnicao_1, _guarnicao_2, _guarnicao_3, _guarnicao_4, _salada_1, _salada_2, NOW());
+    
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE READ_CARDAPIO()
+BEGIN
+    SELECT * FROM Cardapio
+    ORDER BY data_hora DESC
+    LIMIT 1;
+END $$
+DELIMITER ;
 
 DELIMITER $$
 CREATE PROCEDURE READ_DIARIA(_id_motoboy INT, _data DATE)

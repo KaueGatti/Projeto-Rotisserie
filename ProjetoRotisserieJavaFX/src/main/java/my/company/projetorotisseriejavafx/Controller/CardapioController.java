@@ -12,7 +12,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalAdicionarItemCardapioController;
+import my.company.projetorotisseriejavafx.DAO.CardapioDAO;
 import my.company.projetorotisseriejavafx.DAO.ItemCardapioDAO;
+import my.company.projetorotisseriejavafx.Objects.Cardapio;
 import my.company.projetorotisseriejavafx.Objects.ItemCardapio;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 import my.company.projetorotisseriejavafx.Util.ItemCardapioListListener;
@@ -136,24 +138,52 @@ public class CardapioController implements Initializable {
     @FXML
     void atualizar(ActionEvent event) {
 
-        if (!validaCardapio()) return;
+        if (btnAtualizar.getText().equals("Atualizar")) {
+            if (!validaCardapio()) return;
 
-        btnAtualizar.setOnAction(ActionEvent -> {
+            btnAtualizar.setText("Salvar");
 
-        });
+            disableTables(true);
 
-        disableTables();
+            todosComboBoxes.forEach(cb -> {
+                cb.setDisable(false);
+            });
 
-        btnAtualizar.setText("Salvar");
+            return;
+        }
 
-        initCBPrincipal();
-        initCBMistura();
-        initCBGuarnicao();
-        initCBSalada();
+        if (btnAtualizar.getText().equals("Salvar")) {
 
-        todosComboBoxes.forEach(cb -> {
-            cb.setDisable(false);
-        });
+            try {
+                Cardapio cardapio = new Cardapio();
+
+                cardapio.setPrincipal1(CBPrincipal1.getValue().getNome());
+                cardapio.setPrincipal2(CBPrincipal2.getValue().getNome());
+                cardapio.setMistura1(CBMistura1.getValue().getNome());
+                cardapio.setMistura2(CBMistura2.getValue().getNome());
+                cardapio.setMistura3(CBMistura3.getValue().getNome());
+                cardapio.setMistura4(CBMistura4.getValue().getNome());
+                cardapio.setGuarnicao1(CBGuarnicao1.getValue().getNome());
+                cardapio.setGuarnicao2(CBGuarnicao2.getValue().getNome());
+                cardapio.setGuarnicao3(CBGuarnicao3.getValue().getNome());
+                cardapio.setGuarnicao4(CBGuarnicao4.getValue().getNome());
+                cardapio.setSalada1(CBSalada1.getValue().getNome());
+                cardapio.setSalada2(CBSalada2.getValue().getNome());
+
+                CardapioDAO.create(cardapio);
+
+                disableTables(false);
+
+                todosComboBoxes.forEach(cb -> {
+                    cb.setDisable(true);
+                });
+
+                btnAtualizar.setText("Atualizar");
+
+            } catch (SQLException e) {
+                DatabaseExceptionHandler.handleException(e, "cardápio");
+            }
+        }
     }
 
     @FXML
@@ -344,30 +374,92 @@ public class CardapioController implements Initializable {
         configurarGrupo(grupoCBGuarnicao, guarnicoes);
         configurarGrupo(grupoCBSalada, saladas);
 
+        try {
+            Cardapio cardapio = CardapioDAO.read();
+
+            if (cardapio != null) {
+                initCBPrincipal(cardapio);
+                initCBMistura(cardapio);
+                initCBGuarnicao(cardapio);
+                initCBSalada(cardapio);
+            }
+
+        } catch (SQLException e) {
+            DatabaseExceptionHandler.handleException(e, "cardapio");
+        }
+
     }
 
-    public void initCBPrincipal() {
-        CBPrincipal1.getSelectionModel().select(0);
-        CBPrincipal2.getSelectionModel().select(1);
+    public void initCBPrincipal(Cardapio cardapio) {
+        CBPrincipal1.getItems().forEach(item -> {
+            if (item.getNome().equals(cardapio.getPrincipal1())) {
+                CBPrincipal1.setValue(item);
+            }
+        });
+        CBPrincipal2.getItems().forEach(item -> {
+            if (item.getNome().equals(cardapio.getPrincipal2())) {
+                CBPrincipal2.setValue(item);
+            }
+        });
     }
 
-    public void initCBMistura() {
-        CBMistura1.getSelectionModel().select(0);
-        CBMistura2.getSelectionModel().select(1);
-        CBMistura3.getSelectionModel().select(2);
-        CBMistura4.getSelectionModel().select(3);
+    public void initCBMistura(Cardapio cardapio) {
+        CBMistura1.getItems().forEach(item -> {
+            if (item.getNome().equals(cardapio.getMistura1())) {
+                CBMistura1.setValue(item);
+            }
+        });
+        CBMistura2.getItems().forEach(item -> {
+            if (item.getNome().equals(cardapio.getMistura2())) {
+                CBMistura2.setValue(item);
+            }
+        });
+        CBMistura3.getItems().forEach(item -> {
+            if (item.getNome().equals(cardapio.getMistura3())) {
+                CBMistura3.setValue(item);
+            }
+        });
+        CBMistura4.getItems().forEach(item -> {
+            if (item.getNome().equals(cardapio.getMistura4())) {
+                CBMistura4.setValue(item);
+            }
+        });
     }
 
-    public void initCBGuarnicao() {
-        CBGuarnicao1.getSelectionModel().select(0);
-        CBGuarnicao2.getSelectionModel().select(1);
-        CBGuarnicao3.getSelectionModel().select(2);
-        CBGuarnicao4.getSelectionModel().select(3);
+    public void initCBGuarnicao(Cardapio cardapio) {
+        CBGuarnicao1.getItems().forEach(item -> {
+            if (item.getNome().equals(cardapio.getGuarnicao1())) {
+                CBGuarnicao1.setValue(item);
+            }
+        });
+        CBGuarnicao2.getItems().forEach(item -> {
+            if (item.getNome().equals(cardapio.getGuarnicao2())) {
+                CBGuarnicao2.setValue(item);
+            }
+        });
+        CBGuarnicao3.getItems().forEach(item -> {
+            if (item.getNome().equals(cardapio.getGuarnicao3())) {
+                CBGuarnicao3.setValue(item);
+            }
+        });
+        CBGuarnicao4.getItems().forEach(item -> {
+            if (item.getNome().equals(cardapio.getGuarnicao4())) {
+                CBGuarnicao4.setValue(item);
+            }
+        });
     }
 
-    public void initCBSalada() {
-        CBSalada1.getSelectionModel().select(0);
-        CBSalada2.getSelectionModel().select(1);
+    public void initCBSalada(Cardapio cardapio) {
+        CBSalada1.getItems().forEach(item -> {
+            if (item.getNome().equals(cardapio.getSalada1())) {
+                CBSalada1.setValue(item);
+            }
+        });
+        CBSalada2.getItems().forEach(item -> {
+            if (item.getNome().equals(cardapio.getSalada2())) {
+                CBSalada2.setValue(item);
+            }
+        });
     }
 
     public boolean validaCardapio() {
@@ -443,15 +535,15 @@ public class CardapioController implements Initializable {
         };
     }
 
-    public void disableTables() {
-        tablePrincipais.setDisable(true);
-        tableMisturas.setDisable(true);
-        tableGuarnicoes.setDisable(true);
-        tableSaladas.setDisable(true);
+    public void disableTables(boolean disable) {
+        tablePrincipais.setDisable(disable);
+        tableMisturas.setDisable(disable);
+        tableGuarnicoes.setDisable(disable);
+        tableSaladas.setDisable(disable);
 
-        btnAdicionarPrincipal.setDisable(true);
-        btnAdicionarMistura.setDisable(true);
-        btnAdicionarGuarnicao.setDisable(true);
-        btnAdicionarSalada.setDisable(true);
+        btnAdicionarPrincipal.setDisable(disable);
+        btnAdicionarMistura.setDisable(disable);
+        btnAdicionarGuarnicao.setDisable(disable);
+        btnAdicionarSalada.setDisable(disable);
     }
 }

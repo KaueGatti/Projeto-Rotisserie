@@ -76,7 +76,7 @@
                   <Font size="20.0" />
                </font>
             </CheckBox>
-            <ComboBox fx:id="comboBoxMensalista" layoutX="23.0" layoutY="127.0" prefHeight="35.0" prefWidth="395.0" style="-fx-pref-width: 395; -fx-pref-height: 30;" stylesheets="@../styles/novoPedido.css" />
+            <ComboBox fx:id="comboBoxMensalista" disable="true" layoutX="23.0" layoutY="127.0" prefHeight="35.0" prefWidth="395.0" style="-fx-pref-width: 395; -fx-pref-height: 30;" stylesheets="@../styles/novoPedido.css" />
             <TextField fx:id="TFNomeCliente" layoutX="23.0" layoutY="193.0" prefHeight="36.0" prefWidth="395.0" promptText="Nome do cliente">
                <font>
                   <Font size="18.0" />
@@ -87,7 +87,7 @@
                   <Font name="Segoe UI" size="24.0" />
                </font>
             </Label>
-            <Pane fx:id="paneEndereco" layoutX="23.0" layoutY="252.0" prefHeight="241.0" prefWidth="395.0">
+            <Pane fx:id="paneEndereco" disable="true" layoutX="23.0" layoutY="252.0" prefHeight="241.0" prefWidth="395.0">
                <children>
                   <ComboBox fx:id="comboBoxBairro" layoutX="16.0" layoutY="191.0" prefHeight="36.0" prefWidth="364.0" stylesheets="@../styles/novoPedido.css" />
                   <TextArea fx:id="TAEndereco" layoutX="16.0" layoutY="29.0" prefHeight="58.0" prefWidth="364.0">
@@ -161,7 +161,7 @@
                   <ToggleGroup fx:id="tipo" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton layoutX="237.0" layoutY="37.0" mnemonicParsing="false" onAction="#RBGTipo" text="Balcão" toggleGroup="$tipo">
+            <RadioButton fx:id="RBBalcao" layoutX="237.0" layoutY="37.0" mnemonicParsing="false" onAction="#RBGTipo" selected="true" text="Balcão" toggleGroup="$tipo">
                <font>
                   <Font size="20.0" />
                </font>

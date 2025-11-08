@@ -95,7 +95,7 @@
             <Font size="18.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="checkBoxSalada" layoutX="57.0" layoutY="418.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="160.0" text="CheckBox">
+      <CheckBox fx:id="checkBoxSalada1" layoutX="57.0" layoutY="418.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="160.0" text="CheckBox">
          <font>
             <Font size="18.0" />
          </font>
@@ -115,5 +115,10 @@
       <Label fx:id="labelInfoGuarnicao" layoutX="58.0" layoutY="308.0" prefHeight="25.0" prefWidth="335.0" />
       <Label fx:id="labelInfoMistura" layoutX="53.0" layoutY="175.0" prefHeight="25.0" prefWidth="335.0" />
       <Label fx:id="labelInfoMarmita" layoutX="50.0" layoutY="452.0" prefHeight="17.0" prefWidth="360.0" />
+      <CheckBox fx:id="checkBoxSalada2" layoutX="243.0" layoutY="418.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="160.0" text="CheckBox">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </CheckBox>
    </children>
 </Pane>

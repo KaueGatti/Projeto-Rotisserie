@@ -35,10 +35,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import my.company.projetorotisseriejavafx.Controller.Modal.ModalDescontosEAdicionaisController;
-import my.company.projetorotisseriejavafx.Controller.Modal.ModalDetalhesMarmitaController;
-import my.company.projetorotisseriejavafx.Controller.Modal.ModalPagamentoController;
-import my.company.projetorotisseriejavafx.Controller.Modal.ModalTrocoController;
+import my.company.projetorotisseriejavafx.Controller.Modal.*;
 import my.company.projetorotisseriejavafx.Controller.Pane.PaneMarmitaController;
 import my.company.projetorotisseriejavafx.Controller.Pane.PaneProdutoController;
 import my.company.projetorotisseriejavafx.DAO.*;
@@ -105,6 +102,8 @@ public class NovoPedidoController implements Initializable {
     @FXML
     private RadioButton RBEntrega;
     @FXML
+    private RadioButton RBBalcao;
+    @FXML
     private Label labelCliente;
     @FXML
     private TextField TFNomeCliente;
@@ -125,8 +124,6 @@ public class NovoPedidoController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        comboBoxMensalista.setDisable(true);
-        RBEntrega.setSelected(true);
         initDescontosEAdicionais();
         initTableMarmita();
         initTableProduto();
@@ -177,6 +174,12 @@ public class NovoPedidoController implements Initializable {
 
     @FXML
     private void produtoClicked(ActionEvent event) {
+
+        if (!validaProdutos()) {
+            tabButtonRight.setSelected(false);
+            return;
+        }
+
         if (tabButtonRight.isSelected()) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Pane/paneProduto.fxml"));
@@ -198,6 +201,16 @@ public class NovoPedidoController implements Initializable {
     @FXML
     private void RBGTipo(ActionEvent event) {
         if (RBEntrega.isSelected()) {
+            if (!validaMotoboy()) {
+                RBBalcao.setSelected(true);
+                return;
+            }
+
+            if (!validaBairro()) {
+                RBBalcao.setSelected(true);
+                return;
+            }
+
             paneEndereco.setDisable(false);
             valorEntrega = comboBoxBairro.getSelectionModel().getSelectedItem().getValorEntrega();
             atualizaValor();
@@ -397,6 +410,12 @@ public class NovoPedidoController implements Initializable {
     @FXML
     private void checkBoxMensalista(ActionEvent event) {
         if (checkBoxMensalista.isSelected()) {
+
+            if (!validaMensalista()) {
+                checkBoxMensalista.setSelected(false);
+                return;
+            }
+
             comboBoxMensalista.setDisable(false);
             labelCliente.setDisable(true);
             TFNomeCliente.setDisable(true);
@@ -521,5 +540,87 @@ public class NovoPedidoController implements Initializable {
             System.out.println("Erro ao abrir modal pagamento" + e);
             e.printStackTrace();
         }
+    }
+
+    public boolean validaProdutos() {
+        try {
+            if (ProdutoDAO.read().isEmpty()) {
+                String msg = "Você ainda não tem nenhum produto cadastrado!";
+                abrirModalAvisoNovoPedido(msg, new Pedido());
+                return false;
+            }
+            return true;
+        } catch (SQLException e) {
+            DatabaseExceptionHandler.handleException(e, "produto");
+        }
+        return false;
+    }
+
+    public boolean validaMotoboy() {
+        try {
+            if (ProdutoDAO.read().isEmpty()) {
+                String msg = "Você ainda não tem nenhum motoboy cadastrado!";
+                abrirModalAvisoNovoPedido(msg, new Motoboy());
+                return false;
+            }
+            return true;
+        } catch (SQLException e) {
+            DatabaseExceptionHandler.handleException(e, "motoboy");
+        }
+        return false;
+    }
+
+    public boolean validaBairro() {
+        try {
+            if (ProdutoDAO.read().isEmpty()) {
+                String msg = "Você ainda não tem nenhum bairro cadastrado!";
+                abrirModalAvisoNovoPedido(msg, new Pedido());
+                return false;
+            }
+            return true;
+        } catch (SQLException e) {
+            DatabaseExceptionHandler.handleException(e, "bairro");
+        }
+        return false;
+    }
+
+    public boolean validaMensalista() {
+        try {
+            if (ProdutoDAO.read().isEmpty()) {
+                String msg = "Você ainda não tem nenhum mensalista cadastrado!";
+                abrirModalAvisoNovoPedido(msg, new Mensalista());
+                return false;
+            }
+            return true;
+        } catch (SQLException e) {
+            DatabaseExceptionHandler.handleException(e, "mensalista");
+        }
+        return false;
+    }
+
+    public boolean abrirModalAvisoNovoPedido(String msg, Object tipo) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalAvisoNovoPedido.fxml"));
+            Stage modal = new Stage();
+
+            modal.setScene(loader.load());
+
+            ModalAvisoNovoPedidoController controller = loader.getController();
+
+            controller.initialize(msg, tipo);
+
+            modal.initStyle(StageStyle.UTILITY);
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.setResizable(false);
+            modal.showAndWait();
+
+            return controller.isCadastrar();
+
+        } catch (IOException e) {
+            System.out.println("Erro ao abrir adicionar item cardapio");
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }

@@ -2,6 +2,7 @@ package my.company.projetorotisseriejavafx.Controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -11,6 +12,16 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import my.company.projetorotisseriejavafx.Controller.Modal.ModalAdicionarItemCardapioController;
+import my.company.projetorotisseriejavafx.Controller.Modal.ModalAvisoNovoPedidoController;
+import my.company.projetorotisseriejavafx.DAO.CardapioDAO;
+import my.company.projetorotisseriejavafx.DAO.MarmitaDAO;
+import my.company.projetorotisseriejavafx.Objects.Cardapio;
+import my.company.projetorotisseriejavafx.Objects.Marmita;
+import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 
 public class InicioController implements Initializable {
 
@@ -40,6 +51,11 @@ public class InicioController implements Initializable {
 
     @FXML
     public void bttNovoPedido() {
+
+        if (!validaMarmitas()) return;
+
+        if (!validaCardapio()) return;
+
         APPrincipal.getChildren().clear();
         try {
             APPrincipal.getChildren().add(FXMLLoader.load(getClass().getResource("/fxml/NovoPedido.fxml")));
@@ -150,5 +166,65 @@ public class InicioController implements Initializable {
         Image pngCardapio = new Image(getClass().getResourceAsStream("/Images/Cardapio.png"));
         ImageView ivCardapio = new ImageView(pngCardapio);
         btnCardapio.setGraphic(ivCardapio);
+    }
+
+    public boolean validaMarmitas() {
+        try {
+            if (MarmitaDAO.read().isEmpty()) {
+                String msg = "Você ainda não tem nenhuma marmita cadastrada!";
+                if (abrirModalAvisoNovoPedido(msg, new Marmita())) {
+                    marmitas();
+                }
+                return false;
+            }
+            return true;
+        } catch (SQLException e) {
+            DatabaseExceptionHandler.handleException(e, "marmita");
+        }
+        return false;
+    }
+
+    public boolean validaCardapio() {
+        try {
+            if (CardapioDAO.read() == null) {
+                String msg = "Você ainda não definiu o cardápio do dia!";
+                if (abrirModalAvisoNovoPedido(msg, new Cardapio())) {
+                    cardapio();
+                }
+                return false;
+            }
+            return true;
+        } catch (SQLException e) {
+            DatabaseExceptionHandler.handleException(e, "marmita");
+        }
+        return false;
+    }
+
+
+
+    public boolean abrirModalAvisoNovoPedido(String msg, Object tipo) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalAvisoNovoPedido.fxml"));
+            Stage modal = new Stage();
+
+            modal.setScene(loader.load());
+
+            ModalAvisoNovoPedidoController controller = loader.getController();
+
+            controller.initialize(msg, tipo);
+
+            modal.initStyle(StageStyle.UTILITY);
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.setResizable(false);
+            modal.showAndWait();
+
+            return controller.isCadastrar();
+
+        } catch (IOException e) {
+            System.out.println("Erro ao abrir adicionar item cardapio");
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }

@@ -162,9 +162,10 @@ public class PedidosController implements Initializable {
             LEntrega.setText(pedido.getFormattedValorEntrega());
             btnEndereco.setDisable(false);
         } else {
-            btnEndereco.setDisable(true);
             LMotoboy.setText("-");
             LBairro.setText("-");
+            LEntrega.setText("-");
+            btnEndereco.setDisable(true);
         }
 
         LValorTotal.setText(pedido.getFormattedValorTotal());
@@ -172,7 +173,7 @@ public class PedidosController implements Initializable {
         LValorAPagar.setText(pedido.getFormattedValorAPagar());
 
         LDataHora.setText(pedido.getDateTimeFormat());
-        LVencimento.setText("20/02/2020");
+        LVencimento.setText(pedido.getVencimento().toString());
 
         LStatus.setText(pedido.getStatus());
 
@@ -180,7 +181,12 @@ public class PedidosController implements Initializable {
         btnObservacoes.setDisable(false);
         btnMarmitasEProdutos.setDisable(false);
         btnDescontosEAdicionais.setDisable(false);
-        btnPagamentos.setDisable(false);
+
+        if (pedido.getStatus().equals("FINALIZADO")) {
+            btnPagamentos.setDisable(true);
+        } else {
+            btnPagamentos.setDisable(false);
+        }
 
         try {
             marmitas = MarmitaVendidaDAO.read(pedido.getId());
@@ -242,8 +248,6 @@ public class PedidosController implements Initializable {
         }
     }
 
-    ;
-
     public void abrirModalEndereco(String endereco) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalEnderecoPedido.fxml"));
@@ -266,8 +270,6 @@ public class PedidosController implements Initializable {
         }
     }
 
-    ;
-
     public void abrirModalMarmitasEProdutos(List<MarmitaVendida> marmitas, List<ProdutoVendido> produtos) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalMarmitasEProdutos.fxml"));
@@ -289,6 +291,4 @@ public class PedidosController implements Initializable {
             e.printStackTrace();
         }
     }
-
-    ;
 }

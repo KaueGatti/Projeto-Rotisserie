@@ -30,7 +30,9 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import my.company.projetorotisseriejavafx.Controller.NovoPedidoController;
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalObservacaoController;
+import my.company.projetorotisseriejavafx.DAO.CardapioDAO;
 import my.company.projetorotisseriejavafx.DAO.MarmitaDAO;
+import my.company.projetorotisseriejavafx.Objects.Cardapio;
 import my.company.projetorotisseriejavafx.Objects.Marmita;
 import my.company.projetorotisseriejavafx.Objects.MarmitaVendida;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
@@ -75,7 +77,9 @@ public class PaneMarmitaController implements Initializable {
     @FXML
     private CheckBox checkBoxGuarnicao4;
     @FXML
-    private CheckBox checkBoxSalada;
+    private CheckBox checkBoxSalada1;
+    @FXML
+    private CheckBox checkBoxSalada2;
     @FXML
     private Label labelInfoMistura;
     @FXML
@@ -107,6 +111,7 @@ public class PaneMarmitaController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         loadMarmitas();
+        loadCardapio();
     }
 
     public void loadMarmitas() {
@@ -390,5 +395,26 @@ public class PaneMarmitaController implements Initializable {
             }
         }
         return false;
+    }
+
+    public void loadCardapio() {
+        try {
+            Cardapio cardapio = CardapioDAO.read();
+
+            checkBoxPrincipal1.setText(cardapio.getPrincipal1());
+            checkBoxPrincipal2.setText(cardapio.getPrincipal2());
+            checkBoxMistura1.setText(cardapio.getMistura1());
+            checkBoxMistura2.setText(cardapio.getMistura2());
+            checkBoxMistura3.setText(cardapio.getMistura3());
+            checkBoxMistura4.setText(cardapio.getMistura4());
+            checkBoxGuarnicao1.setText(cardapio.getGuarnicao1());
+            checkBoxGuarnicao2.setText(cardapio.getGuarnicao2());
+            checkBoxGuarnicao3.setText(cardapio.getGuarnicao3());
+            checkBoxGuarnicao4.setText(cardapio.getGuarnicao4());
+            checkBoxSalada1.setText(cardapio.getSalada1());
+            checkBoxSalada2.setText(cardapio.getSalada2());
+        } catch (SQLException e) {
+            DatabaseExceptionHandler.handleException(e, "cardapio");
+        }
     }
 }
