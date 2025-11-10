@@ -377,12 +377,10 @@ public class CardapioController implements Initializable {
         try {
             Cardapio cardapio = CardapioDAO.read();
 
-            if (cardapio != null) {
-                initCBPrincipal(cardapio);
-                initCBMistura(cardapio);
-                initCBGuarnicao(cardapio);
-                initCBSalada(cardapio);
-            }
+            initCBPrincipal(cardapio);
+            initCBMistura(cardapio);
+            initCBGuarnicao(cardapio);
+            initCBSalada(cardapio);
 
         } catch (SQLException e) {
             DatabaseExceptionHandler.handleException(e, "cardapio");
@@ -391,75 +389,105 @@ public class CardapioController implements Initializable {
     }
 
     public void initCBPrincipal(Cardapio cardapio) {
-        CBPrincipal1.getItems().forEach(item -> {
-            if (item.getNome().equals(cardapio.getPrincipal1())) {
-                CBPrincipal1.setValue(item);
-            }
-        });
-        CBPrincipal2.getItems().forEach(item -> {
-            if (item.getNome().equals(cardapio.getPrincipal2())) {
-                CBPrincipal2.setValue(item);
-            }
-        });
+        if (cardapio != null) {
+            CBPrincipal1.getItems().forEach(item -> {
+                if (item.getNome().equals(cardapio.getPrincipal1())) {
+                    CBPrincipal1.setValue(item);
+                }
+            });
+            CBPrincipal2.getItems().forEach(item -> {
+                if (item.getNome().equals(cardapio.getPrincipal2())) {
+                    CBPrincipal2.setValue(item);
+                }
+            });
+            return;
+        }
+
+        CBPrincipal1.getSelectionModel().select(0);
+        CBPrincipal2.getSelectionModel().select(1);
     }
 
     public void initCBMistura(Cardapio cardapio) {
-        CBMistura1.getItems().forEach(item -> {
-            if (item.getNome().equals(cardapio.getMistura1())) {
-                CBMistura1.setValue(item);
-            }
-        });
-        CBMistura2.getItems().forEach(item -> {
-            if (item.getNome().equals(cardapio.getMistura2())) {
-                CBMistura2.setValue(item);
-            }
-        });
-        CBMistura3.getItems().forEach(item -> {
-            if (item.getNome().equals(cardapio.getMistura3())) {
-                CBMistura3.setValue(item);
-            }
-        });
-        CBMistura4.getItems().forEach(item -> {
-            if (item.getNome().equals(cardapio.getMistura4())) {
-                CBMistura4.setValue(item);
-            }
-        });
+        if (cardapio != null) {
+            CBMistura1.getItems().forEach(item -> {
+                if (item.getNome().equals(cardapio.getMistura1())) {
+                    CBMistura1.setValue(item);
+                }
+            });
+            CBMistura2.getItems().forEach(item -> {
+                if (item.getNome().equals(cardapio.getMistura2())) {
+                    CBMistura2.setValue(item);
+                }
+            });
+            CBMistura3.getItems().forEach(item -> {
+                if (item.getNome().equals(cardapio.getMistura3())) {
+                    CBMistura3.setValue(item);
+                }
+            });
+            CBMistura4.getItems().forEach(item -> {
+                if (item.getNome().equals(cardapio.getMistura4())) {
+                    CBMistura4.setValue(item);
+                }
+            });
+            return;
+        }
+
+        CBMistura1.getSelectionModel().select(0);
+        CBMistura2.getSelectionModel().select(1);
+        CBMistura3.getSelectionModel().select(2);
+        CBMistura4.getSelectionModel().select(3);
     }
 
     public void initCBGuarnicao(Cardapio cardapio) {
-        CBGuarnicao1.getItems().forEach(item -> {
-            if (item.getNome().equals(cardapio.getGuarnicao1())) {
-                CBGuarnicao1.setValue(item);
-            }
-        });
-        CBGuarnicao2.getItems().forEach(item -> {
-            if (item.getNome().equals(cardapio.getGuarnicao2())) {
-                CBGuarnicao2.setValue(item);
-            }
-        });
-        CBGuarnicao3.getItems().forEach(item -> {
-            if (item.getNome().equals(cardapio.getGuarnicao3())) {
-                CBGuarnicao3.setValue(item);
-            }
-        });
-        CBGuarnicao4.getItems().forEach(item -> {
-            if (item.getNome().equals(cardapio.getGuarnicao4())) {
-                CBGuarnicao4.setValue(item);
-            }
-        });
+
+        if (cardapio != null) {
+            CBGuarnicao1.getItems().forEach(item -> {
+                if (item.getNome().equals(cardapio.getGuarnicao1())) {
+                    CBGuarnicao1.setValue(item);
+                }
+            });
+            CBGuarnicao2.getItems().forEach(item -> {
+                if (item.getNome().equals(cardapio.getGuarnicao2())) {
+                    CBGuarnicao2.setValue(item);
+                }
+            });
+            CBGuarnicao3.getItems().forEach(item -> {
+                if (item.getNome().equals(cardapio.getGuarnicao3())) {
+                    CBGuarnicao3.setValue(item);
+                }
+            });
+            CBGuarnicao4.getItems().forEach(item -> {
+                if (item.getNome().equals(cardapio.getGuarnicao4())) {
+                    CBGuarnicao4.setValue(item);
+                }
+            });
+            return;
+        }
+
+        CBGuarnicao1.getSelectionModel().select(0);
+        CBGuarnicao2.getSelectionModel().select(1);
+        CBGuarnicao3.getSelectionModel().select(2);
+        CBGuarnicao4.getSelectionModel().select(3);
+
     }
 
     public void initCBSalada(Cardapio cardapio) {
-        CBSalada1.getItems().forEach(item -> {
-            if (item.getNome().equals(cardapio.getSalada1())) {
-                CBSalada1.setValue(item);
-            }
-        });
-        CBSalada2.getItems().forEach(item -> {
-            if (item.getNome().equals(cardapio.getSalada2())) {
-                CBSalada2.setValue(item);
-            }
-        });
+        if (cardapio != null) {
+            CBSalada1.getItems().forEach(item -> {
+                if (item.getNome().equals(cardapio.getSalada1())) {
+                    CBSalada1.setValue(item);
+                }
+            });
+            CBSalada2.getItems().forEach(item -> {
+                if (item.getNome().equals(cardapio.getSalada2())) {
+                    CBSalada2.setValue(item);
+                }
+            });
+            return;
+        }
+
+        CBSalada1.getSelectionModel().select(0);
+        CBSalada2.getSelectionModel().select(1);
     }
 
     public boolean validaCardapio() {

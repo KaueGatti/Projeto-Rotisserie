@@ -106,7 +106,7 @@ public class MotoboyDAO {
                 motoboy.setId(rs.getInt("id"));
                 motoboy.setNome(rs.getString("nome"));
                 motoboy.setValorDiaria(rs.getDouble("valor_diaria"));
-                motoboy.setStatus(rs.getString("_status"));
+                motoboy.setStatus(rs.getString("status"));
 
                 motoboys.add(motoboy);
             }

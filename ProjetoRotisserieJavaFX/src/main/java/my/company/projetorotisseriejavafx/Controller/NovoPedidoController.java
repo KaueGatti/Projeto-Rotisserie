@@ -230,10 +230,6 @@ public class NovoPedidoController implements Initializable {
             if (!bairros.isEmpty()) {
                 comboBoxBairro.getItems().addAll(bairros);
 
-                comboBoxBairro.getSelectionModel().selectFirst();
-                valorEntrega = comboBoxBairro.getSelectionModel().getSelectedItem().getValorEntrega();
-                atualizaValor();
-
                 comboBoxBairro.setOnAction(e -> {
                     valorEntrega = comboBoxBairro.getSelectionModel().getSelectedItem().getValorEntrega();
                     atualizaValor();
@@ -461,6 +457,10 @@ public class NovoPedidoController implements Initializable {
         }
 
         if (RBEntrega.isSelected()) {
+            if (comboBoxBairro.getValue() == null) {
+                LInfoPedido.setText("Selecione um bairro");
+                return;
+            }
             pedido.setTipoPedido("Entrega");
             pedido.setMotoboy(comboBoxMotoboy.getValue());
             pedido.setEndereco(TAEndereco.getText());
@@ -558,7 +558,7 @@ public class NovoPedidoController implements Initializable {
 
     public boolean validaMotoboy() {
         try {
-            if (ProdutoDAO.read().isEmpty()) {
+            if (MotoboyDAO.read().isEmpty()) {
                 String msg = "Você ainda não tem nenhum motoboy cadastrado!";
                 abrirModalAvisoNovoPedido(msg, new Motoboy());
                 return false;
@@ -572,7 +572,7 @@ public class NovoPedidoController implements Initializable {
 
     public boolean validaBairro() {
         try {
-            if (ProdutoDAO.read().isEmpty()) {
+            if (BairroDAO.read().isEmpty()) {
                 String msg = "Você ainda não tem nenhum bairro cadastrado!";
                 abrirModalAvisoNovoPedido(msg, new Pedido());
                 return false;
@@ -586,7 +586,7 @@ public class NovoPedidoController implements Initializable {
 
     public boolean validaMensalista() {
         try {
-            if (ProdutoDAO.read().isEmpty()) {
+            if (MensalistaDAO.read().isEmpty()) {
                 String msg = "Você ainda não tem nenhum mensalista cadastrado!";
                 abrirModalAvisoNovoPedido(msg, new Mensalista());
                 return false;
@@ -617,7 +617,7 @@ public class NovoPedidoController implements Initializable {
             return controller.isCadastrar();
 
         } catch (IOException e) {
-            System.out.println("Erro ao abrir adicionar item cardapio");
+            System.out.println("Erro ao abrir aviso novo pedido");
             e.printStackTrace();
         }
 
