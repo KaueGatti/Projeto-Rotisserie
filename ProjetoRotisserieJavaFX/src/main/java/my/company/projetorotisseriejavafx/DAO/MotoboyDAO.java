@@ -87,7 +87,7 @@ public class MotoboyDAO {
         }
     }
     
-    public static List<Motoboy> read(int id) {
+    public static List<Motoboy> read(int id) throws SQLException {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -112,12 +112,9 @@ public class MotoboyDAO {
             }
 
             return motoboys;
-        } catch (SQLException e) {
-            System.out.println("Falha ao buscar motoboys: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }
-        return null;
     }
 
     public static void update(Motoboy motoboy) throws SQLException {

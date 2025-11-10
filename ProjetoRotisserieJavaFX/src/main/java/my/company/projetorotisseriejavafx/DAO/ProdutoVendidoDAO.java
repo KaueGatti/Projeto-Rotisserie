@@ -45,7 +45,7 @@ public class ProdutoVendidoDAO {
         List<ProdutoVendido> produtos = new ArrayList<>();
 
         try {
-            stmt = con.prepareStatement("READ_ALL_PRODUTOS_PEDIDO(?)");
+            stmt = con.prepareStatement("CALL READ_ALL_PRODUTOS_PEDIDO(?)");
 
             stmt.setInt(1, idPedido);
 
@@ -54,7 +54,7 @@ public class ProdutoVendidoDAO {
             while (rs.next()) {
                 ProdutoVendido produtoVendido = new ProdutoVendido();
 
-                produtoVendido.setId(rs.getInt("id"));
+                produtoVendido.setNome(rs.getString("nome"));
                 produtoVendido.setQuantidade(rs.getInt("quantidade"));
                 produtoVendido.setSubtotal(rs.getDouble("subtotal"));
 

@@ -65,14 +65,14 @@ public class BairroDAO {
         }
     }
 
-    public static List<Bairro> read(int id) {
+    public static List<Bairro> read(int id) throws SQLException {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
         List<Bairro> bairros = new ArrayList();
 
         try {
-            stmt = con.prepareStatement("SELECT * FROM Bairro WHERE id = ?");
+            stmt = con.prepareStatement("CALL READ_BAIRRO_BY_ID(?)");
 
             stmt.setInt(1, id);
 
@@ -90,12 +90,9 @@ public class BairroDAO {
             }
 
             return bairros;
-        } catch (SQLException e) {
-            System.out.println("Falha ao buscar bairros: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }
-        return null;
     }
 
     public static void update(Bairro bairro) throws SQLException {

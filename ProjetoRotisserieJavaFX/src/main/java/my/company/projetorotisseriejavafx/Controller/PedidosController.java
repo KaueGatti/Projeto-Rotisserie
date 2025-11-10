@@ -173,7 +173,12 @@ public class PedidosController implements Initializable {
         LValorAPagar.setText(pedido.getFormattedValorAPagar());
 
         LDataHora.setText(pedido.getDateTimeFormat());
-        LVencimento.setText(pedido.getVencimento().toString());
+
+        if (pedido.getVencimento() != null) {
+            LVencimento.setText(pedido.getVencimento().toString());
+        } else {
+            LVencimento.setText("-");
+        }
 
         LStatus.setText(pedido.getStatus());
 

@@ -47,7 +47,7 @@ public class MarmitaVendidaDAO {
         List<MarmitaVendida> marmitasVendidas = new ArrayList<>();
 
         try {
-            stmt = con.prepareStatement("READ ALL_MARMITAS_PEDIDO(?)");
+            stmt = con.prepareStatement("CALL READ_ALL_MARMITAS_PEDIDO(?)");
             
             stmt.setInt(1, idPedido);
             
@@ -55,6 +55,7 @@ public class MarmitaVendidaDAO {
 
             while (rs.next()) {
                 MarmitaVendida marmitaVendida = new MarmitaVendida();
+
                 marmitaVendida.setNome(rs.getString("nome"));
                 marmitaVendida.setDetalhes(rs.getString("detalhes"));
                 marmitaVendida.setSubtotal(rs.getDouble("subtotal"));
