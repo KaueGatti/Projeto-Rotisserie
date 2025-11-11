@@ -89,6 +89,8 @@ public class MarmitaVendida {
     }
 
     public String getDetalhes() {
+        if (detalhes != null) { return detalhes; }
+
         StringBuilder detalhes = new StringBuilder("Principais: ");
 
         for (int i = 0; i < principais.size(); i++) {

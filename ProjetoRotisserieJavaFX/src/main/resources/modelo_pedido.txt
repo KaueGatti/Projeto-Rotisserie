@@ -1,0 +1,29 @@
+[center]
+[bold]Le Rotisserie[/bold]
+[bold]CNPJ:[/bold] 40.852.647/0001-66
+------------------------------------------------
+[wide]Cliente: ${nomeCliente} [/wide]
+Data: ${data}
+------------------------------------------------
+[bold]MARMITAS[/bold]
+${marmitas}
+
+[bold]PRODUTOS[/bold]
+${produtos}
+------------------------------------------------
+[bold]Endereco[/bold]: ${endereco}
+[bold]Bairro[/bold]: ${bairro}
+------------------------------------------------
+[bold]Pagamento:[/bold] ${pagamento}
+[bold]Total:[/bold] ${total}
+------------------------------------------------
+Observacao: ${observacao}
+[/center]
+[right]
+[bold]TX:[/bold] ${entrega}
+[/right]
+[feed]
+
+
+
+

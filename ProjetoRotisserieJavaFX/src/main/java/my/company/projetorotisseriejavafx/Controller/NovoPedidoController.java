@@ -482,7 +482,8 @@ public class NovoPedidoController implements Initializable {
         pedido.setValorTotal(valorTotal);
 
         if (validaPedido(pedido)) {
-            abrirModalPagamento(pedido);
+
+            if (!abrirModalPagamento(pedido)) return;
 
             pedido.setTipoPagamento(pagamento);
             pedido.setVencimento(vencimento);
@@ -530,7 +531,7 @@ public class NovoPedidoController implements Initializable {
 
     }
 
-    public void abrirModalPagamento(Pedido pedido) {
+    public boolean abrirModalPagamento(Pedido pedido) {
         try {
             Stage modal = new Stage();
 
@@ -542,17 +543,23 @@ public class NovoPedidoController implements Initializable {
             controller.initialize(pedido);
 
             modal.setResizable(false);
-            modal.setOnCloseRequest(Event::consume);
             modal.initModality(Modality.APPLICATION_MODAL);
             modal.initStyle(StageStyle.UTILITY);
             modal.showAndWait();
 
+            if (controller.getPagamento() == null && controller.getVencimento() == null) {
+                return false;
+            }
+
             pagamento = controller.getPagamento();
             vencimento = controller.getVencimento();
+
+            return true;
 
         } catch (IOException e) {
             System.out.println("Erro ao abrir modal pagamento" + e);
             e.printStackTrace();
+            return false;
         }
     }
 

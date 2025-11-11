@@ -172,7 +172,7 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE CREATE_MARMITA_VENDIDA(_id_pedido INT, _id_marmita INT, _subtotal DECIMAL(10,2), _detalhes VARCHAR(100), _observacao VARCHAR(100))
+CREATE PROCEDURE CREATE_MARMITA_VENDIDA(_id_pedido INT, _id_marmita INT, _subtotal DECIMAL(10,2), _detalhes VARCHAR(500), _observacao VARCHAR(100))
 BEGIN
 	INSERT INTO Marmita_Vendida (id_pedido, id_marmita, subtotal, detalhes, observacao)
     VALUES (_id_pedido, _id_marmita, _subtotal, _detalhes, _observacao);
@@ -482,7 +482,7 @@ DELIMITER ;
 DELIMITER $$
 CREATE PROCEDURE READ_DIARIA(_id_motoboy INT, _data DATE)
 BEGIN
-	SELECT COUNT(*) AS entregas, SUM(valor_total) as valorEntregas FROM Pedido
+	SELECT COUNT(*) AS entregas, SUM(valor_entrega) as valorEntregas FROM Pedido
 	WHERE DAY(date_time) = DAY(_data) AND tipo_pedido = 'Entrega';
 END $$
 DELIMITER ;

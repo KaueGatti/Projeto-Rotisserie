@@ -264,10 +264,10 @@ public class PaneMarmitaController implements Initializable {
 
     @FXML
     private void bttObservacao() {
-        abrirModalObservacao();
+        abrirModalObservacao(observacao);
     }
 
-    public void abrirModalObservacao() {
+    public void abrirModalObservacao(String observacao) {
         try {
             Stage modal = new Stage();
 
@@ -285,9 +285,7 @@ public class PaneMarmitaController implements Initializable {
             modal.setY(400);
             modal.showAndWait();
 
-            if (controller.getObservacao() != null) {
-                observacao = controller.getObservacao();
-            }
+            this.observacao = controller.getObservacao();
 
         } catch (IOException e) {
             System.out.println("Erro ao abrir modal observação" + e);

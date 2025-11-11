@@ -11,7 +11,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import my.company.projetorotisseriejavafx.Objects.Pedido;
 import my.company.projetorotisseriejavafx.Util.CurrencyFieldUtil;
-import my.company.projetorotisseriejavafx.Util.Printer;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -23,8 +22,6 @@ public class ModalPagamentoController {
     private String pagamento = null;
 
     private LocalDate vencimento = null;
-
-    private Pedido pedido;
 
     @FXML
     private Scene scene;
@@ -40,7 +37,6 @@ public class ModalPagamentoController {
     private Button btnFinalizar;
 
     public void initialize(Pedido pedido) {
-        this.pedido = pedido;
         valorPedido = pedido.getValorTotal() + pedido.getValorEntrega();
         initCampos();
         loadCBPagamento();

@@ -28,6 +28,7 @@ import my.company.projetorotisseriejavafx.Objects.MarmitaVendida;
 import my.company.projetorotisseriejavafx.Objects.Pedido;
 import my.company.projetorotisseriejavafx.Objects.ProdutoVendido;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
+import my.company.projetorotisseriejavafx.Util.Printer;
 
 public class PedidosController implements Initializable {
 
@@ -213,7 +214,7 @@ public class PedidosController implements Initializable {
 
     @FXML
     void imprimir(ActionEvent event) {
-
+        Printer.printOrder(selectedPedido, marmitas, produtos);
     }
 
     @FXML
