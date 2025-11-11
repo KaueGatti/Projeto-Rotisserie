@@ -1,5 +1,6 @@
 package my.company.projetorotisseriejavafx.Controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -13,6 +14,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -35,12 +37,16 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import my.company.projetorotisseriejavafx.Controller.Modal.*;
 import my.company.projetorotisseriejavafx.Controller.Pane.PaneMarmitaController;
 import my.company.projetorotisseriejavafx.Controller.Pane.PaneProdutoController;
 import my.company.projetorotisseriejavafx.DAO.*;
 import my.company.projetorotisseriejavafx.Objects.*;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
+import my.company.projetorotisseriejavafx.Util.Printer;
+
+import javax.print.PrintException;
 
 public class NovoPedidoController implements Initializable {
 
@@ -212,8 +218,10 @@ public class NovoPedidoController implements Initializable {
             }
 
             paneEndereco.setDisable(false);
-            valorEntrega = comboBoxBairro.getSelectionModel().getSelectedItem().getValorEntrega();
-            atualizaValor();
+            if (comboBoxBairro.getValue() != null) {
+                valorEntrega = comboBoxBairro.getValue().getValorEntrega();
+                atualizaValor();
+            }
         } else {
             valorEntrega = 0;
             atualizaValor();
@@ -474,10 +482,15 @@ public class NovoPedidoController implements Initializable {
         pedido.setValorTotal(valorTotal);
 
         if (validaPedido(pedido)) {
-            abrirModalPagamento(valorPedido);
+            abrirModalPagamento(pedido);
 
             pedido.setTipoPagamento(pagamento);
             pedido.setVencimento(vencimento);
+
+            List<MarmitaVendida> marmitas = tableMarmita.getItems();
+            List<ProdutoVendido> produtos = tableProduto.getItems();
+
+            Printer.printOrder(pedido, marmitas, produtos);
 
             int idPedido = PedidoDAO.create(pedido);
 
@@ -517,7 +530,7 @@ public class NovoPedidoController implements Initializable {
 
     }
 
-    public void abrirModalPagamento(double valorPedido) {
+    public void abrirModalPagamento(Pedido pedido) {
         try {
             Stage modal = new Stage();
 
@@ -526,9 +539,10 @@ public class NovoPedidoController implements Initializable {
 
             ModalPagamentoController controller = fxmlLoader.getController();
 
-            controller.initialize(valorPedido);
+            controller.initialize(pedido);
 
             modal.setResizable(false);
+            modal.setOnCloseRequest(Event::consume);
             modal.initModality(Modality.APPLICATION_MODAL);
             modal.initStyle(StageStyle.UTILITY);
             modal.showAndWait();

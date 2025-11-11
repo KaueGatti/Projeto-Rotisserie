@@ -169,4 +169,9 @@ public class Pedido {
     public String getFormattedValorAPagar() {
         return "R$ " + String.valueOf(getValorAPagar()).replace(".", ",");
     }
+
+    public String getFormattedValorPedido() {
+        return "R$ " + String.valueOf(getValorTotal() + getValorEntrega()).replace(".", ",");
+    }
+
 }

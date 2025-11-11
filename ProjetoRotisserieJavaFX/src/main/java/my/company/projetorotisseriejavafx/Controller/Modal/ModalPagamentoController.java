@@ -9,18 +9,22 @@ import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import my.company.projetorotisseriejavafx.Objects.Pedido;
 import my.company.projetorotisseriejavafx.Util.CurrencyFieldUtil;
+import my.company.projetorotisseriejavafx.Util.Printer;
 
 import java.io.IOException;
 import java.time.LocalDate;
 
 public class ModalPagamentoController {
 
+    private double valorPedido;
+
     private String pagamento = null;
 
     private LocalDate vencimento = null;
 
-    private double valorTotal;
+    private Pedido pedido;
 
     @FXML
     private Scene scene;
@@ -35,18 +39,20 @@ public class ModalPagamentoController {
     @FXML
     private Button btnFinalizar;
 
-    public void initialize(double valorTotal) {
-        this.valorTotal = valorTotal;
+    public void initialize(Pedido pedido) {
+        this.pedido = pedido;
+        valorPedido = pedido.getValorTotal() + pedido.getValorEntrega();
         initCampos();
         loadCBPagamento();
     }
 
     @FXML
     void finalizar(ActionEvent event) {
+
         if (CBPagamento.getValue().equals("Dinheiro")) {
             if (!validaValorPago()) return;
 
-            double valorTroco = CurrencyFieldUtil.getValue(TFValorPago) - valorTotal;
+            double valorTroco = CurrencyFieldUtil.getValue(TFValorPago) - valorPedido;
             abrirModalTroco(valorTroco);
 
         }
@@ -121,8 +127,8 @@ public class ModalPagamentoController {
 
         double valorPago = CurrencyFieldUtil.getValue(TFValorPago);
 
-        if (valorPago < valorTotal) {
-            String valorRestante = String.format("R$ %.2f", valorTotal - valorPago);
+        if (valorPago < valorPedido) {
+            String valorRestante = String.format("R$ %.2f", valorPedido - valorPago);
             LInfo.setText("Valor insuficiente! Faltam " + valorRestante);
             return false;
         }

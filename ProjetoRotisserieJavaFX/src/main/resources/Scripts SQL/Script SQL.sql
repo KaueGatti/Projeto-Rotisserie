@@ -188,10 +188,11 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE READ_ALL_MARMITAS_PEDIDO(_id INT)
+CREATE PROCEDURE READ_ALL_MARMITAS_PEDIDO(_id_pedido INT)
 BEGIN
-	SELECT * FROM Marmita_Vendida
-    WHERE id_pedido = _id_pedido;
+	SELECT M.nome, MV.detalhes, MV.observacao, MV.subtotal FROM Marmita_Vendida AS MV
+    JOIN Marmita AS M ON M.id = MV.id_marmita
+    WHERE MV.id_pedido = _id_pedido;
 END $$
 DELIMITER ;
 
@@ -244,9 +245,10 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE READ_ALL_PRODUTOS_PEDIDO(_id INT)
+CREATE PROCEDURE READ_ALL_PRODUTOS_PEDIDO(_id_pedido INT)
 BEGIN
-	SELECT * FROM Produto_Vendido
+	SELECT P.nome, PV.quantidade, PV.subtotal FROM Produto_Vendido AS PV
+    JOIN Produto AS P ON P.id = PV.id_produto
     WHERE id_pedido = _id_pedido;
 END $$
 DELIMITER ;

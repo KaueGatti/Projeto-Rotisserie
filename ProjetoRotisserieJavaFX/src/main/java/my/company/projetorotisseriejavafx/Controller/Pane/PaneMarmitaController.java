@@ -205,6 +205,7 @@ public class PaneMarmitaController implements Initializable {
             List<String> principais = new ArrayList<>();
             List<String> misturas = new ArrayList<>();
             List<String> guarnicoes = new ArrayList<>();
+            List<String> saladas = new ArrayList<>();
 
             marmita.setIdMarmita(comboBoxMarmita.getValue().getId());
             marmita.setNome(comboBoxMarmita.getValue().getNome());
@@ -219,7 +220,7 @@ public class PaneMarmitaController implements Initializable {
                         } else if (checkBox.getId().contains("Guarnicao")) {
                             guarnicoes.add(checkBox.getText());
                         } else {
-                            marmita.setSalada(checkBox.getText());
+                            saladas.add(checkBox.getText());
                         }
                     }
                 }
@@ -228,6 +229,7 @@ public class PaneMarmitaController implements Initializable {
             marmita.setPrincipais(principais);
             marmita.setMisturas(misturas);
             marmita.setGuarnicoes(guarnicoes);
+            marmita.setSalada(saladas);
 
             marmita.setObservacao(observacao);
 

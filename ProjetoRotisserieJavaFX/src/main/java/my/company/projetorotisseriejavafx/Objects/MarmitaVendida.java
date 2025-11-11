@@ -11,7 +11,7 @@ public class MarmitaVendida {
     private List<String> principais;
     private List<String> misturas;
     private List<String> guarnicoes;
-    private String salada;
+    private List<String> saladas;
     private String observacao;
     private double subtotal;
 
@@ -36,12 +36,12 @@ public class MarmitaVendida {
         this.nome = nome;
     }
 
-    public String getSalada() {
-        return salada;
+    public List<String> getSalada() {
+        return saladas;
     }
 
-    public void setSalada(String salada) {
-        this.salada = salada;
+    public void setSalada(List<String> saladas) {
+        this.saladas = saladas;
     }
 
     public List<String> getPrincipais() {
@@ -89,26 +89,47 @@ public class MarmitaVendida {
     }
 
     public String getDetalhes() {
-        StringBuilder detalhes = new StringBuilder("Principais:\n");
-        for (String p : principais) {
-            detalhes.append(p).append("\n");
+        StringBuilder detalhes = new StringBuilder("Principais: ");
+
+        for (int i = 0; i < principais.size(); i++) {
+            detalhes.append(principais.get(i));
+
+            if (i != principais.size() - 1) {
+                detalhes.append(", ");
+            }
         }
 
-        detalhes.append("Misturas:\n");
 
-        for (String m : misturas) {
-            detalhes.append(m).append("\n");
+
+        detalhes.append("\nMisturas: ");
+
+        for (int i = 0; i < misturas.size(); i++) {
+            detalhes.append(misturas.get(i));
+
+            if (i != misturas.size() - 1) {
+                detalhes.append(", ");
+            }
         }
 
-        detalhes.append("Guarnições:\n");
+        detalhes.append("\nGuarnicoes: ");
 
-        for (String g : guarnicoes) {
-            detalhes.append(g).append("\n");
+        for (int i = 0; i < guarnicoes.size(); i++) {
+            detalhes.append(guarnicoes.get(i));
+
+            if (i != guarnicoes.size() - 1) {
+                detalhes.append(", ");
+            }
         }
 
-        detalhes.append("Salada:\n");
+        detalhes.append("\nSaladas: ");
 
-        detalhes.append(salada);
+        for (int i = 0; i < saladas.size(); i++) {
+            detalhes.append(saladas.get(i));
+
+            if (i != saladas.size() - 1) {
+                detalhes.append(", ");
+            }
+        }
 
         this.detalhes = detalhes.toString();
 
