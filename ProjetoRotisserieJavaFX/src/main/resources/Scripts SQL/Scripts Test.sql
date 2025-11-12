@@ -10,3 +10,5 @@ insert into item_cardapio (nome, categoria) values ("Arroz", "Principal"),
 ("Legumes", "Guarnição"),
 ("Alface", "Salada"),
 ("Pepino", "Salada");
+
+CALL CREATE_BAIRRO("Cervezão", 7);

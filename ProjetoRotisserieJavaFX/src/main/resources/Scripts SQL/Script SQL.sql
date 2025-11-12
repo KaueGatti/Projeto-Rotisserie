@@ -51,7 +51,6 @@ CREATE TABLE IF NOT EXISTS Pedido (
 	id INT AUTO_INCREMENT NOT NULL,
 	id_mensalista INT,
 	id_bairro INT,
-	id_motoboy INT,
 	nome_cliente VARCHAR(30),
 	tipo_pagamento VARCHAR(200) NOT NULL,
 	tipo_pedido VARCHAR(30) NOT NULL,
@@ -65,8 +64,7 @@ CREATE TABLE IF NOT EXISTS Pedido (
 	status VARCHAR(30) NOT NULL DEFAULT 'FINALIZADO',
 	PRIMARY KEY (id),
     CONSTRAINT fk_mensalista FOREIGN KEY (id_mensalista) REFERENCES Mensalista (id),
-    CONSTRAINT fk_bairro_pedido FOREIGN KEY (id_bairro) REFERENCES Bairro (id),
-    CONSTRAINT fk_motoboy FOREIGN KEY (id_motoboy) REFERENCES Motoboy (id)
+    CONSTRAINT fk_bairro_pedido FOREIGN KEY (id_bairro) REFERENCES Bairro (id)
 );
 
 CREATE TABLE IF NOT EXISTS Pagamento(
@@ -358,9 +356,9 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE CREATE_PEDIDO(_id_mensalista INT, _id_bairro INT, _id_motoboy INT,
-							_nome_cliente VARCHAR(30), _tipo_pagamento VARCHAR(30), _tipo_pedido VARCHAR(30),
-							_observacoes VARCHAR(100), _valor_entrega DECIMAL(10,2), _endereco VARCHAR(100), _valor_total DECIMAL(10,2),
+CREATE PROCEDURE CREATE_PEDIDO(_id_mensalista INT, _id_bairro INT, _nome_cliente VARCHAR(30),
+							_tipo_pagamento VARCHAR(30), _tipo_pedido VARCHAR(30), _observacoes VARCHAR(100),
+                            _valor_entrega DECIMAL(10,2), _endereco VARCHAR(100), _valor_total DECIMAL(10,2),
                             _vencimento DATE)
 BEGIN
 
@@ -373,10 +371,12 @@ BEGIN
         SET _vencimento = (CURRENT_DATE);
 	END IF;
 
-	INSERT INTO Pedido (id_mensalista, id_bairro, id_motoboy, nome_cliente, tipo_pagamento, tipo_pedido,
+	INSERT INTO Pedido (id_mensalista, id_bairro, nome_cliente, tipo_pagamento, tipo_pedido,
     observacoes, valor_entrega, endereco, valor_total, vencimento, status)
-    VALUES (_id_mensalista, _id_bairro, _id_motoboy, _nome_cliente, _tipo_pagamento, _tipo_pedido,
+    
+    VALUES (_id_mensalista, _id_bairro, _nome_cliente, _tipo_pagamento, _tipo_pedido,
     _observacoes, _valor_entrega, _endereco, _valor_total, _vencimento, _status);
+    
     SELECT LAST_INSERT_ID();
 
 END $$
@@ -402,7 +402,8 @@ DELIMITER ;
 DELIMITER $$
 CREATE PROCEDURE READ_ALL_PEDIDOS()
 BEGIN
-	SELECT * FROM Pedido;
+	SELECT * FROM Pedido
+    ORDER BY date_time DESC;
 END $$
 DELIMITER ;
 
@@ -480,7 +481,7 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE READ_DIARIA(_id_motoboy INT, _data DATE)
+CREATE PROCEDURE READ_DIARIA(_data DATE)
 BEGIN
 	SELECT COUNT(*) AS entregas, SUM(valor_entrega) as valorEntregas FROM Pedido
 	WHERE DAY(date_time) = DAY(_data) AND tipo_pedido = 'Entrega';

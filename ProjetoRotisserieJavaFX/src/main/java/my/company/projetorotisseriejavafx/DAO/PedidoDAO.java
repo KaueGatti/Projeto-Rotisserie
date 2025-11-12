@@ -7,7 +7,6 @@ import java.util.List;
 import my.company.projetorotisseriejavafx.DB.Conexao;
 import my.company.projetorotisseriejavafx.Objects.Bairro;
 import my.company.projetorotisseriejavafx.Objects.Mensalista;
-import my.company.projetorotisseriejavafx.Objects.Motoboy;
 import my.company.projetorotisseriejavafx.Objects.Pedido;
 
 public class PedidoDAO {
@@ -18,7 +17,7 @@ public class PedidoDAO {
         ResultSet rs = null;
 
         try {
-            stmt = con.prepareStatement("CALL create_pedido(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            stmt = con.prepareStatement("CALL create_pedido(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 
             if (pedido.getMensalista() != null) {
                 stmt.setInt(1, pedido.getMensalista().getId());
@@ -32,38 +31,32 @@ public class PedidoDAO {
                 stmt.setNull(2, Types.INTEGER);
             }
 
-            if (pedido.getMotoboy() != null) {
-                stmt.setInt(3, pedido.getMotoboy().getId());
-            } else {
-                stmt.setNull(3, Types.INTEGER);
-            }
-
             if (pedido.getNomeCliente() != null) {
-                stmt.setString(4, pedido.getNomeCliente());
+                stmt.setString(3, pedido.getNomeCliente());
             } else {
-                stmt.setNull(4, Types.VARCHAR);
+                stmt.setNull(3, Types.VARCHAR);
             }
 
-            stmt.setString(5, pedido.getTipoPagamento());
+            stmt.setString(4, pedido.getTipoPagamento());
 
-            stmt.setString(6, pedido.getTipoPedido());
+            stmt.setString(5, pedido.getTipoPedido());
 
-            stmt.setString(7, pedido.getObservacoes());
+            stmt.setString(6, pedido.getObservacoes());
 
-            stmt.setDouble(8, pedido.getValorEntrega());
+            stmt.setDouble(7, pedido.getValorEntrega());
 
             if (pedido.getEndereco() != null) {
-                stmt.setString(9, pedido.getEndereco());
+                stmt.setString(8, pedido.getEndereco());
             } else {
-                stmt.setNull(9, Types.VARCHAR);
+                stmt.setNull(8, Types.VARCHAR);
             }
 
-            stmt.setDouble(10, pedido.getValorTotal());
+            stmt.setDouble(9, pedido.getValorTotal());
 
             if (pedido.getVencimento() != null) {
-                stmt.setDate(11, Date.valueOf(pedido.getVencimento()));
+                stmt.setDate(10, Date.valueOf(pedido.getVencimento()));
             } else {
-                stmt.setNull(11, Types.DATE);
+                stmt.setNull(10, Types.DATE);
             }
 
             rs = stmt.executeQuery();
@@ -111,10 +104,6 @@ public class PedidoDAO {
 
                     for (Bairro bairro : BairroDAO.read(rs.getInt("id_bairro"))) {
                         pedido.setBairro(bairro);
-                    }
-
-                    for (Motoboy motoboy : MotoboyDAO.read(rs.getInt("id_motoboy"))) {
-                        pedido.setMotoboy(motoboy);
                     }
 
                     pedido.setValorEntrega(rs.getInt("valor_entrega"));

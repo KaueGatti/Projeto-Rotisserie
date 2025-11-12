@@ -51,7 +51,6 @@ public class Printer {
         dadosPedidos.put("endereco", pedido.getEndereco() != null ? pedido.getEndereco() : "");
 
         dadosPedidos.put("bairro", pedido.getBairro() != null ? pedido.getBairro().getNome() : "");
-        dadosPedidos.put("motoboy", pedido.getMotoboy() != null ? pedido.getMotoboy().getNome() : "");
         dadosPedidos.put("pagamento", pedido.getTipoPagamento());
         dadosPedidos.put("total", pedido.getFormattedValorPedido());
         dadosPedidos.put("observacao", pedido.getObservacoes() != null ? pedido.getObservacoes() : "");

@@ -13,7 +13,6 @@ import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Date;
 
 public class ModalDiariaController {
 
@@ -56,7 +55,7 @@ public class ModalDiariaController {
 
     public void loadCampos(Motoboy motoboy, LocalDate data) {
         try {
-            Diaria diaria = DiariaDAO.read(motoboy, data);
+            Diaria diaria = DiariaDAO.read(data);
 
             TFMotoboy.setText(motoboy.getNome());
             TFData.setText(data.toString());

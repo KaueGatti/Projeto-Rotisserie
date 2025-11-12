@@ -9,7 +9,6 @@ public class Pedido {
     private int id;
     private Mensalista mensalista;
     private Bairro bairro;
-    private Motoboy motoboy;
     private String nomeCliente;
     private String tipoPagamento;
     private String tipoPedido;
@@ -31,7 +30,7 @@ public class Pedido {
     }
 
     public Double getValorAPagar() {
-        return valorTotal - valorPago;
+        return (valorTotal + valorEntrega) - valorPago;
     }
 
     public double getValorPago() {
@@ -76,14 +75,6 @@ public class Pedido {
 
     public void setBairro(Bairro bairro) {
         this.bairro = bairro;
-    }
-
-    public Motoboy getMotoboy() {
-        return motoboy;
-    }
-
-    public void setMotoboy(Motoboy motoboy) {
-        this.motoboy = motoboy;
     }
 
     public String getNomeCliente() {

@@ -102,8 +102,6 @@ public class NovoPedidoController implements Initializable {
     @FXML
     private ComboBox<Mensalista> comboBoxMensalista;
     @FXML
-    private ComboBox<Motoboy> comboBoxMotoboy;
-    @FXML
     private CheckBox checkBoxMensalista;
     @FXML
     private RadioButton RBEntrega;
@@ -133,9 +131,8 @@ public class NovoPedidoController implements Initializable {
         initDescontosEAdicionais();
         initTableMarmita();
         initTableProduto();
-        loadBairro();
         loadMensalista();
-        loadMotoboy();
+        loadBairro();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Pane/paneMarmita.fxml"));
             Pane marmitaPane = loader.load();
@@ -207,10 +204,6 @@ public class NovoPedidoController implements Initializable {
     @FXML
     private void RBGTipo(ActionEvent event) {
         if (RBEntrega.isSelected()) {
-            if (!validaMotoboy()) {
-                RBBalcao.setSelected(true);
-                return;
-            }
 
             if (!validaBairro()) {
                 RBBalcao.setSelected(true);
@@ -262,20 +255,6 @@ public class NovoPedidoController implements Initializable {
             }
         } catch (SQLException e) {
             DatabaseExceptionHandler.handleException(e, "mensalista");
-        }
-    }
-
-    private void loadMotoboy() {
-        try {
-            comboBoxMotoboy.getItems().clear();
-
-            List<Motoboy> motoboys = MotoboyDAO.read();
-            if (!motoboys.isEmpty()) {
-                comboBoxMotoboy.getItems().addAll(motoboys);
-                comboBoxMotoboy.getSelectionModel().selectFirst();
-            }
-        } catch (SQLException e) {
-            DatabaseExceptionHandler.handleException(e, "motoboy");
         }
     }
 
@@ -470,7 +449,6 @@ public class NovoPedidoController implements Initializable {
                 return;
             }
             pedido.setTipoPedido("Entrega");
-            pedido.setMotoboy(comboBoxMotoboy.getValue());
             pedido.setEndereco(TAEndereco.getText());
             pedido.setBairro(comboBoxBairro.getValue());
         } else {
@@ -573,20 +551,6 @@ public class NovoPedidoController implements Initializable {
             return true;
         } catch (SQLException e) {
             DatabaseExceptionHandler.handleException(e, "produto");
-        }
-        return false;
-    }
-
-    public boolean validaMotoboy() {
-        try {
-            if (MotoboyDAO.read().isEmpty()) {
-                String msg = "Você ainda não tem nenhum motoboy cadastrado!";
-                abrirModalAvisoNovoPedido(msg, new Motoboy());
-                return false;
-            }
-            return true;
-        } catch (SQLException e) {
-            DatabaseExceptionHandler.handleException(e, "motoboy");
         }
         return false;
     }

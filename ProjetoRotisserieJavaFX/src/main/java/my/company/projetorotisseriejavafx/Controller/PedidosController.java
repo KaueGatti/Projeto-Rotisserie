@@ -74,9 +74,6 @@ public class PedidosController implements Initializable {
     private Label LEntrega;
 
     @FXML
-    private Label LMotoboy;
-
-    @FXML
     private Label LPagamento;
 
     @FXML
@@ -124,7 +121,7 @@ public class PedidosController implements Initializable {
         colCliente.setCellValueFactory(new PropertyValueFactory<>("nomeCliente"));
         colTipo.setCellValueFactory(new PropertyValueFactory<>("tipoPedido"));
         colData.setCellValueFactory(new PropertyValueFactory<>("dateTimeFormat"));
-        colTotal.setCellValueFactory(new PropertyValueFactory<>("formattedValorTotal"));
+        colTotal.setCellValueFactory(new PropertyValueFactory<>("formattedValorPedido"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         tablePedidos.setOnMouseClicked(event -> {
@@ -158,18 +155,16 @@ public class PedidosController implements Initializable {
         LTipo.setText(pedido.getTipoPedido());
         LPagamento.setText(pedido.getTipoPagamento());
         if (pedido.getTipoPedido().equals("Entrega")) {
-            LMotoboy.setText(pedido.getMotoboy().getNome());
             LBairro.setText(pedido.getBairro().getNome());
             LEntrega.setText(pedido.getFormattedValorEntrega());
             btnEndereco.setDisable(false);
         } else {
-            LMotoboy.setText("-");
             LBairro.setText("-");
             LEntrega.setText("-");
             btnEndereco.setDisable(true);
         }
 
-        LValorTotal.setText(pedido.getFormattedValorTotal());
+        LValorTotal.setText(pedido.getFormattedValorPedido());
         LValorPago.setText(pedido.getFormattedValorPago());
         LValorAPagar.setText(pedido.getFormattedValorAPagar());
 

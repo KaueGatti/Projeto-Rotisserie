@@ -77,22 +77,12 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Button>
-            <Label layoutX="39.0" layoutY="306.0" text="Motoboy">
+            <Label layoutX="39.0" layoutY="329.0" text="Bairro">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label layoutX="39.0" layoutY="346.0" text="Bairro">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Label fx:id="LMotoboy" layoutX="138.0" layoutY="306.0" opacity="0.6" text="-">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Label fx:id="LBairro" layoutX="106.0" layoutY="346.0" opacity="0.6" text="-">
+            <Label fx:id="LBairro" layoutX="106.0" layoutY="329.0" opacity="0.6" text="-">
                <font>
                   <Font size="20.0" />
                </font>
