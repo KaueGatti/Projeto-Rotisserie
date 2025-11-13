@@ -120,11 +120,41 @@ public class PedidosController implements Initializable {
         initTablePedidos();
     }
 
+    @FXML
+    void descontosEAdicionais(ActionEvent event) {
+        abrirModalDescontosEAdicionais();
+    }
+
+    @FXML
+    void endereco(ActionEvent event) {
+        abrirModalEndereco(selectedPedido.getEndereco());
+    }
+
+    @FXML
+    void imprimir(ActionEvent event) {
+        Printer.printOrder(selectedPedido, marmitas, produtos);
+    }
+
+    @FXML
+    void marmitasEProdutos(ActionEvent event) {
+        abrirModalMarmitasEProdutos(marmitas, produtos);
+    }
+
+    @FXML
+    void observacoes(ActionEvent event) {
+        abrirModalObservacoes(selectedPedido.getObservacoes());
+    }
+
+    @FXML
+    void pagamentos(ActionEvent event) {
+
+    }
+
     private void initTablePedidos() {
         colCliente.setCellValueFactory(new PropertyValueFactory<>("nomeCliente"));
         colTipo.setCellValueFactory(new PropertyValueFactory<>("tipoPedido"));
-        colData.setCellValueFactory(new PropertyValueFactory<>("dateTimeFormat"));
-        colTotal.setCellValueFactory(new PropertyValueFactory<>("formattedValorPedido"));
+        colData.setCellValueFactory(new PropertyValueFactory<>("formattedDateTime"));
+        colTotal.setCellValueFactory(new PropertyValueFactory<>("formattedValorTotal"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         tablePedidos.setOnMouseClicked(event -> {
@@ -167,11 +197,11 @@ public class PedidosController implements Initializable {
             btnEndereco.setDisable(true);
         }
 
-        LValorTotal.setText(pedido.getFormattedValorPedido());
+        LValorTotal.setText(pedido.getFormattedValorTotal());
         LValorPago.setText(pedido.getFormattedValorPago());
         LValorAPagar.setText(pedido.getFormattedValorAPagar());
 
-        LDataHora.setText(pedido.getDateTimeFormat());
+        LDataHora.setText(pedido.getFormattedDateTime());
 
         if (pedido.getVencimento() != null) {
             LVencimento.setText(pedido.getVencimento().toString());
@@ -198,36 +228,6 @@ public class PedidosController implements Initializable {
         } catch (SQLException e) {
             DatabaseExceptionHandler.handleException(e, "marmitas e produtos vendidos");
         }
-
-    }
-
-    @FXML
-    void descontosEAdicionais(ActionEvent event) {
-        abrirModalDescontosEAdicionais();
-    }
-
-    @FXML
-    void endereco(ActionEvent event) {
-        abrirModalEndereco(selectedPedido.getEndereco());
-    }
-
-    @FXML
-    void imprimir(ActionEvent event) {
-        Printer.printOrder(selectedPedido, marmitas, produtos);
-    }
-
-    @FXML
-    void marmitasEProdutos(ActionEvent event) {
-        abrirModalMarmitasEProdutos(marmitas, produtos);
-    }
-
-    @FXML
-    void observacoes(ActionEvent event) {
-        abrirModalObservacoes(selectedPedido.getObservacoes());
-    }
-
-    @FXML
-    void pagamentos(ActionEvent event) {
 
     }
 

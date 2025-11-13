@@ -57,7 +57,8 @@ CREATE TABLE IF NOT EXISTS Pedido (
 	observacoes VARCHAR(100),
 	valor_entrega DECIMAL(10,2),
     endereco VARCHAR(100),
-	valor_total DECIMAL(10,2) NOT NULL,
+	valor_itens DECIMAL(10,2) NOT NULL,
+    valor_total DECIMAL(10,2) NOT NULL,
     valor_pago DECIMAL(10,2) NOT NULL DEFAULT 0,
 	date_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     vencimento DATE NOT NULL DEFAULT (CURRENT_DATE),
@@ -358,8 +359,8 @@ DELIMITER ;
 DELIMITER $$
 CREATE PROCEDURE CREATE_PEDIDO(_id_mensalista INT, _id_bairro INT, _nome_cliente VARCHAR(30),
 							_tipo_pagamento VARCHAR(30), _tipo_pedido VARCHAR(30), _observacoes VARCHAR(100),
-                            _valor_entrega DECIMAL(10,2), _endereco VARCHAR(100), _valor_total DECIMAL(10,2),
-                            _vencimento DATE)
+                            _valor_entrega DECIMAL(10,2), _endereco VARCHAR(100), _valor_itens DECIMAL(10,2),
+                            _valor_total DECIMAL(10,2), _vencimento DATE)
 BEGIN
 
 	DECLARE _status VARCHAR(30);
@@ -372,10 +373,10 @@ BEGIN
 	END IF;
 
 	INSERT INTO Pedido (id_mensalista, id_bairro, nome_cliente, tipo_pagamento, tipo_pedido,
-    observacoes, valor_entrega, endereco, valor_total, vencimento, status)
+    observacoes, valor_entrega, endereco, valor_itens, valor_total, vencimento, status)
     
     VALUES (_id_mensalista, _id_bairro, _nome_cliente, _tipo_pagamento, _tipo_pedido,
-    _observacoes, _valor_entrega, _endereco, _valor_total, _vencimento, _status);
+    _observacoes, _valor_entrega, _endereco, _valor_itens, _valor_total, _vencimento, _status);
     
     SELECT LAST_INSERT_ID();
 

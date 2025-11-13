@@ -11,13 +11,13 @@ import my.company.projetorotisseriejavafx.Objects.Pedido;
 
 public class PedidoDAO {
 
-    public static int create(Pedido pedido) {
+    public static int create(Pedido pedido) throws SQLException {
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
-            stmt = con.prepareStatement("CALL create_pedido(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            stmt = con.prepareStatement("CALL create_pedido(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 
             if (pedido.getMensalista() != null) {
                 stmt.setInt(1, pedido.getMensalista().getId());
@@ -51,12 +51,14 @@ public class PedidoDAO {
                 stmt.setNull(8, Types.VARCHAR);
             }
 
-            stmt.setDouble(9, pedido.getValorTotal());
+            stmt.setDouble(9, pedido.getValorItens());
+
+            stmt.setDouble(10, pedido.getValorTotal());
 
             if (pedido.getVencimento() != null) {
-                stmt.setDate(10, Date.valueOf(pedido.getVencimento()));
+                stmt.setDate(11, Date.valueOf(pedido.getVencimento()));
             } else {
-                stmt.setNull(10, Types.DATE);
+                stmt.setNull(11, Types.DATE);
             }
 
             rs = stmt.executeQuery();
@@ -64,12 +66,9 @@ public class PedidoDAO {
             rs.next();
             return rs.getInt(1);
 
-        } catch (SQLException e) {
-            System.out.println("Falha ao cadastrar pedido: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }
-        return -1;
     }
 
     public static List<Pedido> read() throws SQLException {
@@ -111,6 +110,7 @@ public class PedidoDAO {
 
                 pedido.setNomeCliente(rs.getString("nome_cliente"));
                 pedido.setObservacoes(rs.getString("observacoes"));
+                pedido.setValorItens(rs.getDouble("valor_itens"));
                 pedido.setValorTotal(rs.getDouble("valor_total"));
                 pedido.setEndereco(rs.getString("endereco"));
                 pedido.setDateTime(rs.getTimestamp("date_time").toLocalDateTime());

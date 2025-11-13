@@ -13,45 +13,14 @@ public class Pedido {
     private String tipoPagamento;
     private String tipoPedido;
     private String observacoes;
+    private String endereco;
     private double valorEntrega;
+    private double valorItens;
     private double valorTotal;
     private double valorPago;
-    private String endereco;
     private LocalDateTime dateTime;
     private LocalDate vencimento;
     private String status;
-
-    public LocalDate getVencimento() {
-        return vencimento;
-    }
-
-    public void setVencimento(LocalDate vencimento) {
-        this.vencimento = vencimento;
-    }
-
-    public Double getValorAPagar() {
-        return (valorTotal + valorEntrega) - valorPago;
-    }
-
-    public double getValorPago() {
-        return valorPago;
-    }
-
-    public void setValorPago(double valorPago) {
-        this.valorPago = valorPago;
-    }
-
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
-    
-    public String getDateTimeFormat() {
-        return DateTimeFormatter.ofPattern("dd/MM/yyyy | HH:mm:ss").format(dateTime);
-    }
-
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
-    }
 
     public int getId() {
         return id;
@@ -113,12 +82,28 @@ public class Pedido {
         this.observacoes = observacoes;
     }
 
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
     public double getValorEntrega() {
         return valorEntrega;
     }
 
     public void setValorEntrega(double valorEntrega) {
         this.valorEntrega = valorEntrega;
+    }
+
+    public double getValorItens() {
+        return valorItens;
+    }
+
+    public void setValorItens(double valorItens) {
+        this.valorItens = valorItens;
     }
 
     public double getValorTotal() {
@@ -129,12 +114,28 @@ public class Pedido {
         this.valorTotal = valorTotal;
     }
 
-    public String getEndereco() {
-        return endereco;
+    public double getValorPago() {
+        return valorPago;
     }
 
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
+    public void setValorPago(double valorPago) {
+        this.valorPago = valorPago;
+    }
+
+    public LocalDate getVencimento() {
+        return vencimento;
+    }
+
+    public void setVencimento(LocalDate vencimento) {
+        this.vencimento = vencimento;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
     public String getStatus() {
@@ -145,12 +146,16 @@ public class Pedido {
         this.status = status;
     }
 
-    public String getFormattedValorTotal() {
-        return "R$ " + String.valueOf(valorTotal).replace(".", ",");
-    }
-
     public String getFormattedValorEntrega() {
         return "R$ " + String.valueOf(valorEntrega).replace(".", ",");
+    }
+
+    public String getFormattedValorItens() {
+        return "R$ " + String.valueOf(valorItens).replace(".", ",");
+    }
+
+    public String getFormattedValorTotal() {
+        return "R$ " + String.valueOf(getValorTotal()).replace(".", ",");
     }
 
     public String getFormattedValorPago() {
@@ -158,11 +163,11 @@ public class Pedido {
     }
 
     public String getFormattedValorAPagar() {
-        return "R$ " + String.valueOf(getValorAPagar()).replace(".", ",");
+        Double valorAPagar = getValorTotal() - getValorPago();
+        return "R$ " + String.valueOf(valorAPagar).replace(".", ",");
     }
 
-    public String getFormattedValorPedido() {
-        return "R$ " + String.valueOf(getValorTotal() + getValorEntrega()).replace(".", ",");
+    public String getFormattedDateTime() {
+        return DateTimeFormatter.ofPattern("dd/MM/yyyy | HH:mm:ss").format(dateTime);
     }
-
 }

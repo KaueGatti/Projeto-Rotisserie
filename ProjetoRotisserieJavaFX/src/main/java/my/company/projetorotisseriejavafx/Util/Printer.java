@@ -52,7 +52,7 @@ public class Printer {
 
         dadosPedidos.put("bairro", pedido.getBairro() != null ? pedido.getBairro().getNome() : "");
         dadosPedidos.put("pagamento", pedido.getTipoPagamento());
-        dadosPedidos.put("total", pedido.getFormattedValorPedido());
+        dadosPedidos.put("total", pedido.getFormattedValorTotal());
         dadosPedidos.put("observacao", pedido.getObservacoes() != null ? pedido.getObservacoes() : "");
         dadosPedidos.put("entrega", pedido.getFormattedValorEntrega() != null ? pedido.getFormattedValorEntrega() : "R$ 0,00");
         try {
@@ -65,10 +65,6 @@ public class Printer {
             }
 
             model_order = normalizar(model_order);
-
-            /*ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-            baos.write(new byte[]{0x1B, 0x61, 0x01});*/
 
             byte[] bytes = PosFormatter.process(model_order);
 

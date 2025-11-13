@@ -1,6 +1,5 @@
 package my.company.projetorotisseriejavafx.Controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -14,7 +13,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -37,7 +35,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.stage.WindowEvent;
 import my.company.projetorotisseriejavafx.Controller.Modal.*;
 import my.company.projetorotisseriejavafx.Controller.Pane.PaneMarmitaController;
 import my.company.projetorotisseriejavafx.Controller.Pane.PaneProdutoController;
@@ -46,13 +43,11 @@ import my.company.projetorotisseriejavafx.Objects.*;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 import my.company.projetorotisseriejavafx.Util.Printer;
 
-import javax.print.PrintException;
-
 public class NovoPedidoController implements Initializable {
 
-    private double valorPedido = 0;
-    private double valorTotal = 0;
     private double valorEntrega = 0;
+    private double valorItens = 0;
+    private double valorTotal = 0;
     private ObservableList<DescontoAdicional> descontosEAdicionais = FXCollections.observableArrayList();
 
     private String pagamento;
@@ -66,9 +61,6 @@ public class NovoPedidoController implements Initializable {
     private Button btnCancelar;
     @FXML
     private Button btnDescontosEAdicionais;
-
-    public NovoPedidoController() {
-    }
 
     @FXML
     private Pane panePrincipal;
@@ -125,6 +117,9 @@ public class NovoPedidoController implements Initializable {
     private AnchorPane APMarmitaProduto;
     @FXML
     private Pane paneEndereco;
+
+    public NovoPedidoController() {
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -260,13 +255,13 @@ public class NovoPedidoController implements Initializable {
 
     public void adicionarMarmita(MarmitaVendida marmitaVendida) {
         tableMarmita.getItems().add(marmitaVendida);
-        valorTotal += marmitaVendida.getSubtotal();
+        valorItens += marmitaVendida.getSubtotal();
         atualizaValor();
     }
 
     public void adicionarProduto(ProdutoVendido produtoVendido) {
         tableProduto.getItems().add(produtoVendido);
-        valorTotal += produtoVendido.getSubtotal();
+        valorItens += produtoVendido.getSubtotal();
         atualizaValor();
     }
 
@@ -367,8 +362,8 @@ public class NovoPedidoController implements Initializable {
                 .filter(adicional -> adicional.getTipo().equals("Adicional"))
                 .mapToDouble(DescontoAdicional::getValor).sum();
 
-        String valorTotalFormatado = formatoMoeda.format((valorTotal + valorEntrega + valorAdicional) - valorDesconto);
-        valorPedido = (valorTotal + valorEntrega + valorAdicional) - valorDesconto;
+        valorTotal = (valorEntrega + valorItens + valorAdicional) - valorDesconto;
+        String valorTotalFormatado = formatoMoeda.format(valorTotal);
         labelValorEntrega.setText("Entrega " + valorEntregaFormatado);
         labelValorTotal.setText("Total " + valorTotalFormatado);
     }
@@ -461,7 +456,7 @@ public class NovoPedidoController implements Initializable {
 
         if (validaPedido(pedido)) {
 
-            if (!abrirModalPagamento(valorPedido)) return;
+            if (!abrirModalPagamento(valorTotal)) return;
 
             pedido.setTipoPagamento(pagamento);
             pedido.setVencimento(vencimento);
@@ -471,14 +466,18 @@ public class NovoPedidoController implements Initializable {
 
             Printer.printOrder(pedido, marmitas, produtos);
 
-            int idPedido = PedidoDAO.create(pedido);
+            try {
+                int idPedido = PedidoDAO.create(pedido);
+                pedido.setId(idPedido);
 
-            pedido.setId(idPedido);
+                MarmitaVendidaDAO.create(tableMarmita.getItems(), pedido.getId());
+                ProdutoVendidoDAO.create(tableProduto.getItems(), pedido.getId());
 
-            MarmitaVendidaDAO.create(tableMarmita.getItems(), pedido.getId());
-            ProdutoVendidoDAO.create(tableProduto.getItems(), pedido.getId());
+                DescontoAdicionalDAO.create(descontosEAdicionais, pedido.getId());
+            } catch (SQLException e) {
+                DatabaseExceptionHandler.handleException(e, "Pedido");
+            }
 
-            DescontoAdicionalDAO.create(descontosEAdicionais, pedido.getId());
 
             close();
         }
@@ -509,7 +508,7 @@ public class NovoPedidoController implements Initializable {
 
     }
 
-    public boolean abrirModalPagamento(Double valorPedido) {
+    public boolean abrirModalPagamento(Double valorTotal) {
         try {
             Stage modal = new Stage();
 
@@ -518,7 +517,7 @@ public class NovoPedidoController implements Initializable {
 
             ModalPagamentoController controller = fxmlLoader.getController();
 
-            controller.initialize(valorPedido);
+            controller.initialize(valorTotal);
 
             modal.setResizable(false);
             modal.initModality(Modality.APPLICATION_MODAL);
