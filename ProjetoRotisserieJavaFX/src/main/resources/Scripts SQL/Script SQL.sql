@@ -138,6 +138,17 @@ CREATE TABLE IF NOT EXISTS Cardapio (
 	PRIMARY KEY (id)
 );
 
+CREATE TABLE IF NOT EXISTS Pagamentos (
+	id INT AUTO_INCREMENT NOT NULL,
+    id_pedido INT NOT NULL,
+    tipo_pagamento VARCHAR(30) NOT NULL,
+    valor DECIMAL(10,2) NOT NULL,
+    observacao VARCHAR(500),
+    data DATE NOT NULL,
+	PRIMARY KEY (id),
+    FOREIGN KEY (id_pedido) REFERENCES Pedido (id)
+);
+
 DELIMITER $$
 CREATE PROCEDURE CREATE_MARMITA(_nome VARCHAR(20), _max_mistura INT, _max_guarnicao INT, _valor DECIMAL(10,2))
 BEGIN
@@ -489,6 +500,14 @@ CREATE PROCEDURE READ_DIARIA(_data DATE)
 BEGIN
 	SELECT COUNT(*) AS entregas, SUM(valor_entrega) as valorEntregas FROM Pedido
 	WHERE DAY(date_time) = DAY(_data) AND tipo_pedido = 'Entrega';
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE CREATE_PAGAMENTO(_id_pedido INT, _tipo_pagamento VARCHAR(30), _valor DECIMAL(10,2), _observacao VARCHAR(500))
+BEGIN
+	INSERT INTO Pagamento (id_pedido, tipo_pagamento, valor, observacao)
+    VALUES (_id_pedido, _tipo_pagamento, _valor, _observacao);
 END $$
 DELIMITER ;
 

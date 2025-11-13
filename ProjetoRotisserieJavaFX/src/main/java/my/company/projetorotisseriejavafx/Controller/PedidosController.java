@@ -26,10 +26,7 @@ import my.company.projetorotisseriejavafx.DAO.DescontoAdicionalDAO;
 import my.company.projetorotisseriejavafx.DAO.MarmitaVendidaDAO;
 import my.company.projetorotisseriejavafx.DAO.PedidoDAO;
 import my.company.projetorotisseriejavafx.DAO.ProdutoVendidoDAO;
-import my.company.projetorotisseriejavafx.Objects.DescontoAdicional;
-import my.company.projetorotisseriejavafx.Objects.MarmitaVendida;
-import my.company.projetorotisseriejavafx.Objects.Pedido;
-import my.company.projetorotisseriejavafx.Objects.ProdutoVendido;
+import my.company.projetorotisseriejavafx.Objects.*;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 import my.company.projetorotisseriejavafx.Util.Printer;
 
@@ -147,7 +144,7 @@ public class PedidosController implements Initializable {
 
     @FXML
     void pagamentos(ActionEvent event) {
-
+        //abrirModalPagamentos();
     }
 
     private void initTablePedidos() {
@@ -324,4 +321,6 @@ public class PedidosController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    public void abrirModalPagamentos(List<Pagamento> pagamentos) {}
 }
