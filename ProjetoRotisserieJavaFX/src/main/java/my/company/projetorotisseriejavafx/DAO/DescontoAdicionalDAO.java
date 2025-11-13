@@ -44,7 +44,7 @@ public class DescontoAdicionalDAO {
         List<DescontoAdicional> descontosEAdicionais = new ArrayList<>();
 
         try {
-            stmt = con.prepareStatement("READ READ_ALL_DESCONTOS_ADICIONAIS_PEDIDO(?)");
+            stmt = con.prepareStatement("CALL READ_ALL_DESCONTOS_ADICIONAIS_PEDIDO(?)");
             
             stmt.setInt(1, idPedido);
             
@@ -53,7 +53,8 @@ public class DescontoAdicionalDAO {
             while (rs.next()) {
                 DescontoAdicional descontoAdicional = new DescontoAdicional();
                 descontoAdicional.setId(rs.getInt("id"));
-                descontoAdicional.setIdPedido(rs.getInt("idPedido"));
+                descontoAdicional.setIdPedido(rs.getInt("id_pedido"));
+                descontoAdicional.setTipo(rs.getString("tipo"));
                 descontoAdicional.setValor(rs.getDouble("valor"));
                 descontoAdicional.setObservacao(rs.getString("observacao"));
 

@@ -36,8 +36,8 @@ public class ModalPagamentoController {
     @FXML
     private Button btnFinalizar;
 
-    public void initialize(Pedido pedido) {
-        valorPedido = pedido.getValorTotal() + pedido.getValorEntrega();
+    public void initialize(Double valorPedido) {
+        this.valorPedido = valorPedido;
         initCampos();
         loadCBPagamento();
     }

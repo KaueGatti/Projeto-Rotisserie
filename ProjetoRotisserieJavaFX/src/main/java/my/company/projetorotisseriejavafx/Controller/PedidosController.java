@@ -18,12 +18,15 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import my.company.projetorotisseriejavafx.Controller.Modal.ModalDescontosEAdicionaisController;
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalEnderecoPedidoController;
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalMarmitasEProdutosController;
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalObservacoesPedidoController;
+import my.company.projetorotisseriejavafx.DAO.DescontoAdicionalDAO;
 import my.company.projetorotisseriejavafx.DAO.MarmitaVendidaDAO;
 import my.company.projetorotisseriejavafx.DAO.PedidoDAO;
 import my.company.projetorotisseriejavafx.DAO.ProdutoVendidoDAO;
+import my.company.projetorotisseriejavafx.Objects.DescontoAdicional;
 import my.company.projetorotisseriejavafx.Objects.MarmitaVendida;
 import my.company.projetorotisseriejavafx.Objects.Pedido;
 import my.company.projetorotisseriejavafx.Objects.ProdutoVendido;
@@ -200,6 +203,7 @@ public class PedidosController implements Initializable {
 
     @FXML
     void descontosEAdicionais(ActionEvent event) {
+        abrirModalDescontosEAdicionais();
     }
 
     @FXML
@@ -289,6 +293,34 @@ public class PedidosController implements Initializable {
 
         } catch (IOException e) {
             System.out.println("Erro ao abrir Marmitas e Produtos");
+            e.printStackTrace();
+        }
+    }
+
+    public void abrirModalDescontosEAdicionais() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDescontosEAdicionais.fxml"));
+            Stage modal = new Stage();
+
+            modal.setScene(loader.load());
+
+            ModalDescontosEAdicionaisController controller = loader.getController();
+
+            try {
+                List<DescontoAdicional> descontosEAdicionais = DescontoAdicionalDAO.read(selectedPedido.getId());
+
+                controller.initialize(descontosEAdicionais);
+            } catch (SQLException e) {
+                DatabaseExceptionHandler.handleException(e, "Desconto e Adicional");
+            }
+
+            modal.initStyle(StageStyle.UTILITY);
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.setResizable(false);
+            modal.showAndWait();
+
+        } catch (IOException e) {
+            System.out.println("Erro ao abrir Descontos E Adicionais");
             e.printStackTrace();
         }
     }

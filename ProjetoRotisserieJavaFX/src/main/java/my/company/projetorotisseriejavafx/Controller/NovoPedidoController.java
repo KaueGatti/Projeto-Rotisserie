@@ -461,7 +461,7 @@ public class NovoPedidoController implements Initializable {
 
         if (validaPedido(pedido)) {
 
-            if (!abrirModalPagamento(pedido)) return;
+            if (!abrirModalPagamento(valorPedido)) return;
 
             pedido.setTipoPagamento(pagamento);
             pedido.setVencimento(vencimento);
@@ -509,7 +509,7 @@ public class NovoPedidoController implements Initializable {
 
     }
 
-    public boolean abrirModalPagamento(Pedido pedido) {
+    public boolean abrirModalPagamento(Double valorPedido) {
         try {
             Stage modal = new Stage();
 
@@ -518,7 +518,7 @@ public class NovoPedidoController implements Initializable {
 
             ModalPagamentoController controller = fxmlLoader.getController();
 
-            controller.initialize(pedido);
+            controller.initialize(valorPedido);
 
             modal.setResizable(false);
             modal.initModality(Modality.APPLICATION_MODAL);

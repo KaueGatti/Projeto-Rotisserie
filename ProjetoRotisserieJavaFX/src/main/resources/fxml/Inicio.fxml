@@ -10,7 +10,7 @@
    <children>
       <HBox prefHeight="75.0" prefWidth="1209.0" style="-fx-background-color: rgba(249, 155, 55, 0.4);" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <Button fx:id="bttNovoPedido" mnemonicParsing="false" onAction="#bttNovoPedido" prefHeight="74.0" prefWidth="346.0" style="-fx-background-color: rgb(143, 187, 138);" text="Novo Pedido +">
+            <Button fx:id="bttNovoPedido" mnemonicParsing="false" onAction="#bttNovoPedido" prefHeight="83.0" prefWidth="315.0" style="-fx-background-color: rgb(143, 187, 138);" text="Novo Pedido +">
                <font>
                   <Font name="System Bold" size="30.0" />
                </font>

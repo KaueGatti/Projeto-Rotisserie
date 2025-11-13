@@ -42,10 +42,21 @@ public class ModalDescontosEAdicionaisController {
     @FXML
     private TableView<DescontoAdicional> tableDescontosEAdicionais;
 
+    public void initialize() {
+        initTableDescontosEAdicionais();
+    }
+
     public void initialize(NovoPedidoController controller, ObservableList<DescontoAdicional> descontosEAdicionais) {
         this.descontosEAdicionais = descontosEAdicionais;
         this.novoPedidoController = controller;
-        initTableDescontosEAdicionais();
+        initialize();
+    }
+
+    public void initialize(List<DescontoAdicional> descontosEAdicionais) {
+        this.descontosEAdicionais = FXCollections.observableArrayList(descontosEAdicionais);
+        initialize();
+        refreshDescontoEAdicional();
+        btnAdicionar.setVisible(false);
     }
 
     @FXML
@@ -79,27 +90,31 @@ public class ModalDescontosEAdicionaisController {
     private void initTableDescontosEAdicionais() {
         colTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
         colValor.setCellValueFactory(new PropertyValueFactory<>("formattedValor"));
-        colExcluir.setCellFactory(param -> new TableCell<>() {
-            private final Button btnExcluir = new Button("Excluir");
+        if (novoPedidoController != null) {
 
-            {
-                btnExcluir.setOnAction(event -> {
-                    DescontoAdicional descontoAdicional = getTableView().getItems().get(getIndex());
-                    descontosEAdicionais.remove(descontoAdicional);
-                    refreshDescontoEAdicional();
-                });
-            }
+            colExcluir.setCellFactory(param -> new TableCell<>() {
 
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(btnExcluir);
+                private final Button btnExcluir = new Button("Excluir");
+
+                {
+                    btnExcluir.setOnAction(event -> {
+                        DescontoAdicional descontoAdicional = getTableView().getItems().get(getIndex());
+                        descontosEAdicionais.remove(descontoAdicional);
+                        refreshDescontoEAdicional();
+                    });
                 }
-            }
-        });
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(btnExcluir);
+                    }
+                }
+            });
+        }
 
         tableDescontosEAdicionais.setItems(descontosEAdicionais);
     }
