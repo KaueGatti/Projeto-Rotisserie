@@ -112,6 +112,7 @@ public class PedidoDAO {
                 pedido.setObservacoes(rs.getString("observacoes"));
                 pedido.setValorItens(rs.getDouble("valor_itens"));
                 pedido.setValorTotal(rs.getDouble("valor_total"));
+                pedido.setValorPago(rs.getDouble("valor_pago"));
                 pedido.setEndereco(rs.getString("endereco"));
                 pedido.setDateTime(rs.getTimestamp("date_time").toLocalDateTime());
                 pedido.setStatus(rs.getString("status"));

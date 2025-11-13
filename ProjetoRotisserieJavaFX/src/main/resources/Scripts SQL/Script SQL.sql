@@ -364,19 +364,22 @@ CREATE PROCEDURE CREATE_PEDIDO(_id_mensalista INT, _id_bairro INT, _nome_cliente
 BEGIN
 
 	DECLARE _status VARCHAR(30);
-	
+	DECLARE _valor_pago DECIMAL(10,2);
+    
     IF _tipo_pagamento = 'Pagar depois' THEN
 		SET _status = "A PAGAR";
+        SET _valor_pago = 0;
 	ELSE
 		SET _status = "FINALIZADO";
         SET _vencimento = (CURRENT_DATE);
+        SET _valor_pago = _valor_total;
 	END IF;
 
 	INSERT INTO Pedido (id_mensalista, id_bairro, nome_cliente, tipo_pagamento, tipo_pedido,
-    observacoes, valor_entrega, endereco, valor_itens, valor_total, vencimento, status)
+    observacoes, valor_entrega, endereco, valor_itens, valor_total, valor_pago, vencimento, status)
     
     VALUES (_id_mensalista, _id_bairro, _nome_cliente, _tipo_pagamento, _tipo_pedido,
-    _observacoes, _valor_entrega, _endereco, _valor_itens, _valor_total, _vencimento, _status);
+    _observacoes, _valor_entrega, _endereco, _valor_itens, _valor_total, _valor_pago, _vencimento, _status);
     
     SELECT LAST_INSERT_ID();
 
