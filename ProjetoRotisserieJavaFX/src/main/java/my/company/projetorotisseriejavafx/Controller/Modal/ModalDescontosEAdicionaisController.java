@@ -10,8 +10,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import my.company.projetorotisseriejavafx.Controller.NovoPedidoController;
 import my.company.projetorotisseriejavafx.Objects.DescontoAdicional;
+import my.company.projetorotisseriejavafx.Objects.MarmitaVendida;
 
 import java.io.IOException;
 import java.util.List;
@@ -115,6 +117,21 @@ public class ModalDescontosEAdicionaisController {
                 }
             });
         }
+
+        tableDescontosEAdicionais.setRowFactory(tv -> {
+            TableRow<DescontoAdicional> row = new TableRow<>();
+            Tooltip tooltip = new Tooltip();
+            tooltip.setShowDelay(Duration.millis(200));
+            row.itemProperty().addListener((obs, oldItem, newItem) -> {
+                if (newItem != null) {
+                    tooltip.setText("Observação: " + newItem.getObservacao());
+                    row.setTooltip(tooltip);
+                } else {
+                    row.setTooltip(null);
+                }
+            });
+            return row;
+        });
 
         tableDescontosEAdicionais.setItems(descontosEAdicionais);
     }

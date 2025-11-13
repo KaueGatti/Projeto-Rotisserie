@@ -6,7 +6,6 @@ module my.company.projetorotisseriejavafx {
     requires javafx.graphics;
     requires java.desktop;
 
-
     opens my.company.projetorotisseriejavafx to javafx.fxml;
     opens my.company.projetorotisseriejavafx.Controller to javafx.fxml;
     opens my.company.projetorotisseriejavafx.Objects to javafx.base, javafx.fxml;
