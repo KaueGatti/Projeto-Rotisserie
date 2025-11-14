@@ -1,6 +1,7 @@
 package my.company.projetorotisseriejavafx.Objects;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatterBuilder;
 
 public class Pagamento {
     
@@ -57,5 +58,13 @@ public class Pagamento {
 
     public void setData(LocalDate data) {
         this.data = data;
+    }
+
+    public String getFormattedData() {
+        return data.format(new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter());
+    }
+
+    public String getFormattedValor() {
+        return String.format("%.2f", valor).replace('.', ',');
     }
 }

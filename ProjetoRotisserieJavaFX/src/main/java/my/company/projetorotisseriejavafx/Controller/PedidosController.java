@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,14 +21,8 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import my.company.projetorotisseriejavafx.Controller.Modal.ModalDescontosEAdicionaisController;
-import my.company.projetorotisseriejavafx.Controller.Modal.ModalEnderecoPedidoController;
-import my.company.projetorotisseriejavafx.Controller.Modal.ModalMarmitasEProdutosController;
-import my.company.projetorotisseriejavafx.Controller.Modal.ModalObservacoesPedidoController;
-import my.company.projetorotisseriejavafx.DAO.DescontoAdicionalDAO;
-import my.company.projetorotisseriejavafx.DAO.MarmitaVendidaDAO;
-import my.company.projetorotisseriejavafx.DAO.PedidoDAO;
-import my.company.projetorotisseriejavafx.DAO.ProdutoVendidoDAO;
+import my.company.projetorotisseriejavafx.Controller.Modal.*;
+import my.company.projetorotisseriejavafx.DAO.*;
 import my.company.projetorotisseriejavafx.Objects.*;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 import my.company.projetorotisseriejavafx.Util.Printer;
@@ -36,6 +33,8 @@ public class PedidosController implements Initializable {
 
     List<MarmitaVendida> marmitas = new ArrayList<>();
     List<ProdutoVendido> produtos = new ArrayList<>();
+    ObservableList<Pagamento> pagamentos = FXCollections.observableArrayList();
+
 
     @FXML
     private AnchorPane APPedidos;
@@ -144,7 +143,7 @@ public class PedidosController implements Initializable {
 
     @FXML
     void pagamentos(ActionEvent event) {
-        //abrirModalPagamentos();
+        abrirModalPagamentos();
     }
 
     private void initTablePedidos() {
@@ -158,6 +157,7 @@ public class PedidosController implements Initializable {
             if (event.getClickCount() == 1 && !tablePedidos.getSelectionModel().isEmpty()) {
                 selectedPedido = tablePedidos.getSelectionModel().getSelectedItem();
                 loadDetalhes(selectedPedido);
+                initObservableListPagamentos();
             }
         });
 
@@ -180,6 +180,27 @@ public class PedidosController implements Initializable {
     }
 
     public void loadDetalhes(Pedido pedido) {
+
+        if (pedido == null) {
+            LCliente.setText("-");
+            LTipo.setText("-");
+            LPagamento.setText("-");
+            LBairro.setText("-");
+            LEntrega.setText("-");
+            LValorTotal.setText("-");
+            LValorPago.setText("-");
+            LValorAPagar.setText("-");
+            LDataHora.setText("-");
+            LVencimento.setText("-");
+            LStatus.setText("-");
+
+            btnImprimir.setDisable(true);
+            btnObservacoes.setDisable(true);
+            btnEndereco.setDisable(true);
+            btnMarmitasEProdutos.setDisable(true);
+            btnDescontosEAdicionais.setDisable(true);
+            btnPagamentos.setDisable(true);
+        }
 
         LCliente.setText(pedido.getNomeCliente());
         LTipo.setText(pedido.getTipoPedido());
@@ -212,16 +233,12 @@ public class PedidosController implements Initializable {
         btnObservacoes.setDisable(false);
         btnMarmitasEProdutos.setDisable(false);
         btnDescontosEAdicionais.setDisable(false);
-
-        if (pedido.getStatus().equals("FINALIZADO")) {
-            btnPagamentos.setDisable(true);
-        } else {
-            btnPagamentos.setDisable(false);
-        }
+        btnPagamentos.setDisable(false);
 
         try {
             marmitas = MarmitaVendidaDAO.read(pedido.getId());
             produtos = ProdutoVendidoDAO.read(pedido.getId());
+            pagamentos = FXCollections.observableArrayList(PagamentoDAO.read(selectedPedido.getId()));
         } catch (SQLException e) {
             DatabaseExceptionHandler.handleException(e, "marmitas e produtos vendidos");
         }
@@ -322,5 +339,43 @@ public class PedidosController implements Initializable {
         }
     }
 
-    public void abrirModalPagamentos(List<Pagamento> pagamentos) {}
+    public void abrirModalPagamentos() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalPagamentos.fxml"));
+            Stage modal = new Stage();
+
+            modal.setScene(loader.load());
+
+            ModalPagamentosController controller = loader.getController();
+
+            controller.initialize(selectedPedido, pagamentos);
+
+            modal.initStyle(StageStyle.UTILITY);
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.setResizable(false);
+            modal.showAndWait();
+
+        } catch (IOException e) {
+            System.out.println("Erro ao abrir Descontos E Adicionais");
+            e.printStackTrace();
+        }
+    }
+
+    public void initObservableListPagamentos() {
+        pagamentos.addListener((ListChangeListener<Pagamento>) change -> {
+            while (change.next()) {
+                if (change.wasAdded()) {
+                    try {
+                        for (Pagamento pagamento : change.getAddedSubList()) {
+                            PagamentoDAO.create(pagamento);
+                        }
+                    } catch (SQLException e) {
+                        DatabaseExceptionHandler.handleException(e, "Pagamento");
+                    }
+                    loadDetalhes(null);
+                    refreshTablePedido();
+                }
+            }
+        });
+    }
 }

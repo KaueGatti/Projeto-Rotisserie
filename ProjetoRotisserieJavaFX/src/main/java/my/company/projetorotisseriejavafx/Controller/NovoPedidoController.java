@@ -254,92 +254,6 @@ public class NovoPedidoController implements Initializable {
         atualizaValor();
     }
 
-    private void initTableMarmita() {
-        colNomeMarmita.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        colSubtotalMarmita.setCellValueFactory(new PropertyValueFactory<>("formattedSubtotal"));
-        colDelMarmita.setCellFactory(param -> new TableCell<>() {
-            private final Button btnExcluir = new Button("Excluir");
-
-            {
-                btnExcluir.setOnAction(event -> {
-                    MarmitaVendida marmita = getTableView().getItems().get(getIndex());
-                    valorTotal -= marmita.getSubtotal();
-                    getTableView().getItems().remove(marmita);
-                    atualizaValor();
-                });
-            }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(btnExcluir);
-                }
-            }
-        });
-
-        tableMarmita.setOnMouseClicked(event -> {
-                    if (event.getClickCount() == 2) {
-                        if (tableMarmita.getSelectionModel().getSelectedItem() != null) {
-                            try {
-                                Stage modal = new Stage();
-
-                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDetalhesMarmita.fxml"));
-
-                                modal.setScene(loader.load());
-
-                                ModalDetalhesMarmitaController controller = loader.getController();
-
-                                controller.load(tableMarmita.getSelectionModel().getSelectedItem());
-
-                                modal.setOnCloseRequest(eventClose -> {
-                                    event.consume();
-                                });
-                                modal.setResizable(false);
-                                modal.initStyle(StageStyle.UTILITY);
-                                modal.showAndWait();
-
-                            } catch (IOException e) {
-                                System.out.println("Erro Modal Detalhes Marmita:");
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-        );
-
-    }
-
-    private void initTableProduto() {
-        colNomeProduto.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        colQuantidadeProduto.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
-        colSubtotalProduto.setCellValueFactory(new PropertyValueFactory<>("formattedSubtotal"));
-        colDelProduto.setCellFactory(param -> new TableCell<>() {
-            private final Button btnExcluir = new Button("Excluir");
-
-            {
-                btnExcluir.setOnAction(event -> {
-                    ProdutoVendido produto = getTableView().getItems().get(getIndex());
-                    valorTotal -= produto.getSubtotal();
-                    getTableView().getItems().remove(produto);
-                    atualizaValor();
-                });
-            }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(btnExcluir);
-                }
-            }
-        });
-    }
-
     private void atualizaValor() {
         NumberFormat formatoMoeda = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
         String valorEntregaFormatado = formatoMoeda.format(valorEntrega);
@@ -595,5 +509,91 @@ public class NovoPedidoController implements Initializable {
         }
 
         return false;
+    }
+
+    private void initTableMarmita() {
+        colNomeMarmita.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        colSubtotalMarmita.setCellValueFactory(new PropertyValueFactory<>("formattedSubtotal"));
+        colDelMarmita.setCellFactory(param -> new TableCell<>() {
+            private final Button btnExcluir = new Button("Excluir");
+
+            {
+                btnExcluir.setOnAction(event -> {
+                    MarmitaVendida marmita = getTableView().getItems().get(getIndex());
+                    valorTotal -= marmita.getSubtotal();
+                    getTableView().getItems().remove(marmita);
+                    atualizaValor();
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(btnExcluir);
+                }
+            }
+        });
+
+        tableMarmita.setOnMouseClicked(event -> {
+                    if (event.getClickCount() == 2) {
+                        if (tableMarmita.getSelectionModel().getSelectedItem() != null) {
+                            try {
+                                Stage modal = new Stage();
+
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDetalhesMarmita.fxml"));
+
+                                modal.setScene(loader.load());
+
+                                ModalDetalhesMarmitaController controller = loader.getController();
+
+                                controller.load(tableMarmita.getSelectionModel().getSelectedItem());
+
+                                modal.setOnCloseRequest(eventClose -> {
+                                    event.consume();
+                                });
+                                modal.setResizable(false);
+                                modal.initStyle(StageStyle.UTILITY);
+                                modal.showAndWait();
+
+                            } catch (IOException e) {
+                                System.out.println("Erro Modal Detalhes Marmita:");
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+        );
+
+    }
+
+    private void initTableProduto() {
+        colNomeProduto.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        colQuantidadeProduto.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
+        colSubtotalProduto.setCellValueFactory(new PropertyValueFactory<>("formattedSubtotal"));
+        colDelProduto.setCellFactory(param -> new TableCell<>() {
+            private final Button btnExcluir = new Button("Excluir");
+
+            {
+                btnExcluir.setOnAction(event -> {
+                    ProdutoVendido produto = getTableView().getItems().get(getIndex());
+                    valorTotal -= produto.getSubtotal();
+                    getTableView().getItems().remove(produto);
+                    atualizaValor();
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(btnExcluir);
+                }
+            }
+        });
     }
 }

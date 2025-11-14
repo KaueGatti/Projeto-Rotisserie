@@ -5,6 +5,7 @@ module my.company.projetorotisseriejavafx {
     requires java.sql;
     requires javafx.graphics;
     requires java.desktop;
+    requires javafx.base;
 
     opens my.company.projetorotisseriejavafx to javafx.fxml;
     opens my.company.projetorotisseriejavafx.Controller to javafx.fxml;

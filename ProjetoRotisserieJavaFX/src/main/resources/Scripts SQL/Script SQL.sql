@@ -68,16 +68,6 @@ CREATE TABLE IF NOT EXISTS Pedido (
     CONSTRAINT fk_bairro_pedido FOREIGN KEY (id_bairro) REFERENCES Bairro (id)
 );
 
-CREATE TABLE IF NOT EXISTS Pagamento(
-	id INT NOT NULL AUTO_INCREMENT,
-    id_pedido INT NOT NULL,
-	_data DATE NOT NULL,
-    valor DECIMAL(10,2) NOT NULL,
-    observacao VARCHAR(500),
-    PRIMARY KEY (id),
-    CONSTRAINT fk_pedido_pagamento FOREIGN KEY (id) REFERENCES Pedido (id)
-);
-
 CREATE TABLE IF NOT EXISTS Marmita_Vendida (
 	id INT AUTO_INCREMENT NOT NULL,
     id_pedido INT NOT NULL,
@@ -138,13 +128,13 @@ CREATE TABLE IF NOT EXISTS Cardapio (
 	PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS Pagamentos (
+CREATE TABLE IF NOT EXISTS Pagamento (
 	id INT AUTO_INCREMENT NOT NULL,
     id_pedido INT NOT NULL,
     tipo_pagamento VARCHAR(30) NOT NULL,
     valor DECIMAL(10,2) NOT NULL,
     observacao VARCHAR(500),
-    data DATE NOT NULL,
+    data DATE NOT NULL DEFAULT (CURRENT_DATE),
 	PRIMARY KEY (id),
     FOREIGN KEY (id_pedido) REFERENCES Pedido (id)
 );
@@ -512,6 +502,14 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
+CREATE PROCEDURE READ_PAGAMENTOS_PEDIDO(_id_pedido INT)
+BEGIN
+	SELECT * FROM Pagamento
+    WHERE id_pedido = _id_pedido;
+END $$
+DELIMITER ;
+
+DELIMITER $$
 CREATE TRIGGER SOMA_CONTA_MENSALISTA
 AFTER INSERT
 ON Pedido
@@ -526,6 +524,15 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
+CREATE PROCEDURe FINALIZA_PEDIDO(_id_pedido INT)
+BEGIN
+	UPDATE Pedido
+    SET status = 'FINALIZADO'
+    WHERE id = _id_pedido;
+END $$
+DELIMITER ;
+
+DELIMITER $$
 CREATE TRIGGER SUBTRAI_CONTA_MENSALISTA
 AFTER UPDATE
 ON Pedido
@@ -536,5 +543,17 @@ BEGIN
         SET conta = conta - NEW.valor_total
         WHERE id = NEW.id_mensalista;
 	END IF;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER ADICIONA_PAGAMENTO
+AFTER INSERT
+ON Pagamento
+FOR EACH ROW
+BEGIN
+	UPDATE Pedido
+    SET valor_pago =  valor_pago + NEW.valor
+    WHERE id = NEW.id_pedido;
 END $$
 DELIMITER ;
