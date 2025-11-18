@@ -3,8 +3,12 @@ package my.company.projetorotisseriejavafx.Controller;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.NumberFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -29,7 +33,7 @@ import my.company.projetorotisseriejavafx.Util.Printer;
 
 public class PedidosController implements Initializable {
 
-    ObservableList<Pedido> pedidos;
+    ObservableList<Pedido> pedidos = FXCollections.observableArrayList();
 
     Pedido selectedPedido = new Pedido();
 
@@ -45,7 +49,7 @@ public class PedidosController implements Initializable {
     private TableColumn<Pedido, String> colCliente;
 
     @FXML
-    private TableColumn<Pedido, String> colData;
+    private TableColumn<Pedido, LocalDateTime> colData;
 
     @FXML
     private TableColumn<Pedido, String> colStatus;
@@ -54,7 +58,7 @@ public class PedidosController implements Initializable {
     private TableColumn<Pedido, String> colTipo;
 
     @FXML
-    private TableColumn<Pedido, String> colTotal;
+    private TableColumn<Pedido, Double> colTotal;
 
     @FXML
     private Pane paneDetalhes;
@@ -149,10 +153,37 @@ public class PedidosController implements Initializable {
     }
 
     private void initTablePedidos() {
-        colCliente.setCellValueFactory(new PropertyValueFactory<>("nomeCliente"));
-        colTipo.setCellValueFactory(new PropertyValueFactory<>("tipoPedido"));
-        colData.setCellValueFactory(new PropertyValueFactory<>("formattedDateTime"));
-        colTotal.setCellValueFactory(new PropertyValueFactory<>("formattedValorTotal"));
+        colCliente.setCellValueFactory(p -> p.getValue().nomeClienteProperty());
+        colTipo.setCellValueFactory(p -> p.getValue().tipoPedidoProperty());
+        colData.setCellValueFactory(p -> p.getValue().dateTimeProperty());
+        colData.setCellFactory(column -> new TableCell<Pedido, LocalDateTime>() {
+            private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy | HH:mm");
+
+            @Override
+            protected void updateItem(LocalDateTime item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item == null || empty) {
+                    setText(null);
+                } else {
+                    setText(formatter.format(item));
+                }
+            }
+        });
+        colTotal.setCellValueFactory(p -> p.getValue().valorTotalProperty().asObject());
+        colTotal.setCellFactory(column -> new TableCell<Pedido, Double>() {
+            private final NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+
+            @Override
+            protected void updateItem(Double value, boolean empty) {
+                super.updateItem(value, empty);
+
+                if (empty || value == null) {
+                    setText(null);
+                } else {
+                    setText(formatter.format(value));
+                }
+            }
+        });
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         tablePedidos.setOnMouseClicked(event -> {
@@ -226,7 +257,6 @@ public class PedidosController implements Initializable {
         LValorAPagar.setText(pedido.getFormattedValorAPagar());
 
         LDataHora.setText(pedido.getFormattedDateTime());
-        System.out.println(pedido.getVencimento());
         if (pedido.getVencimento() != null) {
             LVencimento.setText(pedido.getFormattedVencimento());
         } else {
@@ -398,7 +428,4 @@ public class PedidosController implements Initializable {
         });
     }
 
-    public void initObservableListPedidos() {
-
-    }
 }

@@ -12,3 +12,5 @@ insert into item_cardapio (nome, categoria) values ("Arroz", "Principal"),
 ("Pepino", "Salada");
 
 CALL CREATE_BAIRRO("Cervezão", 7);
+
+CALL CREATE_MARMITA('P', 2, 2, 22);

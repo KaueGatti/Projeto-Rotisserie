@@ -30,6 +30,8 @@ import java.util.ResourceBundle;
 
 public class CardapioController implements Initializable {
 
+    Cardapio cardapio;
+
     ObservableList<ItemCardapio> principais = FXCollections.observableArrayList();
     ObservableList<ItemCardapio> misturas = FXCollections.observableArrayList();
     ObservableList<ItemCardapio> guarnicoes = FXCollections.observableArrayList();
@@ -145,9 +147,25 @@ public class CardapioController implements Initializable {
 
             disableTables(true);
 
+            if (cardapio == null) {
+                CBPrincipal1.getSelectionModel().select(0);
+                CBPrincipal2.getSelectionModel().select(1);
+                CBMistura1.getSelectionModel().select(0);
+                CBMistura2.getSelectionModel().select(1);
+                CBMistura3.getSelectionModel().select(2);
+                CBMistura4.getSelectionModel().select(3);
+                CBGuarnicao1.getSelectionModel().select(0);
+                CBGuarnicao2.getSelectionModel().select(1);
+                CBGuarnicao3.getSelectionModel().select(2);
+                CBGuarnicao4.getSelectionModel().select(3);
+                CBSalada1.getSelectionModel().select(0);
+                CBSalada2.getSelectionModel().select(1);
+            }
+
             todosComboBoxes.forEach(cb -> {
                 cb.setDisable(false);
             });
+
 
             return;
         }
@@ -375,7 +393,7 @@ public class CardapioController implements Initializable {
         configurarGrupo(grupoCBSalada, saladas);
 
         try {
-            Cardapio cardapio = CardapioDAO.read();
+            cardapio = CardapioDAO.read();
 
             initCBPrincipal(cardapio);
             initCBMistura(cardapio);
@@ -400,11 +418,7 @@ public class CardapioController implements Initializable {
                     CBPrincipal2.setValue(item);
                 }
             });
-            return;
         }
-
-        CBPrincipal1.getSelectionModel().select(0);
-        CBPrincipal2.getSelectionModel().select(1);
     }
 
     public void initCBMistura(Cardapio cardapio) {
@@ -429,13 +443,7 @@ public class CardapioController implements Initializable {
                     CBMistura4.setValue(item);
                 }
             });
-            return;
         }
-
-        CBMistura1.getSelectionModel().select(0);
-        CBMistura2.getSelectionModel().select(1);
-        CBMistura3.getSelectionModel().select(2);
-        CBMistura4.getSelectionModel().select(3);
     }
 
     public void initCBGuarnicao(Cardapio cardapio) {
@@ -461,13 +469,7 @@ public class CardapioController implements Initializable {
                     CBGuarnicao4.setValue(item);
                 }
             });
-            return;
         }
-
-        CBGuarnicao1.getSelectionModel().select(0);
-        CBGuarnicao2.getSelectionModel().select(1);
-        CBGuarnicao3.getSelectionModel().select(2);
-        CBGuarnicao4.getSelectionModel().select(3);
 
     }
 
@@ -483,11 +485,7 @@ public class CardapioController implements Initializable {
                     CBSalada2.setValue(item);
                 }
             });
-            return;
         }
-
-        CBSalada1.getSelectionModel().select(0);
-        CBSalada2.getSelectionModel().select(1);
     }
 
     public boolean validaCardapio() {
@@ -520,7 +518,7 @@ public class CardapioController implements Initializable {
             comboBox.setItems(lista);
 
             comboBox.setCellFactory(listView -> criarCelula());
-            comboBox.setButtonCell(criarCelula()); // mantém o mesmo estilo na célula selecionada
+            comboBox.setButtonCell(criarCelula());
 
             comboBox.valueProperty().addListener((observable, valorAntigo, valorNovo) -> {
                 if (valorAntigo != null)
@@ -534,6 +532,7 @@ public class CardapioController implements Initializable {
                     cb.setCellFactory(listView -> criarCelula());
                     cb.hide();  // truque: fecha e reabre o popup
                     cb.show();  // para forçar a atualização visual
+                    cb.hide();
                 }
             });
         }

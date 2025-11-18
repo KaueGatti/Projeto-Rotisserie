@@ -22,7 +22,6 @@ public class ItemCardapioListListener implements ListChangeListener<ItemCardapio
             }
             if (change.wasRemoved()) {
                 change.getRemoved().forEach(itemCardapio -> {
-                    System.out.println("removeu: " +  itemCardapio + " id: " + itemCardapio.getId());
                     try {
                         ItemCardapioDAO.delete(itemCardapio.getId());
                     } catch (SQLException e) {
