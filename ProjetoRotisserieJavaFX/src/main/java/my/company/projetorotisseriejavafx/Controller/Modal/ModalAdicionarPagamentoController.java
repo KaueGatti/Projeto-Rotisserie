@@ -10,7 +10,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import my.company.projetorotisseriejavafx.DAO.PedidoDAO;
 import my.company.projetorotisseriejavafx.Objects.Pagamento;
+import my.company.projetorotisseriejavafx.Objects.Pedido;
 import my.company.projetorotisseriejavafx.Util.CurrencyFieldUtil;
 
 import java.time.LocalDate;
@@ -18,6 +20,7 @@ import java.time.LocalDate;
 public class ModalAdicionarPagamentoController {
 
     ModalPagamentosController controller;
+    Pedido pedido;
 
     @FXML
     private ComboBox<String> CBPagamento;
@@ -40,8 +43,9 @@ public class ModalAdicionarPagamentoController {
     @FXML
     private Scene scene;
 
-    public void initialize(ModalPagamentosController controller) {
+    public void initialize(ModalPagamentosController controller, Pedido pedido) {
         this.controller = controller;
+        this.pedido = pedido;
         initCampos();
     }
 
@@ -58,6 +62,8 @@ public class ModalAdicionarPagamentoController {
         pagamento.setData(LocalDate.now());
         pagamento.setObservacao(TAObservacao.getText());
 
+        pedido.setValorPago(pedido.getValorPago() + pagamento.getValor());
+
         controller.adidionarPagamento(pagamento);
         fecharModal();
     }
@@ -73,13 +79,21 @@ public class ModalAdicionarPagamentoController {
     }
 
     public boolean validaValor() {
+
         if (TFValor.getText().trim().isEmpty()) {
             LInfo.setText("Valor não pode ser vazio");
             return false;
         }
 
-        if (CurrencyFieldUtil.getValue(TFValor) < 0) {
+        double valor = CurrencyFieldUtil.getValue(TFValor);
+
+        if (valor < 0) {
             LInfo.setText("O valor deve ser maior que 0,00");
+            return false;
+        }
+
+        if (valor > pedido.getValorTotal() - pedido.getValorPago()) {
+            LInfo.setText("O valor a pagar é de " + pedido.getFormattedValorAPagar());
             return false;
         }
 

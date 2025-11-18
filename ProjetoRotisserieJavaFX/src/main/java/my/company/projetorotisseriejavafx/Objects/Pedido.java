@@ -147,27 +147,31 @@ public class Pedido {
     }
 
     public String getFormattedValorEntrega() {
-        return "R$ " + String.valueOf(valorEntrega).replace(".", ",");
+        return String.format("R$ %.2f", valorEntrega).replace(".", ",");
     }
 
     public String getFormattedValorItens() {
-        return "R$ " + String.valueOf(valorItens).replace(".", ",");
+        return String.format("R$ %.2f", valorItens).replace(".", ",");
     }
 
     public String getFormattedValorTotal() {
-        return "R$ " + String.valueOf(getValorTotal()).replace(".", ",");
+        return String.format("R$ %.2f", getValorTotal()).replace(".", ",");
     }
 
     public String getFormattedValorPago() {
-        return "R$ " + String.valueOf(valorPago).replace(".", ",");
+        return String.format("R$ %.2f", valorPago).replace(".", ",");
     }
 
     public String getFormattedValorAPagar() {
         Double valorAPagar = getValorTotal() - getValorPago();
-        return "R$ " + String.valueOf(valorAPagar).replace(".", ",");
+        return String.format("R$ %.2f", valorAPagar).replace(".", ",");
     }
 
     public String getFormattedDateTime() {
         return DateTimeFormatter.ofPattern("dd/MM/yyyy | HH:mm:ss").format(dateTime);
+    }
+
+    public String getFormattedVencimento() {
+        return DateTimeFormatter.ofPattern("dd/MM/yyyy").format(vencimento);
     }
 }

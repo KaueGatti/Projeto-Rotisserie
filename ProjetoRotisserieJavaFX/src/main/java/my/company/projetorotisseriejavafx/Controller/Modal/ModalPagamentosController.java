@@ -1,7 +1,5 @@
 package my.company.projetorotisseriejavafx.Controller.Modal;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,14 +11,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
-import my.company.projetorotisseriejavafx.DAO.PagamentoDAO;
-import my.company.projetorotisseriejavafx.Objects.DescontoAdicional;
 import my.company.projetorotisseriejavafx.Objects.Pagamento;
 import my.company.projetorotisseriejavafx.Objects.Pedido;
-import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class ModalPagamentosController {
@@ -30,6 +24,8 @@ public class ModalPagamentosController {
 
     @FXML
     private Button btnAdicionar;
+    @FXML
+    private Button btnDCP;
 
     @FXML
     private TableColumn<Pagamento, LocalDate> colData;
@@ -41,6 +37,9 @@ public class ModalPagamentosController {
     private TableColumn<Pagamento, String> colValor;
 
     @FXML
+    private TableColumn<Pagamento, Void> colExcluir;
+
+    @FXML
     private Scene scene;
 
     @FXML
@@ -50,7 +49,7 @@ public class ModalPagamentosController {
         this.pedido = pedido;
         this.pagamentos = pagamentos;
         initTablePagamento();
-        initBtnAdicionar();
+        initBtns();
     }
 
     @FXML
@@ -58,6 +57,10 @@ public class ModalPagamentosController {
         abrirModalAdicionarPagamento();
     }
 
+    @FXML
+    void definirComoPago(ActionEvent event) {
+        abrirModalAviso();
+    }
 
     public void adidionarPagamento(Pagamento pagamento) {
         pagamento.setIdPedido(pedido.getId());
@@ -73,13 +76,41 @@ public class ModalPagamentosController {
 
             ModalAdicionarPagamentoController controller = loader.getController();
 
-            controller.initialize(this);
+            controller.initialize(this, pedido);
 
             modal.initStyle(StageStyle.UTILITY);
             modal.initModality(Modality.APPLICATION_MODAL);
             modal.setResizable(false);
-            modal.show();
-            fecharModal();
+            modal.showAndWait();
+
+        } catch (IOException e) {
+            System.out.println("Erro ao abrir Adicionar Pagamento");
+            e.printStackTrace();
+        }
+    }
+
+    public void abrirModalAviso() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalAvisoPagamentos.fxml"));
+            Stage modal = new Stage();
+
+            modal.setScene(loader.load());
+
+            ModalAvisoPagamentosController controller = loader.getController();
+
+            controller.initialize(pedido);
+
+            modal.initStyle(StageStyle.UTILITY);
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.setResizable(false);
+            modal.showAndWait();
+
+            if (controller.getResponse() == 1) {
+                btnAdicionar.setDisable(true);
+                btnDCP.setDisable(true);
+                pedido.setStatus("PAGO");
+                fecharModal();
+            }
 
         } catch (IOException e) {
             System.out.println("Erro ao abrir Adicionar Pagamento");
@@ -91,6 +122,32 @@ public class ModalPagamentosController {
         colData.setCellValueFactory(new PropertyValueFactory<>("formattedData"));
         colPagamento.setCellValueFactory(new PropertyValueFactory<>("tipoPagamento"));
         colValor.setCellValueFactory(new PropertyValueFactory<>("formattedValor"));
+        if (pedido.getStatus().equals("A PAGAR")) {
+            colExcluir.setCellFactory(param -> new TableCell<>() {
+
+                private final Button btnExcluir = new Button("Excluir");
+
+                {
+                    btnExcluir.setOnAction(event -> {
+                        Pagamento pagamento = getTableView().getItems().get(getIndex());
+
+                        pedido.setValorPago(pedido.getValorPago() - pagamento.getValor());
+
+                        pagamentos.remove(pagamento);
+                    });
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(btnExcluir);
+                    }
+                }
+            });
+        }
 
         tablePagamento.setRowFactory(tv -> {
             TableRow<Pagamento> row = new TableRow<>();
@@ -110,15 +167,20 @@ public class ModalPagamentosController {
         tablePagamento.setItems(pagamentos);
     }
 
-    public void initBtnAdicionar() {
-        if (pedido.getStatus().equals("FINALIZADO")) {
+    public void initBtns() {
+        if (pedido.getStatus().equals("PAGO")) {
             btnAdicionar.setDisable(true);
+            btnDCP.setDisable(true);
         }
     }
 
     public void fecharModal() {
         Stage modal = (Stage) scene.getWindow();
         modal.close();
+    }
+
+    public void disableBtnAdicionar(boolean bool) {
+        btnAdicionar.setDisable(bool);
     }
 
 }

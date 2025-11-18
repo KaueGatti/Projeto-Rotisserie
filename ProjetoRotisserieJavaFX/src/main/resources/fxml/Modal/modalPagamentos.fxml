@@ -9,13 +9,14 @@
 <?import javafx.scene.text.Font?>
 
 <Scene fx:id="scene" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.Modal.ModalPagamentosController">
-    <AnchorPane prefHeight="582.0" prefWidth="491.0">
+    <AnchorPane prefHeight="628.0" prefWidth="491.0">
       <children>
          <TableView fx:id="tablePagamento" layoutX="30.0" layoutY="73.0" prefHeight="415.0" prefWidth="430.0" stylesheets="@../../styles/novoPedido.css">
             <columns>
-               <TableColumn fx:id="colData" prefWidth="127.20001792907715" text="Data" />
-               <TableColumn fx:id="colPagamento" minWidth="0.0" prefWidth="176.0" text="Forma de pagamento" />
-               <TableColumn fx:id="colValor" minWidth="0.0" prefWidth="127.20001220703125" text="Valor" />
+               <TableColumn fx:id="colData" prefWidth="108.0000057220459" text="Data" />
+               <TableColumn fx:id="colPagamento" minWidth="0.0" prefWidth="153.5999755859375" text="Forma de pagamento" />
+               <TableColumn fx:id="colValor" minWidth="0.0" prefWidth="104.800048828125" text="Valor" />
+               <TableColumn fx:id="colExcluir" minWidth="0.0" prefWidth="61.5999816894531" />
             </columns>
          </TableView>
          <Label alignment="CENTER" contentDisplay="CENTER" layoutX="30.0" layoutY="21.0" prefHeight="35.0" prefWidth="430.0" styleClass="titleTable" stylesheets="@../../styles/novoPedido.css" text="Pagamentos" textAlignment="CENTER">
@@ -23,7 +24,12 @@
                <Font name="Segoe UI Bold" size="24.0" />
             </font>
          </Label>
-         <Button fx:id="btnAdicionar" layoutX="30.0" layoutY="512.0" mnemonicParsing="false" onAction="#adicionar" prefHeight="46.0" prefWidth="430.0" text="Adicionar Pagamento">
+         <Button fx:id="btnAdicionar" layoutX="30.0" layoutY="504.0" mnemonicParsing="false" onAction="#adicionar" prefHeight="46.0" prefWidth="430.0" text="Adicionar Pagamento">
+            <font>
+               <Font name="System Bold" size="16.0" />
+            </font>
+         </Button>
+         <Button fx:id="btnDCP" layoutX="30.0" layoutY="567.0" mnemonicParsing="false" onAction="#definirComoPago" prefHeight="46.0" prefWidth="430.0" text="Definir como Pago">
             <font>
                <Font name="System Bold" size="16.0" />
             </font>

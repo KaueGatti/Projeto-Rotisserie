@@ -371,7 +371,7 @@ BEGIN
 		SET _status = "A PAGAR";
         SET _valor_pago = 0;
 	ELSE
-		SET _status = "FINALIZADO";
+		SET _status = "PAGO";
         SET _vencimento = (CURRENT_DATE);
         SET _valor_pago = _valor_total;
 	END IF;
@@ -393,6 +393,15 @@ BEGIN
 	UPDATE Pedido
     SET status = _status
     WHERE id = _id;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE FINALIZAR_PEDIDO(_id_pedido INT)
+BEGIN
+	UPDATE Pedido
+    SET status = 'PAGO'
+    WHERE id = _id_pedido;
 END $$
 DELIMITER ;
 
@@ -502,6 +511,14 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
+CREATE PROCEDURE DELETE_PAGAMENTO(_id_pagamento INT)
+BEGIN
+	DELETE FROM Pagamento
+    WHERE id = _id_pagamento;
+END $$
+DELIMITER ;
+
+DELIMITER $$
 CREATE PROCEDURE READ_PAGAMENTOS_PEDIDO(_id_pedido INT)
 BEGIN
 	SELECT * FROM Pagamento
@@ -520,15 +537,6 @@ BEGIN
         SET conta = conta + NEW.valor_total
         WHERE id = NEW.id_mensalista;
 	END IF;
-END $$
-DELIMITER ;
-
-DELIMITER $$
-CREATE PROCEDURe FINALIZA_PEDIDO(_id_pedido INT)
-BEGIN
-	UPDATE Pedido
-    SET status = 'FINALIZADO'
-    WHERE id = _id_pedido;
 END $$
 DELIMITER ;
 
@@ -555,5 +563,17 @@ BEGIN
 	UPDATE Pedido
     SET valor_pago =  valor_pago + NEW.valor
     WHERE id = NEW.id_pedido;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER REMOVE_PAGAMENTO
+AFTER DELETE
+ON Pagamento
+FOR EACH ROW
+BEGIN
+	UPDATE Pedido
+    SET valor_pago = valor_pago - OLD.valor
+    WHERE id = OLD.id_pedido;
 END $$
 DELIMITER ;

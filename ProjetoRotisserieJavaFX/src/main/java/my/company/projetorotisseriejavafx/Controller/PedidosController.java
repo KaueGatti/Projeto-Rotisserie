@@ -29,6 +29,8 @@ import my.company.projetorotisseriejavafx.Util.Printer;
 
 public class PedidosController implements Initializable {
 
+    ObservableList<Pedido> pedidos;
+
     Pedido selectedPedido = new Pedido();
 
     List<MarmitaVendida> marmitas = new ArrayList<>();
@@ -161,18 +163,21 @@ public class PedidosController implements Initializable {
             }
         });
 
-        refreshTablePedido();
+        try {
+            pedidos = FXCollections.observableArrayList(PedidoDAO.read());
+
+            tablePedidos.setItems(pedidos);
+
+        } catch (SQLException e) {
+            DatabaseExceptionHandler.handleException(e, "Pedido");
+        }
     }
 
     public void refreshTablePedido() {
         tablePedidos.getItems().clear();
 
         try {
-            List<Pedido> pedidos = PedidoDAO.read();
-
-            if (!pedidos.isEmpty()) {
-                tablePedidos.getItems().addAll(pedidos);
-            }
+            pedidos = FXCollections.observableArrayList(PedidoDAO.read());
         } catch (SQLException e) {
             DatabaseExceptionHandler.handleException(e, "pedido");
         }
@@ -200,6 +205,7 @@ public class PedidosController implements Initializable {
             btnMarmitasEProdutos.setDisable(true);
             btnDescontosEAdicionais.setDisable(true);
             btnPagamentos.setDisable(true);
+            return;
         }
 
         LCliente.setText(pedido.getNomeCliente());
@@ -220,9 +226,9 @@ public class PedidosController implements Initializable {
         LValorAPagar.setText(pedido.getFormattedValorAPagar());
 
         LDataHora.setText(pedido.getFormattedDateTime());
-
+        System.out.println(pedido.getVencimento());
         if (pedido.getVencimento() != null) {
-            LVencimento.setText(pedido.getVencimento().toString());
+            LVencimento.setText(pedido.getFormattedVencimento());
         } else {
             LVencimento.setText("-");
         }
@@ -355,6 +361,9 @@ public class PedidosController implements Initializable {
             modal.setResizable(false);
             modal.showAndWait();
 
+
+            loadDetalhes(selectedPedido);
+
         } catch (IOException e) {
             System.out.println("Erro ao abrir Descontos E Adicionais");
             e.printStackTrace();
@@ -372,10 +381,24 @@ public class PedidosController implements Initializable {
                     } catch (SQLException e) {
                         DatabaseExceptionHandler.handleException(e, "Pagamento");
                     }
-                    loadDetalhes(null);
-                    refreshTablePedido();
                 }
+
+                if (change.wasRemoved()) {
+                    try {
+                        for (Pagamento pagamento : change.getRemoved()) {
+                            PagamentoDAO.delete(pagamento);
+                        }
+                    } catch (SQLException e) {
+                        DatabaseExceptionHandler.handleException(e, "Pagamento");
+                    }
+                }
+
+                loadDetalhes(selectedPedido);
             }
         });
+    }
+
+    public void initObservableListPedidos() {
+
     }
 }

@@ -211,6 +211,11 @@ public class CurrencyFieldUtil {
      * @return Valor em Double ou null se inválido/vazio
      */
     public static Double getValue(TextField textField) {
+
+        if (textField == null) {
+            return null;
+        }
+
         String text = textField.getText().trim();
 
         // Remove o prefixo R$ se existir
@@ -225,9 +230,10 @@ public class CurrencyFieldUtil {
                 text = text.replace(",", ".");
             }
             return Double.parseDouble(text);
-        } catch (NumberFormatException e) {
-            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
     /**

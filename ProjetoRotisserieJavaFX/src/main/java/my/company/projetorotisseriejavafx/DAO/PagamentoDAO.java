@@ -90,4 +90,19 @@ public class PagamentoDAO {
             Conexao.closeConnection(con, stmt);
         }
     }
+
+    public static void delete(Pagamento pagamento) throws SQLException {
+        Connection con = Conexao.getConnection();
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = con.prepareStatement("CALL DELETE_PAGAMENTO(?)");
+
+            stmt.setInt(1, pagamento.getId());
+
+            stmt.executeUpdate();
+        } finally {
+            Conexao.closeConnection(con, stmt);
+        }
+    }
 }

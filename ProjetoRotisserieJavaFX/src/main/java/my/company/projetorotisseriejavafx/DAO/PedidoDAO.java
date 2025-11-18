@@ -115,6 +115,7 @@ public class PedidoDAO {
                 pedido.setValorPago(rs.getDouble("valor_pago"));
                 pedido.setEndereco(rs.getString("endereco"));
                 pedido.setDateTime(rs.getTimestamp("date_time").toLocalDateTime());
+                pedido.setVencimento(rs.getDate("vencimento").toLocalDate());
                 pedido.setStatus(rs.getString("status"));
 
                 pedidos.add(pedido);
@@ -156,6 +157,23 @@ public class PedidoDAO {
             stmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Erro ao excluir pedido: " + e);
+        } finally {
+            Conexao.closeConnection(con, stmt);
+        }
+    }
+
+    public static void finalizar(int idPedido) {
+        Connection con = Conexao.getConnection();
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = con.prepareStatement("CALL FINALIZAR_PEDIDO(?)");
+
+            stmt.setInt(1, idPedido);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Erro ao finalizar pedido: " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }
