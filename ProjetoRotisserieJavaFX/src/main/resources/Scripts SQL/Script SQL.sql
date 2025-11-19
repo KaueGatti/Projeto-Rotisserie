@@ -422,6 +422,15 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
+CREATE PROCEDURE READ_PEDIDOS_MENSALISTA(_id_mensalista INT)
+BEGIN
+	SELECT * FROM Pedido
+    WHERE id_mensalista = _id_mensalista
+    ORDER BY date_time DESC;
+END $$
+DELIMITER ;
+
+DELIMITER $$
 CREATE PROCEDURE CREATE_DESCONTO_ADICIONAL(_id_pedido INT, _tipo VARCHAR(15), _valor DECIMAL(10,2), _observacao VARCHAR(255))
 BEGIN
 	INSERT INTO DESCONTO_ADICIONAL (id_pedido, tipo, valor, observacao)

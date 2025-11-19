@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<Pane id="paneNovoPedido" fx:id="panePrincipal" prefHeight="728.0" prefWidth="1524.0" stylesheets="@../styles/novoPedido.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.RelatorioController">
+   <children>
+      <Label layoutX="603.0" layoutY="23.0" text="Relatório">
+         <font>
+            <Font size="80.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="DPData" layoutX="689.0" layoutY="151.0" prefHeight="34.0" prefWidth="238.0" />
+      <Label layoutX="598.0" layoutY="141.0" text="Data">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <Label layoutX="195.0" layoutY="207.0" prefHeight="53.0" prefWidth="378.0" text="Resumo Geral">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Label>
+      <Pane fx:id="PResumoGeral" layoutX="195.0" layoutY="260.0" prefHeight="438.0" prefWidth="378.0">
+         <children>
+            <Label layoutX="15.0" layoutY="6.0" prefHeight="34.0" prefWidth="348.0" text="Total de pedidos">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="LTotalPedidosRG" layoutX="23.0" layoutY="41.0" prefHeight="47.0" prefWidth="182.0" text="00">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Label>
+            <Line endX="277.0" layoutX="101.0" layoutY="88.0" opacity="0.5" startX="-100.0" />
+            <Label layoutX="16.0" layoutY="95.0" prefHeight="34.0" prefWidth="348.0" text="Faturamento Total">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="LFaturamento" layoutX="24.0" layoutY="130.0" prefHeight="47.0" prefWidth="332.0" text="R$ 00,00">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Label layoutX="616.0" layoutY="207.0" prefHeight="53.0" prefWidth="378.0" text="Pedidos">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Label>
+      <Pane fx:id="PPedidos" layoutX="616.0" layoutY="260.0" prefHeight="438.0" prefWidth="378.0">
+         <children>
+            <Label layoutX="15.0" layoutY="7.0" prefHeight="34.0" prefWidth="348.0" text="Pedidos - Entrega">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="LTotalPE" layoutX="23.0" layoutY="42.0" prefHeight="47.0" prefWidth="81.0" text="00">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Label>
+            <Label fx:id="LValorPE" layoutX="104.0" layoutY="42.0" prefHeight="47.0" prefWidth="199.0" text="R$ 00,00">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+            <Label fx:id="LPorcentoPE" layoutX="311.0" layoutY="51.0" prefHeight="30.0" prefWidth="55.0" text="100%">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="14.0" layoutY="101.0" prefHeight="34.0" prefWidth="348.0" text="Pedidos - Balcão">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="LTotalPB" layoutX="22.0" layoutY="136.0" prefHeight="47.0" prefWidth="81.0" text="00">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Label>
+            <Label fx:id="LValorPB" layoutX="103.0" layoutY="136.0" prefHeight="47.0" prefWidth="199.0" text="R$ 00,00">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+            <Label fx:id="LPorcentoPB" layoutX="310.0" layoutY="145.0" prefHeight="30.0" prefWidth="55.0" text="100%">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Line endX="277.0" layoutX="100.0" layoutY="89.0" opacity="0.5" startX="-100.0" />
+            <Label layoutX="14.0" layoutY="196.0" prefHeight="34.0" prefWidth="348.0" text="Total">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="LTotalPedidos" layoutX="22.0" layoutY="231.0" prefHeight="47.0" prefWidth="81.0" text="00">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Label>
+            <Label fx:id="LValorTP" layoutX="103.0" layoutY="231.0" prefHeight="47.0" prefWidth="199.0" text="R$ 00,00">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+            <Label fx:id="LPorcentoTP" layoutX="310.0" layoutY="240.0" prefHeight="30.0" prefWidth="55.0" text="100%">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Line endX="277.0" layoutX="100.0" layoutY="184.0" opacity="0.5" startX="-100.0" />
+         </children>
+      </Pane>
+      <Label layoutX="1037.0" layoutY="207.0" prefHeight="53.0" prefWidth="378.0" text="Pagamentos">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Label>
+      <Pane fx:id="PPagamentos" layoutX="1037.0" layoutY="260.0" prefHeight="438.0" prefWidth="378.0">
+         <children>
+            <Label layoutX="15.0" layoutY="6.0" prefHeight="34.0" prefWidth="348.0" text="Dinheiro">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="LTotalDinheiro" layoutX="16.0" layoutY="42.0" prefHeight="47.0" prefWidth="81.0" text="00">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Label>
+            <Label fx:id="LValorDinheiro" layoutX="99.0" layoutY="42.0" prefHeight="47.0" prefWidth="199.0" text="R$ 00,00">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+            <Label fx:id="LPorcentoDinheiro" layoutX="306.0" layoutY="51.0" prefHeight="30.0" prefWidth="55.0" text="100%">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="14.0" layoutY="100.0" prefHeight="34.0" prefWidth="348.0" text="Débito">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="LTotalDebito" layoutX="16.0" layoutY="128.0" prefHeight="47.0" prefWidth="81.0" text="00">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Label>
+            <Label fx:id="LValorDebito" layoutX="101.0" layoutY="128.0" prefHeight="47.0" prefWidth="199.0" text="R$ 00,00">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+            <Label fx:id="LPorcentoDebito" layoutX="308.0" layoutY="137.0" prefHeight="30.0" prefWidth="55.0" text="100%">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Line endX="277.0" layoutX="100.0" layoutY="88.0" opacity="0.5" startX="-100.0" />
+            <Label layoutX="13.0" layoutY="177.0" prefHeight="34.0" prefWidth="348.0" text="Crédito">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="LTotalCredito" layoutX="18.0" layoutY="204.0" prefHeight="47.0" prefWidth="81.0" text="00">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Label>
+            <Label fx:id="LValorCredito" layoutX="99.0" layoutY="204.0" prefHeight="47.0" prefWidth="199.0" text="R$ 00,00">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+            <Label fx:id="LPorcentoCredito" layoutX="306.0" layoutY="213.0" prefHeight="30.0" prefWidth="55.0" text="100%">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Line endX="277.0" layoutX="100.0" layoutY="176.0" opacity="0.5" startX="-100.0" />
+            <Label layoutX="14.0" layoutY="253.0" prefHeight="34.0" prefWidth="348.0" text="Pix">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="LTotalPix" layoutX="18.0" layoutY="282.0" prefHeight="47.0" prefWidth="81.0" text="00">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Label>
+            <Label fx:id="LValorPix" layoutX="99.0" layoutY="282.0" prefHeight="47.0" prefWidth="199.0" text="R$ 00,00">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+            <Label fx:id="LPorcentoPix" layoutX="306.0" layoutY="291.0" prefHeight="30.0" prefWidth="55.0" text="100%">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Line endX="277.0" layoutX="100.0" layoutY="252.0" opacity="0.5" startX="-100.0" />
+            <Label layoutX="13.0" layoutY="344.0" prefHeight="34.0" prefWidth="348.0" text="Total">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="LTotalPagamentos" layoutX="17.0" layoutY="377.0" prefHeight="47.0" prefWidth="81.0" text="00">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Label>
+            <Label fx:id="LValorTotalPagamentos" layoutX="98.0" layoutY="377.0" prefHeight="47.0" prefWidth="199.0" text="R$ 00,00">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+            <Label layoutX="305.0" layoutY="386.0" prefHeight="30.0" prefWidth="55.0" text="100%">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Line endX="277.0" layoutX="100.0" layoutY="336.0" opacity="0.5" startX="-100.0" />
+         </children>
+      </Pane>
+   </children>
+</Pane>

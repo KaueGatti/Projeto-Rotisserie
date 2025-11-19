@@ -87,8 +87,13 @@ public class ModalAdicionarPagamentoController {
 
         double valor = CurrencyFieldUtil.getValue(TFValor);
 
-        if (valor < 0) {
+        if (valor <= 0) {
             LInfo.setText("O valor deve ser maior que 0,00");
+            return false;
+        }
+
+        if (pedido.getValorPago() == pedido.getValorTotal()) {
+            LInfo.setText("Já foi pago o valor total do pedido!");
             return false;
         }
 
