@@ -56,6 +56,8 @@ public class PedidosController implements Initializable {
 
     @FXML
     private TableColumn<Pedido, String> colTipo;
+    @FXML
+    private TableColumn<Pedido, String> colPagamento;
 
     @FXML
     private TableColumn<Pedido, Double> colTotal;
@@ -155,6 +157,7 @@ public class PedidosController implements Initializable {
     private void initTablePedidos() {
         colCliente.setCellValueFactory(p -> p.getValue().nomeClienteProperty());
         colTipo.setCellValueFactory(p -> p.getValue().tipoPedidoProperty());
+        colPagamento.setCellValueFactory(p -> p.getValue().tipoPagamentoProperty());
         colData.setCellValueFactory(p -> p.getValue().dateTimeProperty());
         colData.setCellFactory(column -> new TableCell<Pedido, LocalDateTime>() {
             private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy | HH:mm");

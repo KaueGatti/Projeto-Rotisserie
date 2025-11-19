@@ -13,11 +13,12 @@
    <children>
       <TableView fx:id="tablePedidos" layoutX="36.0" layoutY="97.0" prefHeight="614.0" prefWidth="830.0">
         <columns>
-          <TableColumn fx:id="colCliente" prefWidth="317.6000785827637" text="Cliente" />
-          <TableColumn fx:id="colTipo" prefWidth="131.199951171875" text="Tipo" />
-            <TableColumn fx:id="colData" minWidth="0.0" prefWidth="152.0" text="Data e Horário" />
-            <TableColumn fx:id="colTotal" prefWidth="104.79998779296875" text="Total" />
-            <TableColumn fx:id="colStatus" minWidth="3.200042724609375" prefWidth="121.5999755859375" text="Status" />
+          <TableColumn fx:id="colCliente" prefWidth="208.8000144958496" text="Cliente" />
+          <TableColumn fx:id="colTipo" prefWidth="127.99995422363281" text="Tipo" />
+            <TableColumn fx:id="colPagamento" prefWidth="144.800048828125" text="Pagamento" />
+            <TableColumn fx:id="colData" minWidth="0.0" prefWidth="135.2000732421875" text="Data e Horário" />
+            <TableColumn fx:id="colTotal" prefWidth="105.60003662109375" text="Total" />
+            <TableColumn fx:id="colStatus" minWidth="3.200042724609375" prefWidth="108.7999267578125" text="Status" />
         </columns>
       </TableView>
       <Label layoutX="39.0" layoutY="15.0" text="Pedidos">

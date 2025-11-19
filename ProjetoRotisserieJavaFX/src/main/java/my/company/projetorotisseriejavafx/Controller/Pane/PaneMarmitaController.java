@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package my.company.projetorotisseriejavafx.Controller.Pane;
 
 import java.io.IOException;
@@ -128,16 +124,14 @@ public class PaneMarmitaController implements Initializable {
             comboBoxMarmita.getSelectionModel().selectFirst();
             maxMisturas = comboBoxMarmita.getSelectionModel().getSelectedItem().getMaxMistura();
             maxGuarnicoes = comboBoxMarmita.getSelectionModel().getSelectedItem().getMaxGuarnicao();
+            labelMistura.setText("Misturas: " + maxMisturas);
+            labelGuarnicao.setText("Guarnições: " + maxGuarnicoes);
 
             comboBoxMarmita.valueProperty().addListener((obs, oldVal, newVal) -> {
                 maxMisturas = newVal.getMaxMistura();
                 maxGuarnicoes = newVal.getMaxGuarnicao();
-                labelMistura.setText("Misturas: " + maxMisturas);
-                labelGuarnicao.setText("Guarnições: " + maxGuarnicoes);
+                limpar();
             });
-
-            labelMistura.setText("Misturas: " + maxMisturas);
-            labelGuarnicao.setText("Guarnições: " + maxGuarnicoes);
 
         } catch (SQLException e) {
             DatabaseExceptionHandler.handleException(e, "marmita");
@@ -254,6 +248,8 @@ public class PaneMarmitaController implements Initializable {
             }
         }
         observacao = "";
+        misturas = 0;
+        guarnicoes = 0;
         labelGuarnicao.setText("Guarnições: " + maxGuarnicoes);
         labelMistura.setText("Misturas: " + maxMisturas);
         misturasAdicionais = 0;

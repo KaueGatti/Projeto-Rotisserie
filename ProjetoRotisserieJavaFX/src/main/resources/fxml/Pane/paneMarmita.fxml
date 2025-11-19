@@ -29,17 +29,17 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Button layoutX="50.0" layoutY="471.0" mnemonicParsing="false" onAction="#bttObservacao" prefHeight="57.0" prefWidth="175.0" styleClass="btt" text="+ Observação">
+      <Button layoutX="52.0" layoutY="496.0" mnemonicParsing="false" onAction="#bttObservacao" prefHeight="49.0" prefWidth="175.0" styleClass="btt" text="+ Observação">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
-      <Button fx:id="bttAdicionar" layoutX="50.0" layoutY="538.0" mnemonicParsing="false" onAction="#bttAdicionar" prefHeight="63.0" prefWidth="360.0" styleClass="btt" text="+ Adicionar">
+      <Button fx:id="bttAdicionar" layoutX="50.0" layoutY="552.0" mnemonicParsing="false" onAction="#bttAdicionar" prefHeight="49.0" prefWidth="360.0" styleClass="btt" text="+ Adicionar">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
-      <Button fx:id="btnLimpar" layoutX="232.0" layoutY="471.0" mnemonicParsing="false" onAction="#limpar" prefHeight="57.0" prefWidth="175.0" styleClass="btt" text="- Limpar">
+      <Button fx:id="btnLimpar" layoutX="234.0" layoutY="496.0" mnemonicParsing="false" onAction="#limpar" prefHeight="49.0" prefWidth="175.0" styleClass="btt" text="- Limpar">
          <font>
             <Font size="20.0" />
          </font>
@@ -95,7 +95,7 @@
             <Font size="18.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="checkBoxSalada1" layoutX="57.0" layoutY="418.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="160.0" text="CheckBox">
+      <CheckBox fx:id="checkBoxSalada1" layoutX="57.0" layoutY="455.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="160.0" text="CheckBox">
          <font>
             <Font size="18.0" />
          </font>
@@ -115,10 +115,15 @@
       <Label fx:id="labelInfoGuarnicao" layoutX="58.0" layoutY="308.0" prefHeight="25.0" prefWidth="335.0" />
       <Label fx:id="labelInfoMistura" layoutX="53.0" layoutY="175.0" prefHeight="25.0" prefWidth="335.0" />
       <Label fx:id="labelInfoMarmita" layoutX="50.0" layoutY="452.0" prefHeight="17.0" prefWidth="360.0" />
-      <CheckBox fx:id="checkBoxSalada2" layoutX="243.0" layoutY="418.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="160.0" text="CheckBox">
+      <CheckBox fx:id="checkBoxSalada2" layoutX="243.0" layoutY="455.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="160.0" text="CheckBox">
          <font>
             <Font size="18.0" />
          </font>
       </CheckBox>
+      <Label fx:id="labelGuarnicao1" alignment="CENTER" layoutY="415.0" prefHeight="37.0" prefWidth="448.0" text="Saladas">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
    </children>
 </Pane>

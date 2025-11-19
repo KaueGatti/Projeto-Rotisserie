@@ -261,6 +261,12 @@ public class CardapioController implements Initializable {
             {
                 btnExcluir.setOnAction(event -> {
                     ItemCardapio itemCardapio = getTableView().getItems().get(getIndex());
+                    for (ComboBox<ItemCardapio> cb : grupoCBPrincipal) {
+                        if (cb.getValue() == itemCardapio) {
+                            event.consume();
+                            return;
+                        }
+                    }
                     principais.remove(itemCardapio);
                 });
             }
@@ -526,12 +532,11 @@ public class CardapioController implements Initializable {
                 if (valorNovo != null)
                     valorNovo.setDisponivel(false);
 
-                // força todos os combos do grupo a atualizarem as células
                 for (ComboBox<ItemCardapio> cb : grupo) {
                     cb.setButtonCell(criarCelula());
                     cb.setCellFactory(listView -> criarCelula());
-                    cb.hide();  // truque: fecha e reabre o popup
-                    cb.show();  // para forçar a atualização visual
+                    cb.hide();
+                    cb.show();
                     cb.hide();
                 }
             });
