@@ -1,6 +1,7 @@
 package my.company.projetorotisseriejavafx.DAO;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,6 +80,64 @@ public class PedidoDAO {
 
         try {
             stmt = con.prepareStatement("CALL READ_ALL_PEDIDOS()");
+
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Pedido pedido = new Pedido();
+
+                pedido.setId(rs.getInt("id"));
+
+                rs.getInt("id_mensalista");
+
+                if (rs.getInt("id_mensalista") != 0) {
+                    for (Mensalista mensalista : MensalistaDAO.read(rs.getInt("id_mensalista"))) {
+                        pedido.setMensalista(mensalista);
+                    }
+                }
+
+                pedido.setTipoPagamento(rs.getString("tipo_pagamento"));
+
+                pedido.setTipoPedido(rs.getString("tipo_pedido"));
+
+                if (pedido.getTipoPedido().equals("Entrega")) {
+
+                    for (Bairro bairro : BairroDAO.read(rs.getInt("id_bairro"))) {
+                        pedido.setBairro(bairro);
+                    }
+
+                    pedido.setValorEntrega(rs.getInt("valor_entrega"));
+                }
+
+                pedido.setNomeCliente(rs.getString("nome_cliente"));
+                pedido.setObservacoes(rs.getString("observacoes"));
+                pedido.setValorItens(rs.getDouble("valor_itens"));
+                pedido.setValorTotal(rs.getDouble("valor_total"));
+                pedido.setValorPago(rs.getDouble("valor_pago"));
+                pedido.setEndereco(rs.getString("endereco"));
+                pedido.setDateTime(rs.getTimestamp("date_time").toLocalDateTime());
+                pedido.setVencimento(rs.getDate("vencimento").toLocalDate());
+                pedido.setStatus(rs.getString("status"));
+
+                pedidos.add(pedido);
+            }
+
+            return pedidos;
+        } finally {
+            Conexao.closeConnection(con, stmt);
+        }
+    }
+
+    public static List<Pedido> read(LocalDate data) throws SQLException {
+        Connection con = Conexao.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        List<Pedido> pedidos = new ArrayList<>();
+
+        try {
+            stmt = con.prepareStatement("CALL READ_PEDIDOS_BY_DATA(?)");
+
+            stmt.setDate(1, Date.valueOf(data));
 
             rs = stmt.executeQuery();
 

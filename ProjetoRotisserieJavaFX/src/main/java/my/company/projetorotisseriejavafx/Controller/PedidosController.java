@@ -119,6 +119,9 @@ public class PedidosController implements Initializable {
     @FXML
     private Button btnPagamentos;
 
+    @FXML
+    private Button btnRelatorio;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initTablePedidos();
@@ -152,6 +155,11 @@ public class PedidosController implements Initializable {
     @FXML
     void pagamentos(ActionEvent event) {
         abrirModalPagamentos();
+    }
+
+    @FXML
+    void relatorio(ActionEvent event) {
+        abrirRelatorio();
     }
 
     private void initTablePedidos() {
@@ -429,6 +437,17 @@ public class PedidosController implements Initializable {
                 loadDetalhes(selectedPedido);
             }
         });
+    }
+
+    public void abrirRelatorio() {
+        AnchorPane APPrincipal = (AnchorPane) APPedidos.getParent();
+        APPrincipal.getChildren().clear();
+
+        try {
+            APPrincipal.getChildren().add(FXMLLoader.load(getClass().getResource("/fxml/Relatorio.fxml")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

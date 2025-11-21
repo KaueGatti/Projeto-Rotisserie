@@ -11,7 +11,7 @@
 
 <AnchorPane id="AnchorPane" fx:id="APPedidos" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="727.0" prefWidth="1537.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.PedidosController">
    <children>
-      <TableView fx:id="tablePedidos" layoutX="36.0" layoutY="97.0" prefHeight="614.0" prefWidth="830.0">
+      <TableView fx:id="tablePedidos" layoutX="36.0" layoutY="166.0" prefHeight="545.0" prefWidth="830.0">
         <columns>
           <TableColumn fx:id="colCliente" prefWidth="208.8000144958496" text="Cliente" />
           <TableColumn fx:id="colTipo" prefWidth="127.99995422363281" text="Tipo" />
@@ -182,5 +182,10 @@
             </Label>
          </children>
       </Pane>
+      <Button fx:id="btnRelatorio" layoutX="631.0" layoutY="24.0" mnemonicParsing="false" onAction="#relatorio" prefHeight="39.0" prefWidth="220.0" text="Relatório">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

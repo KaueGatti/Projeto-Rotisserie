@@ -59,6 +59,18 @@ public class ModalPagamentoController {
             vencimento = DPVencimento.getValue();
         }
 
+        if (CBPagamento.getValue().equals("Débito")) {
+            pagamento = "Debito";
+            fecharModal();
+            return;
+        }
+
+        if (CBPagamento.getValue().equals("Crédito")) {
+            pagamento = "Credito";
+            fecharModal();
+            return;
+        }
+
         pagamento = CBPagamento.getValue();
 
         fecharModal();
