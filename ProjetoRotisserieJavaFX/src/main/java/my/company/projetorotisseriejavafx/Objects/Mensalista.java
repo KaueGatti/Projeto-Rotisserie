@@ -7,6 +7,12 @@ public class Mensalista {
     private double conta;
     private String status;
 
+    public Mensalista(){}
+
+    public Mensalista(String nome) {
+        this.nome = nome;
+    }
+
     public int getId() {
         return id;
     }
