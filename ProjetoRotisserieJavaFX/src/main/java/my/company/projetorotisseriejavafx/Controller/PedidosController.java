@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.NumberFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.stream.Stream;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -29,6 +31,7 @@ import my.company.projetorotisseriejavafx.Controller.Modal.*;
 import my.company.projetorotisseriejavafx.DAO.*;
 import my.company.projetorotisseriejavafx.Objects.*;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
+import my.company.projetorotisseriejavafx.Util.Normalize;
 import my.company.projetorotisseriejavafx.Util.Printer;
 
 public class PedidosController implements Initializable {
@@ -44,6 +47,21 @@ public class PedidosController implements Initializable {
 
     @FXML
     private AnchorPane APPedidos;
+
+    @FXML
+    private ComboBox<Mensalista> CBMensalista;
+
+    @FXML
+    private ComboBox<String> CBPagamento;
+
+    @FXML
+    private DatePicker DPData;
+
+    @FXML
+    private CheckBox CBData;
+
+    @FXML
+    private ComboBox<String> CBStatus;
 
     @FXML
     private TableColumn<Pedido, String> colCliente;
@@ -122,9 +140,22 @@ public class PedidosController implements Initializable {
     @FXML
     private Button btnRelatorio;
 
+    @FXML
+    private Button btnPesquisar;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        initCBMensalista();
+        initCBPagamento();
+        initDPData();
+        initCBData();
+        initCBStatus();
         initTablePedidos();
+    }
+
+    @FXML
+    void pesquisar(ActionEvent event) {
+        filtrarPedidos();
     }
 
     @FXML
@@ -213,17 +244,6 @@ public class PedidosController implements Initializable {
         } catch (SQLException e) {
             DatabaseExceptionHandler.handleException(e, "Pedido");
         }
-    }
-
-    public void refreshTablePedido() {
-        tablePedidos.getItems().clear();
-
-        try {
-            pedidos = FXCollections.observableArrayList(PedidoDAO.read());
-        } catch (SQLException e) {
-            DatabaseExceptionHandler.handleException(e, "pedido");
-        }
-
     }
 
     public void loadDetalhes(Pedido pedido) {
@@ -448,6 +468,82 @@ public class PedidosController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void initCBMensalista() {
+        CBMensalista.getItems().clear();
+        CBMensalista.getItems().add(new Mensalista("Todos"));
+        CBMensalista.getSelectionModel().selectFirst();
+
+        try {
+            List<Mensalista> mensalistas = MensalistaDAO.read();
+            CBMensalista.getItems().addAll(mensalistas);
+        } catch (SQLException e) {
+            DatabaseExceptionHandler.handleException(e, "Mensalista");
+        }
+    }
+
+    private void initCBPagamento() {
+        CBPagamento.getItems().clear();
+        CBPagamento.getItems().addAll("Todos", "Dinheiro", "Débito", "Crédito", "Pix", "Pagar depois");
+        CBPagamento.getSelectionModel().selectFirst();
+    }
+
+    private void initDPData() {
+        DPData.setValue(LocalDate.now());
+        DPData.setEditable(false);
+    }
+
+    private void initCBData() {
+        CBData.setOnAction(event -> {
+            if (CBData.isSelected()) {
+                DPData.setDisable(false);
+            } else {
+                DPData.setDisable(true);
+            }
+        });
+    }
+
+    private void initCBStatus() {
+        CBStatus.getItems().clear();
+        CBStatus.getItems().addAll("Todos", "Pago", "A pagar");
+        CBStatus.getSelectionModel().selectFirst();
+    }
+
+    private void filtrarPedidos() {
+        this.pedidos.clear();
+
+        List<Pedido> pedidos = new ArrayList<>();
+
+        try {
+            if (CBData.isSelected()) {
+                pedidos = PedidoDAO.read(DPData.getValue());
+            } else {
+                pedidos = PedidoDAO.read();
+            }
+        } catch (SQLException e) {
+            DatabaseExceptionHandler.handleException(e, "Pedido");
+        }
+
+        Stream<Pedido> pedidosStream = pedidos.stream();
+
+        if (CBMensalista.getSelectionModel().getSelectedIndex() != 0) {
+            pedidosStream = pedidosStream.filter(p -> p.getMensalista() != null)
+                    .filter(p -> p.getMensalista().getNome().equals(CBMensalista.getValue().getNome()));
+        }
+
+        if (CBPagamento.getSelectionModel().getSelectedIndex() != 0) {
+            String pagamento = Normalize.normalize(CBPagamento.getValue());
+            pedidosStream = pedidosStream.filter(p -> p.getTipoPagamento().equalsIgnoreCase(pagamento));
+        }
+
+        if (CBStatus.getSelectionModel().getSelectedIndex() != 0) {
+            pedidosStream = pedidosStream.filter(p -> p.getStatus().equalsIgnoreCase(CBStatus.getValue()));
+        }
+
+        pedidos = pedidosStream.toList();
+
+        this.pedidos.setAll(pedidos);
     }
 
 }
