@@ -216,5 +216,10 @@
       </Label>
       <Button fx:id="btnPesquisar" layoutX="819.0" layoutY="118.0" mnemonicParsing="false" onAction="#pesquisar" prefHeight="30.0" prefWidth="31.0" />
       <CheckBox fx:id="CBData" layoutX="505.0" layoutY="96.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0" />
+      <Button fx:id="btnPedidosAtrasados" layoutX="395.0" layoutY="24.0" mnemonicParsing="false" onAction="#pedidosAtrasados" prefHeight="39.0" prefWidth="220.0" text="Pedidos Atrasados">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

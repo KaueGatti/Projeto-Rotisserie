@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Scene?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<Scene fx:id="scene" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.Modal.ModalPedidosAtrasadosController">
+    <AnchorPane prefHeight="429.0" prefWidth="671.0">
+      <children>
+         <Label alignment="CENTER" layoutX="171.0" layoutY="14.0" prefHeight="18.0" prefWidth="328.0" text="Pedidos Atrasados">
+            <font>
+               <Font size="24.0" />
+            </font>
+         </Label>
+         <ComboBox fx:id="CBMensalista" layoutX="30.0" layoutY="75.0" prefHeight="34.0" prefWidth="206.0" />
+         <Label layoutX="30.0" layoutY="49.0" text="Mensalista">
+            <font>
+               <Font size="16.0" />
+            </font>
+         </Label>
+         <TableView fx:id="tablePedidos" layoutX="30.0" layoutY="131.0" prefHeight="270.0" prefWidth="609.0">
+           <columns>
+             <TableColumn fx:id="colCliente" prefWidth="202.40005111694336" text="Cliente" />
+             <TableColumn fx:id="colData" minWidth="0.0" prefWidth="141.5999298095703" text="Data e Horário" />
+               <TableColumn fx:id="colVencimento" prefWidth="117.5999755859375" text="Vencimento" />
+               <TableColumn fx:id="colValor" prefWidth="95.2000732421875" text="Valor" />
+               <TableColumn fx:id="colVer" prefWidth="48.0" />
+           </columns>
+         </TableView>
+      </children></AnchorPane>
+</Scene>

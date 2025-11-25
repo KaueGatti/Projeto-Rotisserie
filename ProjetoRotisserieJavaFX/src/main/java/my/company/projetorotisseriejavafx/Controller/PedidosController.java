@@ -143,6 +143,9 @@ public class PedidosController implements Initializable {
     @FXML
     private Button btnPesquisar;
 
+    @FXML
+    private Button btnPedidosAtrasados;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initCBMensalista();
@@ -191,6 +194,11 @@ public class PedidosController implements Initializable {
     @FXML
     void relatorio(ActionEvent event) {
         abrirRelatorio();
+    }
+
+    @FXML
+    void pedidosAtrasados(ActionEvent event) {
+        abrirModalPedidosAtrasados();
     }
 
     private void initTablePedidos() {
@@ -544,6 +552,35 @@ public class PedidosController implements Initializable {
         pedidos = pedidosStream.toList();
 
         this.pedidos.setAll(pedidos);
+    }
+
+    public void selectPedidoInTable(Pedido pedido) {
+        tablePedidos.getSelectionModel().select(pedido);
+    }
+
+    private void abrirModalPedidosAtrasados() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalPedidosAtrasados.fxml"));
+            Stage modal = new Stage();
+
+            modal.setScene(loader.load());
+
+            ModalPedidosAtrasadosController controller = loader.getController();
+
+            List<Pedido> pedidosAtrasados = pedidos.stream()
+                    .filter(p -> p.getVencimento().isEqual(LocalDate.now())).toList();
+
+            controller.initialize(pedidosAtrasados, CBMensalista.getItems(), this);
+
+            modal.initStyle(StageStyle.UTILITY);
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.setResizable(false);
+            modal.showAndWait();
+
+        } catch (IOException e) {
+            System.out.println("Erro ao abrir Pedidos Atrasados");
+            e.printStackTrace();
+        }
     }
 
 }
