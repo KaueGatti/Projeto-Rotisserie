@@ -1,0 +1,45 @@
+.button-blue {
+    -fx-background-color: -color-blue;
+}
+
+.button-green {
+    -fx-background-color: -color-green;
+}
+
+.button-red {
+    -fx-background-color: -color-red;
+}
+
+.button-yellow {
+    -fx-background-color: -color-yellow;
+}
+
+.button-gray {
+    -fx-background-color: -color-gray;
+}
+
+.button-blue,
+.button-green,
+.button-red,
+.button-yellow,
+.button-gray {
+    -fx-text-fill: -color-white;
+    -fx-font-weight: 700;
+}
+
+.button-blue,
+.button-green,
+.button-red,
+.button-yellow,
+.button-gray {
+    -fx-text-fill: -color-white;
+    -fx-font-weight: 700;
+}
+
+.button-action:hover,
+.button-action:pressed,
+.button-action:focused{
+    -fx-font-size: 16;
+    -fx-border-color: transparent;
+}
+

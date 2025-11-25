@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -18,7 +19,7 @@
             </Label>
             <Button fx:id="btnCadastrar" layoutX="417.0" layoutY="74.0" mnemonicParsing="false" onAction="#cadastrar" prefHeight="40.0" prefWidth="142.0" text="Cadastrar">
                <font>
-                  <Font size="18.0" />
+                  <Font size="16.0" />
                </font>
             </Button>
             <TableView fx:id="tableMotoboys" layoutX="28.0" layoutY="141.0" prefHeight="478.0" prefWidth="530.0">
@@ -31,8 +32,12 @@
             </TableView>
             <Button fx:id="btnImprimirDiaria" layoutX="28.0" layoutY="74.0" mnemonicParsing="false" onAction="#imprimirDiaria" prefHeight="40.0" prefWidth="194.0" text="Imprimir diária">
                <font>
-                  <Font size="18.0" />
+                  <Font size="16.0" />
                </font>
+               <styleClass>
+                  <String fx:value="button-blue" />
+                  <String fx:value="button-action" />
+               </styleClass>
             </Button>
          </children>
       </Pane>

@@ -14,13 +14,13 @@
             <Font size="80.0" />
          </font>
       </Label>
-      <DatePicker fx:id="DPData" layoutX="689.0" layoutY="151.0" prefHeight="34.0" prefWidth="238.0" />
-      <Label layoutX="598.0" layoutY="141.0" text="Data">
+      <DatePicker id="DPData-relatorio" fx:id="DPData" layoutX="714.0" layoutY="150.0" prefHeight="34.0" prefWidth="182.0" />
+      <Label layoutX="627.0" layoutY="141.0" text="Data">
          <font>
             <Font size="36.0" />
          </font>
       </Label>
-      <Label layoutX="195.0" layoutY="207.0" prefHeight="53.0" prefWidth="378.0" text="Resumo Geral">
+      <Label id="LResumoGeral-relatorio" layoutX="195.0" layoutY="207.0" prefHeight="53.0" prefWidth="378.0" text="Resumo Geral">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
@@ -28,7 +28,7 @@
             <Font name="System Bold" size="30.0" />
          </font>
       </Label>
-      <Pane fx:id="PResumoGeral" layoutX="195.0" layoutY="260.0" prefHeight="438.0" prefWidth="378.0">
+      <Pane id="PResumoGeral-relatorio" fx:id="PResumoGeral" layoutX="195.0" layoutY="260.0" prefHeight="438.0" prefWidth="378.0">
          <children>
             <Label layoutX="15.0" layoutY="6.0" prefHeight="34.0" prefWidth="348.0" text="Total de pedidos">
                <opaqueInsets>
@@ -55,7 +55,7 @@
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <Label fx:id="LFaturamento" layoutX="24.0" layoutY="130.0" prefHeight="47.0" prefWidth="332.0" text="R$ 00,00">
+            <Label fx:id="LFaturamento" layoutX="24.0" layoutY="130.0" prefHeight="47.0" prefWidth="332.0" styleClass="LValor-relatorio" text="R$ 00,00">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -65,7 +65,7 @@
             </Label>
          </children>
       </Pane>
-      <Label layoutX="616.0" layoutY="207.0" prefHeight="53.0" prefWidth="378.0" text="Pedidos">
+      <Label id="LPedidos-relatorio" layoutX="616.0" layoutY="207.0" prefHeight="53.0" prefWidth="378.0" text="Pedidos">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
@@ -73,7 +73,7 @@
             <Font name="System Bold" size="30.0" />
          </font>
       </Label>
-      <Pane fx:id="PPedidos" layoutX="616.0" layoutY="260.0" prefHeight="438.0" prefWidth="378.0">
+      <Pane id="PPedidos-relatorio" fx:id="PPedidos" layoutX="616.0" layoutY="260.0" prefHeight="438.0" prefWidth="378.0">
          <children>
             <Label layoutX="15.0" layoutY="7.0" prefHeight="34.0" prefWidth="348.0" text="Pedidos - Entrega">
                <opaqueInsets>
@@ -91,7 +91,7 @@
                   <Font name="System Bold" size="32.0" />
                </font>
             </Label>
-            <Label fx:id="LValorPE" layoutX="104.0" layoutY="42.0" prefHeight="47.0" prefWidth="199.0" text="R$ 00,00">
+            <Label fx:id="LValorPE" layoutX="104.0" layoutY="42.0" prefHeight="47.0" prefWidth="199.0" styleClass="LValor-relatorio" text="R$ 00,00">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -99,7 +99,7 @@
                   <Font name="System Bold" size="28.0" />
                </font>
             </Label>
-            <Label fx:id="LPorcentoPE" layoutX="311.0" layoutY="51.0" prefHeight="30.0" prefWidth="55.0" text="100%">
+            <Label fx:id="LPorcentoPE" layoutX="311.0" layoutY="51.0" prefHeight="30.0" prefWidth="55.0" styleClass="LPorcento-relatorio" text="100%">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -123,7 +123,7 @@
                   <Font name="System Bold" size="32.0" />
                </font>
             </Label>
-            <Label fx:id="LValorPB" layoutX="103.0" layoutY="136.0" prefHeight="47.0" prefWidth="199.0" text="R$ 00,00">
+            <Label fx:id="LValorPB" layoutX="103.0" layoutY="136.0" prefHeight="47.0" prefWidth="199.0" styleClass="LValor-relatorio" text="R$ 00,00">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -131,7 +131,7 @@
                   <Font name="System Bold" size="28.0" />
                </font>
             </Label>
-            <Label fx:id="LPorcentoPB" layoutX="310.0" layoutY="145.0" prefHeight="30.0" prefWidth="55.0" text="100%">
+            <Label fx:id="LPorcentoPB" layoutX="310.0" layoutY="145.0" prefHeight="30.0" prefWidth="55.0" styleClass="LPorcento-relatorio" text="100%">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -156,7 +156,7 @@
                   <Font name="System Bold" size="32.0" />
                </font>
             </Label>
-            <Label fx:id="LValorTP" layoutX="103.0" layoutY="231.0" prefHeight="47.0" prefWidth="199.0" text="R$ 00,00">
+            <Label fx:id="LValorTP" layoutX="103.0" layoutY="231.0" prefHeight="47.0" prefWidth="199.0" styleClass="LValor-relatorio" text="R$ 00,00">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -164,7 +164,7 @@
                   <Font name="System Bold" size="28.0" />
                </font>
             </Label>
-            <Label fx:id="LPorcentoTP" layoutX="310.0" layoutY="240.0" prefHeight="30.0" prefWidth="55.0" text="100%">
+            <Label fx:id="LPorcentoTP" layoutX="310.0" layoutY="240.0" prefHeight="30.0" prefWidth="55.0" styleClass="LPorcento-relatorio" text="100%">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -175,7 +175,7 @@
             <Line endX="277.0" layoutX="100.0" layoutY="184.0" opacity="0.5" startX="-100.0" />
          </children>
       </Pane>
-      <Label layoutX="1037.0" layoutY="207.0" prefHeight="53.0" prefWidth="378.0" text="Pagamentos">
+      <Label id="LPagamentos-relatorio" layoutX="1037.0" layoutY="207.0" prefHeight="53.0" prefWidth="378.0" text="Pagamentos">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
@@ -183,7 +183,7 @@
             <Font name="System Bold" size="30.0" />
          </font>
       </Label>
-      <Pane fx:id="PPagamentos" layoutX="1037.0" layoutY="260.0" prefHeight="438.0" prefWidth="378.0">
+      <Pane id="PPagamentos-relatorio" fx:id="PPagamentos" layoutX="1037.0" layoutY="260.0" prefHeight="438.0" prefWidth="378.0">
          <children>
             <Label layoutX="15.0" layoutY="6.0" prefHeight="34.0" prefWidth="348.0" text="Dinheiro">
                <opaqueInsets>
@@ -201,7 +201,7 @@
                   <Font name="System Bold" size="32.0" />
                </font>
             </Label>
-            <Label fx:id="LValorDinheiro" layoutX="99.0" layoutY="42.0" prefHeight="47.0" prefWidth="199.0" text="R$ 00,00">
+            <Label fx:id="LValorDinheiro" layoutX="99.0" layoutY="42.0" prefHeight="47.0" prefWidth="199.0" styleClass="LValor-relatorio" text="R$ 00,00">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -209,7 +209,7 @@
                   <Font name="System Bold" size="28.0" />
                </font>
             </Label>
-            <Label fx:id="LPorcentoDinheiro" layoutX="306.0" layoutY="51.0" prefHeight="30.0" prefWidth="55.0" text="100%">
+            <Label fx:id="LPorcentoDinheiro" layoutX="306.0" layoutY="51.0" prefHeight="30.0" prefWidth="55.0" styleClass="LPorcento-relatorio" text="100%">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -233,7 +233,7 @@
                   <Font name="System Bold" size="32.0" />
                </font>
             </Label>
-            <Label fx:id="LValorDebito" layoutX="101.0" layoutY="128.0" prefHeight="47.0" prefWidth="199.0" text="R$ 00,00">
+            <Label fx:id="LValorDebito" layoutX="101.0" layoutY="128.0" prefHeight="47.0" prefWidth="199.0" styleClass="LValor-relatorio" text="R$ 00,00">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -241,7 +241,7 @@
                   <Font name="System Bold" size="28.0" />
                </font>
             </Label>
-            <Label fx:id="LPorcentoDebito" layoutX="308.0" layoutY="137.0" prefHeight="30.0" prefWidth="55.0" text="100%">
+            <Label fx:id="LPorcentoDebito" layoutX="308.0" layoutY="137.0" prefHeight="30.0" prefWidth="55.0" styleClass="LPorcento-relatorio" text="100%">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -266,7 +266,7 @@
                   <Font name="System Bold" size="32.0" />
                </font>
             </Label>
-            <Label fx:id="LValorCredito" layoutX="99.0" layoutY="204.0" prefHeight="47.0" prefWidth="199.0" text="R$ 00,00">
+            <Label fx:id="LValorCredito" layoutX="99.0" layoutY="204.0" prefHeight="47.0" prefWidth="199.0" styleClass="LValor-relatorio" text="R$ 00,00">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -274,7 +274,7 @@
                   <Font name="System Bold" size="28.0" />
                </font>
             </Label>
-            <Label fx:id="LPorcentoCredito" layoutX="306.0" layoutY="213.0" prefHeight="30.0" prefWidth="55.0" text="100%">
+            <Label fx:id="LPorcentoCredito" layoutX="306.0" layoutY="213.0" prefHeight="30.0" prefWidth="55.0" styleClass="LPorcento-relatorio" text="100%">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -299,7 +299,7 @@
                   <Font name="System Bold" size="32.0" />
                </font>
             </Label>
-            <Label fx:id="LValorPix" layoutX="99.0" layoutY="282.0" prefHeight="47.0" prefWidth="199.0" text="R$ 00,00">
+            <Label fx:id="LValorPix" layoutX="99.0" layoutY="282.0" prefHeight="47.0" prefWidth="199.0" styleClass="LValor-relatorio" text="R$ 00,00">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -307,7 +307,7 @@
                   <Font name="System Bold" size="28.0" />
                </font>
             </Label>
-            <Label fx:id="LPorcentoPix" layoutX="306.0" layoutY="291.0" prefHeight="30.0" prefWidth="55.0" text="100%">
+            <Label fx:id="LPorcentoPix" layoutX="306.0" layoutY="291.0" prefHeight="30.0" prefWidth="55.0" styleClass="LPorcento-relatorio" text="100%">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -332,7 +332,7 @@
                   <Font name="System Bold" size="32.0" />
                </font>
             </Label>
-            <Label fx:id="LValorTotalPagamentos" layoutX="98.0" layoutY="377.0" prefHeight="47.0" prefWidth="199.0" text="R$ 00,00">
+            <Label fx:id="LValorTotalPagamentos" layoutX="98.0" layoutY="377.0" prefHeight="47.0" prefWidth="199.0" styleClass="LValor-relatorio" text="R$ 00,00">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -340,7 +340,7 @@
                   <Font name="System Bold" size="28.0" />
                </font>
             </Label>
-            <Label layoutX="305.0" layoutY="386.0" prefHeight="30.0" prefWidth="55.0" text="100%">
+            <Label layoutX="305.0" layoutY="386.0" prefHeight="30.0" prefWidth="55.0" styleClass="LPorcento-relatorio" text="100%">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>

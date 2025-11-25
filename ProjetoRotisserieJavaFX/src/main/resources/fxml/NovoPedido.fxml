@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane id="paneNovoPedido" fx:id="panePrincipal" prefHeight="728.0" prefWidth="1524.0" stylesheets="@../styles/novoPedido.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.NovoPedidoController">
+<Pane id="paneNovoPedido" fx:id="panePrincipal" prefHeight="728.0" prefWidth="1524.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.NovoPedidoController">
    <children>
          <ToggleButton id="tabMarmita" fx:id="tabButtonLeft" layoutX="28.0" layoutY="19.0" mnemonicParsing="false" onAction="#marmitaClicked" prefHeight="58.0" prefWidth="230.0" selected="true" stylesheets="@../styles/novoPedido.css" text="Marmita">
             <font>

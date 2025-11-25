@@ -15,17 +15,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import my.company.projetorotisseriejavafx.Controller.Modal.ModalAdicionarItemCardapioController;
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalAvisoNovoPedidoController;
 import my.company.projetorotisseriejavafx.DAO.CardapioDAO;
 import my.company.projetorotisseriejavafx.DAO.MarmitaDAO;
 import my.company.projetorotisseriejavafx.Objects.Cardapio;
 import my.company.projetorotisseriejavafx.Objects.Marmita;
-import my.company.projetorotisseriejavafx.Objects.Pedido;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
-import my.company.projetorotisseriejavafx.Util.Printer;
-
-import javax.print.PrintException;
 
 public class InicioController implements Initializable {
 
@@ -203,7 +198,6 @@ public class InicioController implements Initializable {
         }
         return false;
     }
-
 
     public boolean abrirModalAvisoNovoPedido(String msg, Object tipo) {
         try {

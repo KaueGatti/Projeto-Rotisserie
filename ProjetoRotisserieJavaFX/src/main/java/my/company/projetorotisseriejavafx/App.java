@@ -8,24 +8,30 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-/**
- * JavaFX App
- */
 public class App extends Application {
 
     private static Scene scene;
 
     @Override
     public void start(Stage stage) throws IOException {
+
+
         try {
             Parent root = loadFXML("Inicio.fxml");
             scene = new Scene(root);
+
+            scene.getStylesheets().addAll(
+                    getClass().getResource("/styles/main.css").toExternalForm(),
+                    getClass().getResource("/styles/colors.css").toExternalForm(),
+                    getClass().getResource("/styles/buttons.css").toExternalForm()
+            );
+
             stage.setScene(scene);
 
             stage.setMaximized(true);
 
             stage.show();
-            
+
         } catch (Exception e) {
             System.out.println("Erro start: " + e);
             e.printStackTrace();

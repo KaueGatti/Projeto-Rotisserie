@@ -1,0 +1,36 @@
+#LResumoGeral-relatorio {
+    -fx-background-color: -color-blue;
+}
+
+#LPedidos-relatorio {
+    -fx-background-color: -color-yellow;
+}
+
+#LPagamentos-relatorio {
+    -fx-background-color: -color-green;
+}
+
+#LResumoGeral-relatorio,
+#LPedidos-relatorio,
+#LPagamentos-relatorio {
+    -fx-text-fill: -color-white;
+    -fx-padding: 0 0 0 10;
+}
+
+#PResumoGeral-relatorio,
+#PPedidos-relatorio,
+#PPagamentos-relatorio {
+    -fx-background-color: -color-white;
+}
+
+.LValor-relatorio {
+    -fx-text-fill: -color-green;
+}
+
+.LPorcento-relatorio {
+    -fx-text-fill: -color-blue;
+}
+
+#DPData-relatorio {
+    -fx-font-size: 16;
+}

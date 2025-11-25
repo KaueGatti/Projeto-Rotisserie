@@ -14,6 +14,10 @@ public class Relatorio {
         return pedidos.size();
     }
 
+    public double getValorPedidos() {
+        return pedidos.stream().mapToDouble(Pedido::getValorTotal).sum();
+    }
+
     public double getValorFaturamento() {
         return pedidos.stream().filter(p -> !p.getTipoPagamento().equals("Pagar depois")).mapToDouble(Pedido::getValorTotal).sum();
     }
@@ -31,7 +35,7 @@ public class Relatorio {
     }
 
     public int getPorcentoEntrega() {
-        return (int) ((getValorTotalEntrega() / getValorFaturamento()) * 100);
+        return (int) ((getValorTotalEntrega() / getValorPedidos()) * 100);
     }
 
     public int getTotalBalcao() {
@@ -43,7 +47,7 @@ public class Relatorio {
     }
 
     public int getPorcentoBalcao() {
-        return (int) ((getValorTotalBalcao() / getValorFaturamento()) * 100);
+        return (int) ((getValorTotalBalcao() / getValorPedidos()) * 100);
     }
 
     public int getTotalPagamentos() {
