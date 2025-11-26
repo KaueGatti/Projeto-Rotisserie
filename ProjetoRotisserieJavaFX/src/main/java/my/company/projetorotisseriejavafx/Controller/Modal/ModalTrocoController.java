@@ -11,9 +11,6 @@ public class ModalTrocoController {
     @FXML
     private Label LInfo;
 
-    @FXML
-    private Scene scene;
-
     public void initialize(double valorTroco) {
         String valorTrocoFormatado = String.format("R$ %.2f", valorTroco).replace(".", ",");
         if (valorTroco == 0) {

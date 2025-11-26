@@ -53,6 +53,6 @@
             </Button>
          </children>
       </HBox>
-      <AnchorPane fx:id="APPrincipal" layoutY="74.4" prefHeight="451.0" prefWidth="1209.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="74.0" />
+      <AnchorPane id="APPrincipal" fx:id="APPrincipal" layoutY="74.4" prefHeight="451.0" prefWidth="1209.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="74.0" />
    </children>
 </AnchorPane>

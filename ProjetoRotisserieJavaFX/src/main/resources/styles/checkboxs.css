@@ -1,0 +1,37 @@
+/* ---------- CHECKBOX MODERNO ---------- */
+.check-box {
+    -fx-font-size: 14px;
+    -fx-text-fill: #2a2a2a;
+}
+
+/* Caixa do checkbox */
+.check-box .box {
+    -fx-background-color: #f0f0f5;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+    -fx-border-color: #c0c0c6;
+    -fx-border-width: 1;
+    -fx-min-width: 16px;
+    -fx-min-height: 16px;
+}
+
+/* Hover */
+.check-box:hover .box {
+    -fx-background-color: #e7e7ee;
+}
+
+/* Quando marcado */
+.check-box:selected .box {
+    -fx-background-color: #4a78e3;
+    -fx-border-color: #4a78e3;
+}
+
+/* O check dentro */
+.check-box:selected .mark {
+    -fx-background-color: white;
+}
+
+/* Foco */
+.check-box:focused .box {
+    -fx-border-color: #4a78e3;
+}

@@ -13,9 +13,6 @@ public class ModalEnderecoPedidoController {
     @FXML
     private AnchorPane root;
 
-    @FXML
-    private Scene scene;
-
     public void initialize(String endereco) {
         TAEndereco.setText(endereco);
     }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
@@ -12,24 +13,27 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="APPedidos" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="727.0" prefWidth="1537.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.PedidosController">
+<AnchorPane id="APPedidos-pedidos" fx:id="APPedidos" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="727.0" prefWidth="1537.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.PedidosController">
    <children>
-      <TableView fx:id="tablePedidos" layoutX="36.0" layoutY="166.0" prefHeight="545.0" prefWidth="830.0">
+      <TableView id="TPedidos" fx:id="tablePedidos" layoutX="36.0" layoutY="166.0" prefHeight="545.0" prefWidth="830.0">
         <columns>
           <TableColumn fx:id="colCliente" prefWidth="208.8000144958496" text="Cliente" />
           <TableColumn fx:id="colTipo" prefWidth="127.99995422363281" text="Tipo" />
             <TableColumn fx:id="colPagamento" prefWidth="144.800048828125" text="Pagamento" />
             <TableColumn fx:id="colData" minWidth="0.0" prefWidth="135.2000732421875" text="Data e Horário" />
             <TableColumn fx:id="colTotal" prefWidth="105.60003662109375" text="Total" />
-            <TableColumn fx:id="colStatus" minWidth="3.200042724609375" prefWidth="108.7999267578125" text="Status" />
+            <TableColumn fx:id="colStatus" minWidth="3.200042724609375" prefWidth="101.5999755859375" text="Status" />
         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
       <Label layoutX="39.0" layoutY="15.0" text="Pedidos">
          <font>
             <Font size="48.0" />
          </font>
       </Label>
-      <Pane fx:id="paneDetalhes" layoutX="879.0" layoutY="1.0" prefHeight="718.0" prefWidth="658.0">
+      <Pane id="PDetalhes-pedidos" fx:id="paneDetalhes" layoutX="879.0" layoutY="1.0" prefHeight="718.0" prefWidth="658.0">
          <children>
             <Label layoutX="14.0" layoutY="10.0" text="Detalhes do Pedido">
                <font>
@@ -45,6 +49,10 @@
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
+               <styleClass>
+                  <String fx:value="button-blue" />
+                  <String fx:value="button-action" />
+               </styleClass>
             </Button>
             <Label layoutX="38.0" layoutY="87.0" text="Cliente">
                <font>
@@ -80,6 +88,10 @@
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
+               <styleClass>
+                  <String fx:value="button-yellow" />
+                  <String fx:value="button-action" />
+               </styleClass>
             </Button>
             <Label layoutX="39.0" layoutY="329.0" text="Bairro">
                <font>
@@ -95,6 +107,10 @@
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
+               <styleClass>
+                  <String fx:value="button-yellow" />
+                  <String fx:value="button-action" />
+               </styleClass>
             </Button>
             <Label layoutX="14.0" layoutY="268.0" text="Entrega">
                <font>
@@ -152,16 +168,28 @@
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
+               <styleClass>
+                  <String fx:value="button-gray" />
+                  <String fx:value="button-action" />
+               </styleClass>
             </Button>
             <Button fx:id="btnDescontosEAdicionais" disable="true" layoutX="413.0" layoutY="518.0" mnemonicParsing="false" onAction="#descontosEAdicionais" prefHeight="39.0" prefWidth="220.0" text="Descontos e Adicionais" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
+               <styleClass>
+                  <String fx:value="button-blue" />
+                  <String fx:value="button-action" />
+               </styleClass>
             </Button>
             <Button fx:id="btnPagamentos" disable="true" layoutX="414.0" layoutY="657.0" mnemonicParsing="false" onAction="#pagamentos" prefHeight="39.0" prefWidth="220.0" text="Pagamentos" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
+               <styleClass>
+                  <String fx:value="button-green" />
+                  <String fx:value="button-action" />
+               </styleClass>
             </Button>
             <Label layoutX="39.0" layoutY="642.0" text="Status">
                <font>
@@ -189,6 +217,10 @@
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
+         <styleClass>
+            <String fx:value="button-blue" />
+            <String fx:value="button-action" />
+         </styleClass>
       </Button>
       <ComboBox fx:id="CBMensalista" layoutX="39.0" layoutY="118.0" prefHeight="30.0" prefWidth="190.0" />
       <ComboBox fx:id="CBStatus" layoutX="658.0" layoutY="118.0" prefHeight="30.0" prefWidth="139.0" />
@@ -214,12 +246,16 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Button fx:id="btnPesquisar" layoutX="819.0" layoutY="118.0" mnemonicParsing="false" onAction="#pesquisar" prefHeight="30.0" prefWidth="31.0" />
+      <Button id="BPesquisar-pedidos" fx:id="btnPesquisar" layoutX="819.0" layoutY="118.0" mnemonicParsing="false" onAction="#pesquisar" prefHeight="30.0" prefWidth="31.0" styleClass="icon-search" />
       <CheckBox fx:id="CBData" layoutX="505.0" layoutY="96.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0" />
       <Button fx:id="btnPedidosAtrasados" layoutX="395.0" layoutY="24.0" mnemonicParsing="false" onAction="#pedidosAtrasados" prefHeight="39.0" prefWidth="220.0" text="Pedidos Atrasados">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
+         <styleClass>
+            <String fx:value="button-yellow" />
+            <String fx:value="button-action" />
+         </styleClass>
       </Button>
    </children>
 </AnchorPane>

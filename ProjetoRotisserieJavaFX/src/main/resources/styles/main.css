@@ -1,3 +1,27 @@
+@import "colors.css";
+@import "buttons.css";
+@import "tables.css";
+@import "comboboxs.css";
+@import "checkboxs.css";
+@import "datepickers.css";
+
+#APPrincipal {
+    -fx-background-color: -color-white;
+}
+
+/* Tela de Pedidos */
+
+
+#BPesquisar-pedidos {
+    -fx-background-color: transparent;
+}
+
+#BPesquisar-pedidos .ikonli-font-icon {
+    -fx-icon-size: 22px;
+}
+
+/* Tela de Relatório */
+
 #LResumoGeral-relatorio {
     -fx-background-color: -color-blue;
 }

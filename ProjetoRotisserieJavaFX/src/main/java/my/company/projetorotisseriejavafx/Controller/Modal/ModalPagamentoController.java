@@ -3,13 +3,16 @@ package my.company.projetorotisseriejavafx.Controller.Modal;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import my.company.projetorotisseriejavafx.Objects.Pedido;
+import my.company.projetorotisseriejavafx.Util.CssHelper;
 import my.company.projetorotisseriejavafx.Util.CurrencyFieldUtil;
 
 import java.io.IOException;
@@ -24,7 +27,8 @@ public class ModalPagamentoController {
     private LocalDate vencimento = null;
 
     @FXML
-    private Scene scene;
+    private AnchorPane root;
+
     @FXML
     private ComboBox<String> CBPagamento;
     @FXML
@@ -77,7 +81,7 @@ public class ModalPagamentoController {
     }
 
     private void fecharModal() {
-        Stage modal = (Stage) scene.getWindow();
+        Stage modal = (Stage) root.getScene().getWindow();
         modal.close();
     }
 
@@ -161,12 +165,18 @@ public class ModalPagamentoController {
 
     public void abrirModalTroco(double valorTroco) {
         try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalTroco.fxml"));
+
+            Parent root = loader.load();
+
             Stage modal = new Stage();
+            Scene scene = new Scene(root);
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalTroco.fxml"));
-            modal.setScene(fxmlLoader.load());
+            CssHelper.loadCss(scene);
 
-            ModalTrocoController controller = fxmlLoader.getController();
+            modal.setScene(scene);
+
+            ModalTrocoController controller = loader.getController();
 
             controller.initialize(valorTroco);
 

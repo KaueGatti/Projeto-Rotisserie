@@ -1,43 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Scene?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<Scene fx:id="scene" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.Modal.ModalDetalhesMarmitaController">
-    <AnchorPane prefHeight="300.0" prefWidth="480.0">
-      <children>
-         <Label alignment="CENTER" prefHeight="70.0" prefWidth="480.0" text="Detalhes da Marmita">
-            <font>
-               <Font size="24.0" />
-            </font>
-         </Label>
-         <Label layoutX="28.0" layoutY="57.0" text="Marmita">
-            <font>
-               <Font size="16.0" />
-            </font>
-         </Label>
-         <TextField fx:id="TFMarmita" editable="false" layoutX="22.0" layoutY="83.0" prefHeight="26.0" prefWidth="200.0" />
-         <Label layoutX="28.0" layoutY="109.0" text="Detalhes">
-            <font>
-               <Font size="16.0" />
-            </font>
-         </Label>
-         <TextArea fx:id="TADetalhes" editable="false" layoutX="22.0" layoutY="135.0" prefHeight="150.0" prefWidth="200.0" text="Principal:&#10;&#10;Misturas:&#10;&#10;Guarnições:&#10;&#10;&#10;Salada:" wrapText="true" />
-         <Label layoutX="240.0" layoutY="57.0" text="Observações">
-            <font>
-               <Font size="16.0" />
-            </font>
-         </Label>
-         <TextArea fx:id="TAObservacoes" editable="false" layoutX="240.0" layoutY="85.0" prefHeight="138.0" prefWidth="200.0" wrapText="true" />
-         <Label layoutX="240.0" layoutY="232.0" text="Subtotal">
-            <font>
-               <Font size="16.0" />
-            </font>
-         </Label>
-         <TextField fx:id="TFSubtotal" editable="false" layoutX="240.0" layoutY="258.0" prefHeight="26.0" prefWidth="200.0" />
-      </children></AnchorPane>
-</Scene>
+<AnchorPane fx:id="root" prefHeight="300.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.Modal.ModalDetalhesMarmitaController">
+   <children>
+      <Label alignment="CENTER" prefHeight="70.0" prefWidth="480.0" text="Detalhes da Marmita">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="28.0" layoutY="57.0" text="Marmita">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="TFMarmita" editable="false" layoutX="22.0" layoutY="83.0" prefHeight="26.0" prefWidth="200.0" />
+      <Label layoutX="28.0" layoutY="109.0" text="Detalhes">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <TextArea fx:id="TADetalhes" editable="false" layoutX="22.0" layoutY="135.0" prefHeight="150.0" prefWidth="200.0" text="Principal:&#10;&#10;Misturas:&#10;&#10;Guarnições:&#10;&#10;&#10;Salada:" wrapText="true" />
+      <Label layoutX="240.0" layoutY="57.0" text="Observações">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <TextArea fx:id="TAObservacoes" editable="false" layoutX="240.0" layoutY="85.0" prefHeight="138.0" prefWidth="200.0" wrapText="true" />
+      <Label layoutX="240.0" layoutY="232.0" text="Subtotal">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="TFSubtotal" editable="false" layoutX="240.0" layoutY="258.0" prefHeight="26.0" prefWidth="200.0" />
+   </children>
+</AnchorPane>

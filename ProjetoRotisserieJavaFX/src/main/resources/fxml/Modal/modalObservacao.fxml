@@ -6,16 +6,15 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<Scene fx:id="scene" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.Modal.ModalObservacaoController">
-   <root>
-      <AnchorPane fx:id="root" prefHeight="206.0" prefWidth="361.0">
-         <children>
-            <Label layoutX="14.0" layoutY="8.0" text="Observação">
-               <font>
-                  <Font size="24.0" />
-               </font></Label>
-            <TextArea fx:id="TAObservacao" layoutX="13.0" layoutY="52.0" prefHeight="140.0" prefWidth="335.0" />
-         </children>
-      </AnchorPane>
-   </root>
-</Scene>
+<AnchorPane fx:id="root" prefHeight="206.0" prefWidth="361.0" xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="my.company.projetorotisseriejavafx.Controller.Modal.ModalObservacaoController">
+    <children>
+        <Label layoutX="14.0" layoutY="8.0" text="Observação">
+            <font>
+                <Font size="24.0"/>
+            </font>
+        </Label>
+        <TextArea fx:id="TAObservacao" layoutX="13.0" layoutY="52.0" prefHeight="140.0" prefWidth="335.0"/>
+    </children>
+</AnchorPane>

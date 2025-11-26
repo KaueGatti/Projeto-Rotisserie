@@ -1,0 +1,93 @@
+/* ========== DATEPICKER MODERNO ========== */
+.date-picker {
+    -fx-background-color: #f0f0f5;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-border-color: #d0d0d8;
+    -fx-border-width: 1;
+    -fx-padding: 4 6;
+    -fx-font-size: 14px;
+    -fx-text-fill: #2a2a2a;
+}
+
+.date-picker:hover {
+    -fx-background-color: #e6e6ed;
+}
+
+.date-picker:focused {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #4a78e3;
+}
+
+/* Campo de texto interno */
+.date-picker .text-field {
+    -fx-background-color: transparent;
+    -fx-text-fill: #2a2a2a;
+    -fx-font-size: 14px;
+}
+
+/* Botão do calendário (ícone) */
+.date-picker .arrow-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0 6;
+}
+
+.date-picker .arrow-button:hover {
+    -fx-background-color: #e3e3eb;
+    -fx-background-radius: 6;
+}
+
+/* Ícone do calendário */
+.date-picker .arrow {
+    -fx-background-color: #5a5a5a; /* cor da "setinha" */
+}
+
+/* ========== POPUP DO CALENDÁRIO ========== */
+
+/* Fundo do calendário */
+.date-picker-popup {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d0d0d8;
+    -fx-border-width: 1;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+}
+
+/* Barra superior (ano/mês) */
+.date-picker-popup .month-year-pane {
+    -fx-background-color: #f5f5fa;
+    -fx-padding: 8;
+}
+
+/* Botões de navegação (setinhas) */
+.date-picker-popup .spinner .button {
+    -fx-background-color: transparent;
+}
+
+.date-picker-popup .spinner .button:hover {
+    -fx-background-color: #e3e6f6;
+    -fx-background-radius: 4;
+}
+
+/* Dias */
+.date-picker-popup .day-cell {
+    -fx-background-color: white;
+    -fx-text-fill: #2a2a2a;
+}
+
+.date-picker-popup .day-cell:hover {
+    -fx-background-color: #e3e6f6;
+}
+
+/* Dia selecionado */
+.date-picker-popup .day-cell:selected {
+    -fx-background-color: #4a78e3;
+    -fx-text-fill: white;
+}
+
+/* Hoje */
+.date-picker-popup .today {
+    -fx-background-color: #dce2f8;
+    -fx-text-fill: #2a2a2a;
+    -fx-font-weight: bold;
+}

@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -20,7 +21,9 @@ import my.company.projetorotisseriejavafx.DAO.CardapioDAO;
 import my.company.projetorotisseriejavafx.DAO.MarmitaDAO;
 import my.company.projetorotisseriejavafx.Objects.Cardapio;
 import my.company.projetorotisseriejavafx.Objects.Marmita;
+import my.company.projetorotisseriejavafx.Util.CssHelper;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
+import my.company.projetorotisseriejavafx.Util.IconHelper;
 
 public class InicioController implements Initializable {
 
@@ -57,7 +60,12 @@ public class InicioController implements Initializable {
 
         APPrincipal.getChildren().clear();
         try {
-            APPrincipal.getChildren().add(FXMLLoader.load(getClass().getResource("/fxml/NovoPedido.fxml")));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/NovoPedido.fxml"));
+            Parent root = loader.load();
+
+            IconHelper.applyIconsTo(root);
+
+            APPrincipal.getChildren().setAll(root);
         } catch (IOException e) {
             System.out.println("Erro bttNovoPedido " + e);
         }
@@ -67,7 +75,12 @@ public class InicioController implements Initializable {
     private void pedido() {
         APPrincipal.getChildren().clear();
         try {
-            APPrincipal.getChildren().add(FXMLLoader.load(getClass().getResource("/fxml/Pedidos.fxml")));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Pedidos.fxml"));
+            Parent root = loader.load();
+
+            IconHelper.applyIconsTo(root);
+
+            APPrincipal.getChildren().setAll(root);
         } catch (IOException e) {
             System.out.println("Erro ao abrir janela de pedidos " + e);
             e.printStackTrace();
@@ -78,7 +91,12 @@ public class InicioController implements Initializable {
     private void marmitas() {
         APPrincipal.getChildren().clear();
         try {
-            APPrincipal.getChildren().add(FXMLLoader.load(getClass().getResource("/fxml/Marmitas.fxml")));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Marmitas.fxml"));
+            Parent root = loader.load();
+
+            IconHelper.applyIconsTo(root);
+
+            APPrincipal.getChildren().setAll(root);
         } catch (IOException e) {
             System.out.println("Erro ao carregar tela de marmitas");
             e.printStackTrace();
@@ -89,7 +107,12 @@ public class InicioController implements Initializable {
     private void produtos() {
         APPrincipal.getChildren().clear();
         try {
-            APPrincipal.getChildren().add(FXMLLoader.load(getClass().getResource("/fxml/Produtos.fxml")));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Produtos.fxml"));
+            Parent root = loader.load();
+
+            IconHelper.applyIconsTo(root);
+
+            APPrincipal.getChildren().setAll(root);
         } catch (IOException e) {
             System.out.println("Erro ao carregar tela de Produtos");
             e.printStackTrace();
@@ -100,7 +123,12 @@ public class InicioController implements Initializable {
     private void bairros() {
         APPrincipal.getChildren().clear();
         try {
-            APPrincipal.getChildren().add(FXMLLoader.load(getClass().getResource("/fxml/Bairros.fxml")));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Bairros.fxml"));
+            Parent root = loader.load();
+
+            IconHelper.applyIconsTo(root);
+
+            APPrincipal.getChildren().setAll(root);
         } catch (IOException e) {
             System.out.println("Erro ao carregar tela de Bairros");
             e.printStackTrace();
@@ -111,7 +139,12 @@ public class InicioController implements Initializable {
     private void mensalistas() {
         APPrincipal.getChildren().clear();
         try {
-            APPrincipal.getChildren().add(FXMLLoader.load(getClass().getResource("/fxml/Mensalistas.fxml")));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Mensalistas.fxml"));
+            Parent root = loader.load();
+
+            IconHelper.applyIconsTo(root);
+
+            APPrincipal.getChildren().setAll(root);
         } catch (IOException e) {
             System.out.println("Erro ao carregar tela de Mensalistas");
             e.printStackTrace();
@@ -122,7 +155,12 @@ public class InicioController implements Initializable {
     private void motoboys() {
         APPrincipal.getChildren().clear();
         try {
-            APPrincipal.getChildren().add(FXMLLoader.load(getClass().getResource("/fxml/Motoboys.fxml")));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Motoboys.fxml"));
+            Parent root = loader.load();
+
+            IconHelper.applyIconsTo(root);
+
+            APPrincipal.getChildren().setAll(root);
         } catch (IOException e) {
             System.out.println("Erro ao carregar tela de Motoboys");
             e.printStackTrace();
@@ -133,7 +171,12 @@ public class InicioController implements Initializable {
     private void cardapio() {
         APPrincipal.getChildren().clear();
         try {
-            APPrincipal.getChildren().add(FXMLLoader.load(getClass().getResource("/fxml/Cardapio.fxml")));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Cardapio.fxml"));
+            Parent root = loader.load();
+
+            IconHelper.applyIconsTo(root);
+
+            APPrincipal.getChildren().setAll(root);
         } catch (IOException e) {
             System.out.println("Erro ao carregar tela de Cardapio");
             e.printStackTrace();
@@ -201,10 +244,14 @@ public class InicioController implements Initializable {
 
     public boolean abrirModalAvisoNovoPedido(String msg, Object tipo) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalAvisoNovoPedido.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Pedidos.fxml"));
+            Parent root = loader.load();
+
+            IconHelper.applyIconsTo(root);
+
             Stage modal = new Stage();
 
-            modal.setScene(loader.load());
+            modal.setScene(root.getScene());
 
             ModalAvisoNovoPedidoController controller = loader.getController();
 

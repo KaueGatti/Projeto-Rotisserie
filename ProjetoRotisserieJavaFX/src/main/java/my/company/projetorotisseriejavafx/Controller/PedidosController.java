@@ -20,6 +20,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -30,9 +32,7 @@ import javafx.stage.StageStyle;
 import my.company.projetorotisseriejavafx.Controller.Modal.*;
 import my.company.projetorotisseriejavafx.DAO.*;
 import my.company.projetorotisseriejavafx.Objects.*;
-import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
-import my.company.projetorotisseriejavafx.Util.Normalize;
-import my.company.projetorotisseriejavafx.Util.Printer;
+import my.company.projetorotisseriejavafx.Util.*;
 
 public class PedidosController implements Initializable {
 
@@ -323,9 +323,14 @@ public class PedidosController implements Initializable {
     public void abrirModalObservacoes(String observacoes) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalObservacoesPedido.fxml"));
-            Stage modal = new Stage();
+            Parent root = loader.load();
 
-            modal.setScene(loader.load());
+            Stage modal = new Stage();
+            Scene scene = new Scene(root);
+
+            CssHelper.loadCss(scene);
+
+            modal.setScene(scene);
 
             ModalObservacoesPedidoController controller = loader.getController();
 
@@ -345,9 +350,14 @@ public class PedidosController implements Initializable {
     public void abrirModalEndereco(String endereco) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalEnderecoPedido.fxml"));
-            Stage modal = new Stage();
+            Parent root = loader.load();
 
-            modal.setScene(loader.load());
+            Stage modal = new Stage();
+            Scene scene = new Scene(root);
+
+            CssHelper.loadCss(scene);
+
+            modal.setScene(scene);
 
             ModalEnderecoPedidoController controller = loader.getController();
 
@@ -367,9 +377,14 @@ public class PedidosController implements Initializable {
     public void abrirModalMarmitasEProdutos(List<MarmitaVendida> marmitas, List<ProdutoVendido> produtos) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalMarmitasEProdutos.fxml"));
-            Stage modal = new Stage();
+            Parent root = loader.load();
 
-            modal.setScene(loader.load());
+            Stage modal = new Stage();
+            Scene scene = new Scene(root);
+
+            CssHelper.loadCss(scene);
+
+            modal.setScene(scene);
 
             ModalMarmitasEProdutosController controller = loader.getController();
 
@@ -389,9 +404,14 @@ public class PedidosController implements Initializable {
     public void abrirModalDescontosEAdicionais() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDescontosEAdicionais.fxml"));
-            Stage modal = new Stage();
+            Parent root = loader.load();
 
-            modal.setScene(loader.load());
+            Stage modal = new Stage();
+            Scene scene = new Scene(root);
+
+            CssHelper.loadCss(scene);
+
+            modal.setScene(scene);
 
             ModalDescontosEAdicionaisController controller = loader.getController();
 
@@ -417,9 +437,14 @@ public class PedidosController implements Initializable {
     public void abrirModalPagamentos() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalPagamentos.fxml"));
-            Stage modal = new Stage();
+            Parent root = loader.load();
 
-            modal.setScene(loader.load());
+            Stage modal = new Stage();
+            Scene scene = new Scene(root);
+
+            CssHelper.loadCss(scene);
+
+            modal.setScene(scene);
 
             ModalPagamentosController controller = loader.getController();
 
@@ -472,7 +497,13 @@ public class PedidosController implements Initializable {
         APPrincipal.getChildren().clear();
 
         try {
-            APPrincipal.getChildren().add(FXMLLoader.load(getClass().getResource("/fxml/Relatorio.fxml")));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Relatorio.fxml"));
+            Parent root = loader.load();
+
+            IconHelper.applyIconsTo(root);
+
+            APPrincipal.getChildren().setAll(root);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -561,9 +592,14 @@ public class PedidosController implements Initializable {
     private void abrirModalPedidosAtrasados() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalPedidosAtrasados.fxml"));
-            Stage modal = new Stage();
+            Parent root = loader.load();
 
-            modal.setScene(loader.load());
+            Stage modal = new Stage();
+            Scene scene = new Scene(root);
+
+            CssHelper.loadCss(scene);
+
+            modal.setScene(scene);
 
             ModalPedidosAtrasadosController controller = loader.getController();
 

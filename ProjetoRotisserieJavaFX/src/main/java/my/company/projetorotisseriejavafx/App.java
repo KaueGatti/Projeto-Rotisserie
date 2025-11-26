@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import my.company.projetorotisseriejavafx.Util.IconHelper;
 
 import java.io.IOException;
 
@@ -14,17 +15,18 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-
-
         try {
             Parent root = loadFXML("Inicio.fxml");
+
             scene = new Scene(root);
 
             scene.getStylesheets().addAll(
-                    getClass().getResource("/styles/main.css").toExternalForm(),
-                    getClass().getResource("/styles/colors.css").toExternalForm(),
-                    getClass().getResource("/styles/buttons.css").toExternalForm()
+                    getClass().getResource("/styles/main.css").toExternalForm()
             );
+
+            root.applyCss();
+
+            IconHelper.applyIconsTo(root);
 
             stage.setScene(scene);
 

@@ -1,0 +1,51 @@
+/* ---------- COMBOBOX MODERNO ---------- */
+.combo-box {
+    -fx-background-color: #f0f0f5;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-border-color: #d0d0d8;
+    -fx-border-width: 1;
+    -fx-padding: 4 6;
+    -fx-font-size: 14px;
+    -fx-text-fill: #2a2a2a;
+}
+
+.combo-box:hover {
+    -fx-background-color: #e6e6ed;
+}
+
+.combo-box:focused {
+    -fx-border-color: #4a78e3;
+    -fx-background-color: #ffffff;
+}
+
+/* Texto interno */
+.combo-box .list-cell {
+    -fx-text-fill: #2a2a2a;
+    -fx-font-size: 14px;
+}
+
+/* Lista suspensa */
+.combo-box-popup .list-view {
+    -fx-background-color: #ffffff;
+    -fx-control-inner-background: #ffffff;
+    -fx-border-color: #d0d0d8;
+}
+
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: #e3e6f6;
+}
+
+.combo-box-popup .list-view .list-cell:selected {
+    -fx-background-color: #4a78e3;
+    -fx-text-fill: white;
+}
+
+/* Ícone da setinha */
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.combo-box .arrow-button .arrow {
+    -fx-background-color: #5a5a5a;
+}
