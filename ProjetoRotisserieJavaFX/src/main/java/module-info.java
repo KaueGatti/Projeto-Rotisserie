@@ -7,7 +7,6 @@ module my.company.projetorotisseriejavafx {
     requires java.desktop;
     requires javafx.base;
     requires org.kordamp.ikonli.javafx;
-    requires my.company.projetorotisseriejavafx;
 
     opens my.company.projetorotisseriejavafx to javafx.fxml;
     opens my.company.projetorotisseriejavafx.Controller to javafx.fxml;
