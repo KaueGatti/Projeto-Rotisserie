@@ -9,11 +9,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalEditMensalistaController;
-import my.company.projetorotisseriejavafx.Controller.Modal.ModalEditProdutoController;
 import my.company.projetorotisseriejavafx.DAO.MensalistaDAO;
-import my.company.projetorotisseriejavafx.DAO.ProdutoDAO;
 import my.company.projetorotisseriejavafx.Objects.Mensalista;
-import my.company.projetorotisseriejavafx.Objects.Produto;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 
 import java.io.IOException;

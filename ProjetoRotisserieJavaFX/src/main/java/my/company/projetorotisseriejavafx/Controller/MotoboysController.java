@@ -15,13 +15,11 @@ import my.company.projetorotisseriejavafx.Controller.Modal.ModalEditMotoboyContr
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalImprimirDiariaController;
 import my.company.projetorotisseriejavafx.DAO.MotoboyDAO;
 import my.company.projetorotisseriejavafx.Objects.Motoboy;
-import my.company.projetorotisseriejavafx.Objects.Produto;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.ResourceBundle;
 
 public class MotoboysController {
 

@@ -4,9 +4,9 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -40,7 +40,7 @@ public class ModalPagamentosController {
     private TableColumn<Pagamento, Void> colExcluir;
 
     @FXML
-    private Scene scene;
+    private AnchorPane root;
 
     @FXML
     private TableView<Pagamento> tablePagamento;
@@ -175,7 +175,7 @@ public class ModalPagamentosController {
     }
 
     public void fecharModal() {
-        Stage modal = (Stage) scene.getWindow();
+        Stage modal =  (Stage) root.getScene().getWindow();
         modal.close();
     }
 

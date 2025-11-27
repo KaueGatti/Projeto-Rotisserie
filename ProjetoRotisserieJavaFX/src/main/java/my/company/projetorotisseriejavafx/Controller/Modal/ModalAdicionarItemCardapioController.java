@@ -3,10 +3,10 @@ package my.company.projetorotisseriejavafx.Controller.Modal;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import my.company.projetorotisseriejavafx.Objects.ItemCardapio;
 
@@ -28,7 +28,7 @@ public class ModalAdicionarItemCardapioController {
     private Button btnAdicionar;
 
     @FXML
-    private Scene scene;
+    private AnchorPane root;
 
     public void initialize(String categoria, ObservableList<ItemCardapio> lista){
         this.categoria = categoria;
@@ -64,7 +64,7 @@ public class ModalAdicionarItemCardapioController {
     }
 
     public void fecharModal() {
-        Stage modal =  (Stage)  scene.getWindow();
+        Stage modal =  (Stage) root.getScene().getWindow();
         modal.close();
     }
 

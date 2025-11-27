@@ -2,16 +2,14 @@ package my.company.projetorotisseriejavafx.Controller.Modal;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import my.company.projetorotisseriejavafx.DAO.MotoboyDAO;
-import my.company.projetorotisseriejavafx.DAO.ProdutoDAO;
 import my.company.projetorotisseriejavafx.Objects.Motoboy;
-import my.company.projetorotisseriejavafx.Objects.Produto;
 import my.company.projetorotisseriejavafx.Util.CurrencyFieldUtil;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 
@@ -20,7 +18,7 @@ public class ModalEditMotoboyController {
     private Motoboy motoboy;
 
     @FXML
-    private Scene scene;
+    private AnchorPane root;
 
     @FXML
     private ComboBox<String> CBStatus;
@@ -90,8 +88,8 @@ public class ModalEditMotoboyController {
     }
 
     public void fecharModal() {
-        Stage window = (Stage) scene.getWindow();
-        window.close();
+        Stage modal =  (Stage) root.getScene().getWindow();
+        modal.close();
     }
 
     private void initCampos() {

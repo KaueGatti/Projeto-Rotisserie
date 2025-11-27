@@ -2,9 +2,9 @@ package my.company.projetorotisseriejavafx.Controller.Modal;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import my.company.projetorotisseriejavafx.DAO.PedidoDAO;
 import my.company.projetorotisseriejavafx.Objects.Pedido;
@@ -24,7 +24,7 @@ public class ModalAvisoPagamentosController {
     private Button btnConfirmar;
 
     @FXML
-    private Scene scene;
+    private AnchorPane root;
 
     public void initialize(Pedido pedido) {
         this.pedido = pedido;
@@ -44,7 +44,7 @@ public class ModalAvisoPagamentosController {
     }
 
     public void fecharModal() {
-        Stage modal = (Stage) scene.getWindow();
+        Stage modal =  (Stage) root.getScene().getWindow();
         modal.close();
     }
 

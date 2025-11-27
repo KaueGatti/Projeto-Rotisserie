@@ -2,15 +2,14 @@ package my.company.projetorotisseriejavafx.Controller.Modal;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import my.company.projetorotisseriejavafx.DAO.MensalistaDAO;
 import my.company.projetorotisseriejavafx.Objects.Mensalista;
-import my.company.projetorotisseriejavafx.Util.CurrencyFieldUtil;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 
 import java.sql.SQLException;
@@ -20,7 +19,7 @@ public class ModalEditMensalistaController {
     private Mensalista mensalista;
 
     @FXML
-    private Scene scene;
+    private AnchorPane root;
     @FXML
     private ComboBox<String> CBStatus;
     @FXML
@@ -60,7 +59,7 @@ public class ModalEditMensalistaController {
     }
 
     public void fecharModal() {
-        Stage modal = (Stage) scene.getWindow();
+        Stage modal =  (Stage) root.getScene().getWindow();
         modal.close();
     }
 }

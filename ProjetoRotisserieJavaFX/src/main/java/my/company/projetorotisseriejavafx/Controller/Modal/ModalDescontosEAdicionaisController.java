@@ -13,7 +13,6 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import my.company.projetorotisseriejavafx.Controller.NovoPedidoController;
 import my.company.projetorotisseriejavafx.Objects.DescontoAdicional;
-import my.company.projetorotisseriejavafx.Objects.MarmitaVendida;
 
 import java.io.IOException;
 import java.util.List;

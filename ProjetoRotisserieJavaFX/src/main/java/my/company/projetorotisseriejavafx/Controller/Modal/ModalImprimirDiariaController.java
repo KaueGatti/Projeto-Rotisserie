@@ -3,11 +3,11 @@ package my.company.projetorotisseriejavafx.Controller.Modal;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -18,7 +18,6 @@ import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 public class ModalImprimirDiariaController {
@@ -36,7 +35,7 @@ public class ModalImprimirDiariaController {
     private Button btnImprimir;
 
     @FXML
-    private Scene scene;
+    private AnchorPane root;
 
     @FXML
     public void initialize(Motoboy motoboy) {
@@ -97,7 +96,7 @@ public class ModalImprimirDiariaController {
     }
 
     public void fecharModal() {
-        Stage modal = (Stage) scene.getWindow();
+        Stage modal =  (Stage) root.getScene().getWindow();
         modal.close();
     }
 

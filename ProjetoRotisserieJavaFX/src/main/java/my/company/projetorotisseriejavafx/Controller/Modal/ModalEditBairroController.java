@@ -2,15 +2,14 @@ package my.company.projetorotisseriejavafx.Controller.Modal;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import my.company.projetorotisseriejavafx.DAO.BairroDAO;
 import my.company.projetorotisseriejavafx.Objects.Bairro;
-import my.company.projetorotisseriejavafx.Objects.Produto;
 import my.company.projetorotisseriejavafx.Util.CurrencyFieldUtil;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 
@@ -36,7 +35,7 @@ public class ModalEditBairroController {
     private Button btnSalvar;
 
     @FXML
-    private Scene scene;
+    private AnchorPane root;
 
     @FXML
     public void initialize(Bairro bairro) {
@@ -88,8 +87,8 @@ public class ModalEditBairroController {
     }
 
     public void fecharModal() {
-        Stage window = (Stage) scene.getWindow();
-        window.close();
+        Stage modal =  (Stage) root.getScene().getWindow();
+        modal.close();
     }
 
     private void initCampos() {

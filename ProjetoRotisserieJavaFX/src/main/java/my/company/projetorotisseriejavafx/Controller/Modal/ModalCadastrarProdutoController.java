@@ -2,27 +2,20 @@ package my.company.projetorotisseriejavafx.Controller.Modal;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import my.company.projetorotisseriejavafx.DAO.MarmitaDAO;
 import my.company.projetorotisseriejavafx.DAO.ProdutoDAO;
-import my.company.projetorotisseriejavafx.Objects.Marmita;
 import my.company.projetorotisseriejavafx.Objects.Produto;
 import my.company.projetorotisseriejavafx.Util.CurrencyFieldUtil;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class ModalCadastrarProdutoController {
 
     @FXML
-    private Scene modal;
+    private AnchorPane root;
     @FXML
     private TextField TFNome;
     @FXML
@@ -86,8 +79,8 @@ public class ModalCadastrarProdutoController {
     }
 
     public void fecharModal() {
-        Stage window = (Stage) modal.getWindow();
-        window.close();
+        Stage modal =  (Stage) root.getScene().getWindow();
+        modal.close();
     }
 
     private void initCampos() {

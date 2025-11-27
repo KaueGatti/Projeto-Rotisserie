@@ -2,11 +2,11 @@ package my.company.projetorotisseriejavafx.Controller.Modal;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import my.company.projetorotisseriejavafx.DAO.MarmitaDAO;
 import my.company.projetorotisseriejavafx.Objects.Marmita;
@@ -20,7 +20,7 @@ import java.util.List;
 public class ModalCadastrarMarmitaController {
 
     @FXML
-    private Scene modal;
+    private AnchorPane root;
     @FXML
     private TextField TFNome;
     @FXML
@@ -106,8 +106,8 @@ public class ModalCadastrarMarmitaController {
     }
 
     public void fecharModal() {
-        Stage window = (Stage) modal.getWindow();
-        window.close();
+        Stage modal =  (Stage) root.getScene().getWindow();
+        modal.close();
     }
 
     private void initCampos() {

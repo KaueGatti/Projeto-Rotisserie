@@ -1,28 +1,19 @@
 package my.company.projetorotisseriejavafx.Controller.Modal;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import my.company.projetorotisseriejavafx.Controller.PedidosController;
-import my.company.projetorotisseriejavafx.DAO.PedidoDAO;
 import my.company.projetorotisseriejavafx.Objects.Mensalista;
-import my.company.projetorotisseriejavafx.Objects.Motoboy;
 import my.company.projetorotisseriejavafx.Objects.Pedido;
-import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 
-import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Stream;
 
 public class ModalPedidosAtrasadosController {
 
@@ -45,7 +36,7 @@ public class ModalPedidosAtrasadosController {
     private TableColumn<Pedido, Void> colVer;
 
     @FXML
-    private Scene scene;
+    private AnchorPane root;
 
     @FXML
     private TableView<Pedido> tablePedidos;
@@ -157,7 +148,7 @@ public class ModalPedidosAtrasadosController {
     }
 
     private void fecharModal() {
-        Stage modal = (Stage)  scene.getWindow();
+        Stage modal =  (Stage) root.getScene().getWindow();
         modal.close();
     }
 

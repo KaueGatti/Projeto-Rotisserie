@@ -1,7 +1,6 @@
 package my.company.projetorotisseriejavafx.Controller.Modal;
 
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 
@@ -11,8 +10,6 @@ public class ModalObservacaoController {
     private TextArea TAObservacao;
     @FXML
     private AnchorPane root;
-    @FXML
-    private Scene scene;
 
     public void initialize(String observacao) {
         TAObservacao.setText(observacao);
