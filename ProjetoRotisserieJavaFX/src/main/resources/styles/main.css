@@ -11,7 +11,6 @@
 
 /* Tela de Pedidos */
 
-
 #BPesquisar-pedidos {
     -fx-background-color: transparent;
 }
@@ -39,12 +38,14 @@
 #LPagamentos-relatorio {
     -fx-text-fill: -color-white;
     -fx-padding: 0 0 0 10;
+    -fx-background-radius: 10 10 0 0;
 }
 
 #PResumoGeral-relatorio,
 #PPedidos-relatorio,
 #PPagamentos-relatorio {
-    -fx-background-color: -color-white;
+    -fx-background-color: rgba(0, 0, 0, 0.1);
+    -fx-background-radius: 0 0 10 10;
 }
 
 .LValor-relatorio {
