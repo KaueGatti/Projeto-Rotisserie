@@ -3,8 +3,11 @@ package my.company.projetorotisseriejavafx.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -12,7 +15,9 @@ import my.company.projetorotisseriejavafx.Controller.Modal.ModalCadastrarBairroC
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalEditBairroController;
 import my.company.projetorotisseriejavafx.DAO.BairroDAO;
 import my.company.projetorotisseriejavafx.Objects.Bairro;
+import my.company.projetorotisseriejavafx.Objects.Produto;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
+import my.company.projetorotisseriejavafx.Util.IconHelper;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -49,22 +54,38 @@ public class BairrosController {
         colEntrega.setCellValueFactory(new PropertyValueFactory<>("formattedValorEntrega"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         colEditar.setCellFactory(param -> new TableCell<>() {
-            private final Button btnEditar = new Button("Editar");
+            private final Button btnEditar = new Button("");
 
             {
+                btnEditar.setMaxWidth(Double.MAX_VALUE);
+                btnEditar.getStyleClass().add("BEditar");
+                btnEditar.getStyleClass().add("icon-edit");
+
                 btnEditar.setOnAction(event -> {
                     Bairro bairro = getTableView().getItems().get(getIndex());
                     abrirModalEditar(bairro);
                 });
+
+                HBox.setHgrow(btnEditar, Priority.ALWAYS);
             }
 
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
+
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    setGraphic(btnEditar);
+                    HBox wrapper = new HBox(btnEditar);
+                    wrapper.setSpacing(0);
+                    wrapper.setPadding(new Insets(0));
+                    wrapper.setFillHeight(true);
+
+                    wrapper.setMaxWidth(Double.MAX_VALUE);
+
+                    IconHelper.applyIcon(btnEditar);
+
+                    setGraphic(wrapper);
                 }
             }
         });

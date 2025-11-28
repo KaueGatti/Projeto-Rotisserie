@@ -42,3 +42,17 @@
     -fx-max-height: 0;
     -fx-opacity: 0;
 }
+
+/* Botão de editar */
+
+.BEditar {
+    -fx-background-color: transparent;
+}
+
+.BEditar .icon-edit {
+    -fx-icon-color: -color-blue;
+}
+
+.BEditar .ikonli-font-icon {
+    -fx-icon-size: 20px;
+}

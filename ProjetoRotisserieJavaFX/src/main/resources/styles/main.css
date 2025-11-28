@@ -60,17 +60,3 @@
     -fx-font-size: 16;
 }
 
-/* Tela de Marmitas */
-
-.BEditar {
-    -fx-background-color: transparent;
-}
-
-.BEditar .icon-edit {
-    -fx-icon-color: -color-blue;
-}
-
-.BEditar .ikonli-font-icon {
-    -fx-icon-size: 20px;
-}
-
