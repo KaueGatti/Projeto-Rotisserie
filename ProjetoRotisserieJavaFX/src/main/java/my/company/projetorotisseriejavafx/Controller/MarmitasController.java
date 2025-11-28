@@ -3,8 +3,13 @@ package my.company.projetorotisseriejavafx.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -12,7 +17,9 @@ import my.company.projetorotisseriejavafx.Controller.Modal.ModalCadastrarMarmita
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalEditMarmitaController;
 import my.company.projetorotisseriejavafx.DAO.MarmitaDAO;
 import my.company.projetorotisseriejavafx.Objects.Marmita;
+import my.company.projetorotisseriejavafx.Util.CssHelper;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
+import my.company.projetorotisseriejavafx.Util.IconHelper;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -49,22 +56,38 @@ public class MarmitasController {
         colValor.setCellValueFactory(new PropertyValueFactory<>("formattedValor"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         colEditar.setCellFactory(param -> new TableCell<>() {
-            private final Button btnEditar = new Button("Editar");
+            private final Button btnEditar = new Button("");
 
             {
+                btnEditar.setMaxWidth(Double.MAX_VALUE);
+                btnEditar.getStyleClass().add("BEditar");
+                btnEditar.getStyleClass().add("icon-edit");
+
                 btnEditar.setOnAction(event -> {
                     Marmita marmita = getTableView().getItems().get(getIndex());
                     abrirModalEditar(marmita);
                 });
+
+                HBox.setHgrow(btnEditar, Priority.ALWAYS);
             }
 
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
+
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    setGraphic(btnEditar);
+                    HBox wrapper = new HBox(btnEditar);
+                    wrapper.setSpacing(0);
+                    wrapper.setPadding(new Insets(0));
+                    wrapper.setFillHeight(true);
+
+                    wrapper.setMaxWidth(Double.MAX_VALUE);
+
+                    IconHelper.applyIcon(btnEditar);
+
+                    setGraphic(wrapper);
                 }
             }
         });
@@ -76,8 +99,14 @@ public class MarmitasController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalCadastrarMarmita.fxml"));
 
+            Parent root = loader.load();
+
             Stage modal = new Stage();
-            modal.setScene(loader.load());
+            Scene scene = new Scene(root);
+
+            CssHelper.loadCss(scene);
+
+            modal.setScene(scene);
 
             ModalCadastrarMarmitaController controller = loader.getController();
 
@@ -99,8 +128,14 @@ public class MarmitasController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalEditMarmita.fxml"));
 
+            Parent root = loader.load();
+
             Stage modal = new Stage();
-            modal.setScene(loader.load());
+            Scene scene = new Scene(root);
+
+            CssHelper.loadCss(scene);
+
+            modal.setScene(scene);
 
             ModalEditMarmitaController controller = loader.getController();
 

@@ -14,17 +14,23 @@ public class IconHelper {
         });
     }
 
-    private static void applyIcon(Button btn) {
+    public static void applyIcon(Button btn) {
         for (String style : btn.getStyleClass()) {
             switch (style) {
                 case "icon-edit":
-                    btn.setGraphic(new FontIcon("bi-pencil-square"));
+                    FontIcon iconEdit = new FontIcon("bi-pencil-square");
+                    iconEdit.getStyleClass().add("icon-edit");
+                    btn.setGraphic(iconEdit);
                     break;
                 case "icon-delete":
-                    btn.setGraphic(new FontIcon("bi-trash-fill"));
+                    FontIcon iconDelete = new FontIcon("bi-trash-fill");
+                    iconDelete.getStyleClass().add("icon-delete");
+                    btn.setGraphic(iconDelete);
                     break;
                 case "icon-search":
-                    btn.setGraphic(new FontIcon("bi-search"));
+                    FontIcon iconSearch = new FontIcon("bi-search");
+                    iconSearch.getStyleClass().add("icon-search");
+                    btn.setGraphic(iconSearch);
                     break;
             }
         }
