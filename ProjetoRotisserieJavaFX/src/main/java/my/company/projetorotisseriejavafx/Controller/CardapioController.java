@@ -5,9 +5,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -17,6 +20,7 @@ import my.company.projetorotisseriejavafx.DAO.ItemCardapioDAO;
 import my.company.projetorotisseriejavafx.Objects.Cardapio;
 import my.company.projetorotisseriejavafx.Objects.ItemCardapio;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
+import my.company.projetorotisseriejavafx.Util.IconHelper;
 import my.company.projetorotisseriejavafx.Util.ItemCardapioListListener;
 
 import javax.swing.*;
@@ -145,6 +149,9 @@ public class CardapioController implements Initializable {
 
             btnAtualizar.setText("Salvar");
 
+            btnAtualizar.getStyleClass().remove("button-blue");
+            btnAtualizar.getStyleClass().add("button-green");
+
             disableTables(true);
 
             if (cardapio == null) {
@@ -197,6 +204,8 @@ public class CardapioController implements Initializable {
                 });
 
                 btnAtualizar.setText("Atualizar");
+                btnAtualizar.getStyleClass().remove("button-green");
+                btnAtualizar.getStyleClass().add("button-blue");
 
             } catch (SQLException e) {
                 DatabaseExceptionHandler.handleException(e, "cardápio");
@@ -256,28 +265,38 @@ public class CardapioController implements Initializable {
     public void initTablePrincipais() {
         colNomePrincipal.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colDelPrincipal.setCellFactory(param -> new TableCell<>() {
-            private final Button btnExcluir = new Button("Excluir");
+            private final Button btnExcluir = new Button("");
 
             {
+                btnExcluir.setMaxWidth(Double.MAX_VALUE);
+                btnExcluir.getStyleClass().add("BExcluir");
+                btnExcluir.getStyleClass().add("icon-delete");
+
                 btnExcluir.setOnAction(event -> {
                     ItemCardapio itemCardapio = getTableView().getItems().get(getIndex());
-                    for (ComboBox<ItemCardapio> cb : grupoCBPrincipal) {
-                        if (cb.getValue() == itemCardapio) {
-                            event.consume();
-                            return;
-                        }
-                    }
                     principais.remove(itemCardapio);
                 });
+
+                HBox.setHgrow(btnExcluir, Priority.ALWAYS);
             }
 
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
+
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    setGraphic(btnExcluir);
+                    HBox wrapper = new HBox(btnExcluir);
+                    wrapper.setSpacing(0);
+                    wrapper.setPadding(new Insets(0));
+                    wrapper.setFillHeight(true);
+
+                    wrapper.setMaxWidth(Double.MAX_VALUE);
+
+                    IconHelper.applyIcon(btnExcluir);
+
+                    setGraphic(wrapper);
                 }
             }
         });
@@ -288,22 +307,38 @@ public class CardapioController implements Initializable {
     public void initTableMisturas() {
         colNomeMistura.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colDelMistura.setCellFactory(param -> new TableCell<>() {
-            private final Button btnExcluir = new Button("Excluir");
+            private final Button btnExcluir = new Button("");
 
             {
+                btnExcluir.setMaxWidth(Double.MAX_VALUE);
+                btnExcluir.getStyleClass().add("BExcluir");
+                btnExcluir.getStyleClass().add("icon-delete");
+
                 btnExcluir.setOnAction(event -> {
                     ItemCardapio itemCardapio = getTableView().getItems().get(getIndex());
                     misturas.remove(itemCardapio);
                 });
+
+                HBox.setHgrow(btnExcluir, Priority.ALWAYS);
             }
 
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
+
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    setGraphic(btnExcluir);
+                    HBox wrapper = new HBox(btnExcluir);
+                    wrapper.setSpacing(0);
+                    wrapper.setPadding(new Insets(0));
+                    wrapper.setFillHeight(true);
+
+                    wrapper.setMaxWidth(Double.MAX_VALUE);
+
+                    IconHelper.applyIcon(btnExcluir);
+
+                    setGraphic(wrapper);
                 }
             }
         });
@@ -314,22 +349,38 @@ public class CardapioController implements Initializable {
     public void initTableGuarnicoes() {
         colNomeGuarnicao.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colDelGuarnicao.setCellFactory(param -> new TableCell<>() {
-            private final Button btnExcluir = new Button("Excluir");
+            private final Button btnExcluir = new Button("");
 
             {
+                btnExcluir.setMaxWidth(Double.MAX_VALUE);
+                btnExcluir.getStyleClass().add("BExcluir");
+                btnExcluir.getStyleClass().add("icon-delete");
+
                 btnExcluir.setOnAction(event -> {
                     ItemCardapio itemCardapio = getTableView().getItems().get(getIndex());
                     guarnicoes.remove(itemCardapio);
                 });
+
+                HBox.setHgrow(btnExcluir, Priority.ALWAYS);
             }
 
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
+
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    setGraphic(btnExcluir);
+                    HBox wrapper = new HBox(btnExcluir);
+                    wrapper.setSpacing(0);
+                    wrapper.setPadding(new Insets(0));
+                    wrapper.setFillHeight(true);
+
+                    wrapper.setMaxWidth(Double.MAX_VALUE);
+
+                    IconHelper.applyIcon(btnExcluir);
+
+                    setGraphic(wrapper);
                 }
             }
         });
@@ -340,22 +391,38 @@ public class CardapioController implements Initializable {
     public void initTableSaladas() {
         colNomeSalada.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colDelSalada.setCellFactory(param -> new TableCell<>() {
-            private final Button btnExcluir = new Button("Excluir");
+            private final Button btnExcluir = new Button("");
 
             {
+                btnExcluir.setMaxWidth(Double.MAX_VALUE);
+                btnExcluir.getStyleClass().add("BExcluir");
+                btnExcluir.getStyleClass().add("icon-delete");
+
                 btnExcluir.setOnAction(event -> {
                     ItemCardapio itemCardapio = getTableView().getItems().get(getIndex());
                     saladas.remove(itemCardapio);
                 });
+
+                HBox.setHgrow(btnExcluir, Priority.ALWAYS);
             }
 
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
+
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    setGraphic(btnExcluir);
+                    HBox wrapper = new HBox(btnExcluir);
+                    wrapper.setSpacing(0);
+                    wrapper.setPadding(new Insets(0));
+                    wrapper.setFillHeight(true);
+
+                    wrapper.setMaxWidth(Double.MAX_VALUE);
+
+                    IconHelper.applyIcon(btnExcluir);
+
+                    setGraphic(wrapper);
                 }
             }
         });
@@ -519,7 +586,7 @@ public class CardapioController implements Initializable {
         return true;
     }
 
-    private void configurarGrupo(List<ComboBox<ItemCardapio>> grupo, ObservableList<ItemCardapio> lista) {
+    private void configurarGrupo(List<ComboBox<ItemCardapio>> grupo, ObservableList<ItemCardapio> lista)    {
         for (ComboBox<ItemCardapio> comboBox : grupo) {
             comboBox.setItems(lista);
 

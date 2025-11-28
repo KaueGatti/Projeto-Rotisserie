@@ -16,11 +16,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -30,6 +33,7 @@ import my.company.projetorotisseriejavafx.Controller.Pane.PaneProdutoController;
 import my.company.projetorotisseriejavafx.DAO.*;
 import my.company.projetorotisseriejavafx.Objects.*;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
+import my.company.projetorotisseriejavafx.Util.IconHelper;
 import my.company.projetorotisseriejavafx.Util.Printer;
 
 public class NovoPedidoController implements Initializable {
@@ -515,24 +519,42 @@ public class NovoPedidoController implements Initializable {
         colNomeMarmita.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colSubtotalMarmita.setCellValueFactory(new PropertyValueFactory<>("formattedSubtotal"));
         colDelMarmita.setCellFactory(param -> new TableCell<>() {
-            private final Button btnExcluir = new Button("Excluir");
+
+
+            private final Button btnExcluir = new Button("");
 
             {
+                btnExcluir.setMaxWidth(Double.MAX_VALUE);
+                btnExcluir.getStyleClass().add("BExcluir");
+                btnExcluir.getStyleClass().add("icon-delete");
+
                 btnExcluir.setOnAction(event -> {
                     MarmitaVendida marmita = getTableView().getItems().get(getIndex());
                     valorTotal -= marmita.getSubtotal();
                     getTableView().getItems().remove(marmita);
                     atualizaValor();
                 });
+
+                HBox.setHgrow(btnExcluir, Priority.ALWAYS);
             }
 
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
+
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    setGraphic(btnExcluir);
+                    HBox wrapper = new HBox(btnExcluir);
+                    wrapper.setSpacing(0);
+                    wrapper.setPadding(new Insets(0));
+                    wrapper.setFillHeight(true);
+
+                    wrapper.setMaxWidth(Double.MAX_VALUE);
+
+                    IconHelper.applyIcon(btnExcluir);
+
+                    setGraphic(wrapper);
                 }
             }
         });

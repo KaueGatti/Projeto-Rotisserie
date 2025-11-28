@@ -56,3 +56,17 @@
 .BEditar .ikonli-font-icon {
     -fx-icon-size: 20px;
 }
+
+/* Botão de excluir */
+
+.BExcluir {
+    -fx-background-color: transparent;
+}
+
+.BExcluir .icon-delete {
+    -fx-icon-color: -color-red;
+}
+
+.BExcluir .ikonli-font-icon {
+    -fx-icon-size: 20px;
+}
