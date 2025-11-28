@@ -6,6 +6,8 @@ import java.util.List;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -15,6 +17,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import my.company.projetorotisseriejavafx.Objects.MarmitaVendida;
 import my.company.projetorotisseriejavafx.Objects.ProdutoVendido;
+import my.company.projetorotisseriejavafx.Util.CssHelper;
 
 public class ModalMarmitasEProdutosController {
 
@@ -73,11 +76,16 @@ public class ModalMarmitasEProdutosController {
 
     public void abrirModalDetalhesMarmita(MarmitaVendida marmita) {
         try {
-            Stage modal = new Stage();
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDetalhesMarmita.fxml"));
+            Parent root = loader.load();
 
-            modal.setScene(loader.load());
+            Stage modal = new Stage();
+            Scene scene = new Scene(root);
+
+            CssHelper.loadCss(scene);
+
+            modal.setScene(scene);
 
             ModalDetalhesMarmitaController controller = loader.getController();
 

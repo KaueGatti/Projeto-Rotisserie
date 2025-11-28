@@ -4,6 +4,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -13,6 +15,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import my.company.projetorotisseriejavafx.Objects.Pagamento;
 import my.company.projetorotisseriejavafx.Objects.Pedido;
+import my.company.projetorotisseriejavafx.Util.CssHelper;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -70,9 +73,14 @@ public class ModalPagamentosController {
     public void abrirModalAdicionarPagamento() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalAdicionarPagamento.fxml"));
-            Stage modal = new Stage();
+            Parent root = loader.load();
 
-            modal.setScene(loader.load());
+            Stage modal = new Stage();
+            Scene scene = new Scene(root);
+
+            CssHelper.loadCss(scene);
+
+            modal.setScene(scene);
 
             ModalAdicionarPagamentoController controller = loader.getController();
 
@@ -92,9 +100,14 @@ public class ModalPagamentosController {
     public void abrirModalAviso() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalAvisoPagamentos.fxml"));
-            Stage modal = new Stage();
+            Parent root = loader.load();
 
-            modal.setScene(loader.load());
+            Stage modal = new Stage();
+            Scene scene = new Scene(root);
+
+            CssHelper.loadCss(scene);
+
+            modal.setScene(scene);
 
             ModalAvisoPagamentosController controller = loader.getController();
 

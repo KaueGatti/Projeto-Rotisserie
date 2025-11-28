@@ -33,7 +33,12 @@ public class Pedido {
     public Bairro getBairro() { return bairro.get(); }
     public void setBairro(Bairro value) { bairro.set(value); }
 
-    public String getNomeCliente() { return nomeCliente.get(); }
+    public String getNomeCliente() {
+        if (mensalista.getValue() != null) {
+            return mensalista.getValue().getNome();
+        }
+        return nomeCliente.get();
+    }
     public void setNomeCliente(String value) { nomeCliente.set(value); }
 
     public String getTipoPagamento() { return tipoPagamento.get(); }
@@ -101,7 +106,13 @@ public class Pedido {
     public IntegerProperty idProperty() { return id; }
     public ObjectProperty<Mensalista> mensalistaProperty() { return mensalista; }
     public ObjectProperty<Bairro> bairroProperty() { return bairro; }
-    public StringProperty nomeClienteProperty() { return nomeCliente; }
+    public StringProperty nomeClienteProperty() {
+        if (mensalista.getValue() != null) {
+            return mensalista.getValue().nomeProperty();
+        }
+
+        return nomeCliente;
+    }
     public StringProperty tipoPagamentoProperty() { return tipoPagamento; }
     public StringProperty tipoPedidoProperty() { return tipoPedido; }
     public StringProperty observacoesProperty() { return observacoes; }

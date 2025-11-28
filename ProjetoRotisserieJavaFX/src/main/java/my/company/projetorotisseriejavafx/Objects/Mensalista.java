@@ -1,56 +1,73 @@
 package my.company.projetorotisseriejavafx.Objects;
 
-public class Mensalista {
-       
-    private int id;
-    private String nome;
-    private double conta;
-    private String status;
+import javafx.beans.property.*;
 
-    public Mensalista(){}
+public class Mensalista {
+
+    private IntegerProperty id = new SimpleIntegerProperty();
+    private StringProperty nome = new SimpleStringProperty();
+    private DoubleProperty conta = new SimpleDoubleProperty();
+    private StringProperty status =  new SimpleStringProperty();
+
+    public Mensalista() {
+    }
 
     public Mensalista(String nome) {
-        this.nome = nome;
+        this();
+        this.nome.set(nome);
     }
 
     public int getId() {
-        return id;
+        return id.get();
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.id.set(id);
+    }
+
+    public IntegerProperty idProperty() {
+        return id;
     }
 
     public String getNome() {
-        return nome;
+        return nome.get();
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        this.nome.set(nome);
     }
 
-    public void setConta(double conta) {
-        this.conta = conta;
+    public StringProperty nomeProperty() {
+        return nome;
     }
 
     public double getConta() {
+        return conta.get();
+    }
+
+    public void setConta(double conta) {
+        this.conta.set(conta);
+    }
+
+    public DoubleProperty contaProperty() {
         return conta;
     }
 
     public String getStatus() {
-        return status;
+        return status.get();
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        this.status.set(status);
     }
 
-    public String getFormattedConta() {
-        return "R$ " + String.valueOf(conta).replace(".", ",");
+    public StringProperty statusProperty() {
+        return status;
     }
 
     @Override
     public String toString() {
-        return nome;
+        return nome.getValue();
     }
 }
+
