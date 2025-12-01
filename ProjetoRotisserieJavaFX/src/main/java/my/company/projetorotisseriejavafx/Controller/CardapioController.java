@@ -1,6 +1,10 @@
 package my.company.projetorotisseriejavafx.Controller;
 
+import javafx.animation.PauseTransition;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.*;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,12 +14,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalAdicionarItemCardapioController;
 import my.company.projetorotisseriejavafx.DAO.CardapioDAO;
 import my.company.projetorotisseriejavafx.DAO.ItemCardapioDAO;
@@ -39,10 +45,12 @@ public class CardapioController implements Initializable {
 
     Cardapio cardapio;
 
-    ObservableList<ItemCardapio> principais = FXCollections.observableArrayList();
-    ObservableList<ItemCardapio> misturas = FXCollections.observableArrayList();
-    ObservableList<ItemCardapio> guarnicoes = FXCollections.observableArrayList();
-    ObservableList<ItemCardapio> saladas = FXCollections.observableArrayList();
+    ObservableList<ItemCardapio> itensCardapio = FXCollections.observableArrayList();
+
+    FilteredList<ItemCardapio> principais;
+    FilteredList<ItemCardapio> misturas;
+    FilteredList<ItemCardapio> guarnicoes;
+    FilteredList<ItemCardapio> saladas;
 
     private List<ComboBox<ItemCardapio>> grupoCBPrincipal;
     private List<ComboBox<ItemCardapio>> grupoCBMistura;
@@ -218,25 +226,25 @@ public class CardapioController implements Initializable {
 
     @FXML
     void adicionarPrincipal(ActionEvent event) {
-        abrirModalAdicionar("Principal", principais);
+        abrirModalAdicionar("Principal");
     }
 
     @FXML
     void adicionarMistura(ActionEvent event) {
-        abrirModalAdicionar("Mistura", misturas);
+        abrirModalAdicionar("Mistura");
     }
 
     @FXML
     void adicionarGuarnicao(ActionEvent event) {
-        abrirModalAdicionar("Guarnição", guarnicoes);
+        abrirModalAdicionar("Guarnição");
     }
 
     @FXML
     void adicionarSalada(ActionEvent event) {
-        abrirModalAdicionar("Salada", saladas);
+        abrirModalAdicionar("Salada");
     }
 
-    public void abrirModalAdicionar(String categoria, ObservableList<ItemCardapio> lista) {
+    public void abrirModalAdicionar(String categoria) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalAdicionarItemCardapio.fxml"));
             Parent root = loader.load();
@@ -250,7 +258,7 @@ public class CardapioController implements Initializable {
 
             ModalAdicionarItemCardapioController controller = loader.getController();
 
-            controller.initialize(categoria, lista);
+            controller.initialize(categoria, itensCardapio);
 
             modal.initStyle(StageStyle.UTILITY);
             modal.initModality(Modality.APPLICATION_MODAL);
@@ -272,83 +280,40 @@ public class CardapioController implements Initializable {
 
     public void initTablePrincipais() {
         colNomePrincipal.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        colDelPrincipal.setCellFactory(param -> new TableCell<>() {
-            private final Button btnExcluir = new Button("");
+        colDelPrincipal.setCellFactory(param -> buttonDelete());
 
-            {
-                btnExcluir.setMaxWidth(Double.MAX_VALUE);
-                btnExcluir.getStyleClass().add("BExcluir");
-                btnExcluir.getStyleClass().add("icon-delete");
-
-                btnExcluir.setOnAction(event -> {
-                    ItemCardapio itemCardapio = getTableView().getItems().get(getIndex());
-                    principais.remove(itemCardapio);
-                });
-
-                HBox.setHgrow(btnExcluir, Priority.ALWAYS);
-            }
-
+        tablePrincipais.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    HBox wrapper = new HBox(btnExcluir);
-                    wrapper.setSpacing(0);
-                    wrapper.setPadding(new Insets(0));
-                    wrapper.setFillHeight(true);
-
-                    wrapper.setMaxWidth(Double.MAX_VALUE);
-
-                    IconHelper.applyIcon(btnExcluir);
-
-                    setGraphic(wrapper);
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (!newValue) {
+                    tablePrincipais.getSelectionModel().clearSelection();
                 }
             }
         });
 
+        tablePrincipais.addEventFilter(ScrollEvent.SCROLL, event -> {
+            event.consume();
+        });
+
         tablePrincipais.setItems(principais);
+
     }
 
     public void initTableMisturas() {
         colNomeMistura.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        colDelMistura.setCellFactory(param -> new TableCell<>() {
-            private final Button btnExcluir = new Button("");
+        colDelMistura.setCellFactory(param -> buttonDelete());
 
-            {
-                btnExcluir.setMaxWidth(Double.MAX_VALUE);
-                btnExcluir.getStyleClass().add("BExcluir");
-                btnExcluir.getStyleClass().add("icon-delete");
-
-                btnExcluir.setOnAction(event -> {
-                    ItemCardapio itemCardapio = getTableView().getItems().get(getIndex());
-                    misturas.remove(itemCardapio);
-                });
-
-                HBox.setHgrow(btnExcluir, Priority.ALWAYS);
-            }
-
+        tableMisturas.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    HBox wrapper = new HBox(btnExcluir);
-                    wrapper.setSpacing(0);
-                    wrapper.setPadding(new Insets(0));
-                    wrapper.setFillHeight(true);
-
-                    wrapper.setMaxWidth(Double.MAX_VALUE);
-
-                    IconHelper.applyIcon(btnExcluir);
-
-                    setGraphic(wrapper);
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (!newValue) {
+                    tableMisturas.getSelectionModel().clearSelection();
                 }
             }
+        });
+
+        tableMisturas.addEventFilter(ScrollEvent.SCROLL, event -> {
+            event.consume();
         });
 
         tableMisturas.setItems(misturas);
@@ -356,41 +321,19 @@ public class CardapioController implements Initializable {
 
     public void initTableGuarnicoes() {
         colNomeGuarnicao.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        colDelGuarnicao.setCellFactory(param -> new TableCell<>() {
-            private final Button btnExcluir = new Button("");
+        colDelGuarnicao.setCellFactory(param -> buttonDelete());
 
-            {
-                btnExcluir.setMaxWidth(Double.MAX_VALUE);
-                btnExcluir.getStyleClass().add("BExcluir");
-                btnExcluir.getStyleClass().add("icon-delete");
-
-                btnExcluir.setOnAction(event -> {
-                    ItemCardapio itemCardapio = getTableView().getItems().get(getIndex());
-                    guarnicoes.remove(itemCardapio);
-                });
-
-                HBox.setHgrow(btnExcluir, Priority.ALWAYS);
-            }
-
+        tableGuarnicoes.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    HBox wrapper = new HBox(btnExcluir);
-                    wrapper.setSpacing(0);
-                    wrapper.setPadding(new Insets(0));
-                    wrapper.setFillHeight(true);
-
-                    wrapper.setMaxWidth(Double.MAX_VALUE);
-
-                    IconHelper.applyIcon(btnExcluir);
-
-                    setGraphic(wrapper);
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (!newValue) {
+                    tableGuarnicoes.getSelectionModel().clearSelection();
                 }
             }
+        });
+
+        tableGuarnicoes.addEventFilter(ScrollEvent.SCROLL, event -> {
+            event.consume();
         });
 
         tableGuarnicoes.setItems(guarnicoes);
@@ -398,41 +341,19 @@ public class CardapioController implements Initializable {
 
     public void initTableSaladas() {
         colNomeSalada.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        colDelSalada.setCellFactory(param -> new TableCell<>() {
-            private final Button btnExcluir = new Button("");
+        colDelSalada.setCellFactory(param -> buttonDelete());
 
-            {
-                btnExcluir.setMaxWidth(Double.MAX_VALUE);
-                btnExcluir.getStyleClass().add("BExcluir");
-                btnExcluir.getStyleClass().add("icon-delete");
-
-                btnExcluir.setOnAction(event -> {
-                    ItemCardapio itemCardapio = getTableView().getItems().get(getIndex());
-                    saladas.remove(itemCardapio);
-                });
-
-                HBox.setHgrow(btnExcluir, Priority.ALWAYS);
-            }
-
+        tableSaladas.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    HBox wrapper = new HBox(btnExcluir);
-                    wrapper.setSpacing(0);
-                    wrapper.setPadding(new Insets(0));
-                    wrapper.setFillHeight(true);
-
-                    wrapper.setMaxWidth(Double.MAX_VALUE);
-
-                    IconHelper.applyIcon(btnExcluir);
-
-                    setGraphic(wrapper);
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (!newValue) {
+                    tableSaladas.getSelectionModel().clearSelection();
                 }
             }
+        });
+
+        tableMisturas.addEventFilter(ScrollEvent.SCROLL, event -> {
+            event.consume();
         });
 
         tableSaladas.setItems(saladas);
@@ -440,16 +361,13 @@ public class CardapioController implements Initializable {
 
     public void initObservableLists() {
         try {
+            itensCardapio = FXCollections.observableArrayList(ItemCardapioDAO.read());
+            itensCardapio.addListener(new ItemCardapioListListener());
 
-            principais = FXCollections.observableArrayList((ItemCardapioDAO.read("Principal")));
-            misturas = FXCollections.observableArrayList((ItemCardapioDAO.read("Mistura")));
-            guarnicoes = FXCollections.observableArrayList(ItemCardapioDAO.read("Guarnição"));
-            saladas = FXCollections.observableArrayList(ItemCardapioDAO.read("Salada"));
-
-            principais.addListener(new ItemCardapioListListener());
-            misturas.addListener(new ItemCardapioListListener());
-            guarnicoes.addListener(new ItemCardapioListListener());
-            saladas.addListener(new ItemCardapioListListener());
+            principais = new FilteredList<>(itensCardapio, i -> i.getCategoria().equalsIgnoreCase("Principal"));
+            misturas = new FilteredList<>(itensCardapio, i -> i.getCategoria().equalsIgnoreCase("Mistura"));
+            guarnicoes = new FilteredList<>(itensCardapio, i -> i.getCategoria().equalsIgnoreCase("Guarnição"));
+            saladas = new FilteredList<>(itensCardapio, i -> i.getCategoria().equalsIgnoreCase("Salada"));
 
         } catch (SQLException e) {
             DatabaseExceptionHandler.handleException(e, "item do cardápio");
@@ -610,9 +528,6 @@ public class CardapioController implements Initializable {
                 for (ComboBox<ItemCardapio> cb : grupo) {
                     cb.setButtonCell(criarCelula());
                     cb.setCellFactory(listView -> criarCelula());
-                    cb.hide();
-                    cb.show();
-                    cb.hide();
                 }
             });
         }
@@ -652,5 +567,56 @@ public class CardapioController implements Initializable {
         btnAdicionarMistura.setDisable(disable);
         btnAdicionarGuarnicao.setDisable(disable);
         btnAdicionarSalada.setDisable(disable);
+    }
+
+    private TableCell<ItemCardapio, Void> buttonDelete() {
+        return new TableCell<ItemCardapio, Void>() {
+            private final Button btnExcluir = new Button("");
+
+            {
+                btnExcluir.setMaxWidth(Double.MAX_VALUE);
+                btnExcluir.getStyleClass().add("BExcluir");
+                btnExcluir.getStyleClass().add("icon-delete");
+
+                btnExcluir.setOnAction(event -> {
+                    ItemCardapio itemCardapio = getTableRow().getItem();
+                    boolean used = false;
+                    for (ComboBox<ItemCardapio> cb : todosComboBoxes) {
+                        if (cb.getValue() == itemCardapio) {
+                            used = true;
+                            break;
+                        }
+                    }
+
+                    if (used) {
+                        System.out.println("Esse item está no cardápio: " + itemCardapio.getNome());
+                    } else {
+                        itensCardapio.remove(itemCardapio);
+                    }
+                });
+
+                HBox.setHgrow(btnExcluir, Priority.ALWAYS);
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    HBox wrapper = new HBox(btnExcluir);
+                    wrapper.setSpacing(0);
+                    wrapper.setPadding(new Insets(0));
+                    wrapper.setFillHeight(true);
+
+                    wrapper.setMaxWidth(Double.MAX_VALUE);
+
+                    IconHelper.applyIcon(btnExcluir);
+
+                    setGraphic(wrapper);
+                }
+            }
+        };
     }
 }

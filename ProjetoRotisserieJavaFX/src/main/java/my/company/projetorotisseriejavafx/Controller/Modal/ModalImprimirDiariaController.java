@@ -74,6 +74,7 @@ public class ModalImprimirDiariaController {
 
     public void initDPData() {
         DPData.setEditable(false);
+        DPData.setValue(LocalDate.now());
     }
 
     public void abrirModalDiaria(Motoboy motoboy, LocalDate data) {

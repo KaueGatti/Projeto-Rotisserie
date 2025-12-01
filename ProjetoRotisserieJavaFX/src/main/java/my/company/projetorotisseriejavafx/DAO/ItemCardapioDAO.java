@@ -38,7 +38,7 @@ public class ItemCardapioDAO {
         List<ItemCardapio> itensCardapio = new ArrayList<>();
 
         try {
-            stmt = con.prepareStatement("READ READ_ALL_ITENS_CARDAPIO()");
+            stmt = con.prepareStatement("CALL READ_ALL_ITENS_CARDAPIO()");
 
             rs = stmt.executeQuery();
 

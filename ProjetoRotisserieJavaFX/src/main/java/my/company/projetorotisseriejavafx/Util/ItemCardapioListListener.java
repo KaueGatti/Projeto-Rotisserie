@@ -7,6 +7,7 @@ import my.company.projetorotisseriejavafx.Objects.ItemCardapio;
 import java.sql.SQLException;
 
 public class ItemCardapioListListener implements ListChangeListener<ItemCardapio> {
+
     @Override
     public void onChanged(Change<? extends ItemCardapio> change) {
         while (change.next()) {

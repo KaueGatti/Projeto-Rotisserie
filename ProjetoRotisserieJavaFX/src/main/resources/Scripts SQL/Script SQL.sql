@@ -480,14 +480,6 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE READ_ITENS_CARDAPIO_BY_CATEGORIA(_categoria VARCHAR(30))
-BEGIN
-	SELECT * FROM Item_Cardapio
-    WHERE categoria = _categoria;
-END $$
-DELIMITER ;
-
-DELIMITER $$
 CREATE PROCEDURE CREATE_CARDAPIO(_principal_1 VARCHAR(150), _principal_2 VARCHAR(150),
     _mistura_1 VARCHAR(150), _mistura_2 VARCHAR(150), _mistura_3 VARCHAR(150), _mistura_4 VARCHAR(150),
     _guarnicao_1 VARCHAR(150), _guarnicao_2 VARCHAR(150), _guarnicao_3 VARCHAR(150), _guarnicao_4 VARCHAR(150),
