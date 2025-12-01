@@ -604,7 +604,8 @@ public class PedidosController implements Initializable {
             ModalPedidosAtrasadosController controller = loader.getController();
 
             List<Pedido> pedidosAtrasados = pedidos.stream()
-                    .filter(p -> p.getVencimento().isEqual(LocalDate.now())).toList();
+                    .filter(p -> p.getStatus().equalsIgnoreCase("A Pagar"))
+                    .filter(p -> p.getVencimento().isBefore(LocalDate.now())).toList();
 
             controller.initialize(pedidosAtrasados, CBMensalista.getItems(), this);
 

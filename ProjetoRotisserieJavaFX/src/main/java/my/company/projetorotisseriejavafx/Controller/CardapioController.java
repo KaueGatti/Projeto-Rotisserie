@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
@@ -19,6 +21,7 @@ import my.company.projetorotisseriejavafx.DAO.CardapioDAO;
 import my.company.projetorotisseriejavafx.DAO.ItemCardapioDAO;
 import my.company.projetorotisseriejavafx.Objects.Cardapio;
 import my.company.projetorotisseriejavafx.Objects.ItemCardapio;
+import my.company.projetorotisseriejavafx.Util.CssHelper;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 import my.company.projetorotisseriejavafx.Util.IconHelper;
 import my.company.projetorotisseriejavafx.Util.ItemCardapioListListener;
@@ -236,9 +239,14 @@ public class CardapioController implements Initializable {
     public void abrirModalAdicionar(String categoria, ObservableList<ItemCardapio> lista) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalAdicionarItemCardapio.fxml"));
-            Stage modal = new Stage();
+            Parent root = loader.load();
 
-            modal.setScene(loader.load());
+            Stage modal = new Stage();
+            Scene scene = new Scene(root);
+
+            CssHelper.loadCss(scene);
+
+            modal.setScene(scene);
 
             ModalAdicionarItemCardapioController controller = loader.getController();
 
@@ -586,7 +594,7 @@ public class CardapioController implements Initializable {
         return true;
     }
 
-    private void configurarGrupo(List<ComboBox<ItemCardapio>> grupo, ObservableList<ItemCardapio> lista)    {
+    private void configurarGrupo(List<ComboBox<ItemCardapio>> grupo, ObservableList<ItemCardapio> lista) {
         for (ComboBox<ItemCardapio> comboBox : grupo) {
             comboBox.setItems(lista);
 
