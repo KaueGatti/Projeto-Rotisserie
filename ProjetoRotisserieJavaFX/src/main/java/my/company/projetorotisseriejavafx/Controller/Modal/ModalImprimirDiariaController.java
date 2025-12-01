@@ -3,6 +3,8 @@ package my.company.projetorotisseriejavafx.Controller.Modal;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -13,6 +15,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import my.company.projetorotisseriejavafx.DAO.MotoboyDAO;
 import my.company.projetorotisseriejavafx.Objects.Motoboy;
+import my.company.projetorotisseriejavafx.Util.CssHelper;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 
 import java.io.IOException;
@@ -78,8 +81,14 @@ public class ModalImprimirDiariaController {
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDiaria.fxml"));
 
+            Parent root = loader.load();
+
             Stage modal = new Stage();
-            modal.setScene(loader.load());
+            Scene scene = new Scene(root);
+
+            CssHelper.loadCss(scene);
+
+            modal.setScene(scene);
 
             ModalDiariaController controller = loader.getController();
 

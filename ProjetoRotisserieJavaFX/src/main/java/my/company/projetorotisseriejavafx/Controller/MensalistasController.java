@@ -4,6 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
@@ -14,13 +16,17 @@ import javafx.stage.StageStyle;
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalEditMensalistaController;
 import my.company.projetorotisseriejavafx.DAO.MensalistaDAO;
 import my.company.projetorotisseriejavafx.Objects.Mensalista;
+import my.company.projetorotisseriejavafx.Objects.Pedido;
 import my.company.projetorotisseriejavafx.Objects.Produto;
+import my.company.projetorotisseriejavafx.Util.CssHelper;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 import my.company.projetorotisseriejavafx.Util.IconHelper;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class MensalistasController {
 
@@ -48,9 +54,23 @@ public class MensalistasController {
     }
 
     private void initTableMensalistas() {
-        colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        colConta.setCellValueFactory(new PropertyValueFactory<>("formattedConta"));
-        colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+        colNome.setCellValueFactory(m -> m.getValue().nomeProperty());
+        colConta.setCellValueFactory(m -> m.getValue().contaProperty().asObject());
+        colConta.setCellFactory(column -> new TableCell<Mensalista, Double>() {
+            private final NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+
+            @Override
+            protected void updateItem(Double value, boolean empty) {
+                super.updateItem(value, empty);
+
+                if (empty || value == null) {
+                    setText(null);
+                } else {
+                    setText(formatter.format(value));
+                }
+            }
+        });
+        colStatus.setCellValueFactory(m -> m.getValue().statusProperty());
         colEditar.setCellFactory(param -> new TableCell<>() {
             private final Button btnEditar = new Button("");
 
@@ -95,8 +115,14 @@ public class MensalistasController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalCadastrarMensalista.fxml"));
 
+            Parent root = loader.load();
+
             Stage modal = new Stage();
-            modal.setScene(loader.load());
+            Scene scene = new Scene(root);
+
+            CssHelper.loadCss(scene);
+
+            modal.setScene(scene);
 
             modal.initModality(Modality.APPLICATION_MODAL);
             modal.initStyle(StageStyle.UTILITY);
@@ -112,8 +138,14 @@ public class MensalistasController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalEditMensalista.fxml"));
 
+            Parent root = loader.load();
+
             Stage modal = new Stage();
-            modal.setScene(loader.load());
+            Scene scene = new Scene(root);
+
+            CssHelper.loadCss(scene);
+
+            modal.setScene(scene);
 
             ModalEditMensalistaController controller = loader.getController();
 

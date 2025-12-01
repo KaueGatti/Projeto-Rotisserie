@@ -4,6 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -18,6 +20,7 @@ import my.company.projetorotisseriejavafx.Controller.Modal.ModalEditMotoboyContr
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalImprimirDiariaController;
 import my.company.projetorotisseriejavafx.DAO.MotoboyDAO;
 import my.company.projetorotisseriejavafx.Objects.Motoboy;
+import my.company.projetorotisseriejavafx.Util.CssHelper;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 import my.company.projetorotisseriejavafx.Util.IconHelper;
 
@@ -63,8 +66,14 @@ public class MotoboysController {
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalCadastrarMotoboy.fxml"));
 
+            Parent root = loader.load();
+
             Stage modal = new Stage();
-            modal.setScene(loader.load());
+            Scene scene = new Scene(root);
+
+            CssHelper.loadCss(scene);
+
+            modal.setScene(scene);
 
             modal.initModality(Modality.APPLICATION_MODAL);
             modal.initStyle(StageStyle.UTILITY);
@@ -81,8 +90,14 @@ public class MotoboysController {
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalEditMotoboy.fxml"));
 
+            Parent root = loader.load();
+
             Stage modal = new Stage();
-            modal.setScene(loader.load());
+            Scene scene = new Scene(root);
+
+            CssHelper.loadCss(scene);
+
+            modal.setScene(scene);
 
             ModalEditMotoboyController controller = loader.getController();
 
@@ -103,8 +118,14 @@ public class MotoboysController {
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalImprimirDiaria.fxml"));
 
+            Parent root = loader.load();
+
             Stage modal = new Stage();
-            modal.setScene(loader.load());
+            Scene scene = new Scene(root);
+
+            CssHelper.loadCss(scene);
+
+            modal.setScene(scene);
 
             ModalImprimirDiariaController controller = loader.getController();
 
