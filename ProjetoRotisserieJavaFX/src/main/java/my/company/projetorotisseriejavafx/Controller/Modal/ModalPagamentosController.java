@@ -16,6 +16,7 @@ import javafx.util.Duration;
 import my.company.projetorotisseriejavafx.Objects.Pagamento;
 import my.company.projetorotisseriejavafx.Objects.Pedido;
 import my.company.projetorotisseriejavafx.Util.CssHelper;
+import my.company.projetorotisseriejavafx.Util.IconHelper;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -106,6 +107,7 @@ public class ModalPagamentosController {
             Scene scene = new Scene(root);
 
             CssHelper.loadCss(scene);
+            IconHelper.applyIconsTo(root);
 
             modal.setScene(scene);
 

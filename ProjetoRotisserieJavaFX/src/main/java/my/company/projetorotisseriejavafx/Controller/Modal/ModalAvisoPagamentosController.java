@@ -3,7 +3,6 @@ package my.company.projetorotisseriejavafx.Controller.Modal;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import my.company.projetorotisseriejavafx.DAO.PedidoDAO;
@@ -13,9 +12,6 @@ public class ModalAvisoPagamentosController {
 
     Pedido pedido;
     int response;
-
-    @FXML
-    private ImageView IVWarning;
 
     @FXML
     private Button btnCancelar;

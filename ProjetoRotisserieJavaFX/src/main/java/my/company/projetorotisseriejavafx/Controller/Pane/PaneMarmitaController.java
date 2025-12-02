@@ -14,6 +14,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -31,6 +33,7 @@ import my.company.projetorotisseriejavafx.DAO.MarmitaDAO;
 import my.company.projetorotisseriejavafx.Objects.Cardapio;
 import my.company.projetorotisseriejavafx.Objects.Marmita;
 import my.company.projetorotisseriejavafx.Objects.MarmitaVendida;
+import my.company.projetorotisseriejavafx.Util.CssHelper;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 
 public class PaneMarmitaController implements Initializable {
@@ -265,12 +268,17 @@ public class PaneMarmitaController implements Initializable {
 
     public void abrirModalObservacao(String observacao) {
         try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalObservacao.fxml"));
+            Parent root = loader.load();
+
             Stage modal = new Stage();
+            Scene scene = new Scene(root);
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalObservacao.fxml"));
-            modal.setScene(fxmlLoader.load());
+            CssHelper.loadCss(scene);
 
-            ModalObservacaoController controller = fxmlLoader.getController();
+            modal.setScene(scene);
+
+            ModalObservacaoController controller = loader.getController();
 
             controller.initialize(observacao);
 

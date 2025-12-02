@@ -11,7 +11,7 @@
             <Font size="30.0" />
          </font>
       </Label>
-      <Label fx:id="LTroco" alignment="CENTER" layoutX="1.0" layoutY="83.0" prefHeight="38.0" prefWidth="342.0" text="R$ 00,00" textAlignment="CENTER">
+      <Label fx:id="LTroco" alignment="CENTER" layoutX="1.0" layoutY="83.0" prefHeight="38.0" prefWidth="342.0" styleClass="LTroco" text="R$ 00,00" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="26.0" />
          </font>

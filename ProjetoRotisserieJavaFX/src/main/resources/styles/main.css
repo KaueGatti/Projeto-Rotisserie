@@ -4,6 +4,8 @@
 @import "comboboxs.css";
 @import "checkboxs.css";
 @import "datepickers.css";
+@import "radiobuttons.css";
+@import "spinners.css";
 
 #APPrincipal {
     -fx-background-color: -color-white;
@@ -58,5 +60,18 @@
 
 #DPData-relatorio {
     -fx-font-size: 16;
+}
+
+/* Modal Troco */
+
+.LTroco {
+    -fx-text-fill: -color-green;
+}
+
+/* Modal Aviso Pagamentos */
+
+#LWarning-aviso-pagamento .ikonli-font-icon {
+    -fx-icon-size: 80px;
+    -fx-icon-color: -color-red;
 }
 

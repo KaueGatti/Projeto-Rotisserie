@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
@@ -18,25 +19,25 @@
 
 <Pane id="paneNovoPedido" fx:id="panePrincipal" prefHeight="728.0" prefWidth="1524.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.NovoPedidoController">
    <children>
-         <ToggleButton id="tabMarmita" fx:id="tabButtonLeft" layoutX="28.0" layoutY="19.0" mnemonicParsing="false" onAction="#marmitaClicked" prefHeight="58.0" prefWidth="230.0" selected="true" stylesheets="@../styles/novoPedido.css" text="Marmita">
+         <ToggleButton id="tabMarmita" fx:id="tabButtonLeft" layoutX="28.0" layoutY="19.0" mnemonicParsing="false" onAction="#marmitaClicked" prefHeight="58.0" prefWidth="230.0" selected="true" text="Marmita">
             <font>
                <Font size="14.0" />
             </font>
          </ToggleButton>
-         <ToggleButton id="tabProduto" fx:id="tabButtonRight" layoutX="258.0" layoutY="19.0" mnemonicParsing="false" onAction="#produtoClicked" prefHeight="58.0" prefWidth="230.0" stylesheets="@../styles/novoPedido.css" text="Produto">
+         <ToggleButton id="tabProduto" fx:id="tabButtonRight" layoutX="258.0" layoutY="19.0" mnemonicParsing="false" onAction="#produtoClicked" prefHeight="58.0" prefWidth="230.0" text="Produto">
             <font>
                <Font size="14.0" />
             </font>
          </ToggleButton>
       <AnchorPane fx:id="APMarmitaProduto" layoutX="28.0" layoutY="77.0" prefHeight="622.0" prefWidth="460.0" />
-      <TableView fx:id="tableMarmita" layoutX="518.0" layoutY="54.0" prefHeight="190.0" prefWidth="500.0" stylesheets="@../styles/novoPedido.css">
+      <TableView fx:id="tableMarmita" layoutX="518.0" layoutY="54.0" prefHeight="190.0" prefWidth="500.0">
         <columns>
           <TableColumn fx:id="colNomeMarmita" prefWidth="254.4000244140625" text="Nome" />
           <TableColumn fx:id="colSubtotalMarmita" minWidth="0.0" prefWidth="174.39996337890625" text="Subtotal" />
             <TableColumn fx:id="colDelMarmita" editable="false" minWidth="0.0" prefWidth="69.5999755859375" resizable="false" />
         </columns>
       </TableView>
-      <TableView fx:id="tableProduto" layoutX="519.0" layoutY="299.0" prefHeight="190.0" prefWidth="500.0" stylesheets="@../styles/novoPedido.css">
+      <TableView fx:id="tableProduto" layoutX="519.0" layoutY="299.0" prefHeight="190.0" prefWidth="500.0">
          <columns>
             <TableColumn fx:id="colNomeProduto" prefWidth="180.0" text="Nome" />
             <TableColumn fx:id="colQuantidadeProduto" minWidth="0.0" prefWidth="118.39996337890625" text="Quantidade" />
@@ -64,19 +65,19 @@
             <Font name="Segoe UI Bold" size="24.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="1047.0" layoutY="22.0" prefHeight="30.0" prefWidth="440.0" styleClass="titleTable" stylesheets="@../styles/novoPedido.css" text="Pedido" textAlignment="CENTER">
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="1047.0" layoutY="22.0" prefHeight="30.0" prefWidth="440.0" styleClass="titleTable" text="Pedido" textAlignment="CENTER">
          <font>
             <Font name="Segoe UI Bold" size="24.0" />
          </font>
       </Label>
-      <Pane id="panePedido" layoutX="1035.0" layoutY="58.0" prefHeight="641.0" prefWidth="467.0" stylesheets="@../styles/novoPedido.css">
+      <Pane id="panePedido" layoutX="1035.0" layoutY="58.0" prefHeight="641.0" prefWidth="467.0">
          <children>
-            <CheckBox fx:id="checkBoxMensalista" layoutX="23.0" layoutY="82.0" mnemonicParsing="false" onAction="#checkBoxMensalista" prefHeight="38.0" prefWidth="157.0" text="Mensalista">
+            <CheckBox fx:id="checkBoxMensalista" layoutX="23.0" layoutY="75.0" mnemonicParsing="false" onAction="#checkBoxMensalista" prefHeight="38.0" prefWidth="157.0" text="Mensalista">
                <font>
                   <Font size="20.0" />
                </font>
             </CheckBox>
-            <ComboBox fx:id="comboBoxMensalista" disable="true" layoutX="23.0" layoutY="127.0" prefHeight="35.0" prefWidth="395.0" style="-fx-pref-width: 395; -fx-pref-height: 30;" stylesheets="@../styles/novoPedido.css" />
+            <ComboBox fx:id="comboBoxMensalista" disable="true" layoutX="23.0" layoutY="120.0" prefHeight="35.0" prefWidth="395.0" style="-fx-pref-width: 395; -fx-pref-height: 30;" />
             <TextField fx:id="TFNomeCliente" layoutX="23.0" layoutY="193.0" prefHeight="36.0" prefWidth="395.0" promptText="Nome do cliente">
                <font>
                   <Font size="18.0" />
@@ -89,7 +90,7 @@
             </Label>
             <Pane fx:id="paneEndereco" disable="true" layoutX="23.0" layoutY="252.0" prefHeight="241.0" prefWidth="395.0">
                <children>
-                  <ComboBox fx:id="comboBoxBairro" layoutX="16.0" layoutY="191.0" prefHeight="36.0" prefWidth="364.0" stylesheets="@../styles/novoPedido.css" />
+                  <ComboBox fx:id="comboBoxBairro" layoutX="16.0" layoutY="191.0" prefHeight="36.0" prefWidth="364.0" />
                   <TextArea fx:id="TAEndereco" layoutX="16.0" layoutY="29.0" prefHeight="116.0" prefWidth="364.0">
                      <font>
                         <Font size="16.0" />
@@ -127,20 +128,32 @@
                   <Insets />
                </opaqueInsets>
             </Label>
-            <Button fx:id="btnFinalizar" layoutX="15.0" layoutY="601.0" mnemonicParsing="false" onAction="#finalizar" prefHeight="40.0" prefWidth="204.0" stylesheets="@../styles/novoPedido.css" text="Finalizar">
+            <Button fx:id="btnFinalizar" layoutX="15.0" layoutY="601.0" mnemonicParsing="false" onAction="#finalizar" prefHeight="40.0" prefWidth="204.0" text="Finalizar">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
+               <styleClass>
+                  <String fx:value="button-action" />
+                  <String fx:value="button-green" />
+               </styleClass>
             </Button>
-            <Button fx:id="btnCancelar" layoutX="237.0" layoutY="601.0" mnemonicParsing="false" onAction="#cancelar" prefHeight="40.0" prefWidth="204.0" stylesheets="@../styles/novoPedido.css" text="Cancelar">
+            <Button fx:id="btnCancelar" layoutX="237.0" layoutY="601.0" mnemonicParsing="false" onAction="#cancelar" prefHeight="40.0" prefWidth="204.0" text="Cancelar">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
+               <styleClass>
+                  <String fx:value="button-action" />
+                  <String fx:value="button-red" />
+               </styleClass>
             </Button>
-            <Button fx:id="btnDescontosEAdicionais" layoutX="237.0" layoutY="547.0" mnemonicParsing="false" onAction="#descontosEAdicionais" prefHeight="40.0" prefWidth="204.0" stylesheets="@../styles/novoPedido.css" text="Descontos e Adicionais">
+            <Button fx:id="btnDescontosEAdicionais" layoutX="237.0" layoutY="547.0" mnemonicParsing="false" onAction="#descontosEAdicionais" prefHeight="40.0" prefWidth="204.0" text="Descontos e Adicionais">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
+               <styleClass>
+                  <String fx:value="button-action" />
+                  <String fx:value="button-yellow" />
+               </styleClass>
             </Button>
             <Label alignment="CENTER" layoutX="1.0" prefHeight="29.0" prefWidth="440.0" text="Tipo">
                <font>

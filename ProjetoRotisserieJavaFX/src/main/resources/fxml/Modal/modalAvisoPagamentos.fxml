@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -17,17 +17,25 @@
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
+         <styleClass>
+            <String fx:value="button-action" />
+            <String fx:value="button-red" />
+         </styleClass>
       </Button>
       <Button fx:id="btnConfirmar" layoutX="24.0" layoutY="227.0" mnemonicParsing="false" onAction="#confirmar" prefHeight="46.0" prefWidth="244.0" text="Confirmar">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
+         <styleClass>
+            <String fx:value="button-action" />
+            <String fx:value="button-green" />
+         </styleClass>
       </Button>
       <Label layoutX="88.0" layoutY="149.0" prefHeight="68.0" prefWidth="390.0" text="Está ação não poderá ser desfeita, tem certeza que deseja realiza-lá?" textAlignment="CENTER" wrapText="true">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <ImageView fx:id="IVWarning" fitHeight="85.0" fitWidth="85.0" layoutX="241.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true" />
+      <Label id="LWarning-aviso-pagamento" layoutX="238.0" layoutY="60.0" prefHeight="80.0" prefWidth="90.0" styleClass="icon-warning" />
    </children>
 </AnchorPane>

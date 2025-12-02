@@ -1,0 +1,38 @@
+/* ===== Spinner Moderno ===== */
+.spinner {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 3;
+    -fx-font-size: 14px;
+}
+
+/* campo */
+.spinner .text-field {
+    -fx-background-color: transparent;
+    -fx-padding: 5 8;
+    -fx-text-fill: #333;
+    -fx-highlight-fill: #4A90E2;
+    -fx-highlight-text-fill: white;
+    -fx-border-color: transparent;
+}
+
+/* setas */
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+    -fx-background-color: transparent;
+    -fx-padding: 4;
+}
+
+.spinner .increment-arrow-button:hover,
+.spinner .decrement-arrow-button:hover {
+    -fx-background-color: #e6e6e6;
+    -fx-background-radius: 6;
+}
+
+/* ícones das setas */
+.spinner .increment-arrow,
+.spinner .decrement-arrow {
+    -fx-background-color: #555;
+}

@@ -5,6 +5,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
@@ -13,6 +15,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import my.company.projetorotisseriejavafx.Controller.NovoPedidoController;
 import my.company.projetorotisseriejavafx.Objects.DescontoAdicional;
+import my.company.projetorotisseriejavafx.Util.CssHelper;
 
 import java.io.IOException;
 import java.util.List;
@@ -68,9 +71,14 @@ public class ModalDescontosEAdicionaisController {
     public void abrirModalAdicionarDescontosEAdicionais() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalAdicionarDescontosEAdicionais.fxml"));
-            Stage modal = new Stage();
+            Parent root = loader.load();
 
-            modal.setScene(loader.load());
+            Stage modal = new Stage();
+            Scene scene = new Scene(root);
+
+            CssHelper.loadCss(scene);
+
+            modal.setScene(scene);
 
             ModalAdicionarDescontosEAdicionaisController controller = loader.getController();
 

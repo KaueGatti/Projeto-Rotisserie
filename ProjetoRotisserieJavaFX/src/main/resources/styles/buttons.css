@@ -49,3 +49,10 @@
     -fx-font-size: 16;
 }
 
+.fs-12,
+.fs-12:hover,
+.fs-12:pressed,
+.fs-12:focused {
+    -fx-font-size: 12;
+}
+

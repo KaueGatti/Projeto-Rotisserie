@@ -17,6 +17,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -32,6 +34,7 @@ import my.company.projetorotisseriejavafx.Controller.Pane.PaneMarmitaController;
 import my.company.projetorotisseriejavafx.Controller.Pane.PaneProdutoController;
 import my.company.projetorotisseriejavafx.DAO.*;
 import my.company.projetorotisseriejavafx.Objects.*;
+import my.company.projetorotisseriejavafx.Util.CssHelper;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 import my.company.projetorotisseriejavafx.Util.IconHelper;
 import my.company.projetorotisseriejavafx.Util.Printer;
@@ -392,12 +395,18 @@ public class NovoPedidoController implements Initializable {
 
     public void abrirModalDescontosEAdicionais() {
         try {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDescontosEAdicionais.fxml"));
+            Parent root = loader.load();
+
             Stage modal = new Stage();
+            Scene scene = new Scene(root);
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDescontosEAdicionais.fxml"));
-            modal.setScene(fxmlLoader.load());
+            CssHelper.loadCss(scene);
 
-            ModalDescontosEAdicionaisController controller = fxmlLoader.getController();
+            modal.setScene(scene);
+
+            ModalDescontosEAdicionaisController controller = loader.getController();
 
             controller.initialize(this, descontosEAdicionais);
 
@@ -417,12 +426,17 @@ public class NovoPedidoController implements Initializable {
 
     public boolean abrirModalPagamento(Double valorTotal) {
         try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalPagamento.fxml"));
+            Parent root = loader.load();
+
             Stage modal = new Stage();
+            Scene scene = new Scene(root);
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalPagamento.fxml"));
-            modal.setScene(fxmlLoader.load());
+            CssHelper.loadCss(scene);
 
-            ModalPagamentoController controller = fxmlLoader.getController();
+            modal.setScene(scene);
+
+            ModalPagamentoController controller = loader.getController();
 
             controller.initialize(valorTotal);
 
@@ -492,9 +506,14 @@ public class NovoPedidoController implements Initializable {
     public boolean abrirModalAvisoNovoPedido(String msg, Object tipo) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalAvisoNovoPedido.fxml"));
-            Stage modal = new Stage();
+            Parent root = loader.load();
 
-            modal.setScene(loader.load());
+            Stage modal = new Stage();
+            Scene scene = new Scene(root);
+
+            CssHelper.loadCss(scene);
+
+            modal.setScene(scene);
 
             ModalAvisoNovoPedidoController controller = loader.getController();
 
@@ -563,11 +582,16 @@ public class NovoPedidoController implements Initializable {
                     if (event.getClickCount() == 2) {
                         if (tableMarmita.getSelectionModel().getSelectedItem() != null) {
                             try {
-                                Stage modal = new Stage();
 
                                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDetalhesMarmita.fxml"));
+                                Parent root = loader.load();
 
-                                modal.setScene(loader.load());
+                                Stage modal = new Stage();
+                                Scene scene = new Scene(root);
+
+                                CssHelper.loadCss(scene);
+
+                                modal.setScene(scene);
 
                                 ModalDetalhesMarmitaController controller = loader.getController();
 
@@ -596,24 +620,38 @@ public class NovoPedidoController implements Initializable {
         colQuantidadeProduto.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
         colSubtotalProduto.setCellValueFactory(new PropertyValueFactory<>("formattedSubtotal"));
         colDelProduto.setCellFactory(param -> new TableCell<>() {
-            private final Button btnExcluir = new Button("Excluir");
+            private final Button btnExcluir = new Button("");
 
             {
+                btnExcluir.setMaxWidth(Double.MAX_VALUE);
+                btnExcluir.getStyleClass().add("BExcluir");
+                btnExcluir.getStyleClass().add("icon-delete");
+
                 btnExcluir.setOnAction(event -> {
-                    ProdutoVendido produto = getTableView().getItems().get(getIndex());
-                    valorTotal -= produto.getSubtotal();
-                    getTableView().getItems().remove(produto);
-                    atualizaValor();
+                    ProdutoVendido produtoVendido = getTableRow().getItem();
+                    getTableView().getItems().remove(produtoVendido);
                 });
+
+                HBox.setHgrow(btnExcluir, Priority.ALWAYS);
             }
 
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
+
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    setGraphic(btnExcluir);
+                    HBox wrapper = new HBox(btnExcluir);
+                    wrapper.setSpacing(0);
+                    wrapper.setPadding(new Insets(0));
+                    wrapper.setFillHeight(true);
+
+                    wrapper.setMaxWidth(Double.MAX_VALUE);
+
+                    IconHelper.applyIcon(btnExcluir);
+
+                    setGraphic(wrapper);
                 }
             }
         });
