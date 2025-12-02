@@ -37,15 +37,8 @@ public class ModalDiariaController {
     @FXML
     private TextField TFValorTotalDiaria;
 
-    @FXML
-    private Button btnImprimir;
-
     public void initialize(Motoboy motoboy, LocalDate data) {
         loadCampos(motoboy, data);
-    }
-
-    @FXML
-    void imprimir(ActionEvent event) {
     }
 
     public void fecharModal() {

@@ -152,7 +152,11 @@ public class MotoboysController {
 
             if (!motoboys.isEmpty()) {
                 tableMotoboys.getItems().addAll(motoboys);
+                btnImprimirDiaria.setDisable(false);
+                return;
             }
+
+            btnImprimirDiaria.setDisable(true);
         } catch (SQLException e) {
             DatabaseExceptionHandler.handleException(e, "motoboy");
         }

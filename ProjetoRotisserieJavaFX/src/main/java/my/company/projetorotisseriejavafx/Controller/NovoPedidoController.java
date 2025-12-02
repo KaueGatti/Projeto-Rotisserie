@@ -549,7 +549,7 @@ public class NovoPedidoController implements Initializable {
 
                 btnExcluir.setOnAction(event -> {
                     MarmitaVendida marmita = getTableView().getItems().get(getIndex());
-                    valorTotal -= marmita.getSubtotal();
+                    valorItens -= marmita.getSubtotal();
                     getTableView().getItems().remove(marmita);
                     atualizaValor();
                 });
@@ -629,7 +629,9 @@ public class NovoPedidoController implements Initializable {
 
                 btnExcluir.setOnAction(event -> {
                     ProdutoVendido produtoVendido = getTableRow().getItem();
+                    valorItens -= produtoVendido.getSubtotal();
                     getTableView().getItems().remove(produtoVendido);
+                    atualizaValor();
                 });
 
                 HBox.setHgrow(btnExcluir, Priority.ALWAYS);

@@ -588,9 +588,7 @@ public class CardapioController implements Initializable {
                         }
                     }
 
-                    if (used) {
-                        System.out.println("Esse item está no cardápio: " + itemCardapio.getNome());
-                    } else {
+                    if (!used) {
                         itensCardapio.remove(itemCardapio);
                     }
                 });

@@ -27,7 +27,8 @@ CREATE TABLE IF NOT EXISTS Bairro (
 	nome VARCHAR(30) NOT NULL,
 	valor_entrega DECIMAL(10,2) NOT NULL,
 	status VARCHAR(30) NOT NULL DEFAULT 'ATIVO',
-	PRIMARY KEY (id)
+	PRIMARY KEY (id),
+    UNIQUE (nome)
 );
 
 CREATE TABLE IF NOT EXISTS Motoboy (
@@ -35,7 +36,8 @@ CREATE TABLE IF NOT EXISTS Motoboy (
 	nome VARCHAR(30) NOT NULL,
 	valor_diaria DECIMAL(10,2) NOT NULL,
 	status VARCHAR(30) NOT NULL DEFAULT 'ATIVO',
-	PRIMARY KEY (id)
+	PRIMARY KEY (id),
+    UNIQUE (nome)
 );
 
 CREATE TABLE IF NOT EXISTS Mensalista (
@@ -541,7 +543,7 @@ AFTER INSERT
 ON Pedido
 FOR EACH ROW
 BEGIN
-	IF (NEW.id_mensalista IS NOT NULL AND NEW.status != 'FINALIZADO') THEN
+	IF (NEW.id_mensalista IS NOT NULL AND NEW.status = 'A PAGAR') THEN
 		UPDATE Mensalista
         SET conta = conta + NEW.valor_total
         WHERE id = NEW.id_mensalista;
@@ -555,7 +557,7 @@ AFTER UPDATE
 ON Pedido
 FOR EACH ROW
 BEGIN
-	IF (OLD.status != 'FINALIZADO' AND NEW.status = 'FINALIZADO') THEN
+	IF (OLD.status != 'PAGO' AND NEW.status = 'PAGO') THEN
 		UPDATE Mensalista
         SET conta = conta - NEW.valor_total
         WHERE id = NEW.id_mensalista;

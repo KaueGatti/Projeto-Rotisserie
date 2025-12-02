@@ -14,6 +14,7 @@ import my.company.projetorotisseriejavafx.Util.CurrencyFieldUtil;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 
 import java.sql.SQLException;
+import java.sql.SQLOutput;
 
 public class ModalEditMarmitaController {
 
@@ -58,10 +59,10 @@ public class ModalEditMarmitaController {
 
     private void loadComboBoxs() {
         CBMisturas.getItems().addAll(1, 2, 3, 4);
-        CBMisturas.getSelectionModel().select(marmita.getMaxMistura());
+        CBMisturas.getSelectionModel().select((Integer) marmita.getMaxMistura());
 
         CBGuarnicoes.getItems().addAll(1, 2, 3, 4);
-        CBGuarnicoes.getSelectionModel().select(marmita.getMaxGuarnicao());
+        CBGuarnicoes.getSelectionModel().select((Integer) marmita.getMaxGuarnicao());
 
         CBStatus.getItems().addAll("ATIVO", "INATIVO");
         CBStatus.getSelectionModel().select(marmita.getStatus());
