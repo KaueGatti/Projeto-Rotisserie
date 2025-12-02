@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,6 +22,7 @@ import my.company.projetorotisseriejavafx.DAO.CardapioDAO;
 import my.company.projetorotisseriejavafx.DAO.MarmitaDAO;
 import my.company.projetorotisseriejavafx.Objects.Cardapio;
 import my.company.projetorotisseriejavafx.Objects.Marmita;
+import my.company.projetorotisseriejavafx.Util.CssHelper;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 import my.company.projetorotisseriejavafx.Util.IconHelper;
 
@@ -243,14 +245,16 @@ public class InicioController implements Initializable {
 
     public boolean abrirModalAvisoNovoPedido(String msg, Object tipo) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Pedidos.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalAvisoNovoPedido.fxml"));
             Parent root = loader.load();
 
+            Stage modal = new Stage();
+            Scene scene = new Scene(root);
+
+            CssHelper.loadCss(scene);
             IconHelper.applyIconsTo(root);
 
-            Stage modal = new Stage();
-
-            modal.setScene(root.getScene());
+            modal.setScene(scene);
 
             ModalAvisoNovoPedidoController controller = loader.getController();
 

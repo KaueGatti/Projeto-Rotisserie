@@ -37,8 +37,12 @@
       </Button>
       <Label fx:id="LInfo" layoutX="42.0" layoutY="234.0" prefHeight="31.0" prefWidth="307.0">
          <font>
-            <Font name="System Bold" size="14.0" />
+            <Font name="System Bold" size="16.0" />
          </font>
+         <styleClass>
+            <String fx:value="tc-red" />
+            <String fx:value="tf-700" />
+         </styleClass>
       </Label>
    </children>
 </AnchorPane>

@@ -75,3 +75,29 @@
     -fx-icon-color: -color-red;
 }
 
+/* Tela de Novo Pedido */
+
+#LInfoPedido {
+    -fx-text-fill: -color-red;
+    -fx-font-weight: 700;
+}
+
+/* Pane Marmita - Novo Pedido */
+
+#LInfo-pane-marmita {
+    -fx-text-fill: -color-red;
+    -fx-font-weight: 700;
+}
+
+.tc-red {
+    -fx-text-fill: -color-red;
+}
+
+.tf-700 {
+    -fx-font-weight: 700;
+}
+
+.ic-yellow {
+    -fx-icon-color: -color-yellow;
+}
+

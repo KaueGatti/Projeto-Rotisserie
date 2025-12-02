@@ -173,7 +173,7 @@
                   <Font size="20.0" />
                </font>
             </RadioButton>
-            <Label fx:id="LInfoPedido" layoutX="14.0" layoutY="485.0" prefHeight="29.0" prefWidth="429.0">
+            <Label id="LInfoPedido" fx:id="LInfoPedido" layoutX="14.0" layoutY="485.0" prefHeight="29.0" prefWidth="429.0">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>

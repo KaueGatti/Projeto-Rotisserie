@@ -39,6 +39,10 @@
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
+         <styleClass>
+            <String fx:value="tc-red" />
+            <String fx:value="tf-700" />
+         </styleClass>
       </Label>
    </children>
 </AnchorPane>

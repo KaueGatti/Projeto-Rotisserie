@@ -76,7 +76,6 @@ public class ModalMarmitasEProdutosController {
 
     public void abrirModalDetalhesMarmita(MarmitaVendida marmita) {
         try {
-
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDetalhesMarmita.fxml"));
             Parent root = loader.load();
 

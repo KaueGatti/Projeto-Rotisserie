@@ -394,6 +394,7 @@ public class PaneMarmitaController implements Initializable {
         for (Node node : paneMarmita.getChildren()) {
             if (node instanceof CheckBox checkBox) {
                 if (checkBox.isSelected()) {
+                    labelInfoMarmita.setText("");
                     return true;
                 }
             }

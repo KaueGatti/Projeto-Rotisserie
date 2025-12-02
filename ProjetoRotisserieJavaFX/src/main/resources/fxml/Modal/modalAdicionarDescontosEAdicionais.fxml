@@ -47,6 +47,10 @@
          <font>
             <Font size="16.0" />
          </font>
+         <styleClass>
+            <String fx:value="tc-red" />
+            <String fx:value="tf-700" />
+         </styleClass>
       </Label>
    </children>
 </AnchorPane>

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="paneMarmita" prefHeight="615.0" prefWidth="448.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.Pane.PaneMarmitaController">
+<Pane fx:id="paneMarmita" prefHeight="626.0" prefWidth="448.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.Pane.PaneMarmitaController">
    <children>
       <Label layoutX="15.0" layoutY="8.0" prefHeight="25.0" prefWidth="76.0" text="Marmita">
          <font>
@@ -30,7 +30,7 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Button layoutX="52.0" layoutY="496.0" mnemonicParsing="false" onAction="#bttObservacao" prefHeight="49.0" prefWidth="175.0" text="+ Observação">
+      <Button layoutX="52.0" layoutY="513.0" mnemonicParsing="false" onAction="#bttObservacao" prefHeight="49.0" prefWidth="175.0" text="+ Observação">
          <font>
             <Font size="20.0" />
          </font>
@@ -39,7 +39,7 @@
             <String fx:value="button-yellow" />
          </styleClass>
       </Button>
-      <Button fx:id="bttAdicionar" layoutX="50.0" layoutY="552.0" mnemonicParsing="false" onAction="#bttAdicionar" prefHeight="49.0" prefWidth="360.0" text="+ Adicionar">
+      <Button fx:id="bttAdicionar" layoutX="50.0" layoutY="569.0" mnemonicParsing="false" onAction="#bttAdicionar" prefHeight="49.0" prefWidth="360.0" text="+ Adicionar">
          <font>
             <Font size="20.0" />
          </font>
@@ -48,7 +48,7 @@
             <String fx:value="button-green" />
          </styleClass>
       </Button>
-      <Button fx:id="btnLimpar" layoutX="234.0" layoutY="496.0" mnemonicParsing="false" onAction="#limpar" prefHeight="49.0" prefWidth="175.0" text="- Limpar">
+      <Button fx:id="btnLimpar" layoutX="234.0" layoutY="513.0" mnemonicParsing="false" onAction="#limpar" prefHeight="49.0" prefWidth="175.0" text="- Limpar">
          <font>
             <Font size="20.0" />
          </font>
@@ -147,7 +147,10 @@
          </styleClass></Button>
       <Label fx:id="labelInfoGuarnicao" layoutX="58.0" layoutY="308.0" prefHeight="25.0" prefWidth="335.0" />
       <Label fx:id="labelInfoMistura" layoutX="53.0" layoutY="175.0" prefHeight="25.0" prefWidth="335.0" />
-      <Label fx:id="labelInfoMarmita" layoutX="50.0" layoutY="452.0" prefHeight="17.0" prefWidth="360.0" />
+      <Label id="LInfo-pane-marmita" fx:id="labelInfoMarmita" layoutX="50.0" layoutY="482.0" prefHeight="17.0" prefWidth="360.0">
+         <font>
+            <Font size="16.0" />
+         </font></Label>
       <CheckBox fx:id="checkBoxSalada2" layoutX="243.0" layoutY="455.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="160.0" text="CheckBox">
          <font>
             <Font size="18.0" />

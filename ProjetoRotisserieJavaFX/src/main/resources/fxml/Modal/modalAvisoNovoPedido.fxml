@@ -22,6 +22,10 @@
             <String fx:value="button-green" />
          </styleClass>
       </Button>
-      <Label fx:id="LIcon" layoutX="235.0" layoutY="21.0" prefHeight="70.0" prefWidth="70.0" />
+      <Label fx:id="LIcon" layoutX="235.0" layoutY="21.0" prefHeight="70.0" prefWidth="70.0">
+         <styleClass>
+            <String fx:value="icon-warning" />
+            <String fx:value="ic-yellow" />
+         </styleClass></Label>
    </children>
 </AnchorPane>
