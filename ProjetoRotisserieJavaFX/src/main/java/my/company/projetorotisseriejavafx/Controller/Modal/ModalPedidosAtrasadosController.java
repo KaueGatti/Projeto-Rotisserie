@@ -1,12 +1,17 @@
 package my.company.projetorotisseriejavafx.Controller.Modal;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import my.company.projetorotisseriejavafx.Controller.PedidosController;
 import my.company.projetorotisseriejavafx.Objects.Mensalista;
 import my.company.projetorotisseriejavafx.Objects.Pedido;
+import my.company.projetorotisseriejavafx.Util.IconHelper;
 
 import java.text.NumberFormat;
 import java.time.LocalDate;
@@ -31,6 +36,9 @@ public class ModalPedidosAtrasadosController {
 
     @FXML
     private TableColumn<Pedido, LocalDate> colVencimento;
+
+    @FXML
+    private TableColumn<Pedido, String> colContato;
 
     @FXML
     private TableColumn<Pedido, Void> colVer;
@@ -98,10 +106,21 @@ public class ModalPedidosAtrasadosController {
                 }
             }
         });
+        colContato.setCellValueFactory(p -> {
+            if (p.getValue().mensalistaProperty().get() != null) {
+                return p.getValue().getMensalista().contatoProperty();
+            }
+
+            return new SimpleStringProperty("Sem contato");
+        });
         colVer.setCellFactory(param -> new TableCell<>() {
-            private final Button btnVer = new Button("Ver");
+            private final Button btnVer = new Button("");
 
             {
+                btnVer.setMaxWidth(Double.MAX_VALUE);
+                btnVer.getStyleClass().add("BVer");
+                btnVer.getStyleClass().add("icon-view");
+
                 btnVer.setOnAction(event -> {
                     Pedido pedido = getTableView().getItems().get(getIndex());
                     controller.loadDetalhes(pedido);
@@ -117,6 +136,16 @@ public class ModalPedidosAtrasadosController {
                     setGraphic(null);
                 } else {
                     setGraphic(btnVer);
+                    HBox wrapper = new HBox(btnVer);
+                    wrapper.setSpacing(0);
+                    wrapper.setPadding(new Insets(0));
+                    wrapper.setFillHeight(true);
+
+                    wrapper.setMaxWidth(Double.MAX_VALUE);
+
+                    IconHelper.applyIcon(btnVer);
+
+                    setGraphic(wrapper);
                 }
             }
         });
@@ -148,7 +177,7 @@ public class ModalPedidosAtrasadosController {
     }
 
     private void fecharModal() {
-        Stage modal =  (Stage) root.getScene().getWindow();
+        Stage modal = (Stage) root.getScene().getWindow();
         modal.close();
     }
 

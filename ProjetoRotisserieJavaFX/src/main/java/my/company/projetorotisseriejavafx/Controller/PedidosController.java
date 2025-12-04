@@ -605,7 +605,7 @@ public class PedidosController implements Initializable {
 
             List<Pedido> pedidosAtrasados = pedidos.stream()
                     .filter(p -> p.getStatus().equalsIgnoreCase("A Pagar"))
-                    .filter(p -> p.getVencimento().isBefore(LocalDate.now())).toList();
+                    .filter(p -> p.getVencimento().isAfter(LocalDate.now())).toList();
 
             controller.initialize(pedidosAtrasados, CBMensalista.getItems(), this);
 

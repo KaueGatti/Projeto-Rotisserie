@@ -113,11 +113,11 @@
             <Font size="18.0" />
          </font>
       </CheckBox>
-      <Label fx:id="labelInfoMisturaAdc" layoutX="364.0" layoutY="150.0" prefHeight="25.0" prefWidth="68.0" text="+R$0,00">
+      <Label fx:id="labelInfoMisturaAdc" layoutX="364.0" layoutY="150.0" prefHeight="25.0" prefWidth="68.0" text="+R$ 0,00">
          <font>
             <Font size="16.0" />
          </font></Label>
-      <Label fx:id="labelInfoGuarnicaoAdc" layoutX="364.0" layoutY="281.0" prefHeight="25.0" prefWidth="68.0" text="+R$0,00">
+      <Label fx:id="labelInfoGuarnicaoAdc" layoutX="364.0" layoutY="281.0" prefHeight="25.0" prefWidth="68.0" text="+ R$ 0,00">
          <font>
             <Font size="16.0" />
          </font></Label>
@@ -145,8 +145,16 @@
             <String fx:value="button-red" />
             <String fx:value="fs-12" />
          </styleClass></Button>
-      <Label fx:id="labelInfoGuarnicao" layoutX="58.0" layoutY="308.0" prefHeight="25.0" prefWidth="335.0" />
-      <Label fx:id="labelInfoMistura" layoutX="53.0" layoutY="175.0" prefHeight="25.0" prefWidth="335.0" />
+      <Label fx:id="labelInfoGuarnicao" layoutX="58.0" layoutY="308.0" prefHeight="25.0" prefWidth="335.0">
+         <styleClass>
+            <String fx:value="tc-red" />
+            <String fx:value="tf-700" />
+         </styleClass></Label>
+      <Label fx:id="labelInfoMistura" layoutX="53.0" layoutY="175.0" prefHeight="25.0" prefWidth="335.0">
+         <styleClass>
+            <String fx:value="tc-red" />
+            <String fx:value="tf-700" />
+         </styleClass></Label>
       <Label id="LInfo-pane-marmita" fx:id="labelInfoMarmita" layoutX="50.0" layoutY="482.0" prefHeight="17.0" prefWidth="360.0">
          <font>
             <Font size="16.0" />

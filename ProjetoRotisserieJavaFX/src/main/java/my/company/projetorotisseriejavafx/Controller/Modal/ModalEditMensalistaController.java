@@ -25,6 +25,8 @@ public class ModalEditMensalistaController {
     @FXML
     private TextField TFNome;
     @FXML
+    private TextField TFContato;
+    @FXML
     private Label LInfo;
     @FXML
     private Button btnSalvar;
@@ -37,12 +39,14 @@ public class ModalEditMensalistaController {
 
     @FXML
     void salvar(ActionEvent event) {
-        
+
+        if (!validaMensalista()) return;
+
+        mensalista.setContato(TFContato.getText());
         mensalista.setStatus(CBStatus.getValue());
 
         try {
             MensalistaDAO.update(mensalista);
-            LInfo.setText("Mensalista atualizada com sucesso");
             fecharModal();
         } catch (SQLException e) {
             DatabaseExceptionHandler.handleException(e, "mensalista");
@@ -56,10 +60,20 @@ public class ModalEditMensalistaController {
 
     private void loadTextFields() {
         TFNome.setText(mensalista.getNome());
+        TFContato.setText(mensalista.getContato());
     }
 
     public void fecharModal() {
         Stage modal =  (Stage) root.getScene().getWindow();
         modal.close();
+    }
+
+    private boolean validaMensalista() {
+        if (TFContato.getText().trim().isEmpty()) {
+            LInfo.setText("Contato não pode estar vázio");
+            return false;
+        }
+
+        return true;
     }
 }

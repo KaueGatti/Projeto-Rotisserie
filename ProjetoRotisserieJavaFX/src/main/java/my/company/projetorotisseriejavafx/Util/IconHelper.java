@@ -44,6 +44,11 @@ public class IconHelper {
                     iconWarning.getStyleClass().add("icon-search");
                     btn.setGraphic(iconWarning);
                     break;
+                case "icon-view":
+                    FontIcon iconView = new FontIcon("bi-eye-fill");
+                    iconView.getStyleClass().add("icon-search");
+                    btn.setGraphic(iconView);
+                    break;
             }
         }
     }

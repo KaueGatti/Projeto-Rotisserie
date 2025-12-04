@@ -70,3 +70,14 @@
 .BExcluir .ikonli-font-icon {
     -fx-icon-size: 20px;
 }
+
+/* Botão de visualizar */
+
+.BVer {
+    -fx-background-color: transparent;
+}
+
+.BVer .ikonli-font-icon {
+    -fx-icon-size: 20px;
+    -fx-icon-color: -color-blue;
+}

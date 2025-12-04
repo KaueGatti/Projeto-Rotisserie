@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" prefHeight="264.0" prefWidth="378.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.Modal.ModalCadastrarMensalistaController">
+<AnchorPane fx:id="root" prefHeight="320.0" prefWidth="378.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.Modal.ModalCadastrarMensalistaController">
    <children>
       <Label layoutX="79.0" layoutY="14.0" text="Cadastrar Mensalista">
          <font>
@@ -20,7 +20,7 @@
          </font>
       </Label>
       <TextField fx:id="TFNome" layoutX="37.0" layoutY="87.0" prefHeight="33.0" prefWidth="306.0" />
-      <Button fx:id="btnCadastrar" layoutX="35.0" layoutY="175.0" mnemonicParsing="false" onAction="#cadastrar" prefHeight="45.0" prefWidth="310.0" text="Cadastrar">
+      <Button fx:id="btnCadastrar" layoutX="34.0" layoutY="251.0" mnemonicParsing="false" onAction="#cadastrar" prefHeight="45.0" prefWidth="310.0" text="Cadastrar">
          <font>
             <Font size="18.0" />
          </font>
@@ -29,7 +29,7 @@
             <String fx:value="button-green" />
          </styleClass>
       </Button>
-      <Label fx:id="LInfo" layoutX="36.0" layoutY="132.0" prefHeight="31.0" prefWidth="307.0">
+      <Label fx:id="LInfo" layoutX="36.0" layoutY="207.0" prefHeight="31.0" prefWidth="307.0">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
@@ -38,5 +38,11 @@
             <String fx:value="tf-700" />
          </styleClass>
       </Label>
+      <Label layoutX="36.0" layoutY="129.0" text="Contato">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="TFContato" layoutX="37.0" layoutY="157.0" prefHeight="33.0" prefWidth="306.0" />
    </children>
 </AnchorPane>

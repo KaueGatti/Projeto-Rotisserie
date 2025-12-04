@@ -6,6 +6,7 @@ public class Mensalista {
 
     private IntegerProperty id = new SimpleIntegerProperty();
     private StringProperty nome = new SimpleStringProperty();
+    private StringProperty contato = new SimpleStringProperty();
     private DoubleProperty conta = new SimpleDoubleProperty();
     private StringProperty status =  new SimpleStringProperty();
 
@@ -39,6 +40,18 @@ public class Mensalista {
 
     public StringProperty nomeProperty() {
         return nome;
+    }
+
+    public String getContato() {
+        return contato.get();
+    }
+
+    public void setContato(String contato) {
+        this.contato.set(contato);
+    }
+
+    public StringProperty contatoProperty() {
+        return contato;
     }
 
     public double getConta() {

@@ -21,6 +21,8 @@ public class ModalCadastrarMensalistaController {
 
     @FXML
     private TextField TFNome;
+    @FXML
+    private TextField TFContato;
 
     @FXML
     private Button btnCadastrar;
@@ -28,22 +30,17 @@ public class ModalCadastrarMensalistaController {
     @FXML
     private AnchorPane root;
 
-    public void initialize() {
-    }
-
     @FXML
     void cadastrar(ActionEvent event) {
         Mensalista mensalista = new Mensalista();
 
-        if (!validaCampos()) return;
+        if (!validaMensalista()) return;
 
         mensalista.setNome(TFNome.getText());
-
-        if (!validaMensalista(mensalista)) return;
+        mensalista.setContato(TFContato.getText());
 
         try {
             MensalistaDAO.create(mensalista);
-            LInfo.setText("Mensalista Cadastrado com sucesso!");
             fecharModal();
         } catch (SQLException e) {
             DatabaseExceptionHandler.handleException(e, "mensalista");
@@ -51,18 +48,14 @@ public class ModalCadastrarMensalistaController {
 
     }
 
-    private boolean validaMensalista(Mensalista mensalista) {
-        if (mensalista.getNome() == null || mensalista.getNome().trim().isEmpty()) {
-            LInfo.setText("Nome inválido");
+    private boolean validaMensalista() {
+        if (TFNome.getText().trim().isEmpty()) {
+            LInfo.setText("Nome não pode estar vázio");
             return false;
         }
 
-        return true;
-    }
-
-    private boolean validaCampos() {
-        if (TFNome.getText().trim().isEmpty()) {
-            LInfo.setText("Nome não pode estar vazio");
+        if (TFContato.getText().trim().isEmpty()) {
+            LInfo.setText("Contato não pode estar vázio");
             return false;
         }
 
@@ -70,7 +63,7 @@ public class ModalCadastrarMensalistaController {
     }
 
     public void fecharModal() {
-        Stage modal =  (Stage) root.getScene().getWindow();
+        Stage modal = (Stage) root.getScene().getWindow();
         modal.close();
     }
 

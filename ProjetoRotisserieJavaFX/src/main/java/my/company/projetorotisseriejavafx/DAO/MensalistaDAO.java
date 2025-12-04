@@ -18,9 +18,10 @@ public class MensalistaDAO {
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("CALL CREATE_MENSALISTA(?)");
+            stmt = con.prepareStatement("CALL CREATE_MENSALISTA(?, ?)");
 
             stmt.setString(1, mensalista.getNome());
+            stmt.setString(2, mensalista.getContato());
 
             stmt.executeUpdate();
         } finally {
@@ -43,6 +44,7 @@ public class MensalistaDAO {
 
                 mensalista.setId(rs.getInt("id"));
                 mensalista.setNome(rs.getString("nome"));
+                mensalista.setContato(rs.getString("contato"));
                 mensalista.setConta(rs.getDouble("conta"));
                 mensalista.setStatus(rs.getString("status"));
 
@@ -73,6 +75,7 @@ public class MensalistaDAO {
 
                 mensalista.setId(rs.getInt("id"));
                 mensalista.setNome(rs.getString("nome"));
+                mensalista.setContato(rs.getString("contato"));
                 mensalista.setConta(rs.getDouble("conta"));
                 mensalista.setStatus(rs.getString("status"));
 
@@ -90,10 +93,11 @@ public class MensalistaDAO {
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("CALL UPDATE_MENSALISTA(?, ?)");
+            stmt = con.prepareStatement("CALL UPDATE_MENSALISTA(?, ?, ?)");
 
             stmt.setInt(1, mensalista.getId());
             stmt.setString(2, mensalista.getStatus());
+            stmt.setString(3, mensalista.getContato());
 
             stmt.executeUpdate();
         } finally {

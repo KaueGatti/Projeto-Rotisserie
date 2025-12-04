@@ -37,6 +37,8 @@ public class MensalistasController {
     @FXML
     private TableColumn<Mensalista, String> colNome;
     @FXML
+    private TableColumn<Mensalista, String> colContato;
+    @FXML
     private TableColumn<Mensalista, Double> colConta;
     @FXML
     private TableColumn<Mensalista, String> colStatus;
@@ -55,6 +57,7 @@ public class MensalistasController {
 
     private void initTableMensalistas() {
         colNome.setCellValueFactory(m -> m.getValue().nomeProperty());
+        colContato.setCellValueFactory(m -> m.getValue().contatoProperty());
         colConta.setCellValueFactory(m -> m.getValue().contaProperty().asObject());
         colConta.setCellFactory(column -> new TableCell<Mensalista, Double>() {
             private final NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));

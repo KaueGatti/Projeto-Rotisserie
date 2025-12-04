@@ -26,12 +26,13 @@
                   <String fx:value="button-action" />
                </styleClass>
             </Button>
-            <TableView fx:id="tableMensalistas" layoutX="28.0" layoutY="140.0" prefHeight="467.0" prefWidth="530.0">
+            <TableView fx:id="tableMensalistas" layoutX="20.0" layoutY="140.0" prefHeight="467.0" prefWidth="547.0">
               <columns>
-                <TableColumn fx:id="colNome" prefWidth="246.4000244140625" text="Nome" />
-                  <TableColumn fx:id="colConta" prefWidth="113.5999755859375" text="Conta" />
-                <TableColumn fx:id="colStatus" prefWidth="104.0" text="Status" />
-                  <TableColumn fx:id="colEditar" prefWidth="63.20001220703125" />
+                <TableColumn fx:id="colNome" prefWidth="159.20004272460938" text="Nome" />
+                  <TableColumn fx:id="colContato" prefWidth="144.79998779296875" text="Contato" />
+                  <TableColumn fx:id="colConta" prefWidth="98.39996337890625" text="Conta" />
+                <TableColumn fx:id="colStatus" prefWidth="80.800048828125" text="Status" />
+                  <TableColumn fx:id="colEditar" prefWidth="62.20001220703125" />
               </columns>
             </TableView>
          </children>
