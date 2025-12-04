@@ -1,6 +1,5 @@
 package my.company.projetorotisseriejavafx.Util;
 
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 
 import javax.swing.*;

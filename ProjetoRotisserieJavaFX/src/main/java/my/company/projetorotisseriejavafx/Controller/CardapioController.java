@@ -1,6 +1,5 @@
 package my.company.projetorotisseriejavafx.Controller;
 
-import javafx.animation.PauseTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.*;
@@ -21,7 +20,6 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Duration;
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalAdicionarItemCardapioController;
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalAvisoCardapioController;
 import my.company.projetorotisseriejavafx.DAO.CardapioDAO;
