@@ -23,6 +23,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalAdicionarItemCardapioController;
+import my.company.projetorotisseriejavafx.Controller.Modal.ModalAvisoCardapioController;
 import my.company.projetorotisseriejavafx.DAO.CardapioDAO;
 import my.company.projetorotisseriejavafx.DAO.ItemCardapioDAO;
 import my.company.projetorotisseriejavafx.Objects.Cardapio;
@@ -488,28 +489,34 @@ public class CardapioController implements Initializable {
     }
 
     public boolean validaCardapio() {
+        String message = "";
+        boolean valido = true;
+
         if (principais.size() < 2) {
-            JOptionPane.showMessageDialog(null, "Adicione ao menos 2 principais ao cardápio");
-            return false;
+            message = "Adicione ao menos 2 principais ao cardápio";
+            valido = false;
         }
 
         if (misturas.size() < 4) {
-            JOptionPane.showMessageDialog(null, "Adicione ao menos 4 misturas ao cardápio");
-            return false;
+            message = "Adicione ao menos 4 misturas ao cardápio";
+            valido = false;
         }
 
         if (guarnicoes.size() < 4) {
-            JOptionPane.showMessageDialog(null, "Adicione ao menos 4 guarnições ao cardápio");
-            return false;
+            message = "Adicione ao menos 4 guarnições ao cardápio";
+            valido = false;
         }
 
         if (saladas.size() < 2) {
-
-            JOptionPane.showMessageDialog(null, "Adicione ao menos 2 saladas ao cardápio");
-            return false;
+            message = "Adicione ao menos 2 saladas ao cardápio";
+            valido = false;
         }
 
-        return true;
+        if (!valido) {
+            abrirModalAvisoCardapio(message);
+        }
+
+        return valido;
     }
 
     private void configurarGrupo(List<ComboBox<ItemCardapio>> grupo, ObservableList<ItemCardapio> lista) {
@@ -616,5 +623,32 @@ public class CardapioController implements Initializable {
                 }
             }
         };
+    }
+
+    private void abrirModalAvisoCardapio(String message) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalAvisoCardapio.fxml"));
+            Parent root = loader.load();
+
+            Stage modal = new Stage();
+            Scene scene = new Scene(root);
+
+            CssHelper.loadCss(scene);
+
+            modal.setScene(scene);
+
+            ModalAvisoCardapioController controller = loader.getController();
+
+            controller.initialize(message);
+
+            modal.initStyle(StageStyle.UTILITY);
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.setResizable(false);
+            modal.showAndWait();
+
+        } catch (IOException e) {
+            System.out.println("Erro ao abrir adicionar item cardapio");
+            e.printStackTrace();
+        }
     }
 }
