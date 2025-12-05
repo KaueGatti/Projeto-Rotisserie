@@ -55,12 +55,12 @@
             <Font name="Segoe UI" size="24.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="519.0" layoutY="257.0" prefHeight="35.0" prefWidth="500.0" styleClass="titleTable" stylesheets="@../styles/novoPedido.css" text="Produtos" textAlignment="CENTER">
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="519.0" layoutY="257.0" prefHeight="35.0" prefWidth="500.0" styleClass="titleTable"  text="Produtos" textAlignment="CENTER">
          <font>
             <Font name="Segoe UI Bold" size="24.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="519.0" layoutY="14.0" prefHeight="35.0" prefWidth="500.0" styleClass="titleTable" stylesheets="@../styles/novoPedido.css" text="Marmitas" textAlignment="CENTER">
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="519.0" layoutY="14.0" prefHeight="35.0" prefWidth="500.0" styleClass="titleTable"  text="Marmitas" textAlignment="CENTER">
          <font>
             <Font name="Segoe UI Bold" size="24.0" />
          </font>

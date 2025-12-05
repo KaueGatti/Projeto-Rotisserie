@@ -48,6 +48,7 @@ public class NovoPedidoController implements Initializable {
 
     private String pagamento;
     private LocalDate vencimento;
+    private boolean print;
 
     @FXML
     private ToggleGroup tipo;
@@ -374,7 +375,10 @@ public class NovoPedidoController implements Initializable {
             List<MarmitaVendida> marmitas = tableMarmita.getItems();
             List<ProdutoVendido> produtos = tableProduto.getItems();
 
-            Printer.printOrder(pedido, marmitas, produtos);
+            if (print) {
+                Printer.printOrder(pedido, marmitas, produtos);
+                System.out.println("Imprimiu");
+            }
 
             try {
                 int idPedido = PedidoDAO.create(pedido);
@@ -387,7 +391,6 @@ public class NovoPedidoController implements Initializable {
             } catch (SQLException e) {
                 DatabaseExceptionHandler.handleException(e, "Pedido");
             }
-
 
             close();
         }
@@ -451,6 +454,7 @@ public class NovoPedidoController implements Initializable {
 
             pagamento = controller.getPagamento();
             vencimento = controller.getVencimento();
+            print = controller.getPrint();
 
             return true;
 

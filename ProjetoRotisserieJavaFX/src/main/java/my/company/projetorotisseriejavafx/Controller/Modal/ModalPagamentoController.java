@@ -25,6 +25,8 @@ public class ModalPagamentoController {
 
     private LocalDate vencimento = null;
 
+    public boolean print = false;
+
     @FXML
     private AnchorPane root;
 
@@ -43,6 +45,12 @@ public class ModalPagamentoController {
         this.valorPedido = valorPedido;
         initCampos();
         loadCBPagamento();
+    }
+
+    @FXML
+    void finalizarEImprimir(ActionEvent event) {
+        print = true;
+        finalizar(event);
     }
 
     @FXML
@@ -90,6 +98,10 @@ public class ModalPagamentoController {
 
     public LocalDate getVencimento() {
         return vencimento;
+    }
+
+    public boolean getPrint() {
+        return print;
     }
 
     public void loadCBPagamento() {
