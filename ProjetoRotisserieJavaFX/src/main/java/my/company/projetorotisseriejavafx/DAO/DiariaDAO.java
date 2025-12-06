@@ -1,6 +1,6 @@
 package my.company.projetorotisseriejavafx.DAO;
 
-import my.company.projetorotisseriejavafx.DB.Conexao;
+import my.company.projetorotisseriejavafx.DB.DatabaseConnection;
 import my.company.projetorotisseriejavafx.Objects.Diaria;
 
 import java.sql.*;
@@ -9,7 +9,7 @@ import java.time.LocalDate;
 public class DiariaDAO {
     
     public static Diaria read(LocalDate data) throws SQLException {
-        Connection con = Conexao.getConnection();
+        Connection con = DatabaseConnection.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
@@ -29,7 +29,7 @@ public class DiariaDAO {
                 return diaria;
             }
         } finally {
-            Conexao.closeConnection(con, stmt);
+            DatabaseConnection.closeConnection(con, stmt);
         }
 
         return null;

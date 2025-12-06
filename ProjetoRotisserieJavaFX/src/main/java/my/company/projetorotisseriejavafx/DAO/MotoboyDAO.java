@@ -1,108 +1,83 @@
 package my.company.projetorotisseriejavafx.DAO;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import my.company.projetorotisseriejavafx.DB.Conexao;
+import my.company.projetorotisseriejavafx.DB.DatabaseConnection;
 import my.company.projetorotisseriejavafx.Objects.Motoboy;
 
 public class MotoboyDAO {
 
-    public static void create(Motoboy motoboy) throws SQLException {
-        Connection con = Conexao.getConnection();
-        PreparedStatement stmt = null;
+    public int criar(String nome, double valorDiaria) throws SQLException {
+        String sql = "INSERT INTO Motoboy (nome, valor_diaria) VALUES (?, ?)";
 
-        try {
-            stmt = con.prepareStatement("CALL CREATE_MOTOBOY(?, ?)");
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setString(1, motoboy.getNome());
-            stmt.setDouble(2, motoboy.getValorDiaria());
+            stmt.setString(1, nome);
+            stmt.setDouble(2, valorDiaria);
 
-            stmt.executeUpdate();
-        } finally {
-            Conexao.closeConnection(con, stmt);
-        }
-    }
+            int affectedRows = stmt.executeUpdate();
 
-    public static List<Motoboy> read() throws SQLException {
-        Connection con = Conexao.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        List<Motoboy> motoboys = new ArrayList();
-
-        try {
-            stmt = con.prepareStatement("CALL READ_ALL_MOTOBOYS()");
-            rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                Motoboy motoboy = new Motoboy();
-
-                motoboy.setId(rs.getInt("id"));
-                motoboy.setNome(rs.getString("nome"));
-                motoboy.setValorDiaria(rs.getDouble("valor_diaria"));
-                motoboy.setStatus(rs.getString("status"));
-
-                motoboys.add(motoboy);
+            if (affectedRows == 0) {
+                throw new SQLException("Falha ao criar motoboy, nenhuma linha afetada.");
             }
 
-            return motoboys;
-        } finally {
-            Conexao.closeConnection(con, stmt);
-        }
-    }
-
-    public static List<Motoboy> readDiaria(Integer id_motoboy, LocalDate data) throws SQLException {
-        Connection con = Conexao.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        List<Motoboy> motoboys = new ArrayList();
-
-        try {
-            stmt = con.prepareStatement("CALL READ_DIARIA(?, ?)");
-
-            stmt.setInt(1, id_motoboy);
-            stmt.setDate(2, java.sql.Date.valueOf(data));
-
-            rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                Motoboy motoboy = new Motoboy();
-
-                motoboy.setId(rs.getInt("id"));
-                motoboy.setNome(rs.getString("nome"));
-                motoboy.setValorDiaria(rs.getDouble("valor_diaria"));
-                motoboy.setStatus(rs.getString("_status"));
-
-                motoboys.add(motoboy);
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                } else {
+                    throw new SQLException("Falha ao criar motoboy, ID não obtido.");
+                }
             }
-
-            return motoboys;
-        } finally {
-            Conexao.closeConnection(con, stmt);
         }
     }
-    
-    public static List<Motoboy> read(int id) throws SQLException {
-        Connection con = Conexao.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        List<Motoboy> motoboys = new ArrayList();
 
-        try {
-            stmt = con.prepareStatement("SELECT * FROM Motoboy WHERE id = ?");
-            
+    public void atualizar(int id, double valorDiaria, String status) throws SQLException {
+        String sql = "UPDATE Motoboy SET valor_diaria = ?, status = ? WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setDouble(1, valorDiaria);
+            stmt.setString(2, status);
+            stmt.setInt(3, id);
+
+            int affectedRows = stmt.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Motoboy com ID " + id + " não encontrado.");
+            }
+        }
+    }
+
+    public void deletar(int id) throws SQLException {
+        String sql = "DELETE FROM Motoboy WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setInt(1, id);
-            
-            rs = stmt.executeQuery();
+
+            int affectedRows = stmt.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Motoboy com ID " + id + " não encontrado.");
+            }
+        }
+    }
+
+    public List<Motoboy> listarTodos() throws SQLException {
+        String sql = "SELECT * FROM Motoboy ORDER BY nome";
+        List<Motoboy> motoboys = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
                 Motoboy motoboy = new Motoboy();
-
                 motoboy.setId(rs.getInt("id"));
                 motoboy.setNome(rs.getString("nome"));
                 motoboy.setValorDiaria(rs.getDouble("valor_diaria"));
@@ -110,44 +85,87 @@ public class MotoboyDAO {
 
                 motoboys.add(motoboy);
             }
-
-            return motoboys;
-        } finally {
-            Conexao.closeConnection(con, stmt);
         }
+
+        return motoboys;
     }
 
-    public static void update(Motoboy motoboy) throws SQLException {
-        Connection con = Conexao.getConnection();
-        PreparedStatement stmt = null;
+    public Motoboy buscarPorId(int id) throws SQLException {
+        String sql = "SELECT * FROM Motoboy WHERE id = ?";
 
-        try {
-            stmt = con.prepareStatement("CALL UPDATE_MOTOBOY(?, ?, ?)");
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, motoboy.getId());
-            stmt.setDouble(2, motoboy.getValorDiaria());
-            stmt.setString(3, motoboy.getStatus());
+            stmt.setInt(1, id);
 
-            stmt.executeUpdate();
-        } finally {
-            Conexao.closeConnection(con, stmt);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Motoboy motoboy = new Motoboy();
+                    motoboy.setId(rs.getInt("id"));
+                    motoboy.setNome(rs.getString("nome"));
+                    motoboy.setValorDiaria(rs.getDouble("valor_diaria"));
+                    motoboy.setStatus(rs.getString("status"));
+
+                    return motoboy;
+                }
+            }
         }
+
+        return null;
     }
 
-    public static void delete(Motoboy motoboy) {
-        Connection con = Conexao.getConnection();
-        PreparedStatement stmt = null;
+    public List<Motoboy> listarAtivos() throws SQLException {
+        String sql = "SELECT * FROM Motoboy WHERE status = 'ATIVO' ORDER BY nome";
+        List<Motoboy> motoboys = new ArrayList<>();
 
-        try {
-            stmt = con.prepareStatement("CALL delete_motoboy(?)");
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
 
-            stmt.setInt(1, motoboy.getId());
+            while (rs.next()) {
+                Motoboy motoboy = new Motoboy();
+                motoboy.setId(rs.getInt("id"));
+                motoboy.setNome(rs.getString("nome"));
+                motoboy.setValorDiaria(rs.getDouble("valor_diaria"));
+                motoboy.setStatus(rs.getString("status"));
 
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Erro ao excluir motoboy: " + e);
-        } finally {
-            Conexao.closeConnection(con, stmt);
+                motoboys.add(motoboy);
+            }
         }
+
+        return motoboys;
+    }
+
+    public Motoboy buscarPorNome(String nome) throws SQLException {
+        String sql = "SELECT * FROM Motoboy WHERE nome = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, nome);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Motoboy motoboy = new Motoboy();
+                    motoboy.setId(rs.getInt("id"));
+                    motoboy.setNome(rs.getString("nome"));
+                    motoboy.setValorDiaria(rs.getDouble("valor_diaria"));
+                    motoboy.setStatus(rs.getString("status"));
+
+                    return motoboy;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public double calcularPagamento(int idMotoboy, int numeroEntregas) throws SQLException {
+        Motoboy motoboy = buscarPorId(idMotoboy);
+        if (motoboy == null) {
+            throw new SQLException("Motoboy não encontrado");
+        }
+
+        return motoboy.getValorDiaria() * numeroEntregas;
     }
 }

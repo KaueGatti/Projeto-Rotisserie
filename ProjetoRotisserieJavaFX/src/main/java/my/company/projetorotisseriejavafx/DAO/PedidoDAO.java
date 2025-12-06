@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import my.company.projetorotisseriejavafx.DB.Conexao;
+import my.company.projetorotisseriejavafx.DB.DatabaseConnection;
 import my.company.projetorotisseriejavafx.Objects.Bairro;
 import my.company.projetorotisseriejavafx.Objects.Mensalista;
 import my.company.projetorotisseriejavafx.Objects.Pedido;
@@ -13,7 +13,7 @@ import my.company.projetorotisseriejavafx.Objects.Pedido;
 public class PedidoDAO {
 
     public static int create(Pedido pedido) throws SQLException {
-        Connection con = Conexao.getConnection();
+        Connection con = DatabaseConnection.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
@@ -68,12 +68,12 @@ public class PedidoDAO {
             return rs.getInt(1);
 
         } finally {
-            Conexao.closeConnection(con, stmt);
+            DatabaseConnection.closeConnection(con, stmt);
         }
     }
 
     public static List<Pedido> read() throws SQLException {
-        Connection con = Conexao.getConnection();
+        Connection con = DatabaseConnection.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
         List<Pedido> pedidos = new ArrayList<>();
@@ -124,12 +124,12 @@ public class PedidoDAO {
 
             return pedidos;
         } finally {
-            Conexao.closeConnection(con, stmt);
+            DatabaseConnection.closeConnection(con, stmt);
         }
     }
 
     public static List<Pedido> read(LocalDate data) throws SQLException {
-        Connection con = Conexao.getConnection();
+        Connection con = DatabaseConnection.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
         List<Pedido> pedidos = new ArrayList<>();
@@ -182,12 +182,12 @@ public class PedidoDAO {
 
             return pedidos;
         } finally {
-            Conexao.closeConnection(con, stmt);
+            DatabaseConnection.closeConnection(con, stmt);
         }
     }
 
     public static void update(Pedido pedido) {
-        Connection con = Conexao.getConnection();
+        Connection con = DatabaseConnection.getConnection();
         PreparedStatement stmt = null;
 
         try {
@@ -200,12 +200,12 @@ public class PedidoDAO {
         } catch (SQLException e) {
             System.out.println("Falha ao atualizar pedido: " + e);
         } finally {
-            Conexao.closeConnection(con, stmt);
+            DatabaseConnection.closeConnection(con, stmt);
         }
     }
 
     public static void delete(Pedido pedido) {
-        Connection con = Conexao.getConnection();
+        Connection con = DatabaseConnection.getConnection();
         PreparedStatement stmt = null;
 
         try {
@@ -217,12 +217,12 @@ public class PedidoDAO {
         } catch (SQLException e) {
             System.out.println("Erro ao excluir pedido: " + e);
         } finally {
-            Conexao.closeConnection(con, stmt);
+            DatabaseConnection.closeConnection(con, stmt);
         }
     }
 
     public static void finalizar(int idPedido) {
-        Connection con = Conexao.getConnection();
+        Connection con = DatabaseConnection.getConnection();
         PreparedStatement stmt = null;
 
         try {
@@ -234,7 +234,7 @@ public class PedidoDAO {
         } catch (SQLException e) {
             System.out.println("Erro ao finalizar pedido: " + e);
         } finally {
-            Conexao.closeConnection(con, stmt);
+            DatabaseConnection.closeConnection(con, stmt);
         }
     }
 }

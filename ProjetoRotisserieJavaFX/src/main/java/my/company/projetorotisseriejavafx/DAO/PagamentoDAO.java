@@ -1,6 +1,6 @@
 package my.company.projetorotisseriejavafx.DAO;
 
-import my.company.projetorotisseriejavafx.DB.Conexao;
+import my.company.projetorotisseriejavafx.DB.DatabaseConnection;
 import my.company.projetorotisseriejavafx.Objects.Pagamento;
 
 import java.sql.Connection;
@@ -13,7 +13,7 @@ import java.util.List;
 public class PagamentoDAO {
 
     public static void create(Pagamento pagamento) throws SQLException {
-        Connection con = Conexao.getConnection();
+        Connection con = DatabaseConnection.getConnection();
         PreparedStatement stmt = null;
 
         try {
@@ -26,12 +26,12 @@ public class PagamentoDAO {
 
             stmt.executeUpdate();
         } finally {
-            Conexao.closeConnection(con, stmt);
+            DatabaseConnection.closeConnection(con, stmt);
         }
     }
 
     public static List<Pagamento> read() throws SQLException {
-        Connection con = Conexao.getConnection();
+        Connection con = DatabaseConnection.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
         List<Pagamento> pagamentos = new ArrayList();
@@ -55,12 +55,12 @@ public class PagamentoDAO {
 
             return pagamentos;
         } finally {
-            Conexao.closeConnection(con, stmt);
+            DatabaseConnection.closeConnection(con, stmt);
         }
     }
 
     public static List<Pagamento> read(int idPedido) throws SQLException {
-        Connection con = Conexao.getConnection();
+        Connection con = DatabaseConnection.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
         List<Pagamento> pagamentos = new ArrayList();
@@ -87,12 +87,12 @@ public class PagamentoDAO {
 
             return pagamentos;
         } finally {
-            Conexao.closeConnection(con, stmt);
+            DatabaseConnection.closeConnection(con, stmt);
         }
     }
 
     public static void delete(Pagamento pagamento) throws SQLException {
-        Connection con = Conexao.getConnection();
+        Connection con = DatabaseConnection.getConnection();
         PreparedStatement stmt = null;
 
         try {
@@ -102,7 +102,7 @@ public class PagamentoDAO {
 
             stmt.executeUpdate();
         } finally {
-            Conexao.closeConnection(con, stmt);
+            DatabaseConnection.closeConnection(con, stmt);
         }
     }
 }

@@ -7,70 +7,84 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import my.company.projetorotisseriejavafx.DB.Conexao;
+import my.company.projetorotisseriejavafx.DB.DatabaseConnection;
 import my.company.projetorotisseriejavafx.Objects.Bairro;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BairroDAO {
 
-    public static void create(Bairro bairro) throws SQLException {
-        Connection con = Conexao.getConnection();
-        PreparedStatement stmt = null;
+    public int criar(String nome, double valorEntrega) throws SQLException {
+        String sql = "INSERT INTO Bairro (nome, valor_entrega) VALUES (?, ?)";
 
-        try {
-            stmt = con.prepareStatement("CALL CREATE_BAIRRO(?, ?)");
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setString(1, bairro.getNome());
-            stmt.setDouble(2, bairro.getValorEntrega());
+            stmt.setString(1, nome);
+            stmt.setDouble(2, valorEntrega);
 
-            stmt.executeUpdate();
-        } finally {
-            Conexao.closeConnection(con, stmt);
-        }
-    }
+            int affectedRows = stmt.executeUpdate();
 
-    public static List<Bairro> read() throws SQLException {
-        Connection con = Conexao.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        List<Bairro> bairros = new ArrayList<>();
-
-        try {
-            stmt = con.prepareStatement("CALL READ_ALL_BAIRROS()");
-            rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                Bairro bairro = new Bairro();
-
-                bairro.setId(rs.getInt("id"));
-                bairro.setNome(rs.getString("nome"));
-                bairro.setValorEntrega(rs.getDouble("valor_entrega"));
-                bairro.setStatus(rs.getString("status"));
-
-                bairros.add(bairro);
+            if (affectedRows == 0) {
+                throw new SQLException("Falha ao criar bairro, nenhuma linha afetada.");
             }
 
-            return bairros;
-        } finally {
-            Conexao.closeConnection(con, stmt);
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                } else {
+                    throw new SQLException("Falha ao criar bairro, ID não obtido.");
+                }
+            }
         }
     }
 
-    public static List<Bairro> read(int id) throws SQLException {
-        Connection con = Conexao.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        List<Bairro> bairros = new ArrayList();
+    public void atualizar(int id, double valorEntrega, String status) throws SQLException {
+        String sql = "UPDATE Bairro SET valor_entrega = ?, status = ? WHERE id = ?";
 
-        try {
-            stmt = con.prepareStatement("CALL READ_BAIRRO_BY_ID(?)");
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setDouble(1, valorEntrega);
+            stmt.setString(2, status);
+            stmt.setInt(3, id);
+
+            int affectedRows = stmt.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Bairro com ID " + id + " não encontrado.");
+            }
+        }
+    }
+
+    public void deletar(int id) throws SQLException {
+        String sql = "DELETE FROM Bairro WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
 
-            rs = stmt.executeQuery();
+            int affectedRows = stmt.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Bairro com ID " + id + " não encontrado.");
+            }
+        }
+    }
+
+    public List<Bairro> listarTodos() throws SQLException {
+        String sql = "SELECT * FROM Bairro ORDER BY nome";
+        List<Bairro> bairros = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
                 Bairro bairro = new Bairro();
-
                 bairro.setId(rs.getInt("id"));
                 bairro.setNome(rs.getString("nome"));
                 bairro.setValorEntrega(rs.getDouble("valor_entrega"));
@@ -78,44 +92,103 @@ public class BairroDAO {
 
                 bairros.add(bairro);
             }
-
-            return bairros;
-        } finally {
-            Conexao.closeConnection(con, stmt);
         }
+
+        return bairros;
     }
 
-    public static void update(Bairro bairro) throws SQLException {
-        Connection con = Conexao.getConnection();
-        PreparedStatement stmt = null;
+    public Bairro buscarPorId(int id) throws SQLException {
+        String sql = "SELECT * FROM Bairro WHERE id = ?";
 
-        try {
-            stmt = con.prepareStatement("CALL UPDATE_BAIRRO(?, ?, ?)");
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, bairro.getId());
-            stmt.setDouble(2, bairro.getValorEntrega());
-            stmt.setString(3, bairro.getStatus());
+            stmt.setInt(1, id);
 
-            stmt.executeUpdate();
-        } finally {
-            Conexao.closeConnection(con, stmt);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Bairro bairro = new Bairro();
+                    bairro.setId(rs.getInt("id"));
+                    bairro.setNome(rs.getString("nome"));
+                    bairro.setValorEntrega(rs.getDouble("valor_entrega"));
+                    bairro.setStatus(rs.getString("status"));
+
+                    return bairro;
+                }
+            }
         }
+
+        return null;
     }
 
-    public static void delete(Bairro bairro) {
-        Connection con = Conexao.getConnection();
-        PreparedStatement stmt = null;
+    public List<Bairro> listarAtivos() throws SQLException {
+        String sql = "SELECT * FROM Bairro WHERE status = 'ATIVO' ORDER BY nome";
+        List<Bairro> bairros = new ArrayList<>();
 
-        try {
-            stmt = con.prepareStatement("CALL delete_bairro(?)");
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
 
-            stmt.setInt(1, bairro.getId());
+            while (rs.next()) {
+                Bairro bairro = new Bairro();
+                bairro.setId(rs.getInt("id"));
+                bairro.setNome(rs.getString("nome"));
+                bairro.setValorEntrega(rs.getDouble("valor_entrega"));
+                bairro.setStatus(rs.getString("status"));
 
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Erro ao excluir bairro: " + e);
-        } finally {
-            Conexao.closeConnection(con, stmt);
+                bairros.add(bairro);
+            }
         }
+
+        return bairros;
+    }
+
+    public Bairro buscarPorNome(String nome) throws SQLException {
+        String sql = "SELECT * FROM Bairro WHERE nome = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, nome);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Bairro bairro = new Bairro();
+                    bairro.setId(rs.getInt("id"));
+                    bairro.setNome(rs.getString("nome"));
+                    bairro.setValorEntrega(rs.getDouble("valor_entrega"));
+                    bairro.setStatus(rs.getString("status"));
+
+                    return bairro;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public List<Bairro> buscarPorNomeParcial(String nome) throws SQLException {
+        String sql = "SELECT * FROM Bairro WHERE nome LIKE ? AND status = 'ATIVO' ORDER BY nome";
+        List<Bairro> bairros = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + nome + "%");
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Bairro bairro = new Bairro();
+                    bairro.setId(rs.getInt("id"));
+                    bairro.setNome(rs.getString("nome"));
+                    bairro.setValorEntrega(rs.getDouble("valor_entrega"));
+                    bairro.setStatus(rs.getString("status"));
+
+                    bairros.add(bairro);
+                }
+            }
+        }
+
+        return bairros;
     }
 }

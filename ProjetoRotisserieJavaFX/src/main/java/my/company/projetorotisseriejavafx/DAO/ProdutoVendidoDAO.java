@@ -6,15 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import my.company.projetorotisseriejavafx.DB.Conexao;
-import my.company.projetorotisseriejavafx.Objects.Pedido;
-import my.company.projetorotisseriejavafx.Objects.Produto;
+import my.company.projetorotisseriejavafx.DB.DatabaseConnection;
 import my.company.projetorotisseriejavafx.Objects.ProdutoVendido;
 
 public class ProdutoVendidoDAO {
 
     public static void create(List<ProdutoVendido> produtos, int idPedido) {
-        Connection con = Conexao.getConnection();
+        Connection con = DatabaseConnection.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
@@ -34,12 +32,12 @@ public class ProdutoVendidoDAO {
         } catch (SQLException e) {
             System.out.println("Falha ao cadastrar produto vendido: " + e);
         } finally {
-            Conexao.closeConnection(con, stmt);
+            DatabaseConnection.closeConnection(con, stmt);
         }
     }
 
     public static List<ProdutoVendido> read(int idPedido) {
-        Connection con = Conexao.getConnection();
+        Connection con = DatabaseConnection.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
         List<ProdutoVendido> produtos = new ArrayList<>();
@@ -65,7 +63,7 @@ public class ProdutoVendidoDAO {
         } catch (SQLException e) {
             System.out.println("Falha ao buscar Produtos Vendidos pelo pedido: " + e);
         } finally {
-            Conexao.closeConnection(con, stmt);
+            DatabaseConnection.closeConnection(con, stmt);
         }
         return null;
     }

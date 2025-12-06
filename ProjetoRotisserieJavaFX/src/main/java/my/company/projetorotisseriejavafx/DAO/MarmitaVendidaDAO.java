@@ -4,18 +4,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import my.company.projetorotisseriejavafx.DB.Conexao;
-import my.company.projetorotisseriejavafx.Objects.Marmita;
+import my.company.projetorotisseriejavafx.DB.DatabaseConnection;
 import my.company.projetorotisseriejavafx.Objects.MarmitaVendida;
-import my.company.projetorotisseriejavafx.Objects.Pedido;
 
 public class MarmitaVendidaDAO {
 
     public static void create(List<MarmitaVendida> marmitas, int idPedido) {
-        Connection con = Conexao.getConnection();
+        Connection con = DatabaseConnection.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
@@ -36,12 +33,12 @@ public class MarmitaVendidaDAO {
         } catch (SQLException e) {
             System.out.println("Falha ao cadastrar marmita vendida: " + e);
         } finally {
-            Conexao.closeConnection(con, stmt);
+            DatabaseConnection.closeConnection(con, stmt);
         }
     }
 
     public static List<MarmitaVendida> read(int idPedido) throws SQLException {
-        Connection con = Conexao.getConnection();
+        Connection con = DatabaseConnection.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
         List<MarmitaVendida> marmitasVendidas = new ArrayList<>();
@@ -66,7 +63,7 @@ public class MarmitaVendidaDAO {
 
             return marmitasVendidas;
         } finally {
-            Conexao.closeConnection(con, stmt);
+            DatabaseConnection.closeConnection(con, stmt);
         }
     }
 }

@@ -1,6 +1,6 @@
 package my.company.projetorotisseriejavafx.DAO;
 
-import my.company.projetorotisseriejavafx.DB.Conexao;
+import my.company.projetorotisseriejavafx.DB.DatabaseConnection;
 import my.company.projetorotisseriejavafx.Objects.ItemCardapio;
 
 import java.sql.*;
@@ -10,7 +10,7 @@ import java.util.List;
 public class ItemCardapioDAO {
 
     public static int create(ItemCardapio itemCardapio) throws SQLException {
-        Connection con = Conexao.getConnection();
+        Connection con = DatabaseConnection.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
@@ -27,12 +27,12 @@ public class ItemCardapioDAO {
             return rs.getInt("id");
 
         } finally {
-            Conexao.closeConnection(con, stmt);
+            DatabaseConnection.closeConnection(con, stmt);
         }
     }
 
     public static List<ItemCardapio> read() throws SQLException {
-        Connection con = Conexao.getConnection();
+        Connection con = DatabaseConnection.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
         List<ItemCardapio> itensCardapio = new ArrayList<>();
@@ -52,12 +52,12 @@ public class ItemCardapioDAO {
             }
             return itensCardapio;
         } finally {
-            Conexao.closeConnection(con, stmt);
+            DatabaseConnection.closeConnection(con, stmt);
         }
     }
 
     public static List<ItemCardapio> read(String categoria) throws SQLException {
-        Connection con = Conexao.getConnection();
+        Connection con = DatabaseConnection.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
         List<ItemCardapio> itensCardapio = new ArrayList<>();
@@ -79,12 +79,12 @@ public class ItemCardapioDAO {
             }
             return itensCardapio;
         } finally {
-            Conexao.closeConnection(con, stmt);
+            DatabaseConnection.closeConnection(con, stmt);
         }
     }
 
     public static void delete(int id) throws SQLException {
-        Connection con = Conexao.getConnection();
+        Connection con = DatabaseConnection.getConnection();
         PreparedStatement stmt = null;
 
         try {
@@ -94,7 +94,7 @@ public class ItemCardapioDAO {
 
             stmt.executeUpdate();
         } finally {
-            Conexao.closeConnection(con, stmt);
+            DatabaseConnection.closeConnection(con, stmt);
         }
     }
 }

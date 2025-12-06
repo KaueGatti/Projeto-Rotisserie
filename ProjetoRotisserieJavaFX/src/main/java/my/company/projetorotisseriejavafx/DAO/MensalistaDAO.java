@@ -1,78 +1,83 @@
 package my.company.projetorotisseriejavafx.DAO;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import my.company.projetorotisseriejavafx.DB.Conexao;
-import my.company.projetorotisseriejavafx.Objects.Bairro;
+import my.company.projetorotisseriejavafx.DB.DatabaseConnection;
 import my.company.projetorotisseriejavafx.Objects.Mensalista;
 
 public class MensalistaDAO {
 
-    public static void create(Mensalista mensalista) throws SQLException {
-        Connection con = Conexao.getConnection();
-        PreparedStatement stmt = null;
+    public int criar(String nome, String contato) throws SQLException {
+        String sql = "INSERT INTO Mensalista (nome, contato) VALUES (?, ?)";
 
-        try {
-            stmt = con.prepareStatement("CALL CREATE_MENSALISTA(?, ?)");
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setString(1, mensalista.getNome());
-            stmt.setString(2, mensalista.getContato());
+            stmt.setString(1, nome);
+            stmt.setString(2, contato);
 
-            stmt.executeUpdate();
-        } finally {
-            Conexao.closeConnection(con, stmt);
-        }
-    }
+            int affectedRows = stmt.executeUpdate();
 
-    public static List<Mensalista> read() throws SQLException {
-        Connection con = Conexao.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        List<Mensalista> mensalistas = new ArrayList();
-
-        try {
-            stmt = con.prepareStatement("CALL READ_ALL_MENSALISTAS()");
-            rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                Mensalista mensalista = new Mensalista();
-
-                mensalista.setId(rs.getInt("id"));
-                mensalista.setNome(rs.getString("nome"));
-                mensalista.setContato(rs.getString("contato"));
-                mensalista.setConta(rs.getDouble("conta"));
-                mensalista.setStatus(rs.getString("status"));
-
-                mensalistas.add(mensalista);
+            if (affectedRows == 0) {
+                throw new SQLException("Falha ao criar mensalista, nenhuma linha afetada.");
             }
 
-            return mensalistas;
-        } finally {
-            Conexao.closeConnection(con, stmt);
+            // Retorna o ID gerado
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                } else {
+                    throw new SQLException("Falha ao criar mensalista, ID não obtido.");
+                }
+            }
         }
     }
-    
-    public static List<Mensalista> read(int id) throws SQLException {
-        Connection con = Conexao.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
+
+    public void atualizar(int id, String status, String contato) throws SQLException {
+        String sql = "UPDATE Mensalista SET status = ?, contato = ? WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, status);
+            stmt.setString(2, contato);
+            stmt.setInt(3, id);
+
+            int affectedRows = stmt.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Mensalista com ID " + id + " não encontrado.");
+            }
+        }
+    }
+
+    public void deletar(int id) throws SQLException {
+        String sql = "DELETE FROM Mensalista WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+
+            int affectedRows = stmt.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Mensalista com ID " + id + " não encontrado.");
+            }
+        }
+    }
+
+    public List<Mensalista> listarTodos() throws SQLException {
+        String sql = "SELECT * FROM Mensalista ORDER BY nome";
         List<Mensalista> mensalistas = new ArrayList<>();
 
-        try {
-            stmt = con.prepareStatement("SELECT * FROM Mensalista WHERE id = ?");
-            
-            stmt.setInt(1, id);
-            
-            rs = stmt.executeQuery();
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
                 Mensalista mensalista = new Mensalista();
-
                 mensalista.setId(rs.getInt("id"));
                 mensalista.setNome(rs.getString("nome"));
                 mensalista.setContato(rs.getString("contato"));
@@ -81,44 +86,142 @@ public class MensalistaDAO {
 
                 mensalistas.add(mensalista);
             }
+        }
 
-            return mensalistas;
-        } finally {
-            Conexao.closeConnection(con, stmt);
+        return mensalistas;
+    }
+
+    public Mensalista buscarPorId(int id) throws SQLException {
+        String sql = "SELECT * FROM Mensalista WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Mensalista mensalista = new Mensalista();
+                    mensalista.setId(rs.getInt("id"));
+                    mensalista.setNome(rs.getString("nome"));
+                    mensalista.setContato(rs.getString("contato"));
+                    mensalista.setConta(rs.getDouble("conta"));
+                    mensalista.setStatus(rs.getString("status"));
+
+                    return mensalista;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public List<Mensalista> listarAtivos() throws SQLException {
+        String sql = "SELECT * FROM Mensalista WHERE status = 'ATIVO' ORDER BY nome";
+        List<Mensalista> mensalistas = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Mensalista mensalista = new Mensalista();
+                mensalista.setId(rs.getInt("id"));
+                mensalista.setNome(rs.getString("nome"));
+                mensalista.setContato(rs.getString("contato"));
+                mensalista.setConta(rs.getDouble("conta"));
+                mensalista.setStatus(rs.getString("status"));
+
+                mensalistas.add(mensalista);
+            }
+        }
+
+        return mensalistas;
+    }
+
+    public Mensalista buscarPorNome(String nome) throws SQLException {
+        String sql = "SELECT * FROM Mensalista WHERE nome = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, nome);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Mensalista mensalista = new Mensalista();
+                    mensalista.setId(rs.getInt("id"));
+                    mensalista.setNome(rs.getString("nome"));
+                    mensalista.setContato(rs.getString("contato"));
+                    mensalista.setConta(rs.getDouble("conta"));
+                    mensalista.setStatus(rs.getString("status"));
+
+                    return mensalista;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public List<Mensalista> listarComContaAberta() throws SQLException {
+        String sql = "SELECT * FROM Mensalista WHERE conta > 0 AND status = 'ATIVO' ORDER BY conta DESC";
+        List<Mensalista> mensalistas = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Mensalista mensalista = new Mensalista();
+                mensalista.setId(rs.getInt("id"));
+                mensalista.setNome(rs.getString("nome"));
+                mensalista.setContato(rs.getString("contato"));
+                mensalista.setConta(rs.getDouble("conta"));
+                mensalista.setStatus(rs.getString("status"));
+
+                mensalistas.add(mensalista);
+            }
+        }
+
+        return mensalistas;
+    }
+
+    public double obterTotalContasAbertas() throws SQLException {
+        String sql = "SELECT SUM(conta) as total FROM Mensalista WHERE status = 'ATIVO'";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            if (rs.next()) {
+                return rs.getDouble("total");
+            }
+        }
+
+        return 0.0;
+    }
+
+    public void zerarConta(int id) throws SQLException {
+        String sql = "UPDATE Mensalista SET conta = 0 WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
         }
     }
 
-    public static void update(Mensalista mensalista) throws SQLException {
-        Connection con = Conexao.getConnection();
-        PreparedStatement stmt = null;
+    public void ajustarConta(int id, double novoValor) throws SQLException {
+        String sql = "UPDATE Mensalista SET conta = ? WHERE id = ?";
 
-        try {
-            stmt = con.prepareStatement("CALL UPDATE_MENSALISTA(?, ?, ?)");
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, mensalista.getId());
-            stmt.setString(2, mensalista.getStatus());
-            stmt.setString(3, mensalista.getContato());
-
+            stmt.setDouble(1, novoValor);
+            stmt.setInt(2, id);
             stmt.executeUpdate();
-        } finally {
-            Conexao.closeConnection(con, stmt);
-        }
-    }
-
-    public static void delete(Mensalista mensalista) {
-        Connection con = Conexao.getConnection();
-        PreparedStatement stmt = null;
-
-        try {
-            stmt = con.prepareStatement("CALL delete_mensalista(?)");
-
-            stmt.setInt(1, mensalista.getId());
-
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Erro ao excluir mensalista: " + e);
-        } finally {
-            Conexao.closeConnection(con, stmt);
         }
     }
 }

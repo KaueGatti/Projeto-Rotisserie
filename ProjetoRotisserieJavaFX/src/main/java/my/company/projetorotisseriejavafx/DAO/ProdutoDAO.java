@@ -1,46 +1,84 @@
 package my.company.projetorotisseriejavafx.DAO;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import my.company.projetorotisseriejavafx.DB.Conexao;
+import my.company.projetorotisseriejavafx.DB.DatabaseConnection;
 import my.company.projetorotisseriejavafx.Objects.Produto;
 
 public class ProdutoDAO {
 
-    public static void create(Produto produto) throws SQLException {
-        Connection con = Conexao.getConnection();
-        PreparedStatement stmt = null;
+    public int criar(String nome, double valor) throws SQLException {
+        String sql = "INSERT INTO Produto (nome, valor) VALUES (?, ?)";
 
-        try {
-            stmt = con.prepareStatement("CALL CREATE_PRODUTO(?, ?)");
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setString(1, produto.getNome());
-            stmt.setDouble(2, produto.getValor());
+            stmt.setString(1, nome);
+            stmt.setDouble(2, valor);
 
-            stmt.executeUpdate();
-        } finally {
-            Conexao.closeConnection(con, stmt);
+            int affectedRows = stmt.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Falha ao criar produto, nenhuma linha afetada.");
+            }
+
+            // Retorna o ID gerado
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                } else {
+                    throw new SQLException("Falha ao criar produto, ID não obtido.");
+                }
+            }
         }
     }
 
-    public static List<Produto> read() throws SQLException {
-        Connection con = Conexao.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        List<Produto> produtos = new ArrayList();
+    public void atualizar(int id, double valor, String status) throws SQLException {
+        String sql = "UPDATE Produto SET valor = ?, status = ? WHERE id = ?";
 
-        try {
-            stmt = con.prepareStatement("CALL READ_ALL_PRODUTOS()");
-            rs = stmt.executeQuery();
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setDouble(1, valor);
+            stmt.setString(2, status);
+            stmt.setInt(3, id);
+
+            int affectedRows = stmt.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Produto com ID " + id + " não encontrado.");
+            }
+        }
+    }
+
+    public void deletar(int id) throws SQLException {
+        String sql = "DELETE FROM Produto WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+
+            int affectedRows = stmt.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Produto com ID " + id + " não encontrado.");
+            }
+        }
+    }
+
+    public List<Produto> listarTodos() throws SQLException {
+        String sql = "SELECT * FROM Produto ORDER BY nome";
+        List<Produto> produtos = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
                 Produto produto = new Produto();
-
                 produto.setId(rs.getInt("id"));
                 produto.setNome(rs.getString("nome"));
                 produto.setValor(rs.getDouble("valor"));
@@ -48,78 +86,79 @@ public class ProdutoDAO {
 
                 produtos.add(produto);
             }
-
-            return produtos;
-        } finally {
-            Conexao.closeConnection(con, stmt);
         }
+
+        return produtos;
     }
 
-    public static List<Produto> read(int id) {
-        Connection con = Conexao.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        List<Produto> produtos = new ArrayList();
+    public Produto buscarPorId(int id) throws SQLException {
+        String sql = "SELECT * FROM Produto WHERE id = ?";
 
-        try {
-            stmt = con.prepareStatement("SELECT * FROM Produto WHERE id = ?");
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
 
-            rs = stmt.executeQuery();
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Produto produto = new Produto();
+                    produto.setId(rs.getInt("id"));
+                    produto.setNome(rs.getString("nome"));
+                    produto.setValor(rs.getDouble("valor"));
+                    produto.setStatus(rs.getString("status"));
 
-            while (rs.next()) {
-                Produto produto = new Produto();
-
-
-                produto.setId(rs.getInt("id"));
-                produto.setNome(rs.getString("descricao"));
-                produto.setValor(rs.getDouble("valor"));
-                produto.setStatus(rs.getString("_status"));
-
-                produtos.add(produto);
+                    return produto;
+                }
             }
-
-            return produtos;
-        } catch (SQLException e) {
-            System.out.println("Falha ao buscar Produtos: " + e);
-        } finally {
-            Conexao.closeConnection(con, stmt);
         }
+
         return null;
     }
 
-    public static void update(Produto produto) throws SQLException {
-        Connection con = Conexao.getConnection();
-        PreparedStatement stmt = null;
+    public List<Produto> listarAtivos() throws SQLException {
+        String sql = "SELECT * FROM Produto WHERE status = 'ATIVO' ORDER BY nome";
+        List<Produto> produtos = new ArrayList<>();
 
-        try {
-            stmt = con.prepareStatement("CALL UPDATE_PRODUTO(?, ?, ?)");
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
 
-            stmt.setInt(1, produto.getId());
-            stmt.setDouble(2, produto.getValor());
-            stmt.setString(3, produto.getStatus());
+            while (rs.next()) {
+                Produto produto = new Produto();
+                produto.setId(rs.getInt("id"));
+                produto.setNome(rs.getString("nome"));
+                produto.setValor(rs.getDouble("valor"));
+                produto.setStatus(rs.getString("status"));
 
-            stmt.executeUpdate();
-        } finally {
-            Conexao.closeConnection(con, stmt);
+                produtos.add(produto);
+            }
         }
+
+        return produtos;
     }
 
-    public static void delete(Produto produto) {
-        Connection con = Conexao.getConnection();
-        PreparedStatement stmt = null;
+    public List<Produto> buscarPorNome(String nome) throws SQLException {
+        String sql = "SELECT * FROM Produto WHERE nome LIKE ? AND status = 'ATIVO' ORDER BY nome";
+        List<Produto> produtos = new ArrayList<>();
 
-        try {
-            stmt = con.prepareStatement("CALL delete_produto(?)");
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, produto.getId());
+            stmt.setString(1, "%" + nome + "%");
 
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Erro ao excluir produto: " + e);
-        } finally {
-            Conexao.closeConnection(con, stmt);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Produto produto = new Produto();
+                    produto.setId(rs.getInt("id"));
+                    produto.setNome(rs.getString("nome"));
+                    produto.setValor(rs.getDouble("valor"));
+                    produto.setStatus(rs.getString("status"));
+
+                    produtos.add(produto);
+                }
+            }
         }
+
+        return produtos;
     }
 }

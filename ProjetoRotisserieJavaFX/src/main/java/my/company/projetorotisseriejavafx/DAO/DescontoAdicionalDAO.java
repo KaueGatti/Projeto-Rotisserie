@@ -1,6 +1,6 @@
 package my.company.projetorotisseriejavafx.DAO;
 
-import my.company.projetorotisseriejavafx.DB.Conexao;
+import my.company.projetorotisseriejavafx.DB.DatabaseConnection;
 import my.company.projetorotisseriejavafx.Objects.DescontoAdicional;
 
 import java.sql.Connection;
@@ -13,7 +13,7 @@ import java.util.List;
 public class DescontoAdicionalDAO {
 
     public static void create(List<DescontoAdicional> descontosEAdicionais, int idPedido) {
-        Connection con = Conexao.getConnection();
+        Connection con = DatabaseConnection.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
@@ -33,12 +33,12 @@ public class DescontoAdicionalDAO {
         } catch (SQLException e) {
             System.out.println("Falha ao cadastrar descontos e adicionais: " + e);
         } finally {
-            Conexao.closeConnection(con, stmt);
+            DatabaseConnection.closeConnection(con, stmt);
         }
     }
 
     public static List<DescontoAdicional> read(int idPedido) throws SQLException {
-        Connection con = Conexao.getConnection();
+        Connection con = DatabaseConnection.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
         List<DescontoAdicional> descontosEAdicionais = new ArrayList<>();
@@ -62,7 +62,7 @@ public class DescontoAdicionalDAO {
             }
             return descontosEAdicionais;
         } finally {
-            Conexao.closeConnection(con, stmt);
+            DatabaseConnection.closeConnection(con, stmt);
         }
     }
 }
