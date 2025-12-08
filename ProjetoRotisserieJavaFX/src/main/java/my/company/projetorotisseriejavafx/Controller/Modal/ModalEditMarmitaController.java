@@ -49,7 +49,7 @@ public class ModalEditMarmitaController {
         if (!validaMarmita(marmita)) return;
 
         try {
-            MarmitaDAO.update(marmita);
+            MarmitaDAO.atualizar(marmita);
             LInfo.setText("Marmita atualizada com sucesso");
             fecharModal();
         } catch (SQLException e) {

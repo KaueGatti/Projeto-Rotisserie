@@ -245,7 +245,7 @@ public class PedidosController implements Initializable {
         });
 
         try {
-            pedidos = FXCollections.observableArrayList(PedidoDAO.read());
+            pedidos = FXCollections.observableArrayList(PedidoDAO.listarTodos());
 
             tablePedidos.setItems(pedidos);
 
@@ -311,9 +311,9 @@ public class PedidosController implements Initializable {
         btnPagamentos.setDisable(false);
 
         try {
-            marmitas = MarmitaVendidaDAO.read(pedido.getId());
-            produtos = ProdutoVendidoDAO.read(pedido.getId());
-            pagamentos = FXCollections.observableArrayList(PagamentoDAO.read(selectedPedido.getId()));
+            marmitas = MarmitaVendidaDAO.listarPorPedido(pedido.getId());
+            produtos = ProdutoVendidoDAO.listarPorPedido(pedido.getId());
+            pagamentos = FXCollections.observableArrayList(PagamentoDAO.listarPorPedido(selectedPedido.getId()));
         } catch (SQLException e) {
             DatabaseExceptionHandler.handleException(e, "marmitas e produtos vendidos");
         }
@@ -416,7 +416,7 @@ public class PedidosController implements Initializable {
             ModalDescontosEAdicionaisController controller = loader.getController();
 
             try {
-                List<DescontoAdicional> descontosEAdicionais = DescontoAdicionalDAO.read(selectedPedido.getId());
+                List<DescontoAdicional> descontosEAdicionais = DescontoAdicionalDAO.listarPorPedido(selectedPedido.getId());
 
                 controller.initialize(descontosEAdicionais);
             } catch (SQLException e) {
@@ -470,7 +470,7 @@ public class PedidosController implements Initializable {
                 if (change.wasAdded()) {
                     try {
                         for (Pagamento pagamento : change.getAddedSubList()) {
-                            PagamentoDAO.create(pagamento);
+                            PagamentoDAO.criar(pagamento);
                         }
                     } catch (SQLException e) {
                         DatabaseExceptionHandler.handleException(e, "Pagamento");
@@ -480,7 +480,7 @@ public class PedidosController implements Initializable {
                 if (change.wasRemoved()) {
                     try {
                         for (Pagamento pagamento : change.getRemoved()) {
-                            PagamentoDAO.delete(pagamento);
+                            PagamentoDAO.deletar(pagamento.getId());
                         }
                     } catch (SQLException e) {
                         DatabaseExceptionHandler.handleException(e, "Pagamento");
@@ -515,7 +515,7 @@ public class PedidosController implements Initializable {
         CBMensalista.getSelectionModel().selectFirst();
 
         try {
-            List<Mensalista> mensalistas = MensalistaDAO.read();
+            List<Mensalista> mensalistas = MensalistaDAO.listarAtivos();
             CBMensalista.getItems().addAll(mensalistas);
         } catch (SQLException e) {
             DatabaseExceptionHandler.handleException(e, "Mensalista");
@@ -556,9 +556,9 @@ public class PedidosController implements Initializable {
 
         try {
             if (CBData.isSelected()) {
-                pedidos = PedidoDAO.read(DPData.getValue());
+                pedidos = PedidoDAO.listarPorData(DPData.getValue());
             } else {
-                pedidos = PedidoDAO.read();
+                pedidos = PedidoDAO.listarTodos();
             }
         } catch (SQLException e) {
             DatabaseExceptionHandler.handleException(e, "Pedido");

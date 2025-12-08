@@ -16,14 +16,14 @@ import java.util.List;
 
 public class BairroDAO {
 
-    public int criar(String nome, double valorEntrega) throws SQLException {
+    static public int criar(Bairro bairro) throws SQLException {
         String sql = "INSERT INTO Bairro (nome, valor_entrega) VALUES (?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setString(1, nome);
-            stmt.setDouble(2, valorEntrega);
+            stmt.setString(1, bairro.getNome());
+            stmt.setDouble(2, bairro.getValorEntrega());
 
             int affectedRows = stmt.executeUpdate();
 
@@ -41,25 +41,25 @@ public class BairroDAO {
         }
     }
 
-    public void atualizar(int id, double valorEntrega, String status) throws SQLException {
+    static public void atualizar(Bairro bairro) throws SQLException {
         String sql = "UPDATE Bairro SET valor_entrega = ?, status = ? WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setDouble(1, valorEntrega);
-            stmt.setString(2, status);
-            stmt.setInt(3, id);
+            stmt.setDouble(1, bairro.getValorEntrega());
+            stmt.setString(2, bairro.getStatus());
+            stmt.setInt(3, bairro.getId());
 
             int affectedRows = stmt.executeUpdate();
 
             if (affectedRows == 0) {
-                throw new SQLException("Bairro com ID " + id + " não encontrado.");
+                throw new SQLException("Bairro com ID " + bairro.getId() + " não encontrado.");
             }
         }
     }
 
-    public void deletar(int id) throws SQLException {
+    static public void deletar(int id) throws SQLException {
         String sql = "DELETE FROM Bairro WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -75,7 +75,7 @@ public class BairroDAO {
         }
     }
 
-    public List<Bairro> listarTodos() throws SQLException {
+    static public List<Bairro> listarTodos() throws SQLException {
         String sql = "SELECT * FROM Bairro ORDER BY nome";
         List<Bairro> bairros = new ArrayList<>();
 
@@ -97,7 +97,7 @@ public class BairroDAO {
         return bairros;
     }
 
-    public Bairro buscarPorId(int id) throws SQLException {
+    static public Bairro buscarPorId(int id) throws SQLException {
         String sql = "SELECT * FROM Bairro WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -121,7 +121,7 @@ public class BairroDAO {
         return null;
     }
 
-    public List<Bairro> listarAtivos() throws SQLException {
+    static public List<Bairro> listarAtivos() throws SQLException {
         String sql = "SELECT * FROM Bairro WHERE status = 'ATIVO' ORDER BY nome";
         List<Bairro> bairros = new ArrayList<>();
 
@@ -143,7 +143,7 @@ public class BairroDAO {
         return bairros;
     }
 
-    public Bairro buscarPorNome(String nome) throws SQLException {
+    static public Bairro buscarPorNome(String nome) throws SQLException {
         String sql = "SELECT * FROM Bairro WHERE nome = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -167,7 +167,7 @@ public class BairroDAO {
         return null;
     }
 
-    public List<Bairro> buscarPorNomeParcial(String nome) throws SQLException {
+    static public List<Bairro> buscarPorNomeParcial(String nome) throws SQLException {
         String sql = "SELECT * FROM Bairro WHERE nome LIKE ? AND status = 'ATIVO' ORDER BY nome";
         List<Bairro> bairros = new ArrayList<>();
 

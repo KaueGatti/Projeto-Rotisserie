@@ -57,7 +57,7 @@ public class ModalImprimirDiariaController {
         try {
             CBMotoboy.getItems().clear();
 
-            List<Motoboy> motoboys = MotoboyDAO.read();
+            List<Motoboy> motoboys = MotoboyDAO.listarAtivos();
 
             if (!motoboys.isEmpty()) {
                 CBMotoboy.getItems().addAll(motoboys);

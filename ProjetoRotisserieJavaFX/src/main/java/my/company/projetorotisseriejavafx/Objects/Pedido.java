@@ -29,9 +29,11 @@ public class Pedido {
 
     public Mensalista getMensalista() { return mensalista.get(); }
     public void setMensalista(Mensalista value) { mensalista.set(value); }
+    public void setIdMensalista(Integer value) {getMensalista().setId(value); }
 
     public Bairro getBairro() { return bairro.get(); }
     public void setBairro(Bairro value) { bairro.set(value); }
+    public void setIdBairro(Integer value) { getBairro().setId(value); }
 
     public String getNomeCliente() {
         if (mensalista.getValue() != null) {

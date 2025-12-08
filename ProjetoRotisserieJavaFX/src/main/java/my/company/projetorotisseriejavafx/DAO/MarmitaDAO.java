@@ -9,16 +9,16 @@ import java.util.List;
 
 public class MarmitaDAO {
 
-    public int criar(String nome, int maxMistura, int maxGuarnicao, double valor) throws SQLException {
+    static public int criar(Marmita marmita) throws SQLException {
         String sql = "INSERT INTO Marmita (nome, max_mistura, max_guarnicao, valor) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setString(1, nome);
-            stmt.setInt(2, maxMistura);
-            stmt.setInt(3, maxGuarnicao);
-            stmt.setDouble(4, valor);
+            stmt.setString(1, marmita.getNome());
+            stmt.setInt(2, marmita.getMaxMistura());
+            stmt.setInt(3, marmita.getMaxGuarnicao());
+            stmt.setDouble(4, marmita.getValor());
 
             int affectedRows = stmt.executeUpdate();
 
@@ -36,27 +36,27 @@ public class MarmitaDAO {
         }
     }
 
-    public void atualizar(int id, int maxMistura, int maxGuarnicao, double valor, String status) throws SQLException {
+    static public void atualizar(Marmita marmita) throws SQLException {
         String sql = "UPDATE Marmita SET max_mistura = ?, max_guarnicao = ?, valor = ?, status = ? WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, maxMistura);
-            stmt.setInt(2, maxGuarnicao);
-            stmt.setDouble(3, valor);
-            stmt.setString(4, status);
-            stmt.setInt(5, id);
+            stmt.setInt(1, marmita.getMaxMistura());
+            stmt.setInt(2, marmita.getMaxGuarnicao());
+            stmt.setDouble(3, marmita.getValor());
+            stmt.setString(4, marmita.getStatus());
+            stmt.setInt(5, marmita.getId());
 
             int affectedRows = stmt.executeUpdate();
 
             if (affectedRows == 0) {
-                throw new SQLException("Marmita com ID " + id + " não encontrada.");
+                throw new SQLException("Marmita com ID " + marmita.getId() + " não encontrada.");
             }
         }
     }
 
-    public void deletar(int id) throws SQLException {
+    static public void deletar(int id) throws SQLException {
         String sql = "DELETE FROM Marmita WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -72,7 +72,7 @@ public class MarmitaDAO {
         }
     }
 
-    public List<Marmita> listarTodas() throws SQLException {
+    static public List<Marmita> listarTodas() throws SQLException {
         String sql = "SELECT * FROM Marmita ORDER BY nome";
         List<Marmita> marmitas = new ArrayList<>();
 
@@ -96,7 +96,7 @@ public class MarmitaDAO {
         return marmitas;
     }
 
-    public Marmita buscarPorId(int id) throws SQLException {
+    static public Marmita buscarPorId(int id) throws SQLException {
         String sql = "SELECT * FROM Marmita WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -122,7 +122,7 @@ public class MarmitaDAO {
         return null;
     }
 
-    public List<Marmita> listarAtivas() throws SQLException {
+    static public List<Marmita> listarAtivas() throws SQLException {
         String sql = "SELECT * FROM Marmita WHERE status = 'ATIVO' ORDER BY nome";
         List<Marmita> marmitas = new ArrayList<>();
 

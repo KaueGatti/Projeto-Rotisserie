@@ -124,7 +124,7 @@ public class RelatorioController implements Initializable {
     private void loadRelatorio() {
         Relatorio relatorio = null;
         try {
-            relatorio = new Relatorio(PedidoDAO.read(DPData.getValue()));
+            relatorio = new Relatorio(PedidoDAO.listarPorData(DPData.getValue()));
         } catch (SQLException e) {
             DatabaseExceptionHandler.handleException(e, "Erro ao ler relatorio");
             return;

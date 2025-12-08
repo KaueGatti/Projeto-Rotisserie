@@ -41,7 +41,7 @@ public class ModalCadastrarProdutoController {
         if (!validaProduto(produto)) return;
 
         try {
-            ProdutoDAO.create(produto);
+            ProdutoDAO.criar(produto);
             LInfo.setText("Produto Cadastrado com sucesso!");
             fecharModal();
         } catch (Exception e) {

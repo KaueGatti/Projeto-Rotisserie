@@ -58,7 +58,7 @@ public class ModalEditProdutoController {
         if (!validaProduto(produto)) return;
 
         try {
-            ProdutoDAO.update(produto);
+            ProdutoDAO.atualizar(produto);
             LInfo.setText("Produto atualizado com sucesso!");
             fecharModal();
         } catch (Exception e) {

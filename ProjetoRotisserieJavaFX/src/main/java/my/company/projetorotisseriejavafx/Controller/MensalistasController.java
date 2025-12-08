@@ -168,7 +168,7 @@ public class MensalistasController {
         tableMensalistas.getItems().clear();
 
         try {
-            List<Mensalista> mensalistas = MensalistaDAO.read();
+            List<Mensalista> mensalistas = MensalistaDAO.listarTodos();
             if (!mensalistas.isEmpty()) {
                 tableMensalistas.getItems().addAll(mensalistas);
             }

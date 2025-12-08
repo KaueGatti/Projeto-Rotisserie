@@ -213,8 +213,8 @@ public class InicioController implements Initializable {
 
     public boolean validaMarmitas() {
         try {
-            if (MarmitaDAO.read().isEmpty()) {
-                String msg = "Você ainda não tem nenhuma marmita cadastrada!";
+            if (MarmitaDAO.listarAtivas().isEmpty()) {
+                String msg = "Você ainda não tem nenhuma marmita ativa ou cadastrada!";
                 if (abrirModalAvisoNovoPedido(msg, new Marmita())) {
                     marmitas();
                 }

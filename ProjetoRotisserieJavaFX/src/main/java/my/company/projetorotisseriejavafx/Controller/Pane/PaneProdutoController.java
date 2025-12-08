@@ -51,7 +51,7 @@ public class PaneProdutoController implements Initializable {
         List<Produto> produtos = new ArrayList<>();
 
         try {
-            produtos = ProdutoDAO.read();
+            produtos = ProdutoDAO.listarAtivos();
         } catch (SQLException e) {
             DatabaseExceptionHandler.handleException(e, "produto");
         }

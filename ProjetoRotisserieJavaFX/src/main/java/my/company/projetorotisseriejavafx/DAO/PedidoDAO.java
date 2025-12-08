@@ -2,7 +2,10 @@ package my.company.projetorotisseriejavafx.DAO;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 
 import my.company.projetorotisseriejavafx.DB.DatabaseConnection;
@@ -12,13 +15,22 @@ import my.company.projetorotisseriejavafx.Objects.Pedido;
 
 public class PedidoDAO {
 
-    public static int create(Pedido pedido) throws SQLException {
-        Connection con = DatabaseConnection.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
+    static public int criar(Pedido pedido) throws SQLException {
 
-        try {
-            stmt = con.prepareStatement("CALL create_pedido(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+        String sql = "INSERT INTO Pedido (id_mensalista, id_bairro, nome_cliente, tipo_pagamento, " +
+                "tipo_pedido, observacoes, valor_entrega, endereco, valor_itens, valor_total, " +
+                "valor_pago, vencimento, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        if ("Pagar depois".equals(pedido.getTipoPagamento()) || "A Definir".equals(pedido.getTipoPagamento())) {
+            pedido.setStatus("A PAGAR");
+            pedido.setValorPago(0);
+        } else {
+            pedido.setStatus("PAGO");
+            pedido.setValorPago(pedido.getValorTotal());
+        }
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             if (pedido.getMensalista() != null) {
                 stmt.setInt(1, pedido.getMensalista().getId());
@@ -32,209 +44,275 @@ public class PedidoDAO {
                 stmt.setNull(2, Types.INTEGER);
             }
 
-            if (pedido.getNomeCliente() != null) {
-                stmt.setString(3, pedido.getNomeCliente());
-            } else {
-                stmt.setNull(3, Types.VARCHAR);
-            }
-
+            stmt.setString(3, pedido.getNomeCliente());
             stmt.setString(4, pedido.getTipoPagamento());
-
             stmt.setString(5, pedido.getTipoPedido());
-
             stmt.setString(6, pedido.getObservacoes());
 
-            stmt.setDouble(7, pedido.getValorEntrega());
-
-            if (pedido.getEndereco() != null) {
-                stmt.setString(8, pedido.getEndereco());
+            if (pedido.getValorEntrega() > 0) {
+                stmt.setDouble(7, pedido.getValorEntrega());
             } else {
-                stmt.setNull(8, Types.VARCHAR);
+                stmt.setNull(7, Types.REAL);
             }
 
+            stmt.setString(8, pedido.getEndereco());
             stmt.setDouble(9, pedido.getValorItens());
-
             stmt.setDouble(10, pedido.getValorTotal());
+            stmt.setDouble(11, pedido.getValorPago());
 
             if (pedido.getVencimento() != null) {
-                stmt.setDate(11, Date.valueOf(pedido.getVencimento()));
+                stmt.setDate(12, Date.valueOf(pedido.getVencimento()));
             } else {
-                stmt.setNull(11, Types.DATE);
+                stmt.setNull(12, Types.DATE);
             }
 
-            rs = stmt.executeQuery();
-
-            rs.next();
-            return rs.getInt(1);
-
-        } finally {
-            DatabaseConnection.closeConnection(con, stmt);
-        }
-    }
-
-    public static List<Pedido> read() throws SQLException {
-        Connection con = DatabaseConnection.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        List<Pedido> pedidos = new ArrayList<>();
-
-        try {
-            stmt = con.prepareStatement("CALL READ_ALL_PEDIDOS()");
-
-            rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                Pedido pedido = new Pedido();
-
-                pedido.setId(rs.getInt("id"));
-
-                rs.getInt("id_mensalista");
-
-                if (rs.getInt("id_mensalista") != 0) {
-                    for (Mensalista mensalista : MensalistaDAO.read(rs.getInt("id_mensalista"))) {
-                        pedido.setMensalista(mensalista);
-                    }
-                }
-
-                pedido.setTipoPagamento(rs.getString("tipo_pagamento"));
-
-                pedido.setTipoPedido(rs.getString("tipo_pedido"));
-
-                if (pedido.getTipoPedido().equals("Entrega")) {
-
-                    for (Bairro bairro : BairroDAO.read(rs.getInt("id_bairro"))) {
-                        pedido.setBairro(bairro);
-                    }
-
-                    pedido.setValorEntrega(rs.getInt("valor_entrega"));
-                }
-
-                pedido.setNomeCliente(rs.getString("nome_cliente"));
-                pedido.setObservacoes(rs.getString("observacoes"));
-                pedido.setValorItens(rs.getDouble("valor_itens"));
-                pedido.setValorTotal(rs.getDouble("valor_total"));
-                pedido.setValorPago(rs.getDouble("valor_pago"));
-                pedido.setEndereco(rs.getString("endereco"));
-                pedido.setDateTime(rs.getTimestamp("date_time").toLocalDateTime());
-                pedido.setVencimento(rs.getDate("vencimento").toLocalDate());
-                pedido.setStatus(rs.getString("status"));
-
-                pedidos.add(pedido);
-            }
-
-            return pedidos;
-        } finally {
-            DatabaseConnection.closeConnection(con, stmt);
-        }
-    }
-
-    public static List<Pedido> read(LocalDate data) throws SQLException {
-        Connection con = DatabaseConnection.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        List<Pedido> pedidos = new ArrayList<>();
-
-        try {
-            stmt = con.prepareStatement("CALL READ_PEDIDOS_BY_DATA(?)");
-
-            stmt.setDate(1, Date.valueOf(data));
-
-            rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                Pedido pedido = new Pedido();
-
-                pedido.setId(rs.getInt("id"));
-
-                rs.getInt("id_mensalista");
-
-                if (rs.getInt("id_mensalista") != 0) {
-                    for (Mensalista mensalista : MensalistaDAO.read(rs.getInt("id_mensalista"))) {
-                        pedido.setMensalista(mensalista);
-                    }
-                }
-
-                pedido.setTipoPagamento(rs.getString("tipo_pagamento"));
-
-                pedido.setTipoPedido(rs.getString("tipo_pedido"));
-
-                if (pedido.getTipoPedido().equals("Entrega")) {
-
-                    for (Bairro bairro : BairroDAO.read(rs.getInt("id_bairro"))) {
-                        pedido.setBairro(bairro);
-                    }
-
-                    pedido.setValorEntrega(rs.getInt("valor_entrega"));
-                }
-
-                pedido.setNomeCliente(rs.getString("nome_cliente"));
-                pedido.setObservacoes(rs.getString("observacoes"));
-                pedido.setValorItens(rs.getDouble("valor_itens"));
-                pedido.setValorTotal(rs.getDouble("valor_total"));
-                pedido.setValorPago(rs.getDouble("valor_pago"));
-                pedido.setEndereco(rs.getString("endereco"));
-                pedido.setDateTime(rs.getTimestamp("date_time").toLocalDateTime());
-                pedido.setVencimento(rs.getDate("vencimento").toLocalDate());
-                pedido.setStatus(rs.getString("status"));
-
-                pedidos.add(pedido);
-            }
-
-            return pedidos;
-        } finally {
-            DatabaseConnection.closeConnection(con, stmt);
-        }
-    }
-
-    public static void update(Pedido pedido) {
-        Connection con = DatabaseConnection.getConnection();
-        PreparedStatement stmt = null;
-
-        try {
-            stmt = con.prepareStatement("CALL update_pedido(?, ?)");
-
-            stmt.setInt(1, pedido.getId());
-            stmt.setString(2, pedido.getStatus());
+            stmt.setString(13, pedido.getStatus());
 
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Falha ao atualizar pedido: " + e);
-        } finally {
-            DatabaseConnection.closeConnection(con, stmt);
+
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+                throw new SQLException("Falha ao criar pedido, nenhum ID obtido.");
+            }
         }
     }
 
-    public static void delete(Pedido pedido) {
-        Connection con = DatabaseConnection.getConnection();
-        PreparedStatement stmt = null;
+    static public void atualizarStatus(int id, String status) throws SQLException {
+        String sql = "UPDATE Pedido SET status = ? WHERE id = ?";
 
-        try {
-            stmt = con.prepareStatement("CALL delete_pedido(?)");
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, pedido.getId());
+            stmt.setString(1, status);
+            stmt.setInt(2, id);
 
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Erro ao excluir pedido: " + e);
-        } finally {
-            DatabaseConnection.closeConnection(con, stmt);
+            int affectedRows = stmt.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Pedido com ID " + id + " não encontrado.");
+            }
         }
     }
 
-    public static void finalizar(int idPedido) {
-        Connection con = DatabaseConnection.getConnection();
-        PreparedStatement stmt = null;
+    static public void finalizar(int idPedido) throws SQLException {
+        String sql = "UPDATE Pedido SET status = 'PAGO' WHERE id = ?";
 
-        try {
-            stmt = con.prepareStatement("CALL FINALIZAR_PEDIDO(?)");
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, idPedido);
 
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Erro ao finalizar pedido: " + e);
-        } finally {
-            DatabaseConnection.closeConnection(con, stmt);
+            int affectedRows = stmt.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Pedido com ID " + idPedido + " não encontrado.");
+            }
         }
+    }
+
+    static public void deletar(int id) throws SQLException {
+        String sql = "DELETE FROM Pedido WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+
+            int affectedRows = stmt.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Pedido com ID " + id + " não encontrado.");
+            }
+        }
+    }
+
+    static public List<Pedido> listarTodos() throws SQLException {
+        String sql = "SELECT * FROM Pedido ORDER BY date_time DESC";
+        List<Pedido> pedidos = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                pedidos.add(extrairPedidoDoResultSet(rs));
+            }
+        }
+
+        return pedidos;
+    }
+
+    static public List<Pedido> listarPorMensalista(int idMensalista) throws SQLException {
+        String sql = "SELECT * FROM Pedido WHERE id_mensalista = ? ORDER BY date_time DESC";
+        List<Pedido> pedidos = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, idMensalista);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    pedidos.add(extrairPedidoDoResultSet(rs));
+                }
+            }
+        }
+
+        return pedidos;
+    }
+
+    static public List<Pedido> listarPorData(LocalDate data) throws SQLException {
+        String sql = "SELECT * FROM Pedido WHERE date(date_time) = ?";
+        List<Pedido> pedidos = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, data.toString());
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    pedidos.add(extrairPedidoDoResultSet(rs));
+                }
+            }
+        }
+
+        return pedidos;
+    }
+
+    static public List<Pedido> listarPorPeriodo(String dataInicio, String dataFim) throws SQLException {
+        String sql = "SELECT * FROM Pedido WHERE date(date_time) BETWEEN ? AND ? ORDER BY date_time DESC";
+        List<Pedido> pedidos = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, dataInicio);
+            stmt.setString(2, dataFim);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    pedidos.add(extrairPedidoDoResultSet(rs));
+                }
+            }
+        }
+
+        return pedidos;
+    }
+
+    static public Pedido buscarPorId(int id) throws SQLException {
+        String sql = "SELECT * FROM Pedido WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return extrairPedidoDoResultSet(rs);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    static public double[] calcularDiaria(String data) throws SQLException {
+        String sql = "SELECT COUNT(*) AS entregas, SUM(valor_entrega) as valorEntregas " +
+                "FROM Pedido WHERE date(date_time) = ? AND tipo_pedido = 'Entrega'";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, data);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    double entregas = rs.getInt("entregas");
+                    double valorEntregas = rs.getDouble("valorEntregas");
+                    return new double[]{entregas, valorEntregas};
+                }
+            }
+        }
+
+        return new double[]{0, 0};
+    }
+
+    static public List<Pedido> listarAPagar() throws SQLException {
+        String sql = "SELECT * FROM Pedido WHERE status = 'A PAGAR' ORDER BY vencimento ASC";
+        List<Pedido> pedidos = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                pedidos.add(extrairPedidoDoResultSet(rs));
+            }
+        }
+
+        return pedidos;
+    }
+
+    static public List<Pedido> listarVencidos() throws SQLException {
+        String sql = "SELECT * FROM Pedido WHERE status = 'A PAGAR' AND vencimento < date('now') " +
+                "ORDER BY vencimento ASC";
+        List<Pedido> pedidos = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                pedidos.add(extrairPedidoDoResultSet(rs));
+            }
+        }
+
+        return pedidos;
+    }
+
+    static public double calcularTotalVendas(String dataInicio, String dataFim) throws SQLException {
+        String sql = "SELECT SUM(valor_total) as total FROM Pedido " +
+                "WHERE date(date_time) BETWEEN ? AND ? AND status = 'PAGO'";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, dataInicio);
+            stmt.setString(2, dataFim);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getDouble("total");
+                }
+            }
+        }
+
+        return 0.0;
+    }
+
+    static private Pedido extrairPedidoDoResultSet(ResultSet rs) throws SQLException {
+        Pedido pedido = new Pedido();
+        pedido.setMensalista(new Mensalista());
+        pedido.setBairro(new Bairro());
+        pedido.setId(rs.getInt("id"));
+        pedido.setIdMensalista(rs.getObject("id_mensalista", Integer.class));
+        pedido.setIdBairro(rs.getObject("id_bairro", Integer.class));
+        pedido.setNomeCliente(rs.getString("nome_cliente"));
+        pedido.setTipoPagamento(rs.getString("tipo_pagamento"));
+        pedido.setTipoPedido(rs.getString("tipo_pedido"));
+        pedido.setObservacoes(rs.getString("observacoes"));
+        pedido.setValorEntrega(rs.getObject("valor_entrega", Double.class));
+        pedido.setEndereco(rs.getString("endereco"));
+        pedido.setValorItens(rs.getDouble("valor_itens"));
+        pedido.setValorTotal(rs.getDouble("valor_total"));
+        pedido.setValorPago(rs.getDouble("valor_pago"));
+        pedido.setDateTime(LocalDateTime.parse(rs.getString("date_time"), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        pedido.setVencimento(LocalDate.parse(rs.getString("vencimento")));
+        pedido.setStatus(rs.getString("status"));
+        return pedido;
     }
 }

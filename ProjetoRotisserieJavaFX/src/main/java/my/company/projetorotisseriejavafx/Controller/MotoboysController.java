@@ -148,7 +148,7 @@ public class MotoboysController {
         tableMotoboys.getItems().clear();
 
         try {
-            List<Motoboy> motoboys = MotoboyDAO.read();
+            List<Motoboy> motoboys = MotoboyDAO.listarTodos();
 
             if (!motoboys.isEmpty()) {
                 tableMotoboys.getItems().addAll(motoboys);

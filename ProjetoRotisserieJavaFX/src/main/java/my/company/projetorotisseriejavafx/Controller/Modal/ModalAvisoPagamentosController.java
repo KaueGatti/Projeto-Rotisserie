@@ -7,6 +7,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import my.company.projetorotisseriejavafx.DAO.PedidoDAO;
 import my.company.projetorotisseriejavafx.Objects.Pedido;
+import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
+
+import java.sql.SQLException;
 
 public class ModalAvisoPagamentosController {
 
@@ -35,12 +38,18 @@ public class ModalAvisoPagamentosController {
     @FXML
     void confirmar(ActionEvent event) {
         response = 1;
-        PedidoDAO.finalizar(pedido.getId());
+
+        try {
+            PedidoDAO.finalizar(pedido.getId());
+        } catch (SQLException e) {
+            DatabaseExceptionHandler.handleException(e, "Falha ao finalizar o pedido");
+        }
+
         fecharModal();
     }
 
     public void fecharModal() {
-        Stage modal =  (Stage) root.getScene().getWindow();
+        Stage modal = (Stage) root.getScene().getWindow();
         modal.close();
     }
 

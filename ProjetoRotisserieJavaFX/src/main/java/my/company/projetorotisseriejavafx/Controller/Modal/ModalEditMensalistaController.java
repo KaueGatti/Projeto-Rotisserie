@@ -46,7 +46,7 @@ public class ModalEditMensalistaController {
         mensalista.setStatus(CBStatus.getValue());
 
         try {
-            MensalistaDAO.update(mensalista);
+            MensalistaDAO.atualizar(mensalista);
             fecharModal();
         } catch (SQLException e) {
             DatabaseExceptionHandler.handleException(e, "mensalista");

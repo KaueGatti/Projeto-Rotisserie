@@ -40,7 +40,7 @@ public class ModalCadastrarMensalistaController {
         mensalista.setContato(TFContato.getText());
 
         try {
-            MensalistaDAO.create(mensalista);
+            MensalistaDAO.criar(mensalista);
             fecharModal();
         } catch (SQLException e) {
             DatabaseExceptionHandler.handleException(e, "mensalista");

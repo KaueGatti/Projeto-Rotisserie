@@ -54,7 +54,7 @@ public class ModalCadastrarMarmitaController {
         if (!validaMarmita(marmita)) return;
 
         try {
-            MarmitaDAO.create(marmita);
+            MarmitaDAO.criar(marmita);
             LInfo.setText("Marmita Cadastrada com sucesso!");
             fecharModal();
         } catch (Exception e) {

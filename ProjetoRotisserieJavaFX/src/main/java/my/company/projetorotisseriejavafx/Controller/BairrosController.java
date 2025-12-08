@@ -157,7 +157,7 @@ public class BairrosController {
         tableBairros.getItems().clear();
 
         try {
-            List<Bairro> bairros = BairroDAO.read();
+            List<Bairro> bairros = BairroDAO.listarTodos();
 
             if (!bairros.isEmpty()) {
                 tableBairros.getItems().addAll(bairros);

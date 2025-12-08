@@ -10,91 +10,58 @@ import java.util.List;
 public class ItemCardapioDAO {
 
     public static int create(ItemCardapio itemCardapio) throws SQLException {
-        Connection con = DatabaseConnection.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
 
-        try {
-            stmt = con.prepareStatement("CALL CREATE_ITEM_CARDAPIO(?, ?)", Statement.RETURN_GENERATED_KEYS);
+        String sql = "INSERT INTO Item_Cardapio (nome, categoria)\n" +
+                "    VALUES (?, ?)";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, itemCardapio.getNome());
             stmt.setString(2, itemCardapio.getCategoria());
 
-            rs = stmt.executeQuery();
+            stmt.executeUpdate();
 
-            rs.next();
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                rs.next();
+                return rs.getInt(1);
+            }
 
-            return rs.getInt("id");
-
-        } finally {
-            DatabaseConnection.closeConnection(con, stmt);
         }
     }
 
     public static List<ItemCardapio> read() throws SQLException {
-        Connection con = DatabaseConnection.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
+        String sql = "SELECT * FROM Item_Cardapio;";
         List<ItemCardapio> itensCardapio = new ArrayList<>();
 
-        try {
-            stmt = con.prepareStatement("CALL READ_ALL_ITENS_CARDAPIO()");
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            rs = stmt.executeQuery();
+            try (ResultSet rs = stmt.executeQuery()) {
 
-            while (rs.next()) {
-                ItemCardapio itemCardapio = new ItemCardapio();
-                itemCardapio.setId(rs.getInt("id"));
-                itemCardapio.setNome(rs.getString("nome"));
-                itemCardapio.setCategoria(rs.getString("categoria"));
+                while (rs.next()) {
+                    ItemCardapio itemCardapio = new ItemCardapio();
+                    itemCardapio.setId(rs.getInt("id"));
+                    itemCardapio.setNome(rs.getString("nome"));
+                    itemCardapio.setCategoria(rs.getString("categoria"));
 
-                itensCardapio.add(itemCardapio);
+                    itensCardapio.add(itemCardapio);
+                }
+                return itensCardapio;
             }
-            return itensCardapio;
-        } finally {
-            DatabaseConnection.closeConnection(con, stmt);
-        }
-    }
-
-    public static List<ItemCardapio> read(String categoria) throws SQLException {
-        Connection con = DatabaseConnection.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        List<ItemCardapio> itensCardapio = new ArrayList<>();
-
-        try {
-            stmt = con.prepareStatement("CALL READ_ITENS_CARDAPIO_BY_CATEGORIA(?)");
-
-            stmt.setString(1, categoria);
-
-            rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                ItemCardapio itemCardapio = new ItemCardapio();
-                itemCardapio.setId(rs.getInt("id"));
-                itemCardapio.setNome(rs.getString("nome"));
-                itemCardapio.setCategoria(rs.getString("categoria"));
-
-                itensCardapio.add(itemCardapio);
-            }
-            return itensCardapio;
-        } finally {
-            DatabaseConnection.closeConnection(con, stmt);
         }
     }
 
     public static void delete(int id) throws SQLException {
-        Connection con = DatabaseConnection.getConnection();
-        PreparedStatement stmt = null;
 
-        try {
-            stmt = con.prepareStatement("CALL DELETE_ITEM_CARDAPIO(?)");
+        String sql = "DELETE FROM Item_Cardapio WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
 
             stmt.executeUpdate();
-        } finally {
-            DatabaseConnection.closeConnection(con, stmt);
         }
     }
 }

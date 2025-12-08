@@ -41,7 +41,7 @@ public class ModalCadastrarMotoboyController {
         if (!validaMotoboy(motoboy)) return;
 
         try {
-            MotoboyDAO.create(motoboy);
+            MotoboyDAO.criar(motoboy);
             LInfo.setText("Motoboy Cadastrado com sucesso!");
             fecharModal();
         } catch (Exception e) {

@@ -1,68 +1,74 @@
 package my.company.projetorotisseriejavafx.DAO;
 
+import javafx.collections.ObservableList;
 import my.company.projetorotisseriejavafx.DB.DatabaseConnection;
 import my.company.projetorotisseriejavafx.Objects.DescontoAdicional;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DescontoAdicionalDAO {
 
-    public static void create(List<DescontoAdicional> descontosEAdicionais, int idPedido) {
-        Connection con = DatabaseConnection.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
+    static public int criar(ObservableList<DescontoAdicional> das, int idPedido) throws SQLException {
+        String sql = "INSERT INTO Desconto_Adicional (id_pedido, tipo, valor, observacao) " +
+                "VALUES (?, ?, ?, ?)";
 
-        try {
-            stmt = con.prepareStatement("CALL CREATE_DESCONTO_ADICIONAL(?, ?, ?, ?)");
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            for (DescontoAdicional descontoAdicional : descontosEAdicionais) {
+            for (DescontoAdicional da : das) {
+
                 stmt.setInt(1, idPedido);
-                stmt.setString(2, descontoAdicional.getTipo());
-                stmt.setDouble(3, descontoAdicional.getValor());
-                stmt.setString(4, descontoAdicional.getObservacao());
+                stmt.setString(2, da.getTipo());
+                stmt.setDouble(3, da.getValor());
+                stmt.setString(4, da.getObservacao());
+
                 stmt.addBatch();
             }
 
-            stmt.executeBatch();
+            stmt.executeUpdate();
 
-        } catch (SQLException e) {
-            System.out.println("Falha ao cadastrar descontos e adicionais: " + e);
-        } finally {
-            DatabaseConnection.closeConnection(con, stmt);
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
         }
+        return 0;
     }
 
-    public static List<DescontoAdicional> read(int idPedido) throws SQLException {
-        Connection con = DatabaseConnection.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        List<DescontoAdicional> descontosEAdicionais = new ArrayList<>();
+    static public List<DescontoAdicional> listarPorPedido(int idPedido) throws SQLException {
+        String sql = "SELECT * FROM Desconto_Adicional WHERE id_pedido = ?";
+        List<DescontoAdicional> lista = new ArrayList<>();
 
-        try {
-            stmt = con.prepareStatement("CALL READ_ALL_DESCONTOS_ADICIONAIS_PEDIDO(?)");
-            
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setInt(1, idPedido);
-            
-            rs = stmt.executeQuery();
 
-            while (rs.next()) {
-                DescontoAdicional descontoAdicional = new DescontoAdicional();
-                descontoAdicional.setId(rs.getInt("id"));
-                descontoAdicional.setIdPedido(rs.getInt("id_pedido"));
-                descontoAdicional.setTipo(rs.getString("tipo"));
-                descontoAdicional.setValor(rs.getDouble("valor"));
-                descontoAdicional.setObservacao(rs.getString("observacao"));
-
-                descontosEAdicionais.add(descontoAdicional);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    DescontoAdicional da = new DescontoAdicional();
+                    da.setId(rs.getInt("id"));
+                    da.setIdPedido(rs.getInt("id_pedido"));
+                    da.setTipo(rs.getString("tipo"));
+                    da.setValor(rs.getDouble("valor"));
+                    da.setObservacao(rs.getString("observacao"));
+                    lista.add(da);
+                }
             }
-            return descontosEAdicionais;
-        } finally {
-            DatabaseConnection.closeConnection(con, stmt);
+        }
+        return lista;
+    }
+
+    static public void deletar(int id) throws SQLException {
+        String sql = "DELETE FROM Desconto_Adicional WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
         }
     }
 }

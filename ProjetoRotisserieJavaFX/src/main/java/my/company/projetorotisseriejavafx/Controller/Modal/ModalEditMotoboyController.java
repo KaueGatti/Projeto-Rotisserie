@@ -58,7 +58,7 @@ public class ModalEditMotoboyController {
         if (!validaMotoboy(motoboy)) return;
 
         try {
-            MotoboyDAO.update(motoboy);
+            MotoboyDAO.atualizar(motoboy);
             LInfo.setText("Motoboy atualizado com sucesso!");
             fecharModal();
         } catch (Exception e) {

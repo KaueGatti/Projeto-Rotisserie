@@ -157,7 +157,7 @@ public class MarmitasController {
         tableMarmitas.getItems().clear();
 
         try {
-            List<Marmita> marmitas = MarmitaDAO.read();
+            List<Marmita> marmitas = MarmitaDAO.listarTodas();
 
             if (!marmitas.isEmpty()) {
                 tableMarmitas.getItems().addAll(marmitas);

@@ -3,21 +3,19 @@ package my.company.projetorotisseriejavafx.DAO;
 import my.company.projetorotisseriejavafx.DB.DatabaseConnection;
 import my.company.projetorotisseriejavafx.Objects.Pagamento;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PagamentoDAO {
 
-    public static void create(Pagamento pagamento) throws SQLException {
-        Connection con = DatabaseConnection.getConnection();
-        PreparedStatement stmt = null;
+    static public int criar(Pagamento pagamento) throws SQLException {
+        String sql = "INSERT INTO Pagamento (id_pedido, tipo_pagamento, valor, observacao) " +
+                "VALUES (?, ?, ?, ?)";
 
-        try {
-            stmt = con.prepareStatement("CALL CREATE_PAGAMENTO(?, ?, ?, ?)");
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setInt(1, pagamento.getIdPedido());
             stmt.setString(2, pagamento.getTipoPagamento());
@@ -25,84 +23,65 @@ public class PagamentoDAO {
             stmt.setString(4, pagamento.getObservacao());
 
             stmt.executeUpdate();
-        } finally {
-            DatabaseConnection.closeConnection(con, stmt);
-        }
-    }
 
-    public static List<Pagamento> read() throws SQLException {
-        Connection con = DatabaseConnection.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        List<Pagamento> pagamentos = new ArrayList();
-
-        try {
-            stmt = con.prepareStatement("CALL READ_ALL_PAGAMENTOS()");
-            rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                Pagamento pagamento = new Pagamento();
-
-                pagamento.setId(rs.getInt("id"));
-                pagamento.setIdPedido(rs.getInt("id_pedido"));
-                pagamento.setTipoPagamento(rs.getString("tipo_pagamento"));
-                pagamento.setValor(rs.getDouble("valor"));
-                pagamento.setObservacao(rs.getString("observacao"));
-                pagamento.setData(rs.getDate("data").toLocalDate());
-
-                pagamentos.add(pagamento);
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
             }
+        }
+        return 0;
+    }
 
-            return pagamentos;
-        } finally {
-            DatabaseConnection.closeConnection(con, stmt);
+    static public void deletar(int id) throws SQLException {
+        String sql = "DELETE FROM Pagamento WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
         }
     }
 
-    public static List<Pagamento> read(int idPedido) throws SQLException {
-        Connection con = DatabaseConnection.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        List<Pagamento> pagamentos = new ArrayList();
+    static public List<Pagamento> listarPorPedido(int idPedido) throws SQLException {
+        String sql = "SELECT * FROM Pagamento WHERE id_pedido = ? ORDER BY data DESC";
+        List<Pagamento> lista = new ArrayList<>();
 
-        try {
-            stmt = con.prepareStatement("CALL READ_PAGAMENTOS_PEDIDO(?)");
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, idPedido);
 
-            rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                Pagamento pagamento = new Pagamento();
-
-                pagamento.setId(rs.getInt("id"));
-                pagamento.setIdPedido(rs.getInt("id_pedido"));
-                pagamento.setTipoPagamento(rs.getString("tipo_pagamento"));
-                pagamento.setValor(rs.getDouble("valor"));
-                pagamento.setObservacao(rs.getString("observacao"));
-                pagamento.setData(rs.getDate("data").toLocalDate());
-
-                pagamentos.add(pagamento);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Pagamento pag = new Pagamento();
+                    pag.setId(rs.getInt("id"));
+                    pag.setIdPedido(rs.getInt("id_pedido"));
+                    pag.setTipoPagamento(rs.getString("tipo_pagamento"));
+                    pag.setValor(rs.getDouble("valor"));
+                    pag.setObservacao(rs.getString("observacao"));
+                    pag.setData(LocalDate.parse(rs.getString("data")));
+                    lista.add(pag);
+                }
             }
-
-            return pagamentos;
-        } finally {
-            DatabaseConnection.closeConnection(con, stmt);
         }
+        return lista;
     }
 
-    public static void delete(Pagamento pagamento) throws SQLException {
-        Connection con = DatabaseConnection.getConnection();
-        PreparedStatement stmt = null;
+    static public double calcularTotalPago(int idPedido) throws SQLException {
+        String sql = "SELECT SUM(valor) as total FROM Pagamento WHERE id_pedido = ?";
 
-        try {
-            stmt = con.prepareStatement("CALL DELETE_PAGAMENTO(?)");
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, pagamento.getId());
+            stmt.setInt(1, idPedido);
 
-            stmt.executeUpdate();
-        } finally {
-            DatabaseConnection.closeConnection(con, stmt);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getDouble("total");
+                }
+            }
         }
+        return 0.0;
     }
 }

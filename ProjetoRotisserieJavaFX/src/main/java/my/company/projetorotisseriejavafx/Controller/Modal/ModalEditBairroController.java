@@ -58,7 +58,7 @@ public class ModalEditBairroController {
         if (!validaBairro(bairro)) return;
 
         try {
-            BairroDAO.update(bairro);
+            BairroDAO.atualizar(bairro);
             LInfo.setText("Bairro atualizado com sucesso!");
             fecharModal();
         } catch (SQLException e) {

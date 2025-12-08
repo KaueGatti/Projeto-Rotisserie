@@ -41,7 +41,7 @@ public class ModalCadastrarBairroController {
         if (!validaBairro(bairro)) return;
 
         try {
-            BairroDAO.create(bairro);
+            BairroDAO.criar(bairro);
             LInfo.setText("Bairro Cadastrado com sucesso!");
             fecharModal();
         } catch (Exception e) {

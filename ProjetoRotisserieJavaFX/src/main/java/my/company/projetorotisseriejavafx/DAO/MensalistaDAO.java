@@ -8,14 +8,14 @@ import my.company.projetorotisseriejavafx.Objects.Mensalista;
 
 public class MensalistaDAO {
 
-    public int criar(String nome, String contato) throws SQLException {
+    static public int criar(Mensalista mensalista) throws SQLException {
         String sql = "INSERT INTO Mensalista (nome, contato) VALUES (?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setString(1, nome);
-            stmt.setString(2, contato);
+            stmt.setString(1, mensalista.getNome());
+            stmt.setString(2, mensalista.getContato());
 
             int affectedRows = stmt.executeUpdate();
 
@@ -23,7 +23,6 @@ public class MensalistaDAO {
                 throw new SQLException("Falha ao criar mensalista, nenhuma linha afetada.");
             }
 
-            // Retorna o ID gerado
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     return generatedKeys.getInt(1);
@@ -34,25 +33,25 @@ public class MensalistaDAO {
         }
     }
 
-    public void atualizar(int id, String status, String contato) throws SQLException {
+    static public void atualizar(Mensalista mensalista) throws SQLException {
         String sql = "UPDATE Mensalista SET status = ?, contato = ? WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, status);
-            stmt.setString(2, contato);
-            stmt.setInt(3, id);
+            stmt.setString(1, mensalista.getStatus());
+            stmt.setString(2, mensalista.getContato());
+            stmt.setInt(3, mensalista.getId());
 
             int affectedRows = stmt.executeUpdate();
 
             if (affectedRows == 0) {
-                throw new SQLException("Mensalista com ID " + id + " não encontrado.");
+                throw new SQLException("Mensalista com ID " + mensalista.getId() + " não encontrado.");
             }
         }
     }
 
-    public void deletar(int id) throws SQLException {
+    static public void deletar(int id) throws SQLException {
         String sql = "DELETE FROM Mensalista WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -68,7 +67,7 @@ public class MensalistaDAO {
         }
     }
 
-    public List<Mensalista> listarTodos() throws SQLException {
+    static public List<Mensalista> listarTodos() throws SQLException {
         String sql = "SELECT * FROM Mensalista ORDER BY nome";
         List<Mensalista> mensalistas = new ArrayList<>();
 
@@ -91,7 +90,7 @@ public class MensalistaDAO {
         return mensalistas;
     }
 
-    public Mensalista buscarPorId(int id) throws SQLException {
+    static public Mensalista buscarPorId(int id) throws SQLException {
         String sql = "SELECT * FROM Mensalista WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -116,7 +115,7 @@ public class MensalistaDAO {
         return null;
     }
 
-    public List<Mensalista> listarAtivos() throws SQLException {
+    static public List<Mensalista> listarAtivos() throws SQLException {
         String sql = "SELECT * FROM Mensalista WHERE status = 'ATIVO' ORDER BY nome";
         List<Mensalista> mensalistas = new ArrayList<>();
 
@@ -139,7 +138,7 @@ public class MensalistaDAO {
         return mensalistas;
     }
 
-    public Mensalista buscarPorNome(String nome) throws SQLException {
+    static public Mensalista buscarPorNome(String nome) throws SQLException {
         String sql = "SELECT * FROM Mensalista WHERE nome = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -164,7 +163,7 @@ public class MensalistaDAO {
         return null;
     }
 
-    public List<Mensalista> listarComContaAberta() throws SQLException {
+    static public List<Mensalista> listarComContaAberta() throws SQLException {
         String sql = "SELECT * FROM Mensalista WHERE conta > 0 AND status = 'ATIVO' ORDER BY conta DESC";
         List<Mensalista> mensalistas = new ArrayList<>();
 
@@ -187,7 +186,7 @@ public class MensalistaDAO {
         return mensalistas;
     }
 
-    public double obterTotalContasAbertas() throws SQLException {
+    static public double obterTotalContasAbertas() throws SQLException {
         String sql = "SELECT SUM(conta) as total FROM Mensalista WHERE status = 'ATIVO'";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -202,7 +201,7 @@ public class MensalistaDAO {
         return 0.0;
     }
 
-    public void zerarConta(int id) throws SQLException {
+    static public void zerarConta(int id) throws SQLException {
         String sql = "UPDATE Mensalista SET conta = 0 WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -213,7 +212,7 @@ public class MensalistaDAO {
         }
     }
 
-    public void ajustarConta(int id, double novoValor) throws SQLException {
+    static public void ajustarConta(int id, double novoValor) throws SQLException {
         String sql = "UPDATE Mensalista SET conta = ? WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();

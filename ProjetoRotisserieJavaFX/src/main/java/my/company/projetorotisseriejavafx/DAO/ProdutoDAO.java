@@ -9,14 +9,14 @@ import my.company.projetorotisseriejavafx.Objects.Produto;
 
 public class ProdutoDAO {
 
-    public int criar(String nome, double valor) throws SQLException {
+    static public int criar(Produto produto) throws SQLException {
         String sql = "INSERT INTO Produto (nome, valor) VALUES (?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setString(1, nome);
-            stmt.setDouble(2, valor);
+            stmt.setString(1, produto.getNome());
+            stmt.setDouble(2, produto.getValor());
 
             int affectedRows = stmt.executeUpdate();
 
@@ -35,25 +35,25 @@ public class ProdutoDAO {
         }
     }
 
-    public void atualizar(int id, double valor, String status) throws SQLException {
+    static public void atualizar(Produto produto) throws SQLException {
         String sql = "UPDATE Produto SET valor = ?, status = ? WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setDouble(1, valor);
-            stmt.setString(2, status);
-            stmt.setInt(3, id);
+            stmt.setDouble(1, produto.getValor());
+            stmt.setString(2, produto.getStatus());
+            stmt.setInt(3, produto.getId());
 
             int affectedRows = stmt.executeUpdate();
 
             if (affectedRows == 0) {
-                throw new SQLException("Produto com ID " + id + " não encontrado.");
+                throw new SQLException("Produto com ID " + produto.getId() + " não encontrado.");
             }
         }
     }
 
-    public void deletar(int id) throws SQLException {
+    static public void deletar(int id) throws SQLException {
         String sql = "DELETE FROM Produto WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -69,7 +69,7 @@ public class ProdutoDAO {
         }
     }
 
-    public List<Produto> listarTodos() throws SQLException {
+    static public List<Produto> listarTodos() throws SQLException {
         String sql = "SELECT * FROM Produto ORDER BY nome";
         List<Produto> produtos = new ArrayList<>();
 
@@ -91,7 +91,7 @@ public class ProdutoDAO {
         return produtos;
     }
 
-    public Produto buscarPorId(int id) throws SQLException {
+    static public Produto buscarPorId(int id) throws SQLException {
         String sql = "SELECT * FROM Produto WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -115,7 +115,7 @@ public class ProdutoDAO {
         return null;
     }
 
-    public List<Produto> listarAtivos() throws SQLException {
+    static public List<Produto> listarAtivos() throws SQLException {
         String sql = "SELECT * FROM Produto WHERE status = 'ATIVO' ORDER BY nome";
         List<Produto> produtos = new ArrayList<>();
 
@@ -137,7 +137,7 @@ public class ProdutoDAO {
         return produtos;
     }
 
-    public List<Produto> buscarPorNome(String nome) throws SQLException {
+    static public List<Produto> buscarPorNome(String nome) throws SQLException {
         String sql = "SELECT * FROM Produto WHERE nome LIKE ? AND status = 'ATIVO' ORDER BY nome";
         List<Produto> produtos = new ArrayList<>();
 

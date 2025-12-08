@@ -9,14 +9,14 @@ import my.company.projetorotisseriejavafx.Objects.Motoboy;
 
 public class MotoboyDAO {
 
-    public int criar(String nome, double valorDiaria) throws SQLException {
+    static public int criar(Motoboy motoboy) throws SQLException {
         String sql = "INSERT INTO Motoboy (nome, valor_diaria) VALUES (?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setString(1, nome);
-            stmt.setDouble(2, valorDiaria);
+            stmt.setString(1, motoboy.getNome());
+            stmt.setDouble(2, motoboy.getValorDiaria());
 
             int affectedRows = stmt.executeUpdate();
 
@@ -34,25 +34,25 @@ public class MotoboyDAO {
         }
     }
 
-    public void atualizar(int id, double valorDiaria, String status) throws SQLException {
+    static public void atualizar(Motoboy motoboy) throws SQLException {
         String sql = "UPDATE Motoboy SET valor_diaria = ?, status = ? WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setDouble(1, valorDiaria);
-            stmt.setString(2, status);
-            stmt.setInt(3, id);
+            stmt.setDouble(1, motoboy.getValorDiaria());
+            stmt.setString(2, motoboy.getStatus());
+            stmt.setInt(3, motoboy.getId());
 
             int affectedRows = stmt.executeUpdate();
 
             if (affectedRows == 0) {
-                throw new SQLException("Motoboy com ID " + id + " não encontrado.");
+                throw new SQLException("Motoboy com ID " + motoboy.getId() + " não encontrado.");
             }
         }
     }
 
-    public void deletar(int id) throws SQLException {
+    static public void deletar(int id) throws SQLException {
         String sql = "DELETE FROM Motoboy WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -68,7 +68,7 @@ public class MotoboyDAO {
         }
     }
 
-    public List<Motoboy> listarTodos() throws SQLException {
+    static public List<Motoboy> listarTodos() throws SQLException {
         String sql = "SELECT * FROM Motoboy ORDER BY nome";
         List<Motoboy> motoboys = new ArrayList<>();
 
@@ -90,7 +90,7 @@ public class MotoboyDAO {
         return motoboys;
     }
 
-    public Motoboy buscarPorId(int id) throws SQLException {
+    static public Motoboy buscarPorId(int id) throws SQLException {
         String sql = "SELECT * FROM Motoboy WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -114,7 +114,7 @@ public class MotoboyDAO {
         return null;
     }
 
-    public List<Motoboy> listarAtivos() throws SQLException {
+    static public List<Motoboy> listarAtivos() throws SQLException {
         String sql = "SELECT * FROM Motoboy WHERE status = 'ATIVO' ORDER BY nome";
         List<Motoboy> motoboys = new ArrayList<>();
 
@@ -136,7 +136,7 @@ public class MotoboyDAO {
         return motoboys;
     }
 
-    public Motoboy buscarPorNome(String nome) throws SQLException {
+    static public Motoboy buscarPorNome(String nome) throws SQLException {
         String sql = "SELECT * FROM Motoboy WHERE nome = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -160,7 +160,7 @@ public class MotoboyDAO {
         return null;
     }
 
-    public double calcularPagamento(int idMotoboy, int numeroEntregas) throws SQLException {
+    static public double calcularPagamento(int idMotoboy, int numeroEntregas) throws SQLException {
         Motoboy motoboy = buscarPorId(idMotoboy);
         if (motoboy == null) {
             throw new SQLException("Motoboy não encontrado");

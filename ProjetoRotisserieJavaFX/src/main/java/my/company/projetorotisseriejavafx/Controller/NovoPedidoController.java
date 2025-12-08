@@ -218,7 +218,7 @@ public class NovoPedidoController implements Initializable {
         comboBoxBairro.getItems().clear();
 
         try {
-            List<Bairro> bairros = BairroDAO.read();
+            List<Bairro> bairros = BairroDAO.listarAtivos();
 
             if (!bairros.isEmpty()) {
                 comboBoxBairro.getItems().addAll(bairros);
@@ -240,7 +240,7 @@ public class NovoPedidoController implements Initializable {
         comboBoxMensalista.getItems().clear();
 
         try {
-            List<Mensalista> mensalistas = MensalistaDAO.read();
+            List<Mensalista> mensalistas = MensalistaDAO.listarAtivos();
             if (!mensalistas.isEmpty()) {
                 comboBoxMensalista.getItems().addAll(mensalistas);
                 comboBoxMensalista.getSelectionModel().selectFirst();
@@ -381,13 +381,20 @@ public class NovoPedidoController implements Initializable {
             }
 
             try {
-                int idPedido = PedidoDAO.create(pedido);
+                int idPedido = PedidoDAO.criar(pedido);
                 pedido.setId(idPedido);
 
-                MarmitaVendidaDAO.create(tableMarmita.getItems(), pedido.getId());
-                ProdutoVendidoDAO.create(tableProduto.getItems(), pedido.getId());
+                if (!marmitas.isEmpty()) {
+                    MarmitaVendidaDAO.criar(tableMarmita.getItems(), pedido.getId());
+                }
 
-                DescontoAdicionalDAO.create(descontosEAdicionais, pedido.getId());
+                if (!produtos.isEmpty()) {
+                    ProdutoVendidoDAO.criar(tableProduto.getItems(), pedido.getId());
+                }
+
+                if (!descontosEAdicionais.isEmpty()) {
+                    DescontoAdicionalDAO.criar(descontosEAdicionais, pedido.getId());
+                }
             } catch (SQLException e) {
                 DatabaseExceptionHandler.handleException(e, "Pedido");
             }
@@ -467,8 +474,8 @@ public class NovoPedidoController implements Initializable {
 
     public boolean validaProdutos() {
         try {
-            if (ProdutoDAO.read().isEmpty()) {
-                String msg = "Você ainda não tem nenhum produto cadastrado!";
+            if (ProdutoDAO.listarAtivos().isEmpty()) {
+                String msg = "Você ainda não tem nenhum produto ativo ou cadastrado!";
                 abrirModalAvisoNovoPedido(msg, new Pedido());
                 return false;
             }
@@ -481,8 +488,8 @@ public class NovoPedidoController implements Initializable {
 
     public boolean validaBairro() {
         try {
-            if (BairroDAO.read().isEmpty()) {
-                String msg = "Você ainda não tem nenhum bairro cadastrado!";
+            if (BairroDAO.listarAtivos().isEmpty()) {
+                String msg = "Você ainda não tem nenhum bairro ativo ou cadastrado!";
                 abrirModalAvisoNovoPedido(msg, new Pedido());
                 return false;
             }
@@ -495,8 +502,8 @@ public class NovoPedidoController implements Initializable {
 
     public boolean validaMensalista() {
         try {
-            if (MensalistaDAO.read().isEmpty()) {
-                String msg = "Você ainda não tem nenhum mensalista cadastrado!";
+            if (MensalistaDAO.listarAtivos().isEmpty()) {
+                String msg = "Você ainda não tem nenhum mensalista ativo ou cadastrado!";
                 abrirModalAvisoNovoPedido(msg, new Mensalista());
                 return false;
             }

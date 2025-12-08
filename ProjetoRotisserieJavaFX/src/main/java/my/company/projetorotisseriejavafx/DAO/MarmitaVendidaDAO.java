@@ -1,69 +1,76 @@
 package my.company.projetorotisseriejavafx.DAO;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.collections.ObservableList;
 import my.company.projetorotisseriejavafx.DB.DatabaseConnection;
 import my.company.projetorotisseriejavafx.Objects.MarmitaVendida;
 
 public class MarmitaVendidaDAO {
 
-    public static void create(List<MarmitaVendida> marmitas, int idPedido) {
-        Connection con = DatabaseConnection.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
+    static public int criar(ObservableList<MarmitaVendida> mvs, int idPedido) throws SQLException {
+        String sql = "INSERT INTO Marmita_Vendida (id_pedido, id_marmita, subtotal, detalhes, observacao) " +
+                "VALUES (?, ?, ?, ?, ?)";
 
-        try {
-            stmt = con.prepareStatement("CALL create_marmita_vendida(?, ?, ?, ?, ?)");
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            for (MarmitaVendida marmita : marmitas) {
+            for (MarmitaVendida mv : mvs) {
+
                 stmt.setInt(1, idPedido);
-                stmt.setInt(2, marmita.getIdMarmita());
-                stmt.setDouble(3, marmita.getSubtotal());
-                stmt.setString(4, marmita.getDetalhes());
-                stmt.setString(5, marmita.getObservacao());
+                stmt.setInt(2, mv.getIdMarmita());
+                stmt.setDouble(3, mv.getSubtotal());
+                stmt.setString(4, mv.getDetalhes());
+                stmt.setString(5, mv.getObservacao());
+
                 stmt.addBatch();
             }
 
             stmt.executeBatch();
 
-        } catch (SQLException e) {
-            System.out.println("Falha ao cadastrar marmita vendida: " + e);
-        } finally {
-            DatabaseConnection.closeConnection(con, stmt);
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        }
+        return 0;
+    }
+
+    static public void deletar(int id) throws SQLException {
+        String sql = "DELETE FROM Marmita_Vendida WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
         }
     }
 
-    public static List<MarmitaVendida> read(int idPedido) throws SQLException {
-        Connection con = DatabaseConnection.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        List<MarmitaVendida> marmitasVendidas = new ArrayList<>();
+    static public List<MarmitaVendida> listarPorPedido(int idPedido) throws SQLException {
+        String sql = "SELECT MV.*, M.nome as nome_marmita FROM Marmita_Vendida AS MV " +
+                "JOIN Marmita AS M ON M.id = MV.id_marmita WHERE MV.id_pedido = ?";
+        List<MarmitaVendida> lista = new ArrayList<>();
 
-        try {
-            stmt = con.prepareStatement("CALL READ_ALL_MARMITAS_PEDIDO(?)");
-            
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setInt(1, idPedido);
-            
-            rs = stmt.executeQuery();
 
-            while (rs.next()) {
-                MarmitaVendida marmitaVendida = new MarmitaVendida();
-
-                marmitaVendida.setNome(rs.getString("nome"));
-                marmitaVendida.setDetalhes(rs.getString("detalhes"));
-                marmitaVendida.setSubtotal(rs.getDouble("subtotal"));
-                marmitaVendida.setObservacao(rs.getString("observacao"));
-
-                marmitasVendidas.add(marmitaVendida);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    MarmitaVendida mv = new MarmitaVendida();
+                    mv.setId(rs.getInt("id"));
+                    mv.setIdMarmita(rs.getInt("id_marmita"));
+                    mv.setDetalhes(rs.getString("detalhes"));
+                    mv.setSubtotal(rs.getDouble("subtotal"));
+                    mv.setObservacao(rs.getString("observacao"));
+                    lista.add(mv);
+                }
             }
-
-            return marmitasVendidas;
-        } finally {
-            DatabaseConnection.closeConnection(con, stmt);
         }
+        return lista;
     }
 }

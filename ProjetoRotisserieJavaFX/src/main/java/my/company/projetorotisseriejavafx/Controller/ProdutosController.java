@@ -156,7 +156,7 @@ public class ProdutosController {
         tableProdutos.getItems().clear();
 
         try {
-            List<Produto> produtos = ProdutoDAO.read();
+            List<Produto> produtos = ProdutoDAO.listarTodos();
 
             if (!produtos.isEmpty()) {
                 tableProdutos.getItems().addAll(produtos);
