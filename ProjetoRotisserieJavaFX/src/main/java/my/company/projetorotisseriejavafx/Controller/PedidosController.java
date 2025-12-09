@@ -528,7 +528,7 @@ public class PedidosController implements Initializable {
 
     private void initCBPagamento() {
         CBPagamento.getItems().clear();
-        CBPagamento.getItems().addAll("Todos", "Dinheiro", "Débito", "Crédito", "Pix", "Pagar depois");
+        CBPagamento.getItems().addAll("Todos", "Dinheiro", "Cartão", "Pix", "Pagar depois");
         CBPagamento.getSelectionModel().selectFirst();
     }
 
@@ -576,7 +576,7 @@ public class PedidosController implements Initializable {
         }
 
         if (CBPagamento.getSelectionModel().getSelectedIndex() != 0) {
-            String pagamento = Normalize.normalize(CBPagamento.getValue());
+            String pagamento = CBPagamento.getValue();
             pedidosStream = pedidosStream.filter(p -> p.getTipoPagamento().equalsIgnoreCase(pagamento));
         }
 

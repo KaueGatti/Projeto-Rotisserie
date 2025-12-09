@@ -70,28 +70,16 @@ public class Relatorio {
         return (int) ((getValorTotalDinheiro() / getValorFaturamento()) * 100);
     }
 
-    public int getTotalCredito() {
-        return pedidos.stream().filter(p -> p.getTipoPagamento().equals("Credito")).toList().size();
+    public int getTotalCartao() {
+        return pedidos.stream().filter(p -> p.getTipoPagamento().equals("Cartão")).toList().size();
     }
 
-    public double getValorTotalCredito() {
-        return pedidos.stream().filter(p -> p.getTipoPagamento().equals("Credito")).mapToDouble(Pedido::getValorTotal).sum();
+    public double getValorTotalCartao() {
+        return pedidos.stream().filter(p -> p.getTipoPagamento().equals("Cartão")).mapToDouble(Pedido::getValorTotal).sum();
     }
 
-    public int getPorcentoCredito() {
-        return (int) ((getValorTotalCredito() / getValorFaturamento()) * 100);
-    }
-
-    public int getTotalDebito() {
-        return pedidos.stream().filter(p -> p.getTipoPagamento().equals("Debito")).toList().size();
-    }
-
-    public double getValorTotalDebito() {
-        return pedidos.stream().filter(p -> p.getTipoPagamento().equals("Debito")).mapToDouble(Pedido::getValorTotal).sum();
-    }
-
-    public int getPorcentoDebito() {
-        return (int) ((getValorTotalDebito() / getValorFaturamento()) * 100);
+    public int getPorcentoCartao() {
+        return (int) ((getValorTotalCartao() / getValorFaturamento()) * 100);
     }
 
     public int getTotalPix() {

@@ -70,18 +70,6 @@ public class ModalPagamentoController {
             vencimento = DPVencimento.getValue();
         }
 
-        if (CBPagamento.getValue().equals("Débito")) {
-            pagamento = "Debito";
-            fecharModal();
-            return;
-        }
-
-        if (CBPagamento.getValue().equals("Crédito")) {
-            pagamento = "Credito";
-            fecharModal();
-            return;
-        }
-
         pagamento = CBPagamento.getValue();
 
         fecharModal();
@@ -106,7 +94,7 @@ public class ModalPagamentoController {
 
     public void loadCBPagamento() {
         CBPagamento.getItems().clear();
-        CBPagamento.getItems().setAll("Dinheiro", "Débito", "Crédito", "Pix", "Pagar depois");
+        CBPagamento.getItems().setAll("Dinheiro", "Cartão", "Pix", "Pagar depois");
         CBPagamento.getSelectionModel().selectFirst();
 
         CBPagamento.setOnAction(event -> {

@@ -23,10 +23,7 @@ public class RelatorioController implements Initializable {
     private Label LFaturamento;
 
     @FXML
-    private Label LPorcentoCredito;
-
-    @FXML
-    private Label LPorcentoDebito;
+    private Label LPorcentoCartao;
 
     @FXML
     private Label LPorcentoDinheiro;
@@ -44,10 +41,7 @@ public class RelatorioController implements Initializable {
     private Label LPorcentoTP;
 
     @FXML
-    private Label LTotalCredito;
-
-    @FXML
-    private Label LTotalDebito;
+    private Label LTotalCartao;
 
     @FXML
     private Label LTotalDinheiro;
@@ -71,10 +65,7 @@ public class RelatorioController implements Initializable {
     private Label LTotalPix;
 
     @FXML
-    private Label LValorCredito;
-
-    @FXML
-    private Label LValorDebito;
+    private Label LValorCartao;
 
     @FXML
     private Label LValorDinheiro;
@@ -148,13 +139,9 @@ public class RelatorioController implements Initializable {
         LValorDinheiro.setText(String.format("R$ %.2f", relatorio.getValorTotalDinheiro()));
         LPorcentoDinheiro.setText(relatorio.getPorcentoDinheiro() + "%");
 
-        LTotalCredito.setText(String.valueOf(relatorio.getTotalCredito()));
-        LValorCredito.setText(String.format("R$ %.2f", relatorio.getValorTotalCredito()));
-        LPorcentoCredito.setText(relatorio.getPorcentoCredito() + "%");
-
-        LTotalDebito.setText(String.valueOf(relatorio.getTotalDebito()));
-        LValorDebito.setText(String.format("R$ %.2f", relatorio.getValorTotalDebito()));
-        LPorcentoDebito.setText(relatorio.getPorcentoDebito() + "%");
+        LTotalCartao.setText(String.valueOf(relatorio.getTotalCartao()));
+        LValorCartao.setText(String.format("R$ %.2f", relatorio.getValorTotalCartao()));
+        LPorcentoCartao.setText(relatorio.getPorcentoCartao() + "%");
 
         LTotalPix.setText(String.valueOf(relatorio.getTotalPix()));
         LValorPix.setText(String.format("R$ %.2f", relatorio.getValorTotalPix()));

@@ -72,8 +72,7 @@ public class ModalAdicionarPagamentoController {
 
         DPData.setEditable(false);
 
-        String[] tiposPagamentos = {"Dinheiro", "Débito", "Crédito"};
-        CBPagamento.getItems().addAll(tiposPagamentos);
+        CBPagamento.getItems().addAll("Dinheiro", "Cartão", "Pix");
         CBPagamento.getSelectionModel().selectFirst();
     }
 

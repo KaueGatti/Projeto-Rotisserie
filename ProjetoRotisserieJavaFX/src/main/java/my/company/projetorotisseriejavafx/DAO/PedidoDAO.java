@@ -178,7 +178,19 @@ public class PedidoDAO {
     }
 
     static public List<Pedido> listarPorData(LocalDate data) throws SQLException {
-        String sql = "SELECT * FROM Pedido WHERE date(date_time) = ?";
+        String sql = "SELECT \n" +
+                "    p.* ,\n" +
+                "    m.id AS mensalista_id,\n" +
+                "    m.nome AS mensalista_nome,\n" +
+                "    m.contato AS mensalista_contato,\n" +
+                "    b.id AS bairro_id,\n" +
+                "    b.nome AS bairro_nome,\n" +
+                "    b.valor_entrega AS bairro_valor_entrega\n" +
+                "FROM Pedido p\n" +
+                "LEFT JOIN mensalista m ON p.id_mensalista = m.id\n" +
+                "LEFT JOIN bairro b ON p.id_bairro = b.id\n" +
+                "WHERE date(date_time) = ?\n" +
+                "ORDER BY date_time DESC;";
         List<Pedido> pedidos = new ArrayList<>();
 
         try (Connection conn = DatabaseConnection.getConnection();
