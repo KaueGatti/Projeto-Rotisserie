@@ -119,7 +119,7 @@ public class DatabaseConnection {
                     valor_total REAL NOT NULL,
                     valor_pago REAL NOT NULL DEFAULT 0,
                     date_time TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
-                    vencimento TEXT DEFAULT (date('now', 'localtime')),
+                    vencimento TEXT,
                     status TEXT NOT NULL DEFAULT 'PAGO',
                     FOREIGN KEY (id_mensalista) REFERENCES Mensalista (id),
                     FOREIGN KEY (id_bairro) REFERENCES Bairro (id)

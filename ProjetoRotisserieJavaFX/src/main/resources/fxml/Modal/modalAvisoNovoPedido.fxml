@@ -6,14 +6,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" prefHeight="211.0" prefWidth="543.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.Modal.ModalAvisoNovoPedidoController">
+<AnchorPane fx:id="root" prefHeight="211.0" prefWidth="609.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.Modal.ModalAvisoNovoPedidoController">
    <children>
-      <Label fx:id="LMensagem" alignment="CENTER" layoutX="-1.0" layoutY="92.0" prefHeight="38.0" prefWidth="543.0" text="Você ainda não tem nenhuma marmita cadastrada" textAlignment="CENTER">
+      <Label fx:id="LMensagem" alignment="CENTER" layoutX="10.0" layoutY="91.0" prefHeight="38.0" prefWidth="589.0" text="Você ainda não tem nenhuma marmita cadastrada" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <Button fx:id="btnCadastrar" layoutX="149.0" layoutY="146.0" mnemonicParsing="false" onAction="#cadastrar" prefHeight="42.0" prefWidth="245.0" text="Cadastrar">
+      <Button fx:id="btnCadastrar" layoutX="182.0" layoutY="145.0" mnemonicParsing="false" onAction="#cadastrar" prefHeight="42.0" prefWidth="245.0" text="Cadastrar">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
@@ -22,7 +22,7 @@
             <String fx:value="button-green" />
          </styleClass>
       </Button>
-      <Label fx:id="LIcon" layoutX="235.0" layoutY="21.0" prefHeight="70.0" prefWidth="70.0">
+      <Label fx:id="LIcon" layoutX="269.0" layoutY="20.0" prefHeight="70.0" prefWidth="70.0">
          <styleClass>
             <String fx:value="icon-warning" />
             <String fx:value="ic-yellow" />

@@ -126,4 +126,9 @@ public class Pedido {
     public ObjectProperty<LocalDateTime> dateTimeProperty() { return dateTime; }
     public ObjectProperty<LocalDate> vencimentoProperty() { return vencimento; }
     public StringProperty statusProperty() { return status; }
+
+    @Override
+    public String toString() {
+        return "Id: " + getId() + " Nome: " + getNomeCliente();
+    }
 }

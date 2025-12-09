@@ -249,6 +249,10 @@ public class PedidosController implements Initializable {
 
             tablePedidos.setItems(pedidos);
 
+            for (Pedido pedido : pedidos) {
+                System.out.println(pedido.toString());
+            }
+
         } catch (SQLException e) {
             DatabaseExceptionHandler.handleException(e, "Pedido");
         }

@@ -4,6 +4,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
@@ -12,6 +13,7 @@ import my.company.projetorotisseriejavafx.DB.DatabaseConnection;
 import my.company.projetorotisseriejavafx.Objects.Bairro;
 import my.company.projetorotisseriejavafx.Objects.Mensalista;
 import my.company.projetorotisseriejavafx.Objects.Pedido;
+import my.company.projetorotisseriejavafx.Util.DateUtils;
 
 public class PedidoDAO {
 
@@ -129,7 +131,19 @@ public class PedidoDAO {
     }
 
     static public List<Pedido> listarTodos() throws SQLException {
-        String sql = "SELECT * FROM Pedido ORDER BY date_time DESC";
+        String sql = "SELECT \n" +
+                "    p.* ,\n" +
+                "    m.id AS mensalista_id,\n" +
+                "    m.nome AS mensalista_nome,\n" +
+                "    m.contato AS mensalista_contato,\n" +
+                "    b.id AS bairro_id,\n" +
+                "    b.nome AS bairro_nome,\n" +
+                "    b.valor_entrega AS bairro_valor_entrega\n" +
+                "FROM Pedido p\n" +
+                "LEFT JOIN mensalista m ON p.id_mensalista = m.id\n" +
+                "LEFT JOIN bairro b ON p.id_bairro = b.id\n" +
+                "ORDER BY date_time DESC;";
+
         List<Pedido> pedidos = new ArrayList<>();
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -296,23 +310,40 @@ public class PedidoDAO {
 
     static private Pedido extrairPedidoDoResultSet(ResultSet rs) throws SQLException {
         Pedido pedido = new Pedido();
-        pedido.setMensalista(new Mensalista());
-        pedido.setBairro(new Bairro());
+
+        if (rs.getInt("id_mensalista") != 0) {
+            Mensalista mensalista = new Mensalista();
+            mensalista.setId(rs.getInt("mensalista_id"));
+            mensalista.setNome(rs.getString("mensalista_nome"));
+            mensalista.setContato(rs.getString("mensalista_contato"));
+            pedido.setMensalista(mensalista);
+        }
+
+        if (rs.getInt("id_bairro") != 0) {
+            Bairro bairro = new Bairro();
+            bairro.setId(rs.getInt("bairro_id"));
+            bairro.setNome(rs.getString("bairro_nome"));
+            bairro.setValorEntrega(rs.getDouble("bairro_valor_entrega"));
+            pedido.setBairro(bairro);
+        }
+
         pedido.setId(rs.getInt("id"));
-        pedido.setIdMensalista(rs.getObject("id_mensalista", Integer.class));
-        pedido.setIdBairro(rs.getObject("id_bairro", Integer.class));
         pedido.setNomeCliente(rs.getString("nome_cliente"));
         pedido.setTipoPagamento(rs.getString("tipo_pagamento"));
         pedido.setTipoPedido(rs.getString("tipo_pedido"));
         pedido.setObservacoes(rs.getString("observacoes"));
-        pedido.setValorEntrega(rs.getObject("valor_entrega", Double.class));
+        pedido.setValorEntrega(rs.getDouble("valor_entrega"));
         pedido.setEndereco(rs.getString("endereco"));
         pedido.setValorItens(rs.getDouble("valor_itens"));
         pedido.setValorTotal(rs.getDouble("valor_total"));
         pedido.setValorPago(rs.getDouble("valor_pago"));
         pedido.setDateTime(LocalDateTime.parse(rs.getString("date_time"), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        pedido.setVencimento(LocalDate.parse(rs.getString("vencimento")));
+        if ((rs.getString("vencimento") != null)) {
+            long timestamp = Long.parseLong(rs.getString("vencimento"));
+            pedido.setVencimento(DateUtils.timestampToLocalDate(timestamp, "America/Sao_Paulo"));
+        }
         pedido.setStatus(rs.getString("status"));
+
         return pedido;
     }
 }
