@@ -211,6 +211,15 @@
                   <Font size="20.0" />
                </font>
             </Label>
+            <Button fx:id="btnDFP" disable="true" layoutX="414.0" layoutY="611.0" mnemonicParsing="false" onAction="#definirFormaDePagamento" prefHeight="39.0" prefWidth="220.0" text="Definir forma de pagamento" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <styleClass>
+                  <String fx:value="button-yellow" />
+                  <String fx:value="button-action" />
+               </styleClass>
+            </Button>
          </children>
       </Pane>
       <Button fx:id="btnRelatorio" layoutX="631.0" layoutY="24.0" mnemonicParsing="false" onAction="#relatorio" prefHeight="39.0" prefWidth="220.0" text="Relatório">

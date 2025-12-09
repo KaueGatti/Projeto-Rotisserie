@@ -94,7 +94,7 @@ public class ModalPagamentoController {
 
     public void loadCBPagamento() {
         CBPagamento.getItems().clear();
-        CBPagamento.getItems().setAll("Dinheiro", "Cartão", "Pix", "Pagar depois");
+        CBPagamento.getItems().setAll("Dinheiro", "Cartão", "Pix", "Pagar depois", "A definir");
         CBPagamento.getSelectionModel().selectFirst();
 
         CBPagamento.setOnAction(event -> {

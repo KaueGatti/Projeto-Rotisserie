@@ -146,6 +146,9 @@ public class PedidosController implements Initializable {
     @FXML
     private Button btnPedidosAtrasados;
 
+    @FXML
+    private Button btnDFP;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initCBMensalista();
@@ -189,6 +192,11 @@ public class PedidosController implements Initializable {
     @FXML
     void pagamentos(ActionEvent event) {
         abrirModalPagamentos();
+    }
+
+    @FXML
+    void definirFormaDePagamento(ActionEvent event) {
+        abrirModalDefinirFormaDePagamento();
     }
 
     @FXML
@@ -284,7 +292,16 @@ public class PedidosController implements Initializable {
 
         LCliente.setText(pedido.getNomeCliente());
         LTipo.setText(pedido.getTipoPedido());
+
         LPagamento.setText(pedido.getTipoPagamento());
+        if (pedido.getTipoPagamento().equalsIgnoreCase("A definir")) {
+            btnDFP.setDisable(false);
+            btnDFP.setVisible(true);
+        } else {
+            btnDFP.setDisable(true);
+            btnDFP.setVisible(false);
+        }
+
         if (pedido.getTipoPedido().equals("Entrega")) {
             LBairro.setText(pedido.getBairro().getNome());
             LEntrega.setText(pedido.getFormattedValorEntrega());
@@ -528,7 +545,7 @@ public class PedidosController implements Initializable {
 
     private void initCBPagamento() {
         CBPagamento.getItems().clear();
-        CBPagamento.getItems().addAll("Todos", "Dinheiro", "Cartão", "Pix", "Pagar depois");
+        CBPagamento.getItems().addAll("Todos", "Dinheiro", "Cartão", "Pix", "Pagar depois", "A definir");
         CBPagamento.getSelectionModel().selectFirst();
     }
 
@@ -612,6 +629,33 @@ public class PedidosController implements Initializable {
                     .filter(p -> p.getVencimento().isAfter(LocalDate.now())).toList();
 
             controller.initialize(pedidosAtrasados, CBMensalista.getItems(), this);
+
+            modal.initStyle(StageStyle.UTILITY);
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.setResizable(false);
+            modal.showAndWait();
+
+        } catch (IOException e) {
+            System.out.println("Erro ao abrir Pedidos Atrasados");
+            e.printStackTrace();
+        }
+    }
+
+    private void abrirModalDefinirFormaDePagamento() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDefinirFormaDePagamento.fxml"));
+            Parent root = loader.load();
+
+            Stage modal = new Stage();
+            Scene scene = new Scene(root);
+
+            CssHelper.loadCss(scene);
+
+            modal.setScene(scene);
+
+            ModalDefinirFormaDePagamentoController controller = loader.getController();
+
+            controller.initialize(selectedPedido);
 
             modal.initStyle(StageStyle.UTILITY);
             modal.initModality(Modality.APPLICATION_MODAL);

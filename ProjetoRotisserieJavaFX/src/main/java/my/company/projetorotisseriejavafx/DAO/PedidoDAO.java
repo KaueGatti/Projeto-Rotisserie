@@ -23,7 +23,8 @@ public class PedidoDAO {
                 "tipo_pedido, observacoes, valor_entrega, endereco, valor_itens, valor_total, " +
                 "valor_pago, vencimento, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        if ("Pagar depois".equals(pedido.getTipoPagamento()) || "A Definir".equals(pedido.getTipoPagamento())) {
+        if (pedido.getTipoPagamento().equalsIgnoreCase("Pagar depois") ||
+                pedido.getTipoPagamento().equalsIgnoreCase("A definir")) {
             pedido.setStatus("A PAGAR");
             pedido.setValorPago(0);
         } else {
@@ -94,6 +95,30 @@ public class PedidoDAO {
 
             if (affectedRows == 0) {
                 throw new SQLException("Pedido com ID " + id + " não encontrado.");
+            }
+        }
+    }
+
+    static public void definirPagamento(int pedido_id, String pagamento) throws SQLException {
+        String sql = "UPDATE Pedido \n" +
+                "SET status = CASE \n" +
+                "    WHEN ? != 'Pagar depois' THEN 'PAGO' \n" +
+                "    ELSE status \n" +
+                "END,\n" +
+                "tipo_pagamento = ?\n" +
+                "WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, pagamento);
+            stmt.setString(2, pagamento);
+            stmt.setInt(3, pedido_id);
+
+            int affectedRows = stmt.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Pedido com ID " + pedido_id + " não encontrado.");
             }
         }
     }
