@@ -662,6 +662,8 @@ public class PedidosController implements Initializable {
             modal.setResizable(false);
             modal.showAndWait();
 
+            btnDFP.setVisible(false);
+
         } catch (IOException e) {
             System.out.println("Erro ao abrir Pedidos Atrasados");
             e.printStackTrace();

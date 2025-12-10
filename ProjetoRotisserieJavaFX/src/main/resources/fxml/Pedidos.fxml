@@ -218,6 +218,7 @@
                <styleClass>
                   <String fx:value="button-yellow" />
                   <String fx:value="button-action" />
+                  <String fx:value="fs-14" />
                </styleClass>
             </Button>
          </children>
