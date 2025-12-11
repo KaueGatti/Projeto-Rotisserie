@@ -106,6 +106,8 @@ public class PaneMarmitaController implements Initializable {
     private CheckBox checkBoxPrincipal1;
     @FXML
     private CheckBox checkBoxPrincipal2;
+    @FXML
+    private CheckBox checkBoxPrincipal3;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -408,6 +410,7 @@ public class PaneMarmitaController implements Initializable {
 
             checkBoxPrincipal1.setText(cardapio.getPrincipal1());
             checkBoxPrincipal2.setText(cardapio.getPrincipal2());
+            checkBoxPrincipal3.setText(cardapio.getPrincipal3());
             checkBoxMistura1.setText(cardapio.getMistura1());
             checkBoxMistura2.setText(cardapio.getMistura2());
             checkBoxMistura3.setText(cardapio.getMistura3());

@@ -89,6 +89,9 @@ public class CardapioController implements Initializable {
     private ComboBox<ItemCardapio> CBPrincipal2;
 
     @FXML
+    private ComboBox<ItemCardapio> CBPrincipal3;
+
+    @FXML
     private ComboBox<ItemCardapio> CBSalada1;
 
     @FXML
@@ -167,6 +170,7 @@ public class CardapioController implements Initializable {
             if (cardapio == null) {
                 CBPrincipal1.getSelectionModel().select(0);
                 CBPrincipal2.getSelectionModel().select(1);
+                CBPrincipal3.getSelectionModel().select(2);
                 CBMistura1.getSelectionModel().select(0);
                 CBMistura2.getSelectionModel().select(1);
                 CBMistura3.getSelectionModel().select(2);
@@ -183,7 +187,6 @@ public class CardapioController implements Initializable {
                 cb.setDisable(false);
             });
 
-
             return;
         }
 
@@ -194,6 +197,7 @@ public class CardapioController implements Initializable {
 
                 cardapio.setPrincipal1(CBPrincipal1.getValue().getNome());
                 cardapio.setPrincipal2(CBPrincipal2.getValue().getNome());
+                cardapio.setPrincipal3(CBPrincipal3.getValue().getNome());
                 cardapio.setMistura1(CBMistura1.getValue().getNome());
                 cardapio.setMistura2(CBMistura2.getValue().getNome());
                 cardapio.setMistura3(CBMistura3.getValue().getNome());
@@ -374,7 +378,7 @@ public class CardapioController implements Initializable {
     }
 
     public void initComboBoxs() {
-        grupoCBPrincipal = Arrays.asList(CBPrincipal1, CBPrincipal2);
+        grupoCBPrincipal = Arrays.asList(CBPrincipal1, CBPrincipal2, CBPrincipal3);
         grupoCBMistura = Arrays.asList(CBMistura1, CBMistura2, CBMistura3, CBMistura4);
         grupoCBGuarnicao = Arrays.asList(CBGuarnicao1, CBGuarnicao2, CBGuarnicao3, CBGuarnicao4);
         grupoCBSalada = Arrays.asList(CBSalada1, CBSalada2);
@@ -414,6 +418,11 @@ public class CardapioController implements Initializable {
             CBPrincipal2.getItems().forEach(item -> {
                 if (item.getNome().equals(cardapio.getPrincipal2())) {
                     CBPrincipal2.setValue(item);
+                }
+            });
+            CBPrincipal3.getItems().forEach(item -> {
+                if (item.getNome().equals(cardapio.getPrincipal3())) {
+                    CBPrincipal3.setValue(item);
                 }
             });
         }
@@ -490,8 +499,8 @@ public class CardapioController implements Initializable {
         String message = "";
         boolean valido = true;
 
-        if (principais.size() < 2) {
-            message = "Adicione ao menos 2 principais ao cardápio";
+        if (principais.size() < 3) {
+            message = "Adicione ao menos 3 principais ao cardápio";
             valido = false;
         }
 

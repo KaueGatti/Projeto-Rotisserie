@@ -182,6 +182,7 @@ public class DatabaseConnection {
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     principal_1 TEXT,
                     principal_2 TEXT,
+                    principal_3 TEXT,
                     mistura_1 TEXT,
                     mistura_2 TEXT,
                     mistura_3 TEXT,

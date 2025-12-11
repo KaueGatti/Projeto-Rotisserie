@@ -7,6 +7,7 @@ public class Cardapio {
     private int id;
     private String principal1;
     private String principal2;
+    private String principal3;
     private String mistura1;
     private String mistura2;
     private String mistura3;
@@ -41,6 +42,14 @@ public class Cardapio {
 
     public void setPrincipal2(String principal2) {
         this.principal2 = principal2;
+    }
+
+    public String getPrincipal3() {
+        return principal3;
+    }
+
+    public void setPrincipal3(String principal3) {
+        this.principal3 = principal3;
     }
 
     public String getMistura1() {

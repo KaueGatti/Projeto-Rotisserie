@@ -17,7 +17,7 @@
                 <Font size="70.0" />
             </font>
         </Label>
-        <ComboBox fx:id="CBPrincipal1" disable="true" layoutX="62.0" layoutY="177.0" prefHeight="25.0" prefWidth="200.0" />
+        <ComboBox fx:id="CBPrincipal1" disable="true" layoutX="62.0" layoutY="177.0" prefHeight="25.0" prefWidth="160.0" />
         <Label layoutX="51.0" layoutY="117.0" text="Principais">
             <font>
                 <Font name="System Bold" size="24.0" />
@@ -43,8 +43,8 @@
                 <Font name="System Bold" size="24.0" />
             </font>
         </Label>
-        <ComboBox fx:id="CBPrincipal2" disable="true" layoutX="293.0" layoutY="177.0" prefHeight="25.0" prefWidth="200.0" />
-        <Label layoutX="293.0" layoutY="152.0" text="Principal 2">
+        <ComboBox fx:id="CBPrincipal2" disable="true" layoutX="236.0" layoutY="177.0" prefHeight="25.0" prefWidth="160.0" />
+        <Label layoutX="236.0" layoutY="152.0" text="Principal 2">
             <font>
                 <Font size="16.0" />
             </font>
@@ -199,5 +199,11 @@
             </font>
         </Label>
         <Line endX="3.60003662109375" endY="-128.0" layoutX="586.0" layoutY="128.0" opacity="0.3" startX="3.60003662109375" startY="594.0" />
+      <ComboBox fx:id="CBPrincipal3" disable="true" layoutX="414.0" layoutY="177.0" prefHeight="25.0" prefWidth="160.0" />
+      <Label layoutX="414.0" layoutY="152.0" text="Principal 3">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
     </children>
 </Pane>
