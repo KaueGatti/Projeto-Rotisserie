@@ -4,14 +4,12 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Formatter;
 import java.util.List;
 
 import my.company.projetorotisseriejavafx.DB.DatabaseConnection;
 import my.company.projetorotisseriejavafx.Objects.Bairro;
-import my.company.projetorotisseriejavafx.Objects.Mensalista;
+import my.company.projetorotisseriejavafx.Objects.Cliente;
 import my.company.projetorotisseriejavafx.Objects.Pedido;
 import my.company.projetorotisseriejavafx.Util.DateUtils;
 
@@ -19,7 +17,7 @@ public class PedidoDAO {
 
     static public int criar(Pedido pedido) throws SQLException {
 
-        String sql = "INSERT INTO Pedido (id_mensalista, id_bairro, nome_cliente, tipo_pagamento, " +
+        String sql = "INSERT INTO Pedido (id_cliente, id_bairro, nome_cliente, tipo_pagamento, " +
                 "tipo_pedido, observacoes, valor_entrega, endereco, valor_itens, valor_total, " +
                 "valor_pago, vencimento, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -35,8 +33,8 @@ public class PedidoDAO {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            if (pedido.getMensalista() != null) {
-                stmt.setInt(1, pedido.getMensalista().getId());
+            if (pedido.getCliente() != null) {
+                stmt.setInt(1, pedido.getCliente().getId());
             } else {
                 stmt.setNull(1, Types.INTEGER);
             }
@@ -158,14 +156,14 @@ public class PedidoDAO {
     static public List<Pedido> listarTodos() throws SQLException {
         String sql = "SELECT \n" +
                 "    p.* ,\n" +
-                "    m.id AS mensalista_id,\n" +
-                "    m.nome AS mensalista_nome,\n" +
-                "    m.contato AS mensalista_contato,\n" +
+                "    m.id AS cliente_id,\n" +
+                "    m.nome AS cliente_nome,\n" +
+                "    m.contato AS cliente_contato,\n" +
                 "    b.id AS bairro_id,\n" +
                 "    b.nome AS bairro_nome,\n" +
                 "    b.valor_entrega AS bairro_valor_entrega\n" +
                 "FROM Pedido p\n" +
-                "LEFT JOIN mensalista m ON p.id_mensalista = m.id\n" +
+                "LEFT JOIN cliente m ON p.id_cliente = m.id\n" +
                 "LEFT JOIN bairro b ON p.id_bairro = b.id\n" +
                 "ORDER BY date_time DESC;";
 
@@ -183,14 +181,14 @@ public class PedidoDAO {
         return pedidos;
     }
 
-    static public List<Pedido> listarPorMensalista(int idMensalista) throws SQLException {
-        String sql = "SELECT * FROM Pedido WHERE id_mensalista = ? ORDER BY date_time DESC";
+    static public List<Pedido> listarPorCliente(int idCliente) throws SQLException {
+        String sql = "SELECT * FROM Pedido WHERE id_cliente = ? ORDER BY date_time DESC";
         List<Pedido> pedidos = new ArrayList<>();
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, idMensalista);
+            stmt.setInt(1, idCliente);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -205,14 +203,14 @@ public class PedidoDAO {
     static public List<Pedido> listarPorData(LocalDate data) throws SQLException {
         String sql = "SELECT \n" +
                 "    p.* ,\n" +
-                "    m.id AS mensalista_id,\n" +
-                "    m.nome AS mensalista_nome,\n" +
-                "    m.contato AS mensalista_contato,\n" +
+                "    m.id AS cliente_id,\n" +
+                "    m.nome AS cliente_nome,\n" +
+                "    m.contato AS cliente_contato,\n" +
                 "    b.id AS bairro_id,\n" +
                 "    b.nome AS bairro_nome,\n" +
                 "    b.valor_entrega AS bairro_valor_entrega\n" +
                 "FROM Pedido p\n" +
-                "LEFT JOIN mensalista m ON p.id_mensalista = m.id\n" +
+                "LEFT JOIN cliente m ON p.id_cliente = m.id\n" +
                 "LEFT JOIN bairro b ON p.id_bairro = b.id\n" +
                 "WHERE date(date_time) = ?\n" +
                 "ORDER BY date_time DESC;";
@@ -348,12 +346,12 @@ public class PedidoDAO {
     static private Pedido extrairPedidoDoResultSet(ResultSet rs) throws SQLException {
         Pedido pedido = new Pedido();
 
-        if (rs.getInt("id_mensalista") != 0) {
-            Mensalista mensalista = new Mensalista();
-            mensalista.setId(rs.getInt("mensalista_id"));
-            mensalista.setNome(rs.getString("mensalista_nome"));
-            mensalista.setContato(rs.getString("mensalista_contato"));
-            pedido.setMensalista(mensalista);
+        if (rs.getInt("id_cliente") != 0) {
+            Cliente cliente = new Cliente();
+            cliente.setId(rs.getInt("cliente_id"));
+            cliente.setNome(rs.getString("cliente_nome"));
+            cliente.setContato(rs.getString("cliente_contato"));
+            pedido.setCliente(cliente);
         }
 
         if (rs.getInt("id_bairro") != 0) {

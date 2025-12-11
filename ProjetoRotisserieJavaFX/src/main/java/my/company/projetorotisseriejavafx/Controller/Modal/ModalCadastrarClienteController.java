@@ -7,14 +7,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import my.company.projetorotisseriejavafx.DAO.MensalistaDAO;
+import my.company.projetorotisseriejavafx.DAO.ClienteDAO;
 
-import my.company.projetorotisseriejavafx.Objects.Mensalista;
+import my.company.projetorotisseriejavafx.Objects.Cliente;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 
 import java.sql.SQLException;
 
-public class ModalCadastrarMensalistaController {
+public class ModalCadastrarClienteController {
 
     @FXML
     private Label LInfo;
@@ -32,23 +32,23 @@ public class ModalCadastrarMensalistaController {
 
     @FXML
     void cadastrar(ActionEvent event) {
-        Mensalista mensalista = new Mensalista();
+        Cliente cliente = new Cliente();
 
-        if (!validaMensalista()) return;
+        if (!validaCliente()) return;
 
-        mensalista.setNome(TFNome.getText());
-        mensalista.setContato(TFContato.getText());
+        cliente.setNome(TFNome.getText());
+        cliente.setContato(TFContato.getText());
 
         try {
-            MensalistaDAO.criar(mensalista);
+            ClienteDAO.criar(cliente);
             fecharModal();
         } catch (SQLException e) {
-            DatabaseExceptionHandler.handleException(e, "mensalista");
+            DatabaseExceptionHandler.handleException(e, "cliente");
         }
 
     }
 
-    private boolean validaMensalista() {
+    private boolean validaCliente() {
         if (TFNome.getText().trim().isEmpty()) {
             LInfo.setText("Nome não pode estar vázio");
             return false;

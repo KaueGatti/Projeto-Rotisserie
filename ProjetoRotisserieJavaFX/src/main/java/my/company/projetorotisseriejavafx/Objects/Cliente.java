@@ -2,7 +2,7 @@ package my.company.projetorotisseriejavafx.Objects;
 
 import javafx.beans.property.*;
 
-public class Mensalista {
+public class Cliente {
 
     private IntegerProperty id = new SimpleIntegerProperty();
     private StringProperty nome = new SimpleStringProperty();
@@ -10,10 +10,10 @@ public class Mensalista {
     private DoubleProperty conta = new SimpleDoubleProperty();
     private StringProperty status =  new SimpleStringProperty();
 
-    public Mensalista() {
+    public Cliente() {
     }
 
-    public Mensalista(String nome) {
+    public Cliente(String nome) {
         this();
         this.nome.set(nome);
     }

@@ -8,15 +8,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import my.company.projetorotisseriejavafx.DAO.MensalistaDAO;
-import my.company.projetorotisseriejavafx.Objects.Mensalista;
+import my.company.projetorotisseriejavafx.DAO.ClienteDAO;
+import my.company.projetorotisseriejavafx.Objects.Cliente;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 
 import java.sql.SQLException;
 
-public class ModalEditMensalistaController {
+public class ModalEditClienteController {
 
-    private Mensalista mensalista;
+    private Cliente cliente;
 
     @FXML
     private AnchorPane root;
@@ -31,8 +31,8 @@ public class ModalEditMensalistaController {
     @FXML
     private Button btnSalvar;
 
-    public void initialize(Mensalista mensalista) {
-        this.mensalista = mensalista;
+    public void initialize(Cliente cliente) {
+        this.cliente = cliente;
         loadTextFields();
         loadComboBoxs();
     }
@@ -40,27 +40,27 @@ public class ModalEditMensalistaController {
     @FXML
     void salvar(ActionEvent event) {
 
-        if (!validaMensalista()) return;
+        if (!validaCliente()) return;
 
-        mensalista.setContato(TFContato.getText());
-        mensalista.setStatus(CBStatus.getValue());
+        cliente.setContato(TFContato.getText());
+        cliente.setStatus(CBStatus.getValue());
 
         try {
-            MensalistaDAO.atualizar(mensalista);
+            ClienteDAO.atualizar(cliente);
             fecharModal();
         } catch (SQLException e) {
-            DatabaseExceptionHandler.handleException(e, "mensalista");
+            DatabaseExceptionHandler.handleException(e, "cliente");
         }
     }
 
     private void loadComboBoxs() {
         CBStatus.getItems().addAll("ATIVO", "INATIVO");
-        CBStatus.getSelectionModel().select(mensalista.getStatus());
+        CBStatus.getSelectionModel().select(cliente.getStatus());
     }
 
     private void loadTextFields() {
-        TFNome.setText(mensalista.getNome());
-        TFContato.setText(mensalista.getContato());
+        TFNome.setText(cliente.getNome());
+        TFContato.setText(cliente.getContato());
     }
 
     public void fecharModal() {
@@ -68,7 +68,7 @@ public class ModalEditMensalistaController {
         modal.close();
     }
 
-    private boolean validaMensalista() {
+    private boolean validaCliente() {
         if (TFContato.getText().trim().isEmpty()) {
             LInfo.setText("Contato não pode estar vázio");
             return false;

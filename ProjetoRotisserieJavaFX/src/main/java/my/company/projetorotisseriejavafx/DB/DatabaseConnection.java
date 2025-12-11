@@ -38,7 +38,6 @@ public class DatabaseConnection {
     }
 
     public static void initializeDatabase() {
-        System.out.println("Inicializando banco de dados...");
 
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement()) {
@@ -91,9 +90,9 @@ public class DatabaseConnection {
                 )
             """);
 
-            // Tabela Mensalista
+            // Tabela Cliente
             stmt.execute("""
-                CREATE TABLE IF NOT EXISTS Mensalista (
+                CREATE TABLE IF NOT EXISTS Cliente (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     nome TEXT NOT NULL,
                     contato TEXT NOT NULL,
@@ -107,7 +106,7 @@ public class DatabaseConnection {
             stmt.execute("""
                 CREATE TABLE IF NOT EXISTS Pedido (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    id_mensalista INTEGER,
+                    id_cliente INTEGER,
                     id_bairro INTEGER,
                     nome_cliente TEXT,
                     tipo_pagamento TEXT NOT NULL,
@@ -121,7 +120,7 @@ public class DatabaseConnection {
                     date_time TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
                     vencimento TEXT,
                     status TEXT NOT NULL DEFAULT 'PAGO',
-                    FOREIGN KEY (id_mensalista) REFERENCES Mensalista (id),
+                    FOREIGN KEY (id_cliente) REFERENCES Cliente (id),
                     FOREIGN KEY (id_bairro) REFERENCES Bairro (id)
                 )
             """);
@@ -210,33 +209,31 @@ public class DatabaseConnection {
                 )
             """);
 
-            System.out.println("✓ Todas as tabelas criadas com sucesso!");
-
             // ==================== CRIAR TRIGGERS ====================
 
-            // Trigger: Soma conta do mensalista ao criar pedido
+            // Trigger: Soma conta do cliente ao criar pedido
             stmt.execute("""
-                CREATE TRIGGER IF NOT EXISTS SOMA_CONTA_MENSALISTA
+                CREATE TRIGGER IF NOT EXISTS SOMA_CONTA_CLIENTE
                 AFTER INSERT ON Pedido
                 FOR EACH ROW
-                WHEN NEW.id_mensalista IS NOT NULL AND NEW.status = 'A PAGAR'
+                WHEN NEW.id_cliente IS NOT NULL AND NEW.status = 'A PAGAR'
                 BEGIN
-                    UPDATE Mensalista
+                    UPDATE Cliente
                     SET conta = conta + NEW.valor_total
-                    WHERE id = NEW.id_mensalista;
+                    WHERE id = NEW.id_cliente;
                 END
             """);
 
-            // Trigger: Subtrai conta do mensalista ao pagar pedido
+            // Trigger: Subtrai conta do cliente ao pagar pedido
             stmt.execute("""
-                CREATE TRIGGER IF NOT EXISTS SUBTRAI_CONTA_MENSALISTA
+                CREATE TRIGGER IF NOT EXISTS SUBTRAI_CONTA_CLIENTE
                 AFTER UPDATE ON Pedido
                 FOR EACH ROW
                 WHEN OLD.status != 'PAGO' AND NEW.status = 'PAGO'
                 BEGIN
-                    UPDATE Mensalista
+                    UPDATE Cliente
                     SET conta = conta - NEW.valor_total
-                    WHERE id = NEW.id_mensalista;
+                    WHERE id = NEW.id_cliente;
                 END
             """);
 
@@ -264,11 +261,8 @@ public class DatabaseConnection {
                 END
             """);
 
-            System.out.println("✓ Todos os triggers criados com sucesso!");
-            System.out.println("✓ Banco de dados pronto para uso!");
-
         } catch (SQLException e) {
-            System.err.println("❌ Erro ao inicializar banco de dados:");
+            System.err.println("Erro ao inicializar banco de dados:");
             e.printStackTrace();
         }
     }

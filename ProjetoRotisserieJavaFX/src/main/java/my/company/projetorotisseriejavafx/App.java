@@ -53,17 +53,10 @@ public class App extends Application {
     @Override
     public void stop() {
         DatabaseConnection.closeConnection();
-        System.out.println("Aplicação encerrada!");
     }
 
     public static void main(String[] args) {
-        System.out.println("=== INICIANDO SISTEMA ROTISSERIE ===\n");
-
         DatabaseConnection.initializeDatabase();
-
-        DatabaseConnection.showDatabaseInfo();
-
-        System.out.println("\n=== INICIANDO INTERFACE GRÁFICA ===\n");
 
         launch();
     }

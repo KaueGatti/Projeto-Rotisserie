@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -14,13 +13,7 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <ComboBox fx:id="CBMensalista" layoutX="30.0" layoutY="75.0" prefHeight="34.0" prefWidth="206.0" />
-      <Label layoutX="30.0" layoutY="49.0" text="Mensalista">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Label>
-      <TableView fx:id="tablePedidos" layoutX="30.0" layoutY="133.0" prefHeight="270.0" prefWidth="694.0">
+      <TableView fx:id="tablePedidos" layoutX="30.0" layoutY="64.0" prefHeight="339.0" prefWidth="694.0">
          <columns>
             <TableColumn fx:id="colCliente" prefWidth="154.3999900817871" text="Cliente" />
             <TableColumn fx:id="colData" minWidth="0.0" prefWidth="142.3999481201172" text="Data e Horário" />

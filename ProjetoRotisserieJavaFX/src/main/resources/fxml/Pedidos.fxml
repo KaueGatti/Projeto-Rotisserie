@@ -232,10 +232,10 @@
             <String fx:value="button-action" />
          </styleClass>
       </Button>
-      <ComboBox fx:id="CBMensalista" layoutX="39.0" layoutY="118.0" prefHeight="30.0" prefWidth="190.0" />
+      <ComboBox fx:id="CBCliente" layoutX="39.0" layoutY="118.0" prefHeight="30.0" prefWidth="190.0" />
       <ComboBox fx:id="CBStatus" layoutX="658.0" layoutY="118.0" prefHeight="30.0" prefWidth="139.0" />
       <DatePicker fx:id="DPData" disable="true" layoutX="461.0" layoutY="118.0" prefHeight="30.0" prefWidth="175.0" />
-      <Label layoutX="39.0" layoutY="92.0" text="Mensalista">
+      <Label layoutX="39.0" layoutY="92.0" text="Cliente">
          <font>
             <Font size="18.0" />
          </font>

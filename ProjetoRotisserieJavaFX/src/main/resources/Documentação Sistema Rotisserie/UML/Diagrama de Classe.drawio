@@ -172,7 +172,7 @@
         <mxCell id="tV_HD-RAvh36hSB1hYgo-86" value="- id: int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="tV_HD-RAvh36hSB1hYgo-85" vertex="1">
           <mxGeometry y="26" width="180" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="tV_HD-RAvh36hSB1hYgo-98" value="- mensalista: Mensalista" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="tV_HD-RAvh36hSB1hYgo-85" vertex="1">
+        <mxCell id="tV_HD-RAvh36hSB1hYgo-98" value="- cliente: Mensalista" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="tV_HD-RAvh36hSB1hYgo-85" vertex="1">
           <mxGeometry y="52" width="180" height="26" as="geometry" />
         </mxCell>
         <mxCell id="tV_HD-RAvh36hSB1hYgo-99" value="- motoboy: Motoboy" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="tV_HD-RAvh36hSB1hYgo-85" vertex="1">

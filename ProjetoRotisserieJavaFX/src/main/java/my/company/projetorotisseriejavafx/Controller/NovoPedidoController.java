@@ -89,9 +89,9 @@ public class NovoPedidoController implements Initializable {
     @FXML
     private ComboBox<Bairro> comboBoxBairro;
     @FXML
-    private ComboBox<Mensalista> comboBoxMensalista;
+    private ComboBox<Cliente> comboBoxCliente;
     @FXML
-    private CheckBox checkBoxMensalista;
+    private CheckBox checkBoxCliente;
     @FXML
     private RadioButton RBEntrega;
     @FXML
@@ -123,7 +123,7 @@ public class NovoPedidoController implements Initializable {
         initDescontosEAdicionais();
         initTableMarmita();
         initTableProduto();
-        loadMensalista();
+        loadCliente();
         loadBairro();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Pane/paneMarmita.fxml"));
@@ -236,17 +236,17 @@ public class NovoPedidoController implements Initializable {
 
     }
 
-    private void loadMensalista() {
-        comboBoxMensalista.getItems().clear();
+    private void loadCliente() {
+        comboBoxCliente.getItems().clear();
 
         try {
-            List<Mensalista> mensalistas = MensalistaDAO.listarAtivos();
-            if (!mensalistas.isEmpty()) {
-                comboBoxMensalista.getItems().addAll(mensalistas);
-                comboBoxMensalista.getSelectionModel().selectFirst();
+            List<Cliente> clientes = ClienteDAO.listarAtivos();
+            if (!clientes.isEmpty()) {
+                comboBoxCliente.getItems().addAll(clientes);
+                comboBoxCliente.getSelectionModel().selectFirst();
             }
         } catch (SQLException e) {
-            DatabaseExceptionHandler.handleException(e, "mensalista");
+            DatabaseExceptionHandler.handleException(e, "cliente");
         }
     }
 
@@ -297,19 +297,19 @@ public class NovoPedidoController implements Initializable {
     }
 
     @FXML
-    private void checkBoxMensalista(ActionEvent event) {
-        if (checkBoxMensalista.isSelected()) {
+    private void checkBoxCliente(ActionEvent event) {
+        if (checkBoxCliente.isSelected()) {
 
-            if (!validaMensalista()) {
-                checkBoxMensalista.setSelected(false);
+            if (!validaCliente()) {
+                checkBoxCliente.setSelected(false);
                 return;
             }
 
-            comboBoxMensalista.setDisable(false);
+            comboBoxCliente.setDisable(false);
             labelCliente.setDisable(true);
             TFNomeCliente.setDisable(true);
         } else {
-            comboBoxMensalista.setDisable(true);
+            comboBoxCliente.setDisable(true);
             labelCliente.setDisable(false);
             TFNomeCliente.setDisable(false);
         }
@@ -343,8 +343,8 @@ public class NovoPedidoController implements Initializable {
     public void finalizarPedido() {
         Pedido pedido = new Pedido();
 
-        if (checkBoxMensalista.isSelected()) {
-            pedido.setMensalista(comboBoxMensalista.getValue());
+        if (checkBoxCliente.isSelected()) {
+            pedido.setCliente(comboBoxCliente.getValue());
         } else {
             pedido.setNomeCliente(TFNomeCliente.getText());
         }
@@ -377,7 +377,6 @@ public class NovoPedidoController implements Initializable {
 
             if (print) {
                 Printer.printOrder(pedido, marmitas, produtos);
-                System.out.println("Imprimiu");
             }
 
             try {
@@ -500,16 +499,16 @@ public class NovoPedidoController implements Initializable {
         return false;
     }
 
-    public boolean validaMensalista() {
+    public boolean validaCliente() {
         try {
-            if (MensalistaDAO.listarAtivos().isEmpty()) {
-                String msg = "Você ainda não tem nenhum mensalista ativo ou cadastrado!";
-                abrirModalAvisoNovoPedido(msg, new Mensalista());
+            if (ClienteDAO.listarAtivos().isEmpty()) {
+                String msg = "Você ainda não tem nenhum cliente ativo ou cadastrado!";
+                abrirModalAvisoNovoPedido(msg, new Cliente());
                 return false;
             }
             return true;
         } catch (SQLException e) {
-            DatabaseExceptionHandler.handleException(e, "mensalista");
+            DatabaseExceptionHandler.handleException(e, "cliente");
         }
         return false;
     }

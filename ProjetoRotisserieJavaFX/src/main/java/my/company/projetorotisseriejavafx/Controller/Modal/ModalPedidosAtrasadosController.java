@@ -1,7 +1,6 @@
 package my.company.projetorotisseriejavafx.Controller.Modal;
 
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -9,7 +8,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import my.company.projetorotisseriejavafx.Controller.PedidosController;
-import my.company.projetorotisseriejavafx.Objects.Mensalista;
+import my.company.projetorotisseriejavafx.Objects.Cliente;
 import my.company.projetorotisseriejavafx.Objects.Pedido;
 import my.company.projetorotisseriejavafx.Util.IconHelper;
 
@@ -21,9 +20,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class ModalPedidosAtrasadosController {
-
-    @FXML
-    private ComboBox<Mensalista> CBMensalista;
 
     @FXML
     private TableColumn<Pedido, String> colCliente;
@@ -50,15 +46,12 @@ public class ModalPedidosAtrasadosController {
     private TableView<Pedido> tablePedidos;
 
     private List<Pedido> pedidosAtrasados;
-    private List<Mensalista> mensalistas;
     private PedidosController controller;
 
-    public void initialize(List<Pedido> pedidosAtrasados, List<Mensalista> mensalistas, PedidosController controller) {
+    public void initialize(List<Pedido> pedidosAtrasados, List<Cliente> clientes, PedidosController controller) {
         this.pedidosAtrasados = pedidosAtrasados;
-        this.mensalistas = mensalistas;
         this.controller = controller;
         initTablePedidos();
-        initCBMensalista();
     }
 
     private void initTablePedidos() {
@@ -108,7 +101,7 @@ public class ModalPedidosAtrasadosController {
         });
         colContato.setCellValueFactory(p -> {
             if (p.getValue().mensalistaProperty().get() != null) {
-                return p.getValue().getMensalista().contatoProperty();
+                return p.getValue().getCliente().contatoProperty();
             }
 
             return new SimpleStringProperty("Sem contato");
@@ -151,29 +144,6 @@ public class ModalPedidosAtrasadosController {
         });
 
         tablePedidos.getItems().setAll(pedidosAtrasados);
-    }
-
-    private void initCBMensalista() {
-        CBMensalista.getItems().clear();
-        CBMensalista.getItems().addAll(mensalistas);
-        CBMensalista.getSelectionModel().selectFirst();
-
-        CBMensalista.valueProperty().addListener((observable, oldValue, newValue) -> {
-            List<Pedido> filtrados;
-
-            if (newValue.getNome().equals("Todos")) {
-                filtrados = pedidosAtrasados.stream().toList();
-                tablePedidos.getItems().setAll(filtrados);
-                return;
-            }
-
-            filtrados = pedidosAtrasados.stream()
-                    .filter(p -> p.getMensalista() != null)
-                    .filter(p -> p.getMensalista().getNome().equals(CBMensalista.getValue().getNome()))
-                    .toList();
-
-            tablePedidos.getItems().setAll(filtrados);
-        });
     }
 
     private void fecharModal() {

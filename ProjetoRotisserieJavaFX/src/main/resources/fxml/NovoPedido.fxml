@@ -55,12 +55,12 @@
             <Font name="Segoe UI" size="24.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="519.0" layoutY="257.0" prefHeight="35.0" prefWidth="500.0" styleClass="titleTable"  text="Produtos" textAlignment="CENTER">
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="519.0" layoutY="257.0" prefHeight="35.0" prefWidth="500.0" styleClass="titleTable" text="Produtos" textAlignment="CENTER">
          <font>
             <Font name="Segoe UI Bold" size="24.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="519.0" layoutY="14.0" prefHeight="35.0" prefWidth="500.0" styleClass="titleTable"  text="Marmitas" textAlignment="CENTER">
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="519.0" layoutY="14.0" prefHeight="35.0" prefWidth="500.0" styleClass="titleTable" text="Marmitas" textAlignment="CENTER">
          <font>
             <Font name="Segoe UI Bold" size="24.0" />
          </font>
@@ -72,12 +72,12 @@
       </Label>
       <Pane id="panePedido" layoutX="1035.0" layoutY="58.0" prefHeight="641.0" prefWidth="467.0">
          <children>
-            <CheckBox fx:id="checkBoxMensalista" layoutX="23.0" layoutY="75.0" mnemonicParsing="false" onAction="#checkBoxMensalista" prefHeight="38.0" prefWidth="157.0" text="Mensalista">
+            <CheckBox fx:id="checkBoxCliente" layoutX="23.0" layoutY="75.0" mnemonicParsing="false" onAction="#checkBoxCliente" prefHeight="38.0" prefWidth="157.0" text="Já é Cliente?">
                <font>
                   <Font size="20.0" />
                </font>
             </CheckBox>
-            <ComboBox fx:id="comboBoxMensalista" disable="true" layoutX="23.0" layoutY="120.0" prefHeight="35.0" prefWidth="395.0" style="-fx-pref-width: 395; -fx-pref-height: 30;" />
+            <ComboBox fx:id="comboBoxCliente" disable="true" layoutX="23.0" layoutY="120.0" prefHeight="35.0" prefWidth="395.0" style="-fx-pref-width: 395; -fx-pref-height: 30;" />
             <TextField fx:id="TFNomeCliente" layoutX="23.0" layoutY="193.0" prefHeight="36.0" prefWidth="395.0" promptText="Nome do cliente">
                <font>
                   <Font size="18.0" />

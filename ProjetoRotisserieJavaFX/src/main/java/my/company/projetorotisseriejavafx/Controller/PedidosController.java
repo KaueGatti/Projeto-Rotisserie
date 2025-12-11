@@ -49,7 +49,7 @@ public class PedidosController implements Initializable {
     private AnchorPane APPedidos;
 
     @FXML
-    private ComboBox<Mensalista> CBMensalista;
+    private ComboBox<Cliente> CBCliente;
 
     @FXML
     private ComboBox<String> CBPagamento;
@@ -151,7 +151,7 @@ public class PedidosController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        initCBMensalista();
+        initCBCliente();
         initCBPagamento();
         initDPData();
         initCBData();
@@ -256,10 +256,6 @@ public class PedidosController implements Initializable {
             pedidos = FXCollections.observableArrayList(PedidoDAO.listarTodos());
 
             tablePedidos.setItems(pedidos);
-
-            for (Pedido pedido : pedidos) {
-                System.out.println(pedido.toString());
-            }
 
         } catch (SQLException e) {
             DatabaseExceptionHandler.handleException(e, "Pedido");
@@ -530,16 +526,16 @@ public class PedidosController implements Initializable {
         }
     }
 
-    private void initCBMensalista() {
-        CBMensalista.getItems().clear();
-        CBMensalista.getItems().add(new Mensalista("Todos"));
-        CBMensalista.getSelectionModel().selectFirst();
+    private void initCBCliente() {
+        CBCliente.getItems().clear();
+        CBCliente.getItems().add(new Cliente("Todos"));
+        CBCliente.getSelectionModel().selectFirst();
 
         try {
-            List<Mensalista> mensalistas = MensalistaDAO.listarAtivos();
-            CBMensalista.getItems().addAll(mensalistas);
+            List<Cliente> clientes = ClienteDAO.listarAtivos();
+            CBCliente.getItems().addAll(clientes);
         } catch (SQLException e) {
-            DatabaseExceptionHandler.handleException(e, "Mensalista");
+            DatabaseExceptionHandler.handleException(e, "Cliente");
         }
     }
 
@@ -587,9 +583,9 @@ public class PedidosController implements Initializable {
 
         Stream<Pedido> pedidosStream = pedidos.stream();
 
-        if (CBMensalista.getSelectionModel().getSelectedIndex() != 0) {
-            pedidosStream = pedidosStream.filter(p -> p.getMensalista() != null)
-                    .filter(p -> p.getMensalista().getNome().equals(CBMensalista.getValue().getNome()));
+        if (CBCliente.getSelectionModel().getSelectedIndex() != 0) {
+            pedidosStream = pedidosStream.filter(p -> p.getCliente() != null)
+                    .filter(p -> p.getCliente().getNome().equals(CBCliente.getValue().getNome()));
         }
 
         if (CBPagamento.getSelectionModel().getSelectedIndex() != 0) {
@@ -628,7 +624,7 @@ public class PedidosController implements Initializable {
                     .filter(p -> p.getStatus().equalsIgnoreCase("A Pagar"))
                     .filter(p -> p.getVencimento().isAfter(LocalDate.now())).toList();
 
-            controller.initialize(pedidosAtrasados, CBMensalista.getItems(), this);
+            controller.initialize(pedidosAtrasados, CBCliente.getItems(), this);
 
             modal.initStyle(StageStyle.UTILITY);
             modal.initModality(Modality.APPLICATION_MODAL);

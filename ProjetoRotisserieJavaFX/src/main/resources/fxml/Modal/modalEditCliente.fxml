@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" prefHeight="397.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.Modal.ModalEditMensalistaController">
+<AnchorPane fx:id="root" prefHeight="397.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.Modal.ModalEditClienteController">
    <children>
-      <Label alignment="CENTER" prefHeight="80.0" prefWidth="380.0" text="Editar Mensalista">
+      <Label alignment="CENTER" prefHeight="80.0" prefWidth="380.0" text="Editar Cliente">
          <font>
             <Font size="32.0" />
          </font>

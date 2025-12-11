@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 public class Pedido {
 
     private final IntegerProperty id = new SimpleIntegerProperty();
-    private final ObjectProperty<Mensalista> mensalista = new SimpleObjectProperty<>();
+    private final ObjectProperty<Cliente> cliente = new SimpleObjectProperty<>();
     private ObjectProperty<Bairro> bairro = new SimpleObjectProperty<>();
     private final StringProperty nomeCliente = new SimpleStringProperty();
     private final StringProperty tipoPagamento = new SimpleStringProperty();
@@ -27,17 +27,15 @@ public class Pedido {
     public int getId() { return id.get(); }
     public void setId(int value) { id.set(value); }
 
-    public Mensalista getMensalista() { return mensalista.get(); }
-    public void setMensalista(Mensalista value) { mensalista.set(value); }
-    public void setIdMensalista(Integer value) {getMensalista().setId(value); }
+    public Cliente getCliente() { return cliente.get(); }
+    public void setCliente(Cliente value) { cliente.set(value); }
 
     public Bairro getBairro() { return bairro.get(); }
     public void setBairro(Bairro value) { bairro.set(value); }
-    public void setIdBairro(Integer value) { getBairro().setId(value); }
 
     public String getNomeCliente() {
-        if (mensalista.getValue() != null) {
-            return mensalista.getValue().getNome();
+        if (cliente.getValue() != null) {
+            return cliente.getValue().getNome();
         }
         return nomeCliente.get();
     }
@@ -80,10 +78,6 @@ public class Pedido {
         return String.format("R$ %.2f", valorEntrega.get()).replace(".", ",");
     }
 
-    public String getFormattedValorItens() {
-        return String.format("R$ %.2f", valorItens.get()).replace(".", ",");
-    }
-
     public String getFormattedValorTotal() {
         return String.format("R$ %.2f", valorTotal.get()).replace(".", ",");
     }
@@ -106,11 +100,11 @@ public class Pedido {
     }
 
     public IntegerProperty idProperty() { return id; }
-    public ObjectProperty<Mensalista> mensalistaProperty() { return mensalista; }
+    public ObjectProperty<Cliente> mensalistaProperty() { return cliente; }
     public ObjectProperty<Bairro> bairroProperty() { return bairro; }
     public StringProperty nomeClienteProperty() {
-        if (mensalista.getValue() != null) {
-            return mensalista.getValue().nomeProperty();
+        if (cliente.getValue() != null) {
+            return cliente.getValue().nomeProperty();
         }
 
         return nomeCliente;

@@ -41,7 +41,7 @@ public class InicioController implements Initializable {
     @FXML
     private Button btnBairros;
     @FXML
-    private Button btnMensalistas;
+    private Button btnClientes;
     @FXML
     private Button btnMotoboys;
     @FXML
@@ -137,17 +137,17 @@ public class InicioController implements Initializable {
     }
 
     @FXML
-    private void mensalistas() {
+    private void clientes() {
         APPrincipal.getChildren().clear();
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Mensalistas.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Clientes.fxml"));
             Parent root = loader.load();
 
             IconHelper.applyIconsTo(root);
 
             APPrincipal.getChildren().setAll(root);
         } catch (IOException e) {
-            System.out.println("Erro ao carregar tela de Mensalistas");
+            System.out.println("Erro ao carregar tela de Clientes");
             e.printStackTrace();
         }
     }
@@ -200,9 +200,9 @@ public class InicioController implements Initializable {
         Image pngBairros = new Image(getClass().getResourceAsStream("/Images/Bairros.png"));
         ImageView ivBairros = new ImageView(pngBairros);
         btnBairros.setGraphic(ivBairros);
-        Image pngMensalistas = new Image(getClass().getResourceAsStream("/Images/Mensalistas.png"));
-        ImageView ivMensalistas = new ImageView(pngMensalistas);
-        btnMensalistas.setGraphic(ivMensalistas);
+        Image pngClientes = new Image(getClass().getResourceAsStream("/Images/Clientes.png"));
+        ImageView ivClientes = new ImageView(pngClientes);
+        btnClientes.setGraphic(ivClientes);
         Image pngMotoboys = new Image(getClass().getResourceAsStream("/Images/Motoboys.png"));
         ImageView ivMotoboys = new ImageView(pngMotoboys);
         btnMotoboys.setGraphic(ivMotoboys);
