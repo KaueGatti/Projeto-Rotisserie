@@ -454,7 +454,7 @@ public class NovoPedidoController implements Initializable {
             modal.initStyle(StageStyle.UTILITY);
             modal.showAndWait();
 
-            if (controller.getPagamento() == null && controller.getVencimento() == null) {
+            if (!controller.getFinalizado()) {
                 return false;
             }
 

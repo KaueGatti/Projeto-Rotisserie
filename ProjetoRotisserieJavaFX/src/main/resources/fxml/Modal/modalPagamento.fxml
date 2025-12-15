@@ -5,18 +5,20 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" prefHeight="435.0" prefWidth="467.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.Modal.ModalPagamentoController">
+<AnchorPane fx:id="root" prefHeight="699.0" prefWidth="467.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.Modal.ModalPagamentoController">
    <children>
       <Label alignment="CENTER" layoutX="71.0" layoutY="14.0" prefHeight="18.0" prefWidth="328.0" text="Finalizar Pedido">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Button fx:id="btnFinalizarEImprimir" layoutX="71.0" layoutY="302.0" mnemonicParsing="false" onAction="#finalizarEImprimir" prefHeight="46.0" prefWidth="325.0" text="Finalizar e Imprimir">
+      <Button fx:id="btnFinalizarEImprimir" layoutX="72.0" layoutY="571.0" mnemonicParsing="false" onAction="#finalizarEImprimir" prefHeight="46.0" prefWidth="325.0" text="Finalizar e Imprimir">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
@@ -25,7 +27,7 @@
             <String fx:value="button-blue" />
          </styleClass>
       </Button>
-      <ComboBox fx:id="CBPagamento" layoutX="70.0" layoutY="86.0" prefHeight="34.0" prefWidth="328.0" />
+      <ComboBox fx:id="CBPagamento" layoutX="70.0" layoutY="86.0" prefHeight="34.0" prefWidth="278.0" />
       <Label layoutX="70.0" layoutY="60.0" text="Forma de pagamento">
          <font>
             <Font size="16.0" />
@@ -37,13 +39,13 @@
          </font>
       </Label>
       <TextField fx:id="TFValorPago" layoutX="72.0" layoutY="154.0" prefHeight="34.0" prefWidth="325.0" />
-      <DatePicker fx:id="DPVencimento" disable="true" layoutX="72.0" layoutY="222.0" prefHeight="34.0" prefWidth="325.0" />
-      <Label layoutX="70.0" layoutY="196.0" text="Data de vencimento">
+      <DatePicker fx:id="DPVencimento" disable="true" layoutX="71.0" layoutY="494.0" prefHeight="34.0" prefWidth="325.0" />
+      <Label layoutX="69.0" layoutY="468.0" text="Data de vencimento">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label fx:id="LInfo" alignment="CENTER" layoutX="16.0" layoutY="266.0" prefHeight="26.0" prefWidth="435.0">
+      <Label fx:id="LInfo" alignment="CENTER" layoutX="16.0" layoutY="536.0" prefHeight="26.0" prefWidth="435.0">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
@@ -52,7 +54,7 @@
             <String fx:value="tf-700" />
          </styleClass>
       </Label>
-      <Button fx:id="btnFinalizar" layoutX="71.0" layoutY="362.0" mnemonicParsing="false" onAction="#finalizar" prefHeight="46.0" prefWidth="325.0" text="Finalizar">
+      <Button fx:id="btnFinalizar" layoutX="72.0" layoutY="631.0" mnemonicParsing="false" onAction="#finalizar" prefHeight="46.0" prefWidth="325.0" text="Finalizar">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
@@ -61,5 +63,41 @@
             <String fx:value="button-green" />
          </styleClass>
       </Button>
+      <Button fx:id="btnAddPagamento" layoutX="358.0" layoutY="85.0" mnemonicParsing="false" onAction="#adicionarPagamento" prefHeight="26.0" prefWidth="39.0" text="+">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+         <styleClass>
+            <String fx:value="button-action" />
+            <String fx:value="button-green" />
+         </styleClass>
+      </Button>
+      <TableView fx:id="pagamentoTable" layoutX="70.0" layoutY="203.0" prefHeight="191.0" prefWidth="326.0">
+        <columns>
+          <TableColumn fx:id="colFormaDePagamento" prefWidth="179.20001983642578" text="Forma de Pagamento" />
+          <TableColumn fx:id="colValor" prefWidth="95.199951171875" text="Valor" />
+            <TableColumn fx:id="colDel" prefWidth="50.39996948242185" />
+        </columns>
+      </TableView>
+      <Label layoutX="104.0" layoutY="402.0" text="Valor a pagar">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="267.0" layoutY="402.0" text="Valor pago">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="LValorAPagar" alignment="CENTER" layoutX="104.0" layoutY="432.0" prefHeight="30.0" prefWidth="118.0" text="R$ 0,00">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="LValorPago" alignment="CENTER" layoutX="267.0" layoutY="432.0" prefHeight="30.0" prefWidth="98.0" text="R$ 0,00">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
