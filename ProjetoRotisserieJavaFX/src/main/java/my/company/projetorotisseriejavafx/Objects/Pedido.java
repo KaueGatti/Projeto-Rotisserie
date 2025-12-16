@@ -5,6 +5,7 @@ import javafx.beans.property.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class Pedido {
 
@@ -23,6 +24,14 @@ public class Pedido {
     private final ObjectProperty<LocalDateTime> dateTime = new SimpleObjectProperty<>();
     private final ObjectProperty<LocalDate> vencimento = new SimpleObjectProperty<>();
     private final StringProperty status = new SimpleStringProperty();
+    private final ListProperty<Pagamento> pagamentos = new SimpleListProperty<>();
+
+    public List<Pagamento> getPagamentos() {
+        return pagamentos.getValue();
+    }
+    public void setPagamentos(List<Pagamento> pagamentos) {
+        this.pagamentos.getValue().setAll(pagamentos);
+    }
 
     public int getId() { return id.get(); }
     public void setId(int value) { id.set(value); }
@@ -120,6 +129,7 @@ public class Pedido {
     public ObjectProperty<LocalDateTime> dateTimeProperty() { return dateTime; }
     public ObjectProperty<LocalDate> vencimentoProperty() { return vencimento; }
     public StringProperty statusProperty() { return status; }
+    public ListProperty<Pagamento> pagamentosProperty() { return pagamentos; }
 
     @Override
     public String toString() {

@@ -461,6 +461,8 @@ public class PedidosController implements Initializable {
 
             CssHelper.loadCss(scene);
 
+            IconHelper.applyIconsTo(root);
+
             modal.setScene(scene);
 
             ModalPagamentosController controller = loader.getController();
@@ -487,7 +489,7 @@ public class PedidosController implements Initializable {
                 if (change.wasAdded()) {
                     try {
                         for (Pagamento pagamento : change.getAddedSubList()) {
-                            PagamentoDAO.criar(pagamento);
+                            PagamentoDAO.criar(pagamento, selectedPedido.getId());
                         }
                     } catch (SQLException e) {
                         DatabaseExceptionHandler.handleException(e, "Pagamento");

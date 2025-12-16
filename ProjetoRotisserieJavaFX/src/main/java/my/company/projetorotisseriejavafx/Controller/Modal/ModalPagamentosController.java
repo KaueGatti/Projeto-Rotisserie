@@ -4,11 +4,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -140,10 +142,15 @@ public class ModalPagamentosController {
         if (pedido.getStatus().equals("A PAGAR")) {
             colExcluir.setCellFactory(param -> new TableCell<>() {
 
-                private final Button btnExcluir = new Button("Excluir");
+                private final Button btnExcluir = new Button("");
 
                 {
+                    btnExcluir.setMaxWidth(Double.MAX_VALUE);
+                    btnExcluir.getStyleClass().add("BExcluir");
+                    btnExcluir.getStyleClass().add("icon-delete");
+
                     btnExcluir.setOnAction(event -> {
+
                         Pagamento pagamento = getTableView().getItems().get(getIndex());
 
                         pedido.setValorPago(pedido.getValorPago() - pagamento.getValor());
@@ -159,6 +166,16 @@ public class ModalPagamentosController {
                         setGraphic(null);
                     } else {
                         setGraphic(btnExcluir);
+                        HBox wrapper = new HBox(btnExcluir);
+                        wrapper.setSpacing(0);
+                        wrapper.setPadding(new Insets(0));
+                        wrapper.setFillHeight(true);
+
+                        wrapper.setMaxWidth(Double.MAX_VALUE);
+
+                        IconHelper.applyIcon(btnExcluir);
+
+                        setGraphic(wrapper);
                     }
                 }
             });

@@ -5,6 +5,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -47,6 +48,7 @@ public class NovoPedidoController implements Initializable {
     private ObservableList<DescontoAdicional> descontosEAdicionais = FXCollections.observableArrayList();
 
     private String pagamento;
+    private List<Pagamento> pagamentos = new ArrayList<>();
     private LocalDate vencimento;
     private boolean print;
 
@@ -394,6 +396,8 @@ public class NovoPedidoController implements Initializable {
                 if (!descontosEAdicionais.isEmpty()) {
                     DescontoAdicionalDAO.criar(descontosEAdicionais, pedido.getId());
                 }
+
+                PagamentoDAO.criar(pagamentos, pedido.getId());
             } catch (SQLException e) {
                 DatabaseExceptionHandler.handleException(e, "Pedido");
             }
@@ -443,6 +447,8 @@ public class NovoPedidoController implements Initializable {
 
             CssHelper.loadCss(scene);
 
+            IconHelper.applyIconsTo(root);
+
             modal.setScene(scene);
 
             ModalPagamentoController controller = loader.getController();
@@ -459,6 +465,7 @@ public class NovoPedidoController implements Initializable {
             }
 
             pagamento = controller.getPagamento();
+            pagamentos =  controller.getPagamentos();
             vencimento = controller.getVencimento();
             print = controller.getPrint();
 

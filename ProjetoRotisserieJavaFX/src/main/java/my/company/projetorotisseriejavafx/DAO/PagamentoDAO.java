@@ -10,19 +10,46 @@ import java.util.List;
 
 public class PagamentoDAO {
 
-    static public int criar(Pagamento pagamento) throws SQLException {
+    static public int criar(Pagamento pagamento, int pedido_id) throws SQLException {
         String sql = "INSERT INTO Pagamento (id_pedido, tipo_pagamento, valor, observacao) " +
                 "VALUES (?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setInt(1, pagamento.getIdPedido());
+            stmt.setInt(1, pedido_id);
             stmt.setString(2, pagamento.getTipoPagamento());
             stmt.setDouble(3, pagamento.getValor());
             stmt.setString(4, pagamento.getObservacao());
 
             stmt.executeUpdate();
+
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        }
+        return 0;
+    }
+
+    static public int criar(List<Pagamento> pagamento, int pedido_id) throws SQLException {
+        String sql = "INSERT INTO Pagamento (id_pedido, tipo_pagamento, valor, observacao) " +
+                "VALUES (?, ?, ?, ?)";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            for (Pagamento p : pagamento) {
+                stmt.setInt(1, pedido_id);
+                stmt.setString(2, p.getTipoPagamento());
+                stmt.setDouble(3, p.getValor());
+                stmt.setString(4, p.getObservacao());
+
+                stmt.addBatch();
+            }
+
+            stmt.executeBatch();
 
             try (ResultSet rs = stmt.getGeneratedKeys()) {
                 if (rs.next()) {

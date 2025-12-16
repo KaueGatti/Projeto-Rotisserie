@@ -6,18 +6,21 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import my.company.projetorotisseriejavafx.Objects.Pagamento;
 import my.company.projetorotisseriejavafx.Util.CssHelper;
 import my.company.projetorotisseriejavafx.Util.CurrencyFieldUtil;
+import my.company.projetorotisseriejavafx.Util.IconHelper;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -166,6 +169,10 @@ public class ModalPagamentoController {
         return pagamento.toString();
     }
 
+    public List<Pagamento> getPagamentos() {
+        return pagamentos;
+    }
+
     public LocalDate getVencimento() {
         return vencimento;
     }
@@ -307,6 +314,10 @@ public class ModalPagamentoController {
             private final Button btnDel = new Button("");
 
             {
+                btnDel.setMaxWidth(Double.MAX_VALUE);
+                btnDel.getStyleClass().add("BExcluir");
+                btnDel.getStyleClass().add("icon-delete");
+
                 btnDel.setOnAction(event -> {
                     Pagamento pagamento = getTableView().getItems().get(getIndex());
 
@@ -321,6 +332,16 @@ public class ModalPagamentoController {
                     setGraphic(null);
                 } else {
                     setGraphic(btnDel);
+                    HBox wrapper = new HBox(btnDel);
+                    wrapper.setSpacing(0);
+                    wrapper.setPadding(new Insets(0));
+                    wrapper.setFillHeight(true);
+
+                    wrapper.setMaxWidth(Double.MAX_VALUE);
+
+                    IconHelper.applyIcon(btnDel);
+
+                    setGraphic(wrapper);
                 }
             }
         });
