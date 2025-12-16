@@ -154,18 +154,19 @@ public class PedidoDAO {
     }
 
     static public List<Pedido> listarTodos() throws SQLException {
-        String sql = "SELECT \n" +
-                "    p.* ,\n" +
-                "    m.id AS cliente_id,\n" +
-                "    m.nome AS cliente_nome,\n" +
-                "    m.contato AS cliente_contato,\n" +
-                "    b.id AS bairro_id,\n" +
-                "    b.nome AS bairro_nome,\n" +
-                "    b.valor_entrega AS bairro_valor_entrega\n" +
-                "FROM Pedido p\n" +
-                "LEFT JOIN cliente m ON p.id_cliente = m.id\n" +
-                "LEFT JOIN bairro b ON p.id_bairro = b.id\n" +
-                "ORDER BY date_time DESC;";
+        String sql = """
+                SELECT
+                p.* ,
+                m.id AS cliente_id,
+                m.nome AS cliente_nome,
+                m.contato AS cliente_contato,
+                b.id AS bairro_id,
+                b.nome AS bairro_nome,
+                b.valor_entrega AS bairro_valor_entrega
+                FROM Pedido p
+                LEFT JOIN cliente m ON p.id_cliente = m.id
+                LEFT JOIN bairro b ON p.id_bairro = b.id
+                ORDER BY date_time DESC;""";
 
         List<Pedido> pedidos = new ArrayList<>();
 

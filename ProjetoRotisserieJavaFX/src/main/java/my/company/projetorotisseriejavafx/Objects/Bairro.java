@@ -7,6 +7,13 @@ public class Bairro {
     private double valorEntrega;
     private String status;
 
+    public Bairro(String nome) {
+        this.nome = nome;
+    }
+
+    public Bairro() {
+    }
+
     public int getId() {
         return id;
     }

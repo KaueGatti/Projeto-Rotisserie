@@ -2,12 +2,14 @@
 
 <?import java.lang.String?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" prefHeight="320.0" prefWidth="378.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.Modal.ModalCadastrarClienteController">
+<AnchorPane fx:id="root" prefHeight="538.0" prefWidth="378.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.Modal.ModalCadastrarClienteController">
    <children>
       <Label layoutX="99.0" layoutY="14.0" text="Cadastrar Cliente">
          <font>
@@ -20,7 +22,7 @@
          </font>
       </Label>
       <TextField fx:id="TFNome" layoutX="37.0" layoutY="87.0" prefHeight="33.0" prefWidth="306.0" />
-      <Button fx:id="btnCadastrar" layoutX="34.0" layoutY="251.0" mnemonicParsing="false" onAction="#cadastrar" prefHeight="45.0" prefWidth="310.0" text="Cadastrar">
+      <Button fx:id="btnCadastrar" layoutX="35.0" layoutY="468.0" mnemonicParsing="false" onAction="#cadastrar" prefHeight="45.0" prefWidth="310.0" text="Cadastrar">
          <font>
             <Font size="18.0" />
          </font>
@@ -29,7 +31,7 @@
             <String fx:value="button-green" />
          </styleClass>
       </Button>
-      <Label fx:id="LInfo" layoutX="36.0" layoutY="207.0" prefHeight="31.0" prefWidth="307.0">
+      <Label fx:id="LInfo" layoutX="36.0" layoutY="430.0" prefHeight="31.0" prefWidth="307.0">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
@@ -44,5 +46,17 @@
          </font>
       </Label>
       <TextField fx:id="TFContato" layoutX="37.0" layoutY="157.0" prefHeight="33.0" prefWidth="306.0" />
+      <Label layoutX="37.0" layoutY="269.0" text="Endereço">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="CBBairro" layoutX="36.0" layoutY="227.0" prefHeight="34.0" prefWidth="306.0" />
+      <TextArea fx:id="TAEndereco" layoutX="35.0" layoutY="296.0" prefHeight="120.0" prefWidth="306.0" />
+      <Label layoutX="36.0" layoutY="199.0" text="Bairro">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

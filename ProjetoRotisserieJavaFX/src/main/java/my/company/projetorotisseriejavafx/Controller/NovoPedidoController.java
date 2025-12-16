@@ -226,8 +226,10 @@ public class NovoPedidoController implements Initializable {
                 comboBoxBairro.getItems().addAll(bairros);
 
                 comboBoxBairro.setOnAction(e -> {
-                    valorEntrega = comboBoxBairro.getSelectionModel().getSelectedItem().getValorEntrega();
-                    atualizaValor();
+                    if (RBEntrega.isSelected()) {
+                        valorEntrega = comboBoxBairro.getSelectionModel().getSelectedItem().getValorEntrega();
+                        atualizaValor();
+                    }
                 });
             }
 
@@ -246,6 +248,11 @@ public class NovoPedidoController implements Initializable {
             if (!clientes.isEmpty()) {
                 comboBoxCliente.getItems().addAll(clientes);
                 comboBoxCliente.getSelectionModel().selectFirst();
+
+                comboBoxCliente.setOnAction(e -> {
+                    comboBoxBairro.getSelectionModel().select(comboBoxCliente.getValue().getBairro());
+                    TAEndereco.setText(comboBoxCliente.getValue().getEndereco());
+                });
             }
         } catch (SQLException e) {
             DatabaseExceptionHandler.handleException(e, "cliente");
@@ -310,6 +317,9 @@ public class NovoPedidoController implements Initializable {
             comboBoxCliente.setDisable(false);
             labelCliente.setDisable(true);
             TFNomeCliente.setDisable(true);
+
+            comboBoxBairro.getSelectionModel().select(comboBoxCliente.getValue().getBairro());
+            TAEndereco.setText(comboBoxCliente.getValue().getEndereco());
         } else {
             comboBoxCliente.setDisable(true);
             labelCliente.setDisable(false);

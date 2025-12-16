@@ -96,6 +96,8 @@ public class DatabaseConnection {
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     nome TEXT NOT NULL,
                     contato TEXT NOT NULL,
+                    bairro_id INTEGER,
+                    endereco TEXT,
                     conta REAL NOT NULL DEFAULT 0,
                     status TEXT NOT NULL DEFAULT 'ATIVO',
                     UNIQUE (nome)

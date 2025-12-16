@@ -7,6 +7,8 @@ public class Cliente {
     private IntegerProperty id = new SimpleIntegerProperty();
     private StringProperty nome = new SimpleStringProperty();
     private StringProperty contato = new SimpleStringProperty();
+    private ObjectProperty<Bairro> bairro = new SimpleObjectProperty<>();
+    private StringProperty endereco = new SimpleStringProperty();
     private DoubleProperty conta = new SimpleDoubleProperty();
     private StringProperty status =  new SimpleStringProperty();
 
@@ -52,6 +54,30 @@ public class Cliente {
 
     public StringProperty contatoProperty() {
         return contato;
+    }
+
+    public Bairro getBairro() {
+        return bairro.get();
+    }
+
+    public void setBairro(Bairro bairro) {
+        this.bairro.set(bairro);
+    }
+
+    public ObjectProperty<Bairro> bairroProperty() {
+        return bairro;
+    }
+
+    public String getEndereco() {
+        return endereco.get();
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco.set(endereco);
+    }
+
+    public StringProperty enderecoProperty() {
+        return endereco;
     }
 
     public double getConta() {

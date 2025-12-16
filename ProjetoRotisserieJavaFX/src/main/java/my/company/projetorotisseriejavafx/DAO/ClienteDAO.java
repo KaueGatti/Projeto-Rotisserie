@@ -4,18 +4,25 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import my.company.projetorotisseriejavafx.DB.DatabaseConnection;
+import my.company.projetorotisseriejavafx.Objects.Bairro;
 import my.company.projetorotisseriejavafx.Objects.Cliente;
 
 public class ClienteDAO {
 
     static public int criar(Cliente cliente) throws SQLException {
-        String sql = "INSERT INTO Cliente (nome, contato) VALUES (?, ?)";
+        String sql = "INSERT INTO Cliente (nome, contato, bairro_id, endereco) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, cliente.getNome());
             stmt.setString(2, cliente.getContato());
+
+            if (cliente.getBairro() != null) {
+                stmt.setInt(3, cliente.getBairro().getId());
+            }
+
+            stmt.setString(4, cliente.getEndereco());
 
             int affectedRows = stmt.executeUpdate();
 
@@ -34,14 +41,17 @@ public class ClienteDAO {
     }
 
     static public void atualizar(Cliente cliente) throws SQLException {
-        String sql = "UPDATE Cliente SET status = ?, contato = ? WHERE id = ?";
+        String sql = "UPDATE Cliente" +
+                " SET contato = ?, bairro_id = ?, endereco = ?, status = ? WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, cliente.getStatus());
-            stmt.setString(2, cliente.getContato());
-            stmt.setInt(3, cliente.getId());
+            stmt.setString(1, cliente.getContato());
+            stmt.setInt(2, cliente.getBairro().getId());
+            stmt.setString(3, cliente.getEndereco());
+            stmt.setString(4, cliente.getStatus());
+            stmt.setInt(5, cliente.getId());
 
             int affectedRows = stmt.executeUpdate();
 
@@ -68,7 +78,15 @@ public class ClienteDAO {
     }
 
     static public List<Cliente> listarTodos() throws SQLException {
-        String sql = "SELECT * FROM Cliente ORDER BY nome";
+        String sql = """
+                SELECT
+                c.*,
+                b.id AS bairro_id,
+                b.nome AS bairro_nome,
+                b.valor_entrega AS bairro_valor_entrega
+                FROM Cliente c
+                LEFT JOIN Bairro b ON c.bairro_id = b.id
+                ORDER BY nome""";
         List<Cliente> clientes = new ArrayList<>();
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -80,6 +98,17 @@ public class ClienteDAO {
                 cliente.setId(rs.getInt("id"));
                 cliente.setNome(rs.getString("nome"));
                 cliente.setContato(rs.getString("contato"));
+
+                Bairro bairro = new Bairro();
+
+                bairro.setId(rs.getInt("bairro_id"));
+                bairro.setNome(rs.getString("bairro_nome"));
+                bairro.setValorEntrega(rs.getDouble("bairro_valor_entrega"));
+
+                cliente.setBairro(bairro);
+
+                cliente.setEndereco(rs.getString("endereco"));
+
                 cliente.setConta(rs.getDouble("conta"));
                 cliente.setStatus(rs.getString("status"));
 
@@ -91,7 +120,16 @@ public class ClienteDAO {
     }
 
     static public Cliente buscarPorId(int id) throws SQLException {
-        String sql = "SELECT * FROM Cliente WHERE id = ?";
+        String sql = """
+                SELECT\
+                c.*,\
+                b.id AS bairro_id,
+                b.nome AS bairro_nome,
+                b.valor_entrega AS bairro_valor_entrega
+                FROM Cliente c
+                LEFT JOIN Bairro b ON c.bairro_id = b.id
+                WHERE c.id = ?
+                ORDER BY nome""";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -104,6 +142,17 @@ public class ClienteDAO {
                     cliente.setId(rs.getInt("id"));
                     cliente.setNome(rs.getString("nome"));
                     cliente.setContato(rs.getString("contato"));
+
+                    Bairro bairro = new Bairro();
+
+                    bairro.setId(rs.getInt("bairro_id"));
+                    bairro.setNome(rs.getString("bairro_nome"));
+                    bairro.setValorEntrega(rs.getDouble("bairro_valor_entrega"));
+
+                    cliente.setBairro(bairro);
+
+                    cliente.setEndereco(rs.getString("endereco"));
+
                     cliente.setConta(rs.getDouble("conta"));
                     cliente.setStatus(rs.getString("status"));
 
@@ -116,7 +165,16 @@ public class ClienteDAO {
     }
 
     static public List<Cliente> listarAtivos() throws SQLException {
-        String sql = "SELECT * FROM Cliente WHERE status = 'ATIVO' ORDER BY nome";
+        String sql = """
+                SELECT
+                c.*,
+                b.id AS bairro_id,
+                b.nome AS bairro_nome,
+                b.valor_entrega AS bairro_valor_entrega
+                FROM Cliente c
+                LEFT JOIN Bairro b ON c.bairro_id = b.id
+                WHERE c.status = 'ATIVO'
+                ORDER BY nome""";
         List<Cliente> clientes = new ArrayList<>();
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -128,6 +186,17 @@ public class ClienteDAO {
                 cliente.setId(rs.getInt("id"));
                 cliente.setNome(rs.getString("nome"));
                 cliente.setContato(rs.getString("contato"));
+
+                Bairro bairro = new Bairro();
+
+                bairro.setId(rs.getInt("bairro_id"));
+                bairro.setNome(rs.getString("bairro_nome"));
+                bairro.setValorEntrega(rs.getDouble("bairro_valor_entrega"));
+
+                cliente.setBairro(bairro);
+
+                cliente.setEndereco(rs.getString("endereco"));
+
                 cliente.setConta(rs.getDouble("conta"));
                 cliente.setStatus(rs.getString("status"));
 
