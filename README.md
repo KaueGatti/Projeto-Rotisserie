@@ -30,5 +30,5 @@ Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull re
 
 **Kauê Vinícius Gatti**
 
-- LinkedIn: 
-- GitHub: 
+- LinkedIn: https://www.linkedin.com/in/kauegatti
+- GitHub: https://Github.com/KaueGatti
