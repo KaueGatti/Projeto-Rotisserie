@@ -101,3 +101,7 @@
     -fx-icon-color: -color-yellow;
 }
 
+.ic-white {
+    -fx-icon-color: -color-white;
+}
+

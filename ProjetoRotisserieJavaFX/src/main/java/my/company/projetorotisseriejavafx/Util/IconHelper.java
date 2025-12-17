@@ -49,6 +49,11 @@ public class IconHelper {
                     iconView.getStyleClass().add("icon-search");
                     btn.setGraphic(iconView);
                     break;
+                case "icon-discount":
+                    FontIcon iconDiscount = new FontIcon("mdi-sale");
+                    iconDiscount.getStyleClass().add("icon-discount");
+                    btn.setGraphic(iconDiscount);
+                    break;
             }
         }
     }
@@ -75,6 +80,11 @@ public class IconHelper {
                     FontIcon iconWarning = new FontIcon("bi-exclamation-triangle-fill");
                     iconWarning.getStyleClass().add("icon-search");
                     label.setGraphic(iconWarning);
+                    break;
+                case "icon-discount":
+                    FontIcon iconDiscount = new FontIcon("mdi-sale");
+                    iconDiscount.getStyleClass().add("icon-discount");
+                    label.setGraphic(iconDiscount);
                     break;
             }
         }

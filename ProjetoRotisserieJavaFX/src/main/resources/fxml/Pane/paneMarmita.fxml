@@ -30,7 +30,7 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Button layoutX="52.0" layoutY="513.0" mnemonicParsing="false" onAction="#bttObservacao" prefHeight="49.0" prefWidth="175.0" text="+ Observação">
+      <Button layoutX="83.0" layoutY="519.0" mnemonicParsing="false" onAction="#bttObservacao" prefHeight="43.0" prefWidth="160.0" text="+ Observação">
          <font>
             <Font size="20.0" />
          </font>
@@ -39,7 +39,7 @@
             <String fx:value="button-yellow" />
          </styleClass>
       </Button>
-      <Button fx:id="bttAdicionar" layoutX="50.0" layoutY="569.0" mnemonicParsing="false" onAction="#bttAdicionar" prefHeight="49.0" prefWidth="360.0" text="+ Adicionar">
+      <Button fx:id="bttAdicionar" layoutX="32.0" layoutY="575.0" mnemonicParsing="false" onAction="#bttAdicionar" prefHeight="43.0" prefWidth="383.0" text="+ Adicionar">
          <font>
             <Font size="20.0" />
          </font>
@@ -48,7 +48,7 @@
             <String fx:value="button-green" />
          </styleClass>
       </Button>
-      <Button fx:id="btnLimpar" layoutX="234.0" layoutY="513.0" mnemonicParsing="false" onAction="#limpar" prefHeight="49.0" prefWidth="175.0" text="- Limpar">
+      <Button fx:id="btnLimpar" layoutX="254.0" layoutY="519.0" mnemonicParsing="false" onAction="#limpar" prefHeight="43.0" prefWidth="160.0" text="- Limpar">
          <font>
             <Font size="20.0" />
          </font>
@@ -113,11 +113,11 @@
             <Font size="18.0" />
          </font>
       </CheckBox>
-      <Label fx:id="labelInfoMisturaAdc" layoutX="364.0" layoutY="150.0" prefHeight="25.0" prefWidth="68.0" text="+R$ 0,00">
+      <Label fx:id="labelInfoMisturaAdc" layoutX="364.0" layoutY="150.0" prefHeight="25.0" prefWidth="68.0" text="+R$0,00">
          <font>
             <Font size="16.0" />
          </font></Label>
-      <Label fx:id="labelInfoGuarnicaoAdc" layoutX="364.0" layoutY="281.0" prefHeight="25.0" prefWidth="68.0" text="+ R$ 0,00">
+      <Label fx:id="labelInfoGuarnicaoAdc" layoutX="364.0" layoutY="281.0" prefHeight="25.0" prefWidth="68.0" text="+R$0,00">
          <font>
             <Font size="16.0" />
          </font></Label>
@@ -145,17 +145,17 @@
             <String fx:value="button-red" />
             <String fx:value="fs-12" />
          </styleClass></Button>
-      <Label fx:id="labelInfoGuarnicao" layoutX="58.0" layoutY="308.0" prefHeight="25.0" prefWidth="335.0">
+      <Label fx:id="labelInfoGuarnicao" layoutX="32.0" layoutY="306.0" prefHeight="25.0" prefWidth="335.0">
          <styleClass>
             <String fx:value="tc-red" />
             <String fx:value="tf-700" />
          </styleClass></Label>
-      <Label fx:id="labelInfoMistura" layoutX="53.0" layoutY="175.0" prefHeight="25.0" prefWidth="335.0">
+      <Label fx:id="labelInfoMistura" layoutX="32.0" layoutY="175.0" prefHeight="25.0" prefWidth="335.0">
          <styleClass>
             <String fx:value="tc-red" />
             <String fx:value="tf-700" />
          </styleClass></Label>
-      <Label id="LInfo-pane-marmita" fx:id="labelInfoMarmita" layoutX="50.0" layoutY="482.0" prefHeight="17.0" prefWidth="360.0">
+      <Label id="LInfo-pane-marmita" fx:id="labelInfoMarmita" layoutX="50.0" layoutY="484.0" prefHeight="17.0" prefWidth="360.0">
          <font>
             <Font size="16.0" />
          </font></Label>
@@ -174,5 +174,18 @@
             <Font size="18.0" />
          </font>
       </CheckBox>
+      <Button fx:id="btnDescontoAdicional" layoutX="32.0" layoutY="519.0" mnemonicParsing="false" onAction="#descontoAdicional" prefHeight="43.0" prefWidth="43.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+         <styleClass>
+            <String fx:value="button-action" />
+            <String fx:value="button-green" />
+            <String fx:value="icon-discount" />
+            <String fx:value="ic-white" />
+            <String fx:value="fs-14" />
+            <String fx:value="BDiscount" />
+         </styleClass>
+      </Button>
    </children>
 </Pane>

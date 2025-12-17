@@ -63,3 +63,8 @@
     -fx-font-size: 14;
 }
 
+.icon-discount .ikonli-font-icon {
+    -fx-icon-size: 20px;
+    -fx-icon-color: -color-white;
+}
+

@@ -26,15 +26,18 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import my.company.projetorotisseriejavafx.Controller.Modal.ModalDescontoAdicionalMarmitaController;
 import my.company.projetorotisseriejavafx.Controller.NovoPedidoController;
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalObservacaoController;
 import my.company.projetorotisseriejavafx.DAO.CardapioDAO;
 import my.company.projetorotisseriejavafx.DAO.MarmitaDAO;
 import my.company.projetorotisseriejavafx.Objects.Cardapio;
+import my.company.projetorotisseriejavafx.Objects.DescontoAdicional;
 import my.company.projetorotisseriejavafx.Objects.Marmita;
 import my.company.projetorotisseriejavafx.Objects.MarmitaVendida;
 import my.company.projetorotisseriejavafx.Util.CssHelper;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
+import my.company.projetorotisseriejavafx.Util.IconHelper;
 
 public class PaneMarmitaController implements Initializable {
 
@@ -49,7 +52,8 @@ public class PaneMarmitaController implements Initializable {
     private int guarnicoesAdicionais;
 
     private NovoPedidoController controller;
-    private String observacao;
+    private String observacao = "";
+    private DescontoAdicional descontoAdicional = null;
 
     @FXML
     private ComboBox<Marmita> comboBoxMarmita;
@@ -59,6 +63,8 @@ public class PaneMarmitaController implements Initializable {
     private Button bttAdicionar;
     @FXML
     private Button btnLimpar;
+    @FXML
+    private Button btnDescontoAdicional;
     @FXML
     private CheckBox checkBoxMistura1;
     @FXML
@@ -115,34 +121,6 @@ public class PaneMarmitaController implements Initializable {
         loadCardapio();
     }
 
-    public void loadMarmitas() {
-        comboBoxMarmita.getItems().clear();
-
-        try {
-            List<Marmita> marmitas = MarmitaDAO.listarAtivas();
-
-            if (marmitas.isEmpty()) {
-                return;
-            }
-
-            comboBoxMarmita.getItems().addAll(marmitas);
-            comboBoxMarmita.getSelectionModel().selectFirst();
-            maxMisturas = comboBoxMarmita.getSelectionModel().getSelectedItem().getMaxMistura();
-            maxGuarnicoes = comboBoxMarmita.getSelectionModel().getSelectedItem().getMaxGuarnicao();
-            labelMistura.setText("Misturas: " + maxMisturas);
-            labelGuarnicao.setText("Guarnições: " + maxGuarnicoes);
-
-            comboBoxMarmita.valueProperty().addListener((obs, oldVal, newVal) -> {
-                maxMisturas = newVal.getMaxMistura();
-                maxGuarnicoes = newVal.getMaxGuarnicao();
-                limpar();
-            });
-
-        } catch (SQLException e) {
-            DatabaseExceptionHandler.handleException(e, "marmita");
-        }
-    }
-
     @FXML
     private void checkBoxMistura(ActionEvent event) {
         Object obj = event.getSource();
@@ -196,52 +174,67 @@ public class PaneMarmitaController implements Initializable {
     }
 
     @FXML
+    void descontoAdicional(ActionEvent event) {
+        abrirModalDescontoAdicional();
+    }
+
+    @FXML
     private void bttAdicionar() {
-        if (marmitaIsValid()) {
+        if (!marmitaIsValid()) return;
 
-            MarmitaVendida marmita = new MarmitaVendida();
+        MarmitaVendida marmita = new MarmitaVendida();
 
-            List<String> principais = new ArrayList<>();
-            List<String> misturas = new ArrayList<>();
-            List<String> guarnicoes = new ArrayList<>();
-            List<String> saladas = new ArrayList<>();
+        List<String> principais = new ArrayList<>();
+        List<String> misturas = new ArrayList<>();
+        List<String> guarnicoes = new ArrayList<>();
+        List<String> saladas = new ArrayList<>();
 
-            marmita.setIdMarmita(comboBoxMarmita.getValue().getId());
-            marmita.setNome(comboBoxMarmita.getValue().getNome());
+        marmita.setIdMarmita(comboBoxMarmita.getValue().getId());
+        marmita.setNome(comboBoxMarmita.getValue().getNome());
 
-            for (Node node : paneMarmita.getChildren()) {
-                if (node instanceof CheckBox checkBox) {
-                    if (checkBox.isSelected()) {
-                        if (checkBox.getId().contains("Principal")) {
-                            principais.add(checkBox.getText());
-                        } else if (checkBox.getId().contains("Mistura")) {
-                            misturas.add(checkBox.getText());
-                        } else if (checkBox.getId().contains("Guarnicao")) {
-                            guarnicoes.add(checkBox.getText());
-                        } else {
-                            saladas.add(checkBox.getText());
-                        }
+        for (Node node : paneMarmita.getChildren()) {
+            if (node instanceof CheckBox checkBox) {
+                if (checkBox.isSelected()) {
+                    if (checkBox.getId().contains("Principal")) {
+                        principais.add(checkBox.getText());
+                    } else if (checkBox.getId().contains("Mistura")) {
+                        misturas.add(checkBox.getText());
+                    } else if (checkBox.getId().contains("Guarnicao")) {
+                        guarnicoes.add(checkBox.getText());
+                    } else {
+                        saladas.add(checkBox.getText());
                     }
                 }
             }
-
-            marmita.setPrincipais(principais);
-            marmita.setMisturas(misturas);
-            marmita.setGuarnicoes(guarnicoes);
-            marmita.setSalada(saladas);
-
-            marmita.setObservacao(observacao);
-
-            double valorAdicionais = 2 * (misturasAdicionais + guarnicoesAdicionais);
-
-            marmita.setSubtotal(valorAdicionais + comboBoxMarmita.getValue().getValor());
-
-            controller.adicionarMarmita(marmita);
-
-            limpar();
-        } else {
-            labelInfoMarmita.setText("Adicione ao menos um item a marmita");
         }
+
+        marmita.setPrincipais(principais);
+        marmita.setMisturas(misturas);
+        marmita.setGuarnicoes(guarnicoes);
+        marmita.setSalada(saladas);
+
+        if (descontoAdicional != null) {
+            observacao += (observacao.isEmpty() ? "" : "\n\n") + descontoAdicional.getTipo() + ": " + descontoAdicional.getFormattedValor() + "\n" +
+                    "Motivo: " + descontoAdicional.getObservacao();
+        }
+
+        marmita.setObservacao(observacao);
+
+        double valorAdicionais = 2 * (misturasAdicionais + guarnicoesAdicionais);
+
+        marmita.setSubtotal(valorAdicionais + comboBoxMarmita.getValue().getValor());
+
+        if (descontoAdicional != null) {
+            if (descontoAdicional.getTipo().equals("Desconto")) {
+                marmita.setSubtotal(marmita.getSubtotal() - descontoAdicional.getValor());
+            } else {
+                marmita.setSubtotal(marmita.getSubtotal() + descontoAdicional.getValor());
+            }
+        }
+
+        controller.adicionarMarmita(marmita);
+
+        limpar();
     }
 
     @FXML
@@ -261,6 +254,7 @@ public class PaneMarmitaController implements Initializable {
         guarnicoesAdicionais = 0;
         labelInfoMisturaAdc.setText("+R$0,00");
         labelInfoGuarnicaoAdc.setText("+R$0,00");
+        descontoAdicional = null;
     }
 
     @FXML
@@ -401,6 +395,8 @@ public class PaneMarmitaController implements Initializable {
                 }
             }
         }
+
+        labelInfoMarmita.setText("Adicione ao menos um item a marmita");
         return false;
     }
 
@@ -423,6 +419,65 @@ public class PaneMarmitaController implements Initializable {
             checkBoxSalada2.setText(cardapio.getSalada2());
         } catch (SQLException e) {
             DatabaseExceptionHandler.handleException(e, "cardapio");
+        }
+    }
+
+    public void loadMarmitas() {
+        comboBoxMarmita.getItems().clear();
+
+        try {
+            List<Marmita> marmitas = MarmitaDAO.listarAtivas();
+
+            if (marmitas.isEmpty()) {
+                return;
+            }
+
+            comboBoxMarmita.getItems().addAll(marmitas);
+            comboBoxMarmita.getSelectionModel().selectFirst();
+            maxMisturas = comboBoxMarmita.getSelectionModel().getSelectedItem().getMaxMistura();
+            maxGuarnicoes = comboBoxMarmita.getSelectionModel().getSelectedItem().getMaxGuarnicao();
+            labelMistura.setText("Misturas: " + maxMisturas);
+            labelGuarnicao.setText("Guarnições: " + maxGuarnicoes);
+
+            comboBoxMarmita.valueProperty().addListener((obs, oldVal, newVal) -> {
+                maxMisturas = newVal.getMaxMistura();
+                maxGuarnicoes = newVal.getMaxGuarnicao();
+                limpar();
+            });
+
+        } catch (SQLException e) {
+            DatabaseExceptionHandler.handleException(e, "marmita");
+        }
+    }
+
+    private void abrirModalDescontoAdicional() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalDescontoAdicionalMarmita.fxml"));
+            Parent root = loader.load();
+
+            Stage modal = new Stage();
+            Scene scene = new Scene(root);
+
+            CssHelper.loadCss(scene);
+            IconHelper.applyIconsTo(root);
+
+            modal.setScene(scene);
+
+            ModalDescontoAdicionalMarmitaController controller = loader.getController();
+
+            controller.initialize(descontoAdicional);
+
+            modal.setResizable(false);
+            modal.initStyle(StageStyle.UTILITY);
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.setX(55);
+            modal.setY(300);
+            modal.showAndWait();
+
+            this.descontoAdicional = controller.getDescontoAdicional();
+
+        } catch (IOException e) {
+            System.out.println("Erro ao abrir modal desconto/adicional marmita" + e);
         }
     }
 }
