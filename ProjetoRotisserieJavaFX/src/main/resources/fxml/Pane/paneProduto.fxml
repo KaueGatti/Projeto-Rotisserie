@@ -21,7 +21,7 @@
          </font>
       </Label>
       <Spinner fx:id="spinner" editable="true" layoutX="179.0" layoutY="110.0" prefHeight="37.0" prefWidth="237.0" />
-      <Button fx:id="bttAdicionar" layoutX="17.0" layoutY="191.0" mnemonicParsing="false" onAction="#Adicionar" prefHeight="40.0" prefWidth="198.0" text="+ Adicionar">
+      <Button fx:id="bttAdicionar" layoutX="21.0" layoutY="241.0" mnemonicParsing="false" onAction="#Adicionar" prefHeight="40.0" prefWidth="400.0" text="+ Adicionar">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
@@ -30,7 +30,7 @@
             <String fx:value="button-green" />
          </styleClass>
       </Button>
-      <Button fx:id="bttLimpar" layoutX="226.0" layoutY="191.0" mnemonicParsing="false" onAction="#Limpar" prefHeight="40.0" prefWidth="198.0" text="- Limpar">
+      <Button fx:id="bttLimpar" layoutX="226.0" layoutY="191.0" mnemonicParsing="false" onAction="#Limpar" prefHeight="40.0" prefWidth="192.0" text="- Limpar">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
@@ -45,5 +45,19 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
+      <Button fx:id="btnDescontoAdicional" layoutX="21.0" layoutY="190.0" mnemonicParsing="false" onAction="#descontoAdicional" prefHeight="43.0" prefWidth="192.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+         <styleClass>
+            <String fx:value="button-action" />
+            <String fx:value="button-green" />
+            <String fx:value="icon-discount" />
+            <String fx:value="ic-white" />
+            <String fx:value="fs-14" />
+            <String fx:value="BDiscount" />
+            <String fx:value="is-32" />
+         </styleClass>
+      </Button>
    </children>
 </Pane>

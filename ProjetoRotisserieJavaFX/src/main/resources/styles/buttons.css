@@ -68,3 +68,7 @@
     -fx-icon-color: -color-white;
 }
 
+.is-32 .ikonli-font-icon {
+    -fx-icon-size: 32px !important;
+}
+

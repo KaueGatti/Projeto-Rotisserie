@@ -181,6 +181,9 @@ public class NovoPedidoController implements Initializable {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Pane/paneProduto.fxml"));
                 Pane produtoPane = loader.load();
+
+                IconHelper.applyIconsTo(produtoPane);
+
                 PaneProdutoController produtoController = loader.getController();
                 produtoController.setController(this);
                 APMarmitaProduto.getChildren().clear();
