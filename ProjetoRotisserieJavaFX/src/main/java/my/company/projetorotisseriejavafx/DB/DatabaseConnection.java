@@ -57,6 +57,11 @@ public class DatabaseConnection {
                 )
             """);
 
+            stmt.execute("""
+                INSERT OR IGNORE INTO Marmita (nome, max_mistura, max_guarnicao, valor)
+                VALUES ('Peso', 0, 0, 0)
+            """);
+
             // Tabela Produto
             stmt.execute("""
                 CREATE TABLE IF NOT EXISTS Produto (

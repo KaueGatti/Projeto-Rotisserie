@@ -26,6 +26,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import my.company.projetorotisseriejavafx.Controller.Modal.ModalAdicionarMarmitaPorPesoController;
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalDescontoAdicionalMarmitaController;
 import my.company.projetorotisseriejavafx.Controller.NovoPedidoController;
 import my.company.projetorotisseriejavafx.Controller.Modal.ModalObservacaoController;
@@ -65,6 +66,8 @@ public class PaneMarmitaController implements Initializable {
     private Button btnLimpar;
     @FXML
     private Button btnDescontoAdicional;
+    @FXML
+    private Button btnMarmitaPorPeso;
     @FXML
     private CheckBox checkBoxMistura1;
     @FXML
@@ -119,6 +122,11 @@ public class PaneMarmitaController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         loadMarmitas();
         loadCardapio();
+    }
+
+    @FXML
+    private void marmitaPorPeso(ActionEvent event) {
+        abrirModalAdicionarMarmitaPorPeso();
     }
 
     @FXML
@@ -475,6 +483,37 @@ public class PaneMarmitaController implements Initializable {
             modal.showAndWait();
 
             this.descontoAdicional = controller.getDescontoAdicional();
+
+        } catch (IOException e) {
+            System.out.println("Erro ao abrir modal desconto/adicional marmita" + e);
+        }
+    }
+
+    private void abrirModalAdicionarMarmitaPorPeso() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/modalAdicionarMarmitaPorPeso.fxml"));
+            Parent root = loader.load();
+
+            Stage modal = new Stage();
+            Scene scene = new Scene(root);
+
+            CssHelper.loadCss(scene);
+            IconHelper.applyIconsTo(root);
+
+            modal.setScene(scene);
+
+            ModalAdicionarMarmitaPorPesoController controller = loader.getController();
+
+            modal.setResizable(false);
+            modal.initStyle(StageStyle.UTILITY);
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.setX(55);
+            modal.setY(200);
+            modal.showAndWait();
+
+            if (controller.getMarmitaPorPeso() != null) {
+                this.controller.adicionarMarmita(controller.getMarmitaPorPeso());
+            }
 
         } catch (IOException e) {
             System.out.println("Erro ao abrir modal desconto/adicional marmita" + e);

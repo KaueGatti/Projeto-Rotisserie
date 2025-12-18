@@ -57,7 +57,7 @@
             <String fx:value="button-gray" />
          </styleClass>
       </Button>
-      <ComboBox fx:id="comboBoxMarmita" layoutX="14.0" layoutY="33.0" prefHeight="37.0" prefWidth="420.0" />
+      <ComboBox fx:id="comboBoxMarmita" layoutX="14.0" layoutY="33.0" prefHeight="37.0" prefWidth="360.0" />
       <CheckBox fx:id="checkBoxPrincipal1" layoutX="32.0" layoutY="103.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="116.0" text="CheckBox">
          <font>
             <Font size="18.0" />
@@ -185,6 +185,17 @@
             <String fx:value="ic-white" />
             <String fx:value="fs-14" />
             <String fx:value="BDiscount" />
+         </styleClass>
+      </Button>
+      <Button fx:id="btnMarmitaPorPeso" layoutX="392.0" layoutY="37.0" mnemonicParsing="false" onAction="#marmitaPorPeso" prefHeight="27.0" prefWidth="37.0" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <styleClass>
+            <String fx:value="button-action" />
+            <String fx:value="button-blue" />
+            <String fx:value="icon-scale" />
+            <String fx:value="ic-white" />
          </styleClass>
       </Button>
    </children>

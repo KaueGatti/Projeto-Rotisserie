@@ -54,6 +54,11 @@ public class IconHelper {
                     iconDiscount.getStyleClass().add("icon-discount");
                     btn.setGraphic(iconDiscount);
                     break;
+                case "icon-scale":
+                    FontIcon iconScale = new FontIcon("mdi-scale");
+                    iconScale.getStyleClass().add("icon-scale");
+                    btn.setGraphic(iconScale);
+                    break;
             }
         }
     }
@@ -85,6 +90,11 @@ public class IconHelper {
                     FontIcon iconDiscount = new FontIcon("mdi-sale");
                     iconDiscount.getStyleClass().add("icon-discount");
                     label.setGraphic(iconDiscount);
+                    break;
+                case "icon-scale":
+                    FontIcon iconScale = new FontIcon("mdi-scale");
+                    iconScale.getStyleClass().add("icon-scale");
+                    label.setGraphic(iconScale);
                     break;
             }
         }

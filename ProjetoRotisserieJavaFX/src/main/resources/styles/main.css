@@ -101,7 +101,7 @@
     -fx-icon-color: -color-yellow;
 }
 
-.ic-white {
+.ic-white .ikonli-font-icon {
     -fx-icon-color: -color-white;
 }
 

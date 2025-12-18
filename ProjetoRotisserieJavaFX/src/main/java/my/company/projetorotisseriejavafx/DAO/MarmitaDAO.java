@@ -73,7 +73,11 @@ public class MarmitaDAO {
     }
 
     static public List<Marmita> listarTodas() throws SQLException {
-        String sql = "SELECT * FROM Marmita ORDER BY nome";
+        String sql = """
+            SELECT * FROM Marmita
+            WHERE id != 1
+            ORDER BY nome
+        """;
         List<Marmita> marmitas = new ArrayList<>();
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -123,7 +127,12 @@ public class MarmitaDAO {
     }
 
     static public List<Marmita> listarAtivas() throws SQLException {
-        String sql = "SELECT * FROM Marmita WHERE status = 'ATIVO' ORDER BY nome";
+        String sql = """
+            SELECT * FROM Marmita
+            WHERE status = 'ATIVO' AND id != 1
+            ORDER BY nome
+        """;
+
         List<Marmita> marmitas = new ArrayList<>();
 
         try (Connection conn = DatabaseConnection.getConnection();

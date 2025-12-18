@@ -89,47 +89,55 @@ public class MarmitaVendida {
     }
 
     public String getDetalhes() {
-        if (detalhes != null) { return detalhes; }
+        if (detalhes != null) {
+            return detalhes;
+        }
 
         StringBuilder detalhes = new StringBuilder("Principais: ");
 
-        for (int i = 0; i < principais.size(); i++) {
-            detalhes.append(principais.get(i));
+        if (principais != null) {
+            for (int i = 0; i < principais.size(); i++) {
+                detalhes.append(principais.get(i));
 
-            if (i != principais.size() - 1) {
-                detalhes.append(", ");
+                if (i != principais.size() - 1) {
+                    detalhes.append(", ");
+                }
             }
         }
 
-
-
         detalhes.append("\nMisturas: ");
 
-        for (int i = 0; i < misturas.size(); i++) {
-            detalhes.append(misturas.get(i));
+        if (misturas != null) {
+            for (int i = 0; i < misturas.size(); i++) {
+                detalhes.append(misturas.get(i));
 
-            if (i != misturas.size() - 1) {
-                detalhes.append(", ");
+                if (i != misturas.size() - 1) {
+                    detalhes.append(", ");
+                }
             }
         }
 
         detalhes.append("\nGuarnicoes: ");
 
-        for (int i = 0; i < guarnicoes.size(); i++) {
-            detalhes.append(guarnicoes.get(i));
+        if (guarnicoes != null) {
+            for (int i = 0; i < guarnicoes.size(); i++) {
+                detalhes.append(guarnicoes.get(i));
 
-            if (i != guarnicoes.size() - 1) {
-                detalhes.append(", ");
+                if (i != guarnicoes.size() - 1) {
+                    detalhes.append(", ");
+                }
             }
         }
 
         detalhes.append("\nSaladas: ");
 
-        for (int i = 0; i < saladas.size(); i++) {
-            detalhes.append(saladas.get(i));
+        if (saladas != null) {
+            for (int i = 0; i < saladas.size(); i++) {
+                detalhes.append(saladas.get(i));
 
-            if (i != saladas.size() - 1) {
-                detalhes.append(", ");
+                if (i != saladas.size() - 1) {
+                    detalhes.append(", ");
+                }
             }
         }
 
