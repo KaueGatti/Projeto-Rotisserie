@@ -64,6 +64,7 @@ public class MarmitaVendidaDAO {
                     MarmitaVendida mv = new MarmitaVendida();
                     mv.setId(rs.getInt("id"));
                     mv.setIdMarmita(rs.getInt("id_marmita"));
+                    mv.setNome(rs.getString("nome_marmita"));
                     mv.setDetalhes(rs.getString("detalhes"));
                     mv.setSubtotal(rs.getDouble("subtotal"));
                     mv.setObservacao(rs.getString("observacao"));

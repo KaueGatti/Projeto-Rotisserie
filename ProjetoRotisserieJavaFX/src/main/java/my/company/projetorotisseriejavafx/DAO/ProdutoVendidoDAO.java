@@ -62,6 +62,7 @@ public class ProdutoVendidoDAO {
                     ProdutoVendido pv = new ProdutoVendido();
                     pv.setId(rs.getInt("id"));
                     pv.setIdProduto(rs.getInt("id_produto"));
+                    pv.setNome(rs.getString("nome_produto"));
                     pv.setQuantidade(rs.getInt("quantidade"));
                     pv.setSubtotal(rs.getDouble("subtotal"));
                     lista.add(pv);
