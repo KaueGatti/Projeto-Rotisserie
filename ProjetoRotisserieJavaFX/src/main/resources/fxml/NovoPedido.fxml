@@ -19,17 +19,17 @@
 
 <Pane id="paneNovoPedido" fx:id="panePrincipal" prefHeight="728.0" prefWidth="1524.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.NovoPedidoController">
    <children>
-         <ToggleButton id="tabMarmita" fx:id="tabButtonLeft" layoutX="28.0" layoutY="19.0" mnemonicParsing="false" onAction="#marmitaClicked" prefHeight="58.0" prefWidth="230.0" selected="true" text="Marmita">
+         <ToggleButton id="tabMarmita" fx:id="tabButtonLeft" layoutX="28.0" layoutY="47.0" mnemonicParsing="false" onAction="#marmitaClicked" prefHeight="36.0" prefWidth="230.0" selected="true" text="Marmita">
             <font>
                <Font size="14.0" />
             </font>
          </ToggleButton>
-         <ToggleButton id="tabProduto" fx:id="tabButtonRight" layoutX="258.0" layoutY="19.0" mnemonicParsing="false" onAction="#produtoClicked" prefHeight="58.0" prefWidth="230.0" text="Produto">
+         <ToggleButton id="tabProduto" fx:id="tabButtonRight" layoutX="258.0" layoutY="47.0" mnemonicParsing="false" onAction="#produtoClicked" prefHeight="36.0" prefWidth="230.0" text="Produto">
             <font>
                <Font size="14.0" />
             </font>
          </ToggleButton>
-      <AnchorPane fx:id="APMarmitaProduto" layoutX="28.0" layoutY="77.0" prefHeight="622.0" prefWidth="460.0" />
+      <AnchorPane fx:id="APMarmitaProduto" layoutX="28.0" layoutY="83.0" prefHeight="622.0" prefWidth="460.0" />
       <TableView fx:id="tableMarmita" layoutX="518.0" layoutY="54.0" prefHeight="190.0" prefWidth="500.0">
         <columns>
           <TableColumn fx:id="colNomeMarmita" prefWidth="254.4000244140625" text="Nome" />
@@ -180,5 +180,23 @@
             </Label>
          </children>
       </Pane>
+      <Button fx:id="btnMinimizar" layoutX="1472.0" layoutY="17.0" mnemonicParsing="false" onAction="#minimizar" prefHeight="30.0" prefWidth="30.0">
+         <styleClass>
+            <String fx:value="button-action" />
+            <String fx:value="icon-search" />
+         </styleClass>
+      </Button>
+      <Button fx:id="btnMaximizar" layoutX="28.0" layoutY="11.0" mnemonicParsing="false" onAction="#maximizar" prefHeight="30.0" prefWidth="30.0" visible="false">
+         <styleClass>
+            <String fx:value="button-action" />
+            <String fx:value="icon-search" />
+         </styleClass>
+      </Button>
+      <Button fx:id="btnNext1" layoutX="448.0" layoutY="11.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" visible="false">
+         <styleClass>
+            <String fx:value="button-action" />
+            <String fx:value="icon-search" />
+         </styleClass>
+      </Button>
    </children>
 </Pane>

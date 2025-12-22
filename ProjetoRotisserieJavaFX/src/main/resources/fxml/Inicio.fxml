@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="525.0" prefWidth="1209.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.InicioController">
+<AnchorPane fx:id="APGeral" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="525.0" prefWidth="1209.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.InicioController">
    <children>
       <HBox prefHeight="75.0" prefWidth="1209.0" style="-fx-background-color: rgba(249, 155, 55, 0.4);" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>

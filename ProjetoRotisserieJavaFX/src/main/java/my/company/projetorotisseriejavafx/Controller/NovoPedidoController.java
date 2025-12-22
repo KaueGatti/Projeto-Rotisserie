@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -30,6 +31,7 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import my.company.projetorotisseriejavafx.Controller.Modal.*;
 import my.company.projetorotisseriejavafx.Controller.Pane.PaneMarmitaController;
 import my.company.projetorotisseriejavafx.Controller.Pane.PaneProdutoController;
@@ -40,7 +42,7 @@ import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 import my.company.projetorotisseriejavafx.Util.IconHelper;
 import my.company.projetorotisseriejavafx.Util.Printer;
 
-public class NovoPedidoController implements Initializable {
+public class NovoPedidoController {
 
     private double valorEntrega = 0;
     private double valorItens = 0;
@@ -53,6 +55,9 @@ public class NovoPedidoController implements Initializable {
     private boolean print;
 
     @FXML
+    private Stage window;
+
+    @FXML
     private ToggleGroup tipo;
     @FXML
     private Button btnFinalizar;
@@ -60,6 +65,13 @@ public class NovoPedidoController implements Initializable {
     private Button btnCancelar;
     @FXML
     private Button btnDescontosEAdicionais;
+
+    @FXML
+    private Button btnMinimizar;
+    @FXML
+    private Button btnMaximizar;
+    @FXML
+    private Button btnNext1;
 
     @FXML
     private Pane panePrincipal;
@@ -120,13 +132,14 @@ public class NovoPedidoController implements Initializable {
     public NovoPedidoController() {
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(Stage window) {
+        this.window = window;
         initDescontosEAdicionais();
         initTableMarmita();
         initTableProduto();
         loadCliente();
         loadBairro();
+        initListenerWindow();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Pane/paneMarmita.fxml"));
             Pane marmitaPane = loader.load();
@@ -218,6 +231,17 @@ public class NovoPedidoController implements Initializable {
             paneEndereco.setDisable(true);
         }
     }
+
+    @FXML
+    private void minimizar() {
+        TranslateTransition tt = new TranslateTransition(Duration.millis(250), APMarmitaProduto);
+        tt.setFromX(400);
+        tt.setToX(0);
+        tt.play();
+    }
+
+    @FXML
+    private void maximizar() {}
 
     private void loadBairro() {
         comboBoxBairro.getItems().clear();
@@ -685,6 +709,20 @@ public class NovoPedidoController implements Initializable {
 
                     setGraphic(wrapper);
                 }
+            }
+        });
+    }
+
+    private void initListenerWindow() {
+        window.widthProperty().addListener((observable, oldValue, newValue) -> {
+            if (window.isMaximized()) {
+                btnMaximizar.setVisible(false);
+                btnNext1.setVisible(false);
+                btnMinimizar.setVisible(true);
+            } else {
+                btnMaximizar.setVisible(true);
+                btnNext1.setVisible(true);
+                btnMinimizar.setVisible(false);
             }
         });
     }

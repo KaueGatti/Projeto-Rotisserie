@@ -29,6 +29,8 @@ import my.company.projetorotisseriejavafx.Util.IconHelper;
 public class InicioController implements Initializable {
 
     @FXML
+    private AnchorPane APGeral;
+    @FXML
     private Button bttNovoPedido;
     @FXML
     private AnchorPane APPrincipal;
@@ -64,11 +66,18 @@ public class InicioController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/NovoPedido.fxml"));
             Parent root = loader.load();
 
+            NovoPedidoController controller = loader.getController();
+
+            Stage window = (Stage) APPrincipal.getScene().getWindow();
+
+            controller.initialize(window);
+
             IconHelper.applyIconsTo(root);
 
             APPrincipal.getChildren().setAll(root);
         } catch (IOException e) {
             System.out.println("Erro bttNovoPedido " + e);
+            e.printStackTrace();
         }
     }
 
