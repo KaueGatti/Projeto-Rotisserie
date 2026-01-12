@@ -1,19 +1,17 @@
 package my.company.projetorotisseriejavafx.Controller;
 
 import java.io.IOException;
-import java.net.URL;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -26,10 +24,14 @@ import my.company.projetorotisseriejavafx.Util.CssHelper;
 import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 import my.company.projetorotisseriejavafx.Util.IconHelper;
 
-public class InicioController implements Initializable {
+public class InicioController {
+
+    Stage window = new Stage();
 
     @FXML
     private AnchorPane APGeral;
+    @FXML
+    private HBox HBNavBar;
     @FXML
     private Button bttNovoPedido;
     @FXML
@@ -49,8 +51,8 @@ public class InicioController implements Initializable {
     @FXML
     private Button btnCardapio;
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(Stage window) {
+        this.window = window;
         loadIcons();
     }
 
@@ -70,7 +72,7 @@ public class InicioController implements Initializable {
 
             Stage window = (Stage) APPrincipal.getScene().getWindow();
 
-            controller.initialize(window);
+            controller.initialize();
 
             IconHelper.applyIconsTo(root);
 

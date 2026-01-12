@@ -8,7 +8,7 @@
 
 <AnchorPane fx:id="APGeral" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="525.0" prefWidth="1209.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.InicioController">
    <children>
-      <HBox prefHeight="75.0" prefWidth="1209.0" style="-fx-background-color: rgba(249, 155, 55, 0.4);" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <HBox fx:id="HBNavBar" prefHeight="75.0" prefWidth="1209.0" style="-fx-background-color: rgba(249, 155, 55, 0.4);" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
             <Button fx:id="bttNovoPedido" mnemonicParsing="false" onAction="#bttNovoPedido" prefHeight="83.0" prefWidth="315.0" style="-fx-background-color: rgb(143, 187, 138);" text="Novo Pedido +">
                <font>

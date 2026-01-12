@@ -1,12 +1,4 @@
-package my.company.projetorotisseriejavafx.Controller;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import java.text.NumberFormat;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+package my.company.projetorotisseriejavafx.Controller.Modal;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -19,14 +11,16 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
-import javafx.stage.*;
-import my.company.projetorotisseriejavafx.Controller.Modal.*;
+import javafx.stage.Modality;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import my.company.projetorotisseriejavafx.Controller.NovoPedidoController;
 import my.company.projetorotisseriejavafx.Controller.Pane.PaneMarmitaController;
 import my.company.projetorotisseriejavafx.Controller.Pane.PaneProdutoController;
 import my.company.projetorotisseriejavafx.DAO.*;
@@ -36,9 +30,15 @@ import my.company.projetorotisseriejavafx.Util.DatabaseExceptionHandler;
 import my.company.projetorotisseriejavafx.Util.IconHelper;
 import my.company.projetorotisseriejavafx.Util.Printer;
 
-import javax.swing.*;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
-public class NovoPedidoController {
+public class ModalNovoPedidoTelaReduzidaController extends NovoPedidoController {
 
     private double valorEntrega = 0;
     private double valorItens = 0;
@@ -60,14 +60,7 @@ public class NovoPedidoController {
     private Button btnDescontosEAdicionais;
 
     @FXML
-    private Button btnMinimizar;
-    @FXML
-    private Button btnMaximizar;
-    @FXML
-    private Button btnNext1;
-
-    @FXML
-    private Pane panePrincipal;
+    private AnchorPane PPrincipal;
 
     @FXML
     private TableView<MarmitaVendida> tableMarmita;
@@ -122,9 +115,6 @@ public class NovoPedidoController {
     @FXML
     private Pane paneEndereco;
 
-    public NovoPedidoController() {
-    }
-
     public void initialize() {
         initDescontosEAdicionais();
         initTableMarmita();
@@ -134,6 +124,9 @@ public class NovoPedidoController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Pane/paneMarmita.fxml"));
             Pane marmitaPane = loader.load();
+
+            IconHelper.applyIconsTo(marmitaPane);
+
             PaneMarmitaController marmitaController = loader.getController();
             marmitaController.setController(this);
             APMarmitaProduto.getChildren().add(marmitaPane);
@@ -150,7 +143,7 @@ public class NovoPedidoController {
 
     @FXML
     private void cancelar() {
-        close();
+        fecharModal();
     }
 
     @FXML
@@ -224,11 +217,6 @@ public class NovoPedidoController {
             atualizaValor();
             paneEndereco.setDisable(true);
         }
-    }
-
-    @FXML
-    private void minimizar() {
-        abrirModalNovoPedidoTelaReduzida();
     }
 
     private void loadBairro() {
@@ -347,10 +335,6 @@ public class NovoPedidoController {
         abrirModalDescontosEAdicionais();
     }
 
-    private void close() {
-        ((AnchorPane) panePrincipal.getParent()).getChildren().clear();
-    }
-
     public ObservableList<DescontoAdicional> getDescontosEAdicionais() {
         return descontosEAdicionais;
     }
@@ -427,7 +411,7 @@ public class NovoPedidoController {
                 DatabaseExceptionHandler.handleException(e, "Pedido");
             }
 
-            close();
+            fecharModal();
         }
     }
 
@@ -490,7 +474,7 @@ public class NovoPedidoController {
             }
 
             pagamento = controller.getPagamento();
-            pagamentos =  controller.getPagamentos();
+            pagamentos = controller.getPagamentos();
             vencimento = controller.getVencimento();
             print = controller.getPrint();
 
@@ -570,37 +554,6 @@ public class NovoPedidoController {
 
         } catch (IOException e) {
             System.out.println("Erro ao abrir aviso novo pedido");
-            e.printStackTrace();
-        }
-
-        return false;
-    }
-
-    public boolean abrirModalNovoPedidoTelaReduzida() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Modal/ModalNovoPedidoTelaReduzida.fxml"));
-            Parent root = loader.load();
-
-            Stage modal = new Stage();
-            Scene scene = new Scene(root);
-
-            CssHelper.loadCss(scene);
-            IconHelper.applyIconsTo(root);
-
-            modal.setScene(scene);
-
-            ModalNovoPedidoTelaReduzidaController controller = loader.getController();
-
-            controller.initialize();
-
-            modal.initStyle(StageStyle.UTILITY);
-            modal.initModality(Modality.APPLICATION_MODAL);
-            modal.setResizable(false);
-            minimizarApp();
-            modal.showAndWait();
-
-        } catch (IOException e) {
-            System.out.println("Erro ao abrir modal novo pedido tela reduzida");
             e.printStackTrace();
         }
 
@@ -732,8 +685,8 @@ public class NovoPedidoController {
         });
     }
 
-    private void minimizarApp() {
-        Stage window = (Stage) panePrincipal.getParent().getScene().getWindow();
-        window.setIconified(true);
+    private void fecharModal() {
+        Stage modal = (Stage) PPrincipal.getScene().getWindow();
+        modal.close();
     }
 }

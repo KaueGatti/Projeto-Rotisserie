@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import my.company.projetorotisseriejavafx.Controller.InicioController;
 import my.company.projetorotisseriejavafx.DB.DatabaseConnection;
 import my.company.projetorotisseriejavafx.Util.IconHelper;
 
@@ -17,7 +18,8 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         try {
-            Parent root = loadFXML("Inicio.fxml");
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/" + "Inicio.fxml"));
+            Parent root = loader.load();
 
             scene = new Scene(root);
 
@@ -31,7 +33,13 @@ public class App extends Application {
 
             stage.setScene(scene);
 
+            InicioController controller = loader.getController();
+
+            controller.initialize(stage);
+
             stage.setMaximized(true);
+
+            stage.setResizable(false);
 
             stage.show();
 

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="PPrincipal" prefHeight="749.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.company.projetorotisseriejavafx.Controller.Modal.ModalNovoPedidoTelaReduzidaController">
+   <children>
+      <TabPane prefHeight="740.0" prefWidth="500.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Marmita e Produto">
+               <content>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <AnchorPane prefHeight="710.0" prefWidth="500.0">
+                           <children>
+                              <ToggleButton id="tabProduto" fx:id="tabButtonRight" layoutX="249.0" layoutY="14.0" mnemonicParsing="false" onAction="#produtoClicked" prefHeight="36.0" prefWidth="230.0" text="Produto">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </ToggleButton>
+                              <ToggleButton id="tabMarmita" fx:id="tabButtonLeft" layoutX="19.0" layoutY="14.0" mnemonicParsing="false" onAction="#marmitaClicked" prefHeight="36.0" prefWidth="230.0" selected="true" text="Marmita">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </ToggleButton>
+                              <AnchorPane fx:id="APMarmitaProduto" layoutX="20.0" layoutY="50.0" prefHeight="622.0" prefWidth="460.0" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+          <Tab text="Itens">
+               <content>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="tableMarmita" layoutX="10.0" layoutY="50.0" prefHeight="190.0" prefWidth="480.0">
+                           <columns>
+                              <TableColumn fx:id="colNomeMarmita" prefWidth="254.4000244140625" text="Nome" />
+                              <TableColumn fx:id="colSubtotalMarmita" minWidth="0.0" prefWidth="174.39996337890625" text="Subtotal" />
+                              <TableColumn fx:id="colDelMarmita" editable="false" minWidth="0.0" prefWidth="49.600006103515625" resizable="false" />
+                           </columns>
+                        </TableView>
+                        <TableView fx:id="tableProduto" layoutX="10.0" layoutY="293.0" prefHeight="190.0" prefWidth="480.0">
+                           <columns>
+                              <TableColumn fx:id="colNomeProduto" prefWidth="180.0" text="Nome" />
+                              <TableColumn fx:id="colQuantidadeProduto" minWidth="0.0" prefWidth="118.39996337890625" text="Quantidade" />
+                              <TableColumn fx:id="colSubtotalProduto" minWidth="7.20001220703125" prefWidth="131.20001220703125" text="Subtotal" />
+                              <TableColumn fx:id="colDelProduto" editable="false" minWidth="7.20001220703125" prefWidth="48.800018310546875" resizable="false" />
+                           </columns>
+                        </TableView>
+                        <TextArea fx:id="TAObservacoes" layoutX="10.0" layoutY="526.0" prefHeight="178.0" prefWidth="480.0" promptText="Observação...">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </TextArea>
+                        <Label layoutX="10.0" layoutY="496.0" text="Observações do pedido">
+                           <font>
+                              <Font name="Segoe UI" size="24.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="248.0" prefHeight="35.0" prefWidth="480.0" styleClass="titleTable" text="Produtos" textAlignment="CENTER">
+                           <font>
+                              <Font name="Segoe UI Bold" size="24.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="8.0" prefHeight="35.0" prefWidth="480.0" styleClass="titleTable" text="Marmitas" textAlignment="CENTER">
+                           <font>
+                              <Font name="Segoe UI Bold" size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="Pedido">
+               <content>
+                  <AnchorPane prefHeight="711.0" prefWidth="494.0">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="30.0" layoutY="14.0" prefHeight="30.0" prefWidth="440.0" styleClass="titleTable" text="Pedido" textAlignment="CENTER">
+                           <font>
+                              <Font name="Segoe UI Bold" size="24.0" />
+                           </font>
+                        </Label>
+                        <Pane id="panePedido" layoutX="16.0" layoutY="55.0" prefHeight="648.0" prefWidth="467.0">
+                           <children>
+                              <CheckBox fx:id="checkBoxCliente" layoutX="23.0" layoutY="75.0" mnemonicParsing="false" onAction="#checkBoxCliente" prefHeight="38.0" prefWidth="157.0" text="Já é Cliente?">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </CheckBox>
+                              <ComboBox fx:id="comboBoxCliente" disable="true" layoutX="23.0" layoutY="120.0" prefHeight="35.0" prefWidth="395.0" style="-fx-pref-width: 395; -fx-pref-height: 30;" />
+                              <TextField fx:id="TFNomeCliente" layoutX="23.0" layoutY="193.0" prefHeight="36.0" prefWidth="395.0" promptText="Nome do cliente">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </TextField>
+                              <Label fx:id="labelCliente" layoutX="27.0" layoutY="164.0" text="Cliente">
+                                 <font>
+                                    <Font name="Segoe UI" size="24.0" />
+                                 </font>
+                              </Label>
+                              <Pane fx:id="paneEndereco" disable="true" layoutX="23.0" layoutY="252.0" prefHeight="241.0" prefWidth="395.0">
+                                 <children>
+                                    <ComboBox fx:id="comboBoxBairro" layoutX="16.0" layoutY="191.0" prefHeight="36.0" prefWidth="364.0" />
+                                    <TextArea fx:id="TAEndereco" layoutX="16.0" layoutY="29.0" prefHeight="116.0" prefWidth="364.0">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </TextArea>
+                                    <Label alignment="TOP_LEFT" layoutX="21.0" prefHeight="29.0" prefWidth="364.0" text="Endereço*">
+                                       <font>
+                                          <Font name="Segoe UI" size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="TOP_LEFT" layoutX="21.0" layoutY="162.0" prefHeight="29.0" prefWidth="364.0" text="Bairro">
+                                       <font>
+                                          <Font name="Segoe UI" size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="labelEnderecoInfo" layoutX="120.0" layoutY="5.0" prefHeight="20.0" prefWidth="260.0" textFill="RED">
+                                       <font>
+                                          <Font name="Segoe UI" size="16.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </Pane>
+                              <Label fx:id="labelValorEntrega" alignment="TOP_LEFT" layoutX="15.0" layoutY="521.0" prefHeight="29.0" prefWidth="204.0" styleClass="labelValorPedido" text="Entrega R$ 00,00">
+                                 <font>
+                                    <Font name="Segoe UI Bold" size="24.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </Label>
+                              <Label fx:id="labelValorTotal" alignment="TOP_LEFT" layoutX="15.0" layoutY="558.0" prefHeight="29.0" prefWidth="180.0" styleClass="labelValorPedido" text="Total R$ 00,00">
+                                 <font>
+                                    <Font name="Segoe UI Bold" size="24.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </Label>
+                              <Button fx:id="btnFinalizar" layoutX="15.0" layoutY="601.0" mnemonicParsing="false" onAction="#finalizar" prefHeight="40.0" prefWidth="204.0" text="Finalizar">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                                 <styleClass>
+                                    <String fx:value="button-action" />
+                                    <String fx:value="button-green" />
+                                 </styleClass>
+                              </Button>
+                              <Button fx:id="btnCancelar" layoutX="237.0" layoutY="601.0" mnemonicParsing="false" onAction="#cancelar" prefHeight="40.0" prefWidth="204.0" text="Cancelar">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                                 <styleClass>
+                                    <String fx:value="button-action" />
+                                    <String fx:value="button-red" />
+                                 </styleClass>
+                              </Button>
+                              <Button fx:id="btnDescontosEAdicionais" layoutX="237.0" layoutY="547.0" mnemonicParsing="false" onAction="#descontosEAdicionais" prefHeight="40.0" prefWidth="204.0" text="Descontos e Adicionais">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                                 <styleClass>
+                                    <String fx:value="button-action" />
+                                    <String fx:value="button-yellow" />
+                                 </styleClass>
+                              </Button>
+                              <Label alignment="CENTER" layoutX="26.0" prefHeight="29.0" prefWidth="421.0" text="Tipo">
+                                 <font>
+                                    <Font name="Segoe UI" size="24.0" />
+                                 </font>
+                              </Label>
+                              <RadioButton fx:id="RBEntrega" layoutX="110.0" layoutY="37.0" mnemonicParsing="false" onAction="#RBGTipo" text="Entrega">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="tipo" />
+                                 </toggleGroup>
+                              </RadioButton>
+                              <RadioButton fx:id="RBBalcao" layoutX="237.0" layoutY="37.0" mnemonicParsing="false" onAction="#RBGTipo" selected="true" text="Balcão" toggleGroup="$tipo">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </RadioButton>
+                              <Label id="LInfoPedido" fx:id="LInfoPedido" layoutX="14.0" layoutY="485.0" prefHeight="29.0" prefWidth="429.0">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

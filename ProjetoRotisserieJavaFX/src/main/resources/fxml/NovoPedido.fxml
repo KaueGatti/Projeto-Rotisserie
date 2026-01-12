@@ -186,17 +186,5 @@
             <String fx:value="icon-search" />
          </styleClass>
       </Button>
-      <Button fx:id="btnMaximizar" layoutX="28.0" layoutY="11.0" mnemonicParsing="false" onAction="#maximizar" prefHeight="30.0" prefWidth="30.0" visible="false">
-         <styleClass>
-            <String fx:value="button-action" />
-            <String fx:value="icon-search" />
-         </styleClass>
-      </Button>
-      <Button fx:id="btnNext1" layoutX="448.0" layoutY="11.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" visible="false">
-         <styleClass>
-            <String fx:value="button-action" />
-            <String fx:value="icon-search" />
-         </styleClass>
-      </Button>
    </children>
 </Pane>
